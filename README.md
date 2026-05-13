@@ -1,4 +1,4 @@
-## RNNNeuroSurrogate
+# RNN Neuro Surrogate
 ### RNNを用いた神経細胞モデル（Hodgkin–Huxleyモデル）の代理モデル構築による高速シミュレーション
 
 ---
