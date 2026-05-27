@@ -13,7 +13,7 @@
 
  - 先行研究調査
     - Syndy（棟近さん）
-    - Learning flow functions of spiking systema	スパイキングシステムのフロー関数の学習	https://proceedings.mlr.press/v242/aguiar24a.html
+    - Learning flow functions of spiking systema	スパイキングシステムのフロー関数の学習（代理モデル・RNN）	https://proceedings.mlr.press/v242/aguiar24a.html
 
 # プロジェクト一覧
 
