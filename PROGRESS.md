@@ -2,6 +2,7 @@
 ## 〜5/27
 
 - 神経細胞モデル（HHモデル）の理解
+	- FitzHugh-Nagumo 方程式 
     - Hodgkin-Huxleyモデル
     - 数値解析
 
