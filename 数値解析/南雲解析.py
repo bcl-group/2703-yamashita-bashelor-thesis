@@ -1,49 +1,52 @@
-import numpy as np  #NumPyライブラリ
-import matplotlib as plt
-
-# du/dt= c (- v + u -u3/3 + I(t))
-# dv/dt= u - b v + a
-# a、b、c はパラメータであり、ここでは a=0.7、b=0.8、c=10 に固定
+import numpy as np
+import matplotlib.pyplot as plt
 
 a = 0.7
 b = 0.8
 c = 10
 
-T = 10.0      # pulse period
-w = 1.0       # pulse width
-I0 = 0.5      # pulse strength
+T = 10.0
+w = 10.0
+I0 = 0.1601
 
 dt = 0.01
-t_end = 200
+t_end = 50
 
-# input pulse
 def I(t):
     return I0 if (t % T) < w else 0.0
 
-# FitzHugh-Nagumo equation
-def f(u, v, t):
-    du = c * (-v + u - u**3 / 3 + I(t))
-    dv = u - b * v + a
-    return du, dv
-
-# time
 t = np.arange(0, t_end, dt)
 
-# state
 u = np.zeros(len(t))
 v = np.zeros(len(t))
+I_values = np.zeros(len(t))
 
-# Euler method
-for i in range(len(t) - 1):
-    du, dv = f(u[i], v[i], t[i])
+for i in range(len(t)-1):
 
-    u[i + 1] = u[i] + dt * du
-    v[i + 1] = v[i] + dt * dv
+    I_values[i] = I(t[i])
 
-# plot
+    du = c * (-v[i] + u[i] - u[i]**3/3 + I_values[i])
+    dv = u[i] - b*v[i] + a
+
+    u[i+1] = u[i] + dt*du
+    v[i+1] = v[i] + dt*dv
+
+I_values[-1] = I(t[-1])
+
+# u(t)
+plt.figure(figsize=(10,4))
 plt.plot(t, u)
-plt.xlabel("time")
+plt.xlabel("Time t[ms]")
 plt.ylabel("u")
-plt.title("FitzHugh-Nagumo")
+plt.title("Membrane Potential")
+plt.grid()
+plt.show()
+
+# I(t)
+plt.figure(figsize=(10,2))
+plt.plot(t, I_values)
+plt.xlabel("Time t[ms]")
+plt.ylabel("I(t) [$\mu$ m]")
+plt.title("Input Current")
 plt.grid()
 plt.show()
