@@ -7,14 +7,21 @@ import matplotlib.pyplot as plt
 
 
 class Hodgkin_Huxley:
-    def __init__(self)
-            
-            
-            self, time, dt, rest=-65., Cm=1.0, gNa=120., gK=36., gl=0.3, ENa=50., 
-            EK=-77., El=-54.387:
+    def __init__(
+            self,
+            time,
+            dt,
+            rest = -65.0,
+            Cm = 1.0,
+            gNa = 120.0,
+            gK = 36.0,
+            gl = 0.3,
+            ENa = 50.0,
+            EK = -77.0,
+            El = -54.387
+            ):
         """
         Initialize Neuron parameters
-
         :param time: experimental time
         :param dt:   time step
         :param rest: resting potential
@@ -23,22 +30,21 @@ class Hodgkin_Huxley:
         :param gK:   K+ channel conductance
         :param gl:   other (Cl) channel conductance
         :param ENa:  Na+ equilibrium potential
-        :param EK:   K+ equilibrium potential
+        :param EK:   Na+ equilibrium potential
         :param El:   other (Cl) equilibrium potentials
         """
-        self.time = time
-        self.dt = dt
-        self.rest = rest
-        self.Cm = Cm
-        self.gNa = gNa
-        self.gK = gK
-        self.gl = gl
-        self.ENa = ENa
-        self.EK = EK
-        self.El = El
+        self.time = time    #experimental time
+        self.dt = dt        #time step
+        self.rest = rest    #resting potential
+        self.Cm = Cm        #membrane capacity
+        self.gNa = gNa      #Na+ channel conductance
+        self.gK = gK        #K+ channel conductance
+        self.gl = gl        #other (Cl) channel conductance
+        self.ENa = ENa      #Na+ equilibrium potential
+        self.EK = EK        #K+equilibrium potentials
+        self.El = El        #other (Cl) equilibrium potentials
 
     def calc_v(self, i):
-        """ compute membrane potential """
 
         # initialize parameters
         v = self.rest
