@@ -2,7 +2,7 @@
 ## 〜6/16
 - 教員採用試験対策
   - 面接シート完成
-    - https://github.com/bcl-group/2703-yamashita-bashelor-thesis/blob/main/%E9%AB%98%E6%A0%A1%E6%83%85%E5%A0%B10005%E9%9D%A2%E6%8E%A5%E3%82%AB%E3%83%BC%E3%83%88%E3%82%99.pdf
+    - https://github.com/bcl-group/2703-yamashita-bashelor-thesis/blob/main/%E6%95%99%E5%93%A1%E6%8E%A1%E7%94%A8%E8%A9%A6%E9%A8%93/%E9%AB%98%E6%A0%A1%E6%83%85%E5%A0%B10005%E9%9D%A2%E6%8E%A5%E3%82%AB%E3%83%BC%E3%83%88%E3%82%99.pdf
 
 - 数値計算
   - Hodgkin-Huxley
