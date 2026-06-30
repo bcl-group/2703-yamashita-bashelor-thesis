@@ -104,12 +104,6 @@ https://www.pref.shizuoka.jp/kodomokyoiku/school/kyoiku/1003764/1003767/1073341.
       - 汎化性能
       - 応用可能性
 
-- ネットワーク講習会
-  - 〜6/19
-
-- 論文紹介and環境と人間
-  - 〜6/16
-
 - 卒業単位取得
   - python 0.5h/日 〜6/12
   - 化学概論 毎週水曜に課題提出 〜6/10
@@ -129,11 +123,10 @@ https://www.pref.shizuoka.jp/kodomokyoiku/school/kyoiku/1003764/1003767/1073341.
     - 研究授業
     - LaTeX (tiksを完全マスター)
 
-- webスキル 修得〜12/31
+- HTML 修得〜12/31
   - コーディング
   - デザイン
   - 要件定義
-  - 営業
 
 
 # 現時点の課題
