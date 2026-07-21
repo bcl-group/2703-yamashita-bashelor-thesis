@@ -1,10 +1,16 @@
 # 直近でやったこと
-## 〜7/14
+## 〜7/21
 - Pythonの勉強（授業）
-- 詳解ディープラーニング 3.8章まで
+- テスト勉強
+- 詳解ディープラーニング 5章まで
+- RNN実装(PyTouch)
 
 # 今後やりたいこと
-- RNN実装（6/17まで）
+- HH教師データの作成
+- HH教師データの学習
+- RNNのアップデート
+	- 学習の途中経過
+ 	- いまどのくらい誤差が減ったかなど 	
 
 # スケジュール
 https://calendar.google.com/calendar/embed?src=f0b22906c034bb6e3753b4dadf50a59ff6fc9b7d10a15e9a6db9abfab723b298%40group.calendar.google.com&ctz=Asia%2FTokyo
@@ -17,7 +23,6 @@ https://calendar.google.com/calendar/embed?src=f0b22906c034bb6e3753b4dadf50a59ff
       - Hodgkin-Huxleyモデル
       - 数値解析
 
-  -  RNN実装 〜6/17
 
   - 機械学習・深層学習の基礎理解　〜7/31
     - 機械学習とは何か
