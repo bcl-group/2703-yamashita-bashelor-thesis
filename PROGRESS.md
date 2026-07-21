@@ -11,7 +11,13 @@
 - HH教師データの学習
 - RNNのアップデート
 	- 学習の途中経過
- 	- いまどのくらい誤差が減ったかなど 	
+ 	- いまどのくらい誤差が減ったかなど
+- 学内GPUサーバのマウント（gitとも連携したい） 
+    
+# 困っていること
+### テスト勉強
+### 院試
+### 研究は今のところ楽しいです（タスク遂行中）
 
 # スケジュール
 https://calendar.google.com/calendar/embed?src=f0b22906c034bb6e3753b4dadf50a59ff6fc9b7d10a15e9a6db9abfab723b298%40group.calendar.google.com&ctz=Asia%2FTokyo
