@@ -73,12 +73,20 @@ $g_{\text{Na}}$ と $g_{\text{K}}$ の挙動を記述するため，電位に依
 - $n$ （$\text{k}^+$ゲート活性化）：Vが大きくなると，大きくなる（mより遅い）
 - $m$ （$\text{Na}^+$ゲート活性化）：Vが大きくなると，大きくなる（n,hより早い）
 - $h$ （$\text{Na}^+$ゲート不活性化）：Vが大きくなると，小さくなる（mより遅い）
-![alt text](image-2.png)
+
 ![alt text](image-3.png)
 グラフ１Hodgkin-Huksleyモデルで登場する連立微分方程式を数値計算して$m-V$,$n-V$,$h-V$グラフにしたもの。
 
 
-## シミュレーション結果
+## シミュレーション
+$C_m  = 1.0uF/cm^2$    
+$g_{Na} = 120.0mS/cm^2$    
+$g_K  = 36.0mS/cm^2$
+$g_L  = 0.3mS/cm^2$   
+$E_{Na} = 50.0mV$     
+$E_K  = -77.0mV$   
+$E_L  = -54.387mV$  
+
 ![alt text](image-6.png)
 ![alt text](image-7.png)
 $$
@@ -102,7 +110,7 @@ $$
     - $m\approx1.0$
 - $h$が0.6から0.1まで下がる
     - $\text{Na}^+$流入が減る
-- 次に$n$が上昇
+- 遅れて$n$が上昇
 - $g_{\mathrm{K}}=\bar{g}_{\mathrm{K}}\,n^{4}$ が上昇
 - $\text{K}^+$電流が強くなる（$I_{Na} = g_{\mathrm{K}}(V-E_{\mathrm{K}})$）
 - 膜電位下降
