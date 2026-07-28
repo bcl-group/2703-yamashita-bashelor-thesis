@@ -1,6 +1,7 @@
 # 猿でもわかるニューロン発火 by Hodgkin,Huxley and Yamashita(2026/07/06)
 ## 1. 等価回路
 $I = C_m \frac{\text{d}V}{\text{d}t} + I_{\text{Na}} + I_{\text{K}} + I_l$
+![alt text](image-8.png)
 
 ## 2. 登場する連立微分方程式
 $$
@@ -75,10 +76,14 @@ $g_{\text{Na}}$ と $g_{\text{K}}$ の挙動を記述するため，電位に依
 - $h$ （$\text{Na}^+$ゲート不活性化）：Vが大きくなると，小さくなる（mより遅い）
 
 ![alt text](image-3.png)
-グラフ１Hodgkin-Huksleyモデルで登場する連立微分方程式を数値計算して$m-V$,$n-V$,$h-V$グラフにしたもの。
+グラフ１Hodgkin-Huksleyモデルで登場する連立微分方程式を数値計算して$m-V$,$n-V$,$h-V$グラフにしたもsの。
 
 
 ## シミュレーション
+※パラメータの値は 
+#### A QUANTITATIVE DESCRIPTION OF MEMBRANE CURRENT AND ITS APPLICATION TO CONDUCTION AND EXCITATION IN NERVE BY A. L. HODGKIN AND A. F. HUXLEY(1956)
+より引用
+
 $C_m  = 1.0uF/cm^2$    
 $g_{Na} = 120.0mS/cm^2$    
 $g_K  = 36.0mS/cm^2$
@@ -86,6 +91,7 @@ $g_L  = 0.3mS/cm^2$
 $E_{Na} = 50.0mV$     
 $E_K  = -77.0mV$   
 $E_L  = -54.387mV$  
+
 
 ![alt text](image-6.png)
 ![alt text](image-7.png)
@@ -118,3 +124,7 @@ $$
 - $\text{K}^+$による過分極
 - 膜電位が下がったことで，hが0.4程度まで上がり，nが0.4程度まで下がる
 - 次の発火へ
+
+## 参考文献
+- Hodgkin-Huxley モデルの計算コスト削減を目指したサロゲートモデルの開発 BY棟近春樹先輩
+- A QUANTITATIVE DESCRIPTION OF MEMBRANE CURRENT AND ITS APPLICATION TO CONDUCTION AND EXCITATION IN NERVE BY A. L. HODGKIN AND A. F. HUXLEY(1956)
