@@ -1,0 +1,906 @@
+% !TEX program = lualatex
+% コンパイル: lualatex chord_waveforms.tex （2回実行推奨）
+\documentclass[a4paper]{ltjsarticle}
+\usepackage{luatexja}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{longtable}
+\usepackage{array}
+\geometry{margin=25mm}
+
+\title{音程・コードの周波数比と波形}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{1. 音程と周波数比}
+1オクターブ違う2つの音を同じ種類の音であると感じたり，特定の和音を美しく(協和的に)感じたりするのは，
+\textbf{協和・不協和のしくみ}：2つの音の振動数の比が，3:2 や 2:1 のような\textbf{簡単な整数の比}になっていると，波の「山」の位置が短い間隔で規則的に重なり合う。すると耳には滑らかで心地よい音（協和音）に聞こえる。逆に整数の比では表せない（あるいは非常に複雑な比になる）と，山の位置がなかなかそろわず，波形はいつまでもガタガタのままになる。これが不協和に感じる原因である。
+
+
+たとえば完全8度（振動数比 $2:1$）では，低い方の音が1回振動する間に高い方の音はちょうど2回振動するので，山は1周期ごとにぴったり重なる。完全5度（振動数比 $3:2$）では，低い方が2回振動する間に高い方が3回振動し，3周期ごとに山がそろう。どちらも「そろうタイミング」が短い間隔で訪れるため，協和音として聞こえる。
+\begin{table}[htbp]
+\centering
+\caption{十二平均律における音程と純正律・平均律の周波数比}
+\begin{tabular}{lccc}
+\toprule
+音程名 & 半音数 & 純正律の周波数比 & 平均律の周波数比（近似値） \\
+\midrule
+完全1度（ユニゾン） & 0  & 1:1                     & 1.000 \\
+短2度               & 1  & 16:15                   & 1.059 \\
+長2度               & 2  & 9:8                      & 1.122 \\
+短3度               & 3  & 6:5                      & 1.189 \\
+長3度               & 4  & 5:4                      & 1.260 \\
+完全4度             & 5  & 4:3                      & 1.335 \\
+増4度/減5度（三全音） & 6  & 45:32（または64:45） & 1.414 \\
+完全5度             & 7  & 3:2                      & 1.498 \\
+短6度               & 8  & 8:5                      & 1.587 \\
+長6度               & 9  & 5:3                      & 1.682 \\
+短7度               & 10 & 16:9（または9:5）    & 1.782 \\
+長7度               & 11 & 15:8                     & 1.888 \\
+完全8度（オクターブ） & 12 & 2:1                     & 2.000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{2. 各音程の波形（y-tグラフ）}
+
+波形は純正律の整数比に基づく周波数で描画する。青線が根音，赤線が上の音を表し，
+$t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う）。
+
+% ---------------- 完全1度 ----------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=11cm, height=5cm,
+    title={完全1度（ユニゾン）　周波数比 1:1},
+    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=200,thick,blue] {sin(1*360*x)};
+\addplot[domain=0:1,samples=200,thick,dashed,red] {sin(1*360*x)};
+\legend{根音(1), 上音(1)}
+\end{axis}
+\end{tikzpicture}
+\caption{完全1度の波形（周期数 1:1）}
+\end{figure}
+
+% ---------------- 短2度 ----------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=11cm, height=5cm,
+    title={短2度　周波数比 16:15},
+    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=600,thick,blue] {sin(15*360*x)};
+\addplot[domain=0:1,samples=600,thick,red]  {sin(16*360*x)};
+\legend{根音(15), 上音(16)}
+\end{axis}
+\end{tikzpicture}
+\caption{短2度の波形（周期数 15:16）}
+\end{figure}
+
+% ---------------- 長2度 ----------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=11cm, height=5cm,
+    title={長2度　周波数比 9:8},
+    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=400,thick,blue] {sin(8*360*x)};
+\addplot[domain=0:1,samples=400,thick,red]  {sin(9*360*x)};
+\legend{根音(8), 上音(9)}
+\end{axis}
+\end{tikzpicture}
+\caption{長2度の波形（周期数 8:9）}
+\end{figure}
+
+% ---------------- 短3度 ----------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=11cm, height=5cm,
+    title={短3度　周波数比 6:5},
+    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=300,thick,blue] {sin(5*360*x)};
+\addplot[domain=0:1,samples=300,thick,red]  {sin(6*360*x)};
+\legend{根音(5), 上音(6)}
+\end{axis}
+\end{tikzpicture}
+\caption{短3度の波形（周期数 5:6）}
+\end{figure}
+
+% ---------------- 長3度 ----------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=11cm, height=5cm,
+    title={長3度　周波数比 5:4},
+    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=300,thick,blue] {sin(4*360*x)};
+\addplot[domain=0:1,samples=300,thick,red]  {sin(5*360*x)};
+\legend{根音(4), 上音(5)}
+\end{axis}
+\end{tikzpicture}
+\caption{長3度の波形（周期数 4:5）}
+\end{figure}
+
+% ---------------- 完全4度 ----------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=11cm, height=5cm,
+    title={完全4度　周波数比 4:3},
+    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=300,thick,blue] {sin(3*360*x)};
+\addplot[domain=0:1,samples=300,thick,red]  {sin(4*360*x)};
+\legend{根音(3), 上音(4)}
+\end{axis}
+\end{tikzpicture}
+\caption{完全4度の波形（周期数 3:4）}
+\end{figure}
+
+% ---------------- 増4度/減5度 ----------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=11cm, height=5cm,
+    title={増4度/減5度（三全音）　周波数比 45:32},
+    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=900,thick,blue] {sin(32*360*x)};
+\addplot[domain=0:1,samples=900,thick,red]  {sin(45*360*x)};
+\legend{根音(32), 上音(45)}
+\end{axis}
+\end{tikzpicture}
+\caption{三全音の波形（周期数 32:45，別表記64:45の場合は根音64・上音45）}
+\end{figure}
+
+% ---------------- 完全5度 ----------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=11cm, height=5cm,
+    title={完全5度　周波数比 3:2},
+    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=200,thick,blue] {sin(2*360*x)};
+\addplot[domain=0:1,samples=200,thick,red]  {sin(3*360*x)};
+\legend{根音(2), 上音(3)}
+\end{axis}
+\end{tikzpicture}
+\caption{完全5度の波形（周期数 2:3）}
+\end{figure}
+
+% ---------------- 短6度 ----------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=11cm, height=5cm,
+    title={短6度　周波数比 8:5},
+    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=300,thick,blue] {sin(5*360*x)};
+\addplot[domain=0:1,samples=300,thick,red]  {sin(8*360*x)};
+\legend{根音(5), 上音(8)}
+\end{axis}
+\end{tikzpicture}
+\caption{短6度の波形（周期数 5:8）}
+\end{figure}
+
+% ---------------- 長6度 ----------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=11cm, height=5cm,
+    title={長6度　周波数比 5:3},
+    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=300,thick,blue] {sin(3*360*x)};
+\addplot[domain=0:1,samples=300,thick,red]  {sin(5*360*x)};
+\legend{根音(3), 上音(5)}
+\end{axis}
+\end{tikzpicture}
+\caption{長6度の波形（周期数 3:5）}
+\end{figure}
+
+% ---------------- 短7度 ----------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=11cm, height=5cm,
+    title={短7度　周波数比 16:9},
+    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=500,thick,blue] {sin(9*360*x)};
+\addplot[domain=0:1,samples=500,thick,red]  {sin(16*360*x)};
+\legend{根音(9), 上音(16)}
+\end{axis}
+\end{tikzpicture}
+\caption{短7度の波形（周期数 9:16，別表記9:5の場合は根音5・上音9）}
+\end{figure}
+
+% ---------------- 長7度 ----------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=11cm, height=5cm,
+    title={長7度　周波数比 15:8},
+    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=500,thick,blue] {sin(8*360*x)};
+\addplot[domain=0:1,samples=500,thick,red]  {sin(15*360*x)};
+\legend{根音(8), 上音(15)}
+\end{axis}
+\end{tikzpicture}
+\caption{長7度の波形（周期数 8:15）}
+\end{figure}
+
+% ---------------- 完全8度 ----------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=11cm, height=5cm,
+    title={完全8度（オクターブ）　周波数比 2:1},
+    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=200,thick,blue] {sin(1*360*x)};
+\addplot[domain=0:1,samples=200,thick,red]  {sin(2*360*x)};
+\legend{根音(1), 上音(2)}
+\end{axis}
+\end{tikzpicture}
+\caption{完全8度の波形（周期数 1:2）}
+\end{figure}
+
+\clearpage
+\section*{3. コードと周波数比}
+
+\begin{table}[htbp]
+\centering
+\caption{代表的なコードの構成と周波数比（平均律近似）}
+\begin{tabular}{lccc}
+\toprule
+コード種類 & 構成音の半音数（根音から） & 音程構成 & 周波数比（平均律近似） \\
+\midrule
+メジャー（長三和音）         & 0-4-7 & 長3度+短3度   & 1 : 1.260 : 1.498 \\
+マイナー（短三和音）         & 0-3-7 & 短3度+長3度   & 1 : 1.189 : 1.498 \\
+増三和音（オーグメント）     & 0-4-8 & 長3度+長3度   & 1 : 1.260 : 1.587 \\
+減三和音（ディミニッシュ）   & 0-3-6 & 短3度+短3度   & 1 : 1.189 : 1.414 \\
+サスペンデッド4（sus4）      & 0-5-7 & 完全4度+長2度 & 1 : 1.335 : 1.498 \\
+サスペンデッド2（sus2）      & 0-2-7 & 長2度+完全4度 & 1 : 1.122 : 1.498 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{4. 各コードの波形（y-tグラフ）}
+
+波形は純正律の整数比に基づく周波数で描画する。各音の周期数（サイクル数）は
+周波数比の整数値そのものとなり，$t=1$（任意時間単位）で全ての波形の位相が
+一致する（＝波の「尻尾」が揃う）。
+
+% ---------------- メジャー ----------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=12cm, height=6cm,
+    title={メジャー（長三和音）　周波数比 4:5:6},
+    xlabel={$t$（任意時間単位）},
+    ylabel={振幅},
+    xmin=0, xmax=1,
+    ymin=-1.2, ymax=1.2,
+    legend style={font=\scriptsize},
+    legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=300,thick,blue]            {sin(4*360*x)};
+\addplot[domain=0:1,samples=300,thick,red]             {sin(5*360*x)};
+\addplot[domain=0:1,samples=300,thick,green!60!black]  {sin(6*360*x)};
+\legend{根音(4), 第3音(5), 第5音(6)}
+\end{axis}
+\end{tikzpicture}
+\caption{メジャーコードの波形（周期数 4:5:6）}
+\end{figure}
+
+% ---------------- マイナー ----------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=12cm, height=6cm,
+    title={マイナー（短三和音）　周波数比 10:12:15},
+    xlabel={$t$（任意時間単位）},
+    ylabel={振幅},
+    xmin=0, xmax=1,
+    ymin=-1.2, ymax=1.2,
+    legend style={font=\scriptsize},
+    legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=400,thick,blue]            {sin(10*360*x)};
+\addplot[domain=0:1,samples=400,thick,red]             {sin(12*360*x)};
+\addplot[domain=0:1,samples=400,thick,green!60!black]  {sin(15*360*x)};
+\legend{根音(10), 第3音(12), 第5音(15)}
+\end{axis}
+\end{tikzpicture}
+\caption{マイナーコードの波形（周期数 10:12:15）}
+\end{figure}
+
+% ---------------- 増三和音 ----------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=12cm, height=6cm,
+    title={増三和音（オーグメント）　周波数比 16:20:25},
+    xlabel={$t$（任意時間単位）},
+    ylabel={振幅},
+    xmin=0, xmax=1,
+    ymin=-1.2, ymax=1.2,
+    legend style={font=\scriptsize},
+    legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=500,thick,blue]            {sin(16*360*x)};
+\addplot[domain=0:1,samples=500,thick,red]             {sin(20*360*x)};
+\addplot[domain=0:1,samples=500,thick,green!60!black]  {sin(25*360*x)};
+\legend{根音(16), 第3音(20), 第5音(25)}
+\end{axis}
+\end{tikzpicture}
+\caption{増三和音の波形（周期数 16:20:25）}
+\end{figure}
+
+% ---------------- 減三和音 ----------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=12cm, height=6cm,
+    title={減三和音（ディミニッシュ）　周波数比 25:30:36},
+    xlabel={$t$（任意時間単位）},
+    ylabel={振幅},
+    xmin=0, xmax=1,
+    ymin=-1.2, ymax=1.2,
+    legend style={font=\scriptsize},
+    legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=600,thick,blue]            {sin(25*360*x)};
+\addplot[domain=0:1,samples=600,thick,red]             {sin(30*360*x)};
+\addplot[domain=0:1,samples=600,thick,green!60!black]  {sin(36*360*x)};
+\legend{根音(25), 第3音(30), 第5音(36)}
+\end{axis}
+\end{tikzpicture}
+\caption{減三和音の波形（周期数 25:30:36）}
+\end{figure}
+
+% ---------------- sus4 ----------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=12cm, height=6cm,
+    title={サスペンデッド4（sus4）　周波数比 6:8:9},
+    xlabel={$t$（任意時間単位）},
+    ylabel={振幅},
+    xmin=0, xmax=1,
+    ymin=-1.2, ymax=1.2,
+    legend style={font=\scriptsize},
+    legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=300,thick,blue]            {sin(6*360*x)};
+\addplot[domain=0:1,samples=300,thick,red]             {sin(8*360*x)};
+\addplot[domain=0:1,samples=300,thick,green!60!black]  {sin(9*360*x)};
+\legend{根音(6), 第4音(8), 第5音(9)}
+\end{axis}
+\end{tikzpicture}
+\caption{sus4コードの波形（周期数 6:8:9）}
+\end{figure}
+
+% ---------------- sus2 ----------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=12cm, height=6cm,
+    title={サスペンデッド2（sus2）　周波数比 8:9:12},
+    xlabel={$t$（任意時間単位）},
+    ylabel={振幅},
+    xmin=0, xmax=1,
+    ymin=-1.2, ymax=1.2,
+    legend style={font=\scriptsize},
+    legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=400,thick,blue]            {sin(8*360*x)};
+\addplot[domain=0:1,samples=400,thick,red]             {sin(9*360*x)};
+\addplot[domain=0:1,samples=400,thick,green!60!black]  {sin(12*360*x)};
+\legend{根音(8), 第2音(9), 第5音(12)}
+\end{axis}
+\end{tikzpicture}
+\caption{sus2コードの波形（周期数 8:9:12）}
+\end{figure}
+
+\clearpage
+\section*{5. 根音別 コード構成音一覧（2音・3音）}
+
+根音を十二音全て（白鍵 C, D, E, F, G, A, B および黒鍵 C\#, D\#, F\#, G\#, A\#，いずれも中央オクターブ，C4を基準に十二平均律で計算）とした場合の，各音程（2音構成）・各コード（3音構成）の構成音名と周波数（Hz）を示す。コード名は C, Cm, Caug, Cdim, Csus4, Csus2 のような慣用表記を用いる。2音構成の場合，構成音③欄は空欄とする。
+
+{\footnotesize
+\begin{longtable}{l>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{2.4cm}}
+\caption{基音 C（C4 = 261.63~Hz）のコード構成音一覧} \\
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endfirsthead
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+完全1度（ユニゾン） & C4 & 261.63 & C4 & 261.63 & --- & --- & 1.000 \\
+短2度 & C4 & 261.63 & C\#4 & 277.18 & --- & --- & 1.059 \\
+長2度 & C4 & 261.63 & D4 & 293.66 & --- & --- & 1.122 \\
+短3度 & C4 & 261.63 & D\#4 & 311.13 & --- & --- & 1.189 \\
+長3度 & C4 & 261.63 & E4 & 329.63 & --- & --- & 1.260 \\
+完全4度 & C4 & 261.63 & F4 & 349.23 & --- & --- & 1.335 \\
+増4度/減5度 & C4 & 261.63 & F\#4 & 369.99 & --- & --- & 1.414 \\
+完全5度 & C4 & 261.63 & G4 & 392.00 & --- & --- & 1.498 \\
+短6度 & C4 & 261.63 & G\#4 & 415.30 & --- & --- & 1.587 \\
+長6度 & C4 & 261.63 & A4 & 440.00 & --- & --- & 1.682 \\
+短7度 & C4 & 261.63 & A\#4 & 466.16 & --- & --- & 1.782 \\
+長7度 & C4 & 261.63 & B4 & 493.88 & --- & --- & 1.888 \\
+完全8度 & C4 & 261.63 & C5 & 523.25 & --- & --- & 2.000 \\
+\midrule
+C & C4 & 261.63 & E4 & 329.63 & G4 & 392.00 & 1:1.260:1.498 \\
+Cm & C4 & 261.63 & D\#4 & 311.13 & G4 & 392.00 & 1:1.189:1.498 \\
+Caug & C4 & 261.63 & E4 & 329.63 & G\#4 & 415.30 & 1:1.260:1.587 \\
+Cdim & C4 & 261.63 & D\#4 & 311.13 & F\#4 & 369.99 & 1:1.189:1.414 \\
+Csus4 & C4 & 261.63 & F4 & 349.23 & G4 & 392.00 & 1:1.335:1.498 \\
+Csus2 & C4 & 261.63 & D4 & 293.66 & G4 & 392.00 & 1:1.122:1.498 \\
+\end{longtable}
+}
+
+{\footnotesize
+\begin{longtable}{l>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{2.4cm}}
+\caption{基音 C\#（C\#4 = 277.18~Hz）のコード構成音一覧} \\
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endfirsthead
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+完全1度（ユニゾン） & C\#4 & 277.18 & C\#4 & 277.18 & --- & --- & 1.000 \\
+短2度 & C\#4 & 277.18 & D4 & 293.66 & --- & --- & 1.059 \\
+長2度 & C\#4 & 277.18 & D\#4 & 311.13 & --- & --- & 1.122 \\
+短3度 & C\#4 & 277.18 & E4 & 329.63 & --- & --- & 1.189 \\
+長3度 & C\#4 & 277.18 & F4 & 349.23 & --- & --- & 1.260 \\
+完全4度 & C\#4 & 277.18 & F\#4 & 369.99 & --- & --- & 1.335 \\
+増4度/減5度 & C\#4 & 277.18 & G4 & 392.00 & --- & --- & 1.414 \\
+完全5度 & C\#4 & 277.18 & G\#4 & 415.30 & --- & --- & 1.498 \\
+短6度 & C\#4 & 277.18 & A4 & 440.00 & --- & --- & 1.587 \\
+長6度 & C\#4 & 277.18 & A\#4 & 466.16 & --- & --- & 1.682 \\
+短7度 & C\#4 & 277.18 & B4 & 493.88 & --- & --- & 1.782 \\
+長7度 & C\#4 & 277.18 & C5 & 523.25 & --- & --- & 1.888 \\
+完全8度 & C\#4 & 277.18 & C\#5 & 554.37 & --- & --- & 2.000 \\
+\midrule
+C\# & C\#4 & 277.18 & F4 & 349.23 & G\#4 & 415.30 & 1:1.260:1.498 \\
+C\#m & C\#4 & 277.18 & E4 & 329.63 & G\#4 & 415.30 & 1:1.189:1.498 \\
+C\#aug & C\#4 & 277.18 & F4 & 349.23 & A4 & 440.00 & 1:1.260:1.587 \\
+C\#dim & C\#4 & 277.18 & E4 & 329.63 & G4 & 392.00 & 1:1.189:1.414 \\
+C\#sus4 & C\#4 & 277.18 & F\#4 & 369.99 & G\#4 & 415.30 & 1:1.335:1.498 \\
+C\#sus2 & C\#4 & 277.18 & D\#4 & 311.13 & G\#4 & 415.30 & 1:1.122:1.498 \\
+\end{longtable}
+}
+
+{\footnotesize
+\begin{longtable}{l>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{2.4cm}}
+\caption{基音 D（D4 = 293.66~Hz）のコード構成音一覧} \\
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endfirsthead
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+完全1度（ユニゾン） & D4 & 293.66 & D4 & 293.66 & --- & --- & 1.000 \\
+短2度 & D4 & 293.66 & D\#4 & 311.13 & --- & --- & 1.059 \\
+長2度 & D4 & 293.66 & E4 & 329.63 & --- & --- & 1.122 \\
+短3度 & D4 & 293.66 & F4 & 349.23 & --- & --- & 1.189 \\
+長3度 & D4 & 293.66 & F\#4 & 369.99 & --- & --- & 1.260 \\
+完全4度 & D4 & 293.66 & G4 & 392.00 & --- & --- & 1.335 \\
+増4度/減5度 & D4 & 293.66 & G\#4 & 415.30 & --- & --- & 1.414 \\
+完全5度 & D4 & 293.66 & A4 & 440.00 & --- & --- & 1.498 \\
+短6度 & D4 & 293.66 & A\#4 & 466.16 & --- & --- & 1.587 \\
+長6度 & D4 & 293.66 & B4 & 493.88 & --- & --- & 1.682 \\
+短7度 & D4 & 293.66 & C5 & 523.25 & --- & --- & 1.782 \\
+長7度 & D4 & 293.66 & C\#5 & 554.37 & --- & --- & 1.888 \\
+完全8度 & D4 & 293.66 & D5 & 587.33 & --- & --- & 2.000 \\
+\midrule
+D & D4 & 293.66 & F\#4 & 369.99 & A4 & 440.00 & 1:1.260:1.498 \\
+Dm & D4 & 293.66 & F4 & 349.23 & A4 & 440.00 & 1:1.189:1.498 \\
+Daug & D4 & 293.66 & F\#4 & 369.99 & A\#4 & 466.16 & 1:1.260:1.587 \\
+Ddim & D4 & 293.66 & F4 & 349.23 & G\#4 & 415.30 & 1:1.189:1.414 \\
+Dsus4 & D4 & 293.66 & G4 & 392.00 & A4 & 440.00 & 1:1.335:1.498 \\
+Dsus2 & D4 & 293.66 & E4 & 329.63 & A4 & 440.00 & 1:1.122:1.498 \\
+\end{longtable}
+}
+
+{\footnotesize
+\begin{longtable}{l>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{2.4cm}}
+\caption{基音 D\#（D\#4 = 311.13~Hz）のコード構成音一覧} \\
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endfirsthead
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+完全1度（ユニゾン） & D\#4 & 311.13 & D\#4 & 311.13 & --- & --- & 1.000 \\
+短2度 & D\#4 & 311.13 & E4 & 329.63 & --- & --- & 1.059 \\
+長2度 & D\#4 & 311.13 & F4 & 349.23 & --- & --- & 1.122 \\
+短3度 & D\#4 & 311.13 & F\#4 & 369.99 & --- & --- & 1.189 \\
+長3度 & D\#4 & 311.13 & G4 & 392.00 & --- & --- & 1.260 \\
+完全4度 & D\#4 & 311.13 & G\#4 & 415.30 & --- & --- & 1.335 \\
+増4度/減5度 & D\#4 & 311.13 & A4 & 440.00 & --- & --- & 1.414 \\
+完全5度 & D\#4 & 311.13 & A\#4 & 466.16 & --- & --- & 1.498 \\
+短6度 & D\#4 & 311.13 & B4 & 493.88 & --- & --- & 1.587 \\
+長6度 & D\#4 & 311.13 & C5 & 523.25 & --- & --- & 1.682 \\
+短7度 & D\#4 & 311.13 & C\#5 & 554.37 & --- & --- & 1.782 \\
+長7度 & D\#4 & 311.13 & D5 & 587.33 & --- & --- & 1.888 \\
+完全8度 & D\#4 & 311.13 & D\#5 & 622.25 & --- & --- & 2.000 \\
+\midrule
+D\# & D\#4 & 311.13 & G4 & 392.00 & A\#4 & 466.16 & 1:1.260:1.498 \\
+D\#m & D\#4 & 311.13 & F\#4 & 369.99 & A\#4 & 466.16 & 1:1.189:1.498 \\
+D\#aug & D\#4 & 311.13 & G4 & 392.00 & B4 & 493.88 & 1:1.260:1.587 \\
+D\#dim & D\#4 & 311.13 & F\#4 & 369.99 & A4 & 440.00 & 1:1.189:1.414 \\
+D\#sus4 & D\#4 & 311.13 & G\#4 & 415.30 & A\#4 & 466.16 & 1:1.335:1.498 \\
+D\#sus2 & D\#4 & 311.13 & F4 & 349.23 & A\#4 & 466.16 & 1:1.122:1.498 \\
+\end{longtable}
+}
+\clearpage
+
+{\footnotesize
+\begin{longtable}{l>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{2.4cm}}
+\caption{基音 E（E4 = 329.63~Hz）のコード構成音一覧} \\
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endfirsthead
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+完全1度（ユニゾン） & E4 & 329.63 & E4 & 329.63 & --- & --- & 1.000 \\
+短2度 & E4 & 329.63 & F4 & 349.23 & --- & --- & 1.059 \\
+長2度 & E4 & 329.63 & F\#4 & 369.99 & --- & --- & 1.122 \\
+短3度 & E4 & 329.63 & G4 & 392.00 & --- & --- & 1.189 \\
+長3度 & E4 & 329.63 & G\#4 & 415.30 & --- & --- & 1.260 \\
+完全4度 & E4 & 329.63 & A4 & 440.00 & --- & --- & 1.335 \\
+増4度/減5度 & E4 & 329.63 & A\#4 & 466.16 & --- & --- & 1.414 \\
+完全5度 & E4 & 329.63 & B4 & 493.88 & --- & --- & 1.498 \\
+短6度 & E4 & 329.63 & C5 & 523.25 & --- & --- & 1.587 \\
+長6度 & E4 & 329.63 & C\#5 & 554.37 & --- & --- & 1.682 \\
+短7度 & E4 & 329.63 & D5 & 587.33 & --- & --- & 1.782 \\
+長7度 & E4 & 329.63 & D\#5 & 622.25 & --- & --- & 1.888 \\
+完全8度 & E4 & 329.63 & E5 & 659.25 & --- & --- & 2.000 \\
+\midrule
+E & E4 & 329.63 & G\#4 & 415.30 & B4 & 493.88 & 1:1.260:1.498 \\
+Em & E4 & 329.63 & G4 & 392.00 & B4 & 493.88 & 1:1.189:1.498 \\
+Eaug & E4 & 329.63 & G\#4 & 415.30 & C5 & 523.25 & 1:1.260:1.587 \\
+Edim & E4 & 329.63 & G4 & 392.00 & A\#4 & 466.16 & 1:1.189:1.414 \\
+Esus4 & E4 & 329.63 & A4 & 440.00 & B4 & 493.88 & 1:1.335:1.498 \\
+Esus2 & E4 & 329.63 & F\#4 & 369.99 & B4 & 493.88 & 1:1.122:1.498 \\
+\end{longtable}
+}
+
+{\footnotesize
+\begin{longtable}{l>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{2.4cm}}
+\caption{基音 F（F4 = 349.23~Hz）のコード構成音一覧} \\
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endfirsthead
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+完全1度（ユニゾン） & F4 & 349.23 & F4 & 349.23 & --- & --- & 1.000 \\
+短2度 & F4 & 349.23 & F\#4 & 369.99 & --- & --- & 1.059 \\
+長2度 & F4 & 349.23 & G4 & 392.00 & --- & --- & 1.122 \\
+短3度 & F4 & 349.23 & G\#4 & 415.30 & --- & --- & 1.189 \\
+長3度 & F4 & 349.23 & A4 & 440.00 & --- & --- & 1.260 \\
+完全4度 & F4 & 349.23 & A\#4 & 466.16 & --- & --- & 1.335 \\
+増4度/減5度 & F4 & 349.23 & B4 & 493.88 & --- & --- & 1.414 \\
+完全5度 & F4 & 349.23 & C5 & 523.25 & --- & --- & 1.498 \\
+短6度 & F4 & 349.23 & C\#5 & 554.37 & --- & --- & 1.587 \\
+長6度 & F4 & 349.23 & D5 & 587.33 & --- & --- & 1.682 \\
+短7度 & F4 & 349.23 & D\#5 & 622.25 & --- & --- & 1.782 \\
+長7度 & F4 & 349.23 & E5 & 659.25 & --- & --- & 1.888 \\
+完全8度 & F4 & 349.23 & F5 & 698.46 & --- & --- & 2.000 \\
+\midrule
+F & F4 & 349.23 & A4 & 440.00 & C5 & 523.25 & 1:1.260:1.498 \\
+Fm & F4 & 349.23 & G\#4 & 415.30 & C5 & 523.25 & 1:1.189:1.498 \\
+Faug & F4 & 349.23 & A4 & 440.00 & C\#5 & 554.37 & 1:1.260:1.587 \\
+Fdim & F4 & 349.23 & G\#4 & 415.30 & B4 & 493.88 & 1:1.189:1.414 \\
+Fsus4 & F4 & 349.23 & A\#4 & 466.16 & C5 & 523.25 & 1:1.335:1.498 \\
+Fsus2 & F4 & 349.23 & G4 & 392.00 & C5 & 523.25 & 1:1.122:1.498 \\
+\end{longtable}
+}
+
+\clearpage
+
+{\footnotesize
+\begin{longtable}{l>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{2.4cm}}
+\caption{基音 F\#（F\#4 = 369.99~Hz）のコード構成音一覧} \\
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endfirsthead
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+完全1度（ユニゾン） & F\#4 & 369.99 & F\#4 & 369.99 & --- & --- & 1.000 \\
+短2度 & F\#4 & 369.99 & G4 & 392.00 & --- & --- & 1.059 \\
+長2度 & F\#4 & 369.99 & G\#4 & 415.30 & --- & --- & 1.122 \\
+短3度 & F\#4 & 369.99 & A4 & 440.00 & --- & --- & 1.189 \\
+長3度 & F\#4 & 369.99 & A\#4 & 466.16 & --- & --- & 1.260 \\
+完全4度 & F\#4 & 369.99 & B4 & 493.88 & --- & --- & 1.335 \\
+増4度/減5度 & F\#4 & 369.99 & C5 & 523.25 & --- & --- & 1.414 \\
+完全5度 & F\#4 & 369.99 & C\#5 & 554.37 & --- & --- & 1.498 \\
+短6度 & F\#4 & 369.99 & D5 & 587.33 & --- & --- & 1.587 \\
+長6度 & F\#4 & 369.99 & D\#5 & 622.25 & --- & --- & 1.682 \\
+短7度 & F\#4 & 369.99 & E5 & 659.25 & --- & --- & 1.782 \\
+長7度 & F\#4 & 369.99 & F5 & 698.46 & --- & --- & 1.888 \\
+完全8度 & F\#4 & 369.99 & F\#5 & 739.99 & --- & --- & 2.000 \\
+\midrule
+F\# & F\#4 & 369.99 & A\#4 & 466.16 & C\#5 & 554.37 & 1:1.260:1.498 \\
+F\#m & F\#4 & 369.99 & A4 & 440.00 & C\#5 & 554.37 & 1:1.189:1.498 \\
+F\#aug & F\#4 & 369.99 & A\#4 & 466.16 & D5 & 587.33 & 1:1.260:1.587 \\
+F\#dim & F\#4 & 369.99 & A4 & 440.00 & C5 & 523.25 & 1:1.189:1.414 \\
+F\#sus4 & F\#4 & 369.99 & B4 & 493.88 & C\#5 & 554.37 & 1:1.335:1.498 \\
+F\#sus2 & F\#4 & 369.99 & G\#4 & 415.30 & C\#5 & 554.37 & 1:1.122:1.498 \\
+\end{longtable}
+}
+
+{\footnotesize
+\begin{longtable}{l>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{2.4cm}}
+\caption{基音 G（G4 = 392.00~Hz）のコード構成音一覧} \\
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endfirsthead
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+完全1度（ユニゾン） & G4 & 392.00 & G4 & 392.00 & --- & --- & 1.000 \\
+短2度 & G4 & 392.00 & G\#4 & 415.30 & --- & --- & 1.059 \\
+長2度 & G4 & 392.00 & A4 & 440.00 & --- & --- & 1.122 \\
+短3度 & G4 & 392.00 & A\#4 & 466.16 & --- & --- & 1.189 \\
+長3度 & G4 & 392.00 & B4 & 493.88 & --- & --- & 1.260 \\
+完全4度 & G4 & 392.00 & C5 & 523.25 & --- & --- & 1.335 \\
+増4度/減5度 & G4 & 392.00 & C\#5 & 554.37 & --- & --- & 1.414 \\
+完全5度 & G4 & 392.00 & D5 & 587.33 & --- & --- & 1.498 \\
+短6度 & G4 & 392.00 & D\#5 & 622.25 & --- & --- & 1.587 \\
+長6度 & G4 & 392.00 & E5 & 659.25 & --- & --- & 1.682 \\
+短7度 & G4 & 392.00 & F5 & 698.46 & --- & --- & 1.782 \\
+長7度 & G4 & 392.00 & F\#5 & 739.99 & --- & --- & 1.888 \\
+完全8度 & G4 & 392.00 & G5 & 783.99 & --- & --- & 2.000 \\
+\midrule
+G & G4 & 392.00 & B4 & 493.88 & D5 & 587.33 & 1:1.260:1.498 \\
+Gm & G4 & 392.00 & A\#4 & 466.16 & D5 & 587.33 & 1:1.189:1.498 \\
+Gaug & G4 & 392.00 & B4 & 493.88 & D\#5 & 622.25 & 1:1.260:1.587 \\
+Gdim & G4 & 392.00 & A\#4 & 466.16 & C\#5 & 554.37 & 1:1.189:1.414 \\
+Gsus4 & G4 & 392.00 & C5 & 523.25 & D5 & 587.33 & 1:1.335:1.498 \\
+Gsus2 & G4 & 392.00 & A4 & 440.00 & D5 & 587.33 & 1:1.122:1.498 \\
+\end{longtable}
+}
+\clearpage
+{\footnotesize
+\begin{longtable}{l>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{2.4cm}}
+\caption{基音 G\#（G\#4 = 415.30~Hz）のコード構成音一覧} \\
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endfirsthead
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+完全1度（ユニゾン） & G\#4 & 415.30 & G\#4 & 415.30 & --- & --- & 1.000 \\
+短2度 & G\#4 & 415.30 & A4 & 440.00 & --- & --- & 1.059 \\
+長2度 & G\#4 & 415.30 & A\#4 & 466.16 & --- & --- & 1.122 \\
+短3度 & G\#4 & 415.30 & B4 & 493.88 & --- & --- & 1.189 \\
+長3度 & G\#4 & 415.30 & C5 & 523.25 & --- & --- & 1.260 \\
+完全4度 & G\#4 & 415.30 & C\#5 & 554.37 & --- & --- & 1.335 \\
+増4度/減5度 & G\#4 & 415.30 & D5 & 587.33 & --- & --- & 1.414 \\
+完全5度 & G\#4 & 415.30 & D\#5 & 622.25 & --- & --- & 1.498 \\
+短6度 & G\#4 & 415.30 & E5 & 659.25 & --- & --- & 1.587 \\
+長6度 & G\#4 & 415.30 & F5 & 698.46 & --- & --- & 1.682 \\
+短7度 & G\#4 & 415.30 & F\#5 & 739.99 & --- & --- & 1.782 \\
+長7度 & G\#4 & 415.30 & G5 & 783.99 & --- & --- & 1.888 \\
+完全8度 & G\#4 & 415.30 & G\#5 & 830.61 & --- & --- & 2.000 \\
+\midrule
+G\# & G\#4 & 415.30 & C5 & 523.25 & D\#5 & 622.25 & 1:1.260:1.498 \\
+G\#m & G\#4 & 415.30 & B4 & 493.88 & D\#5 & 622.25 & 1:1.189:1.498 \\
+G\#aug & G\#4 & 415.30 & C5 & 523.25 & E5 & 659.25 & 1:1.260:1.587 \\
+G\#dim & G\#4 & 415.30 & B4 & 493.88 & D5 & 587.33 & 1:1.189:1.414 \\
+G\#sus4 & G\#4 & 415.30 & C\#5 & 554.37 & D\#5 & 622.25 & 1:1.335:1.498 \\
+G\#sus2 & G\#4 & 415.30 & A\#4 & 466.16 & D\#5 & 622.25 & 1:1.122:1.498 \\
+\end{longtable}
+}
+
+{\footnotesize
+\begin{longtable}{l>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{2.4cm}}
+\caption{基音 A（A4 = 440.00~Hz）のコード構成音一覧} \\
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endfirsthead
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+完全1度（ユニゾン） & A4 & 440.00 & A4 & 440.00 & --- & --- & 1.000 \\
+短2度 & A4 & 440.00 & A\#4 & 466.16 & --- & --- & 1.059 \\
+長2度 & A4 & 440.00 & B4 & 493.88 & --- & --- & 1.122 \\
+短3度 & A4 & 440.00 & C5 & 523.25 & --- & --- & 1.189 \\
+長3度 & A4 & 440.00 & C\#5 & 554.37 & --- & --- & 1.260 \\
+完全4度 & A4 & 440.00 & D5 & 587.33 & --- & --- & 1.335 \\
+増4度/減5度 & A4 & 440.00 & D\#5 & 622.25 & --- & --- & 1.414 \\
+完全5度 & A4 & 440.00 & E5 & 659.25 & --- & --- & 1.498 \\
+短6度 & A4 & 440.00 & F5 & 698.46 & --- & --- & 1.587 \\
+長6度 & A4 & 440.00 & F\#5 & 739.99 & --- & --- & 1.682 \\
+短7度 & A4 & 440.00 & G5 & 783.99 & --- & --- & 1.782 \\
+長7度 & A4 & 440.00 & G\#5 & 830.61 & --- & --- & 1.888 \\
+完全8度 & A4 & 440.00 & A5 & 880.00 & --- & --- & 2.000 \\
+\midrule
+A & A4 & 440.00 & C\#5 & 554.37 & E5 & 659.25 & 1:1.260:1.498 \\
+Am & A4 & 440.00 & C5 & 523.25 & E5 & 659.25 & 1:1.189:1.498 \\
+Aaug & A4 & 440.00 & C\#5 & 554.37 & F5 & 698.46 & 1:1.260:1.587 \\
+Adim & A4 & 440.00 & C5 & 523.25 & D\#5 & 622.25 & 1:1.189:1.414 \\
+Asus4 & A4 & 440.00 & D5 & 587.33 & E5 & 659.25 & 1:1.335:1.498 \\
+Asus2 & A4 & 440.00 & B4 & 493.88 & E5 & 659.25 & 1:1.122:1.498 \\
+\end{longtable}
+}
+\clearpage
+{\footnotesize
+\begin{longtable}{l>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{2.4cm}}
+\caption{基音 A\#（A\#4 = 466.16~Hz）のコード構成音一覧} \\
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endfirsthead
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+完全1度（ユニゾン） & A\#4 & 466.16 & A\#4 & 466.16 & --- & --- & 1.000 \\
+短2度 & A\#4 & 466.16 & B4 & 493.88 & --- & --- & 1.059 \\
+長2度 & A\#4 & 466.16 & C5 & 523.25 & --- & --- & 1.122 \\
+短3度 & A\#4 & 466.16 & C\#5 & 554.37 & --- & --- & 1.189 \\
+長3度 & A\#4 & 466.16 & D5 & 587.33 & --- & --- & 1.260 \\
+完全4度 & A\#4 & 466.16 & D\#5 & 622.25 & --- & --- & 1.335 \\
+増4度/減5度 & A\#4 & 466.16 & E5 & 659.25 & --- & --- & 1.414 \\
+完全5度 & A\#4 & 466.16 & F5 & 698.46 & --- & --- & 1.498 \\
+短6度 & A\#4 & 466.16 & F\#5 & 739.99 & --- & --- & 1.587 \\
+長6度 & A\#4 & 466.16 & G5 & 783.99 & --- & --- & 1.682 \\
+短7度 & A\#4 & 466.16 & G\#5 & 830.61 & --- & --- & 1.782 \\
+長7度 & A\#4 & 466.16 & A5 & 880.00 & --- & --- & 1.888 \\
+完全8度 & A\#4 & 466.16 & A\#5 & 932.33 & --- & --- & 2.000 \\
+\midrule
+A\# & A\#4 & 466.16 & D5 & 587.33 & F5 & 698.46 & 1:1.260:1.498 \\
+A\#m & A\#4 & 466.16 & C\#5 & 554.37 & F5 & 698.46 & 1:1.189:1.498 \\
+A\#aug & A\#4 & 466.16 & D5 & 587.33 & F\#5 & 739.99 & 1:1.260:1.587 \\
+A\#dim & A\#4 & 466.16 & C\#5 & 554.37 & E5 & 659.25 & 1:1.189:1.414 \\
+A\#sus4 & A\#4 & 466.16 & D\#5 & 622.25 & F5 & 698.46 & 1:1.335:1.498 \\
+A\#sus2 & A\#4 & 466.16 & C5 & 523.25 & F5 & 698.46 & 1:1.122:1.498 \\
+\end{longtable}
+}
+
+{\footnotesize
+\begin{longtable}{l>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{1.15cm}>{\centering\arraybackslash}p{1.35cm}>{\centering\arraybackslash}p{2.4cm}}
+\caption{基音 B（B4 = 493.88~Hz）のコード構成音一覧} \\
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endfirsthead
+\toprule
+コード名 & 構成音①（根音） & ①の周波数[Hz] & 構成音② & ②の周波数[Hz] & 構成音③ & ③の周波数[Hz] & 平均律比 \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+完全1度（ユニゾン） & B4 & 493.88 & B4 & 493.88 & --- & --- & 1.000 \\
+短2度 & B4 & 493.88 & C5 & 523.25 & --- & --- & 1.059 \\
+長2度 & B4 & 493.88 & C\#5 & 554.37 & --- & --- & 1.122 \\
+短3度 & B4 & 493.88 & D5 & 587.33 & --- & --- & 1.189 \\
+長3度 & B4 & 493.88 & D\#5 & 622.25 & --- & --- & 1.260 \\
+完全4度 & B4 & 493.88 & E5 & 659.25 & --- & --- & 1.335 \\
+増4度/減5度 & B4 & 493.88 & F5 & 698.46 & --- & --- & 1.414 \\
+完全5度 & B4 & 493.88 & F\#5 & 739.99 & --- & --- & 1.498 \\
+短6度 & B4 & 493.88 & G5 & 783.99 & --- & --- & 1.587 \\
+長6度 & B4 & 493.88 & G\#5 & 830.61 & --- & --- & 1.682 \\
+短7度 & B4 & 493.88 & A5 & 880.00 & --- & --- & 1.782 \\
+長7度 & B4 & 493.88 & A\#5 & 932.33 & --- & --- & 1.888 \\
+完全8度 & B4 & 493.88 & B5 & 987.77 & --- & --- & 2.000 \\
+\midrule
+B & B4 & 493.88 & D\#5 & 622.25 & F\#5 & 739.99 & 1:1.260:1.498 \\
+Bm & B4 & 493.88 & D5 & 587.33 & F\#5 & 739.99 & 1:1.189:1.498 \\
+Baug & B4 & 493.88 & D\#5 & 622.25 & G5 & 783.99 & 1:1.260:1.587 \\
+Bdim & B4 & 493.88 & D5 & 587.33 & F5 & 698.46 & 1:1.189:1.414 \\
+Bsus4 & B4 & 493.88 & E5 & 659.25 & F\#5 & 739.99 & 1:1.335:1.498 \\
+Bsus2 & B4 & 493.88 & C\#5 & 554.37 & F\#5 & 739.99 & 1:1.122:1.498 \\
+\end{longtable}
+}
+
+\end{document}
