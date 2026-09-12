@@ -6,6 +6,7 @@
 \usepackage{geometry}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
+\usepgfplotslibrary{groupplots}
 \usepackage{longtable}
 \usepackage{array}
 \geometry{margin=25mm}
@@ -18,11 +19,13 @@
 \maketitle
 
 \section*{1. 音程と周波数比}
-1オクターブ違う2つの音を同じ種類の音であると感じたり，特定の和音を美しく(協和的に)感じたりするのは，
-\textbf{協和・不協和のしくみ}：2つの音の振動数の比が，3:2 や 2:1 のような\textbf{簡単な整数の比}になっていると，波の「山」の位置が短い間隔で規則的に重なり合う。すると耳には滑らかで心地よい音（協和音）に聞こえる。逆に整数の比では表せない（あるいは非常に複雑な比になる）と，山の位置がなかなかそろわず，波形はいつまでもガタガタのままになる。これが不協和に感じる原因である。
+1オクターブ離れた2つの音を同じ種類の音のように感じたり，特定の和音を美しく（協和的に）感じたりすることがある。
+これは，耳に届く音が2つの波が重なり合った合成波だからである。
 
+2つの音の振動数の比が $3:2$ や $2:1$ のような\textbf{簡単な整数の比}になっていると，それぞれの波の「山」の位置が短い周期で規則的に重なり合う。山の重なりが周期的に訪れることで合成波全体も規則正しい形になり，耳には滑らかで心地よい音（協和音）として聞こえる。
+一方，振動数の比が整数で表せない，あるいは非常に複雑な整数比になる場合，山の位置はなかなかそろわない。そのため合成波はいつまでも規則性の乏しいガタガタの波形のままになり，これが不協和に感じる原因となる。
 
-たとえば完全8度（振動数比 $2:1$）では，低い方の音が1回振動する間に高い方の音はちょうど2回振動するので，山は1周期ごとにぴったり重なる。完全5度（振動数比 $3:2$）では，低い方が2回振動する間に高い方が3回振動し，3周期ごとに山がそろう。どちらも「そろうタイミング」が短い間隔で訪れるため，協和音として聞こえる。
+たとえば完全8度（振動数比 $2:1$）では，低い方の音が1回振動する間に高い方の音はちょうど2回振動するため，山は1周期ごとにぴったり重なる。完全5度（振動数比 $3:2$）では，低い方が2回振動する間に高い方が3回振動し，3周期ごとに山がそろう。どちらも山がそろうタイミングが短い間隔で繰り返し訪れるため，協和音として聞こえるのである。
 \begin{table}[htbp]
 \centering
 \caption{十二平均律における音程と純正律・平均律の周波数比}
@@ -49,24 +52,34 @@
 
 \section*{2. 各音程の波形（y-tグラフ）}
 
-波形は純正律の整数比に基づく周波数で描画する。青線が根音，赤線が上の音を表し，
-$t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う）。
+波形は純正律の整数比に基づく周波数で描画する。青線が根音，赤線が上の音，黒線がその合成波（両者を単純に足し合わせたもの）を表し，
+$t=1$（任意時間単位）で全ての波形の位相が一致する（尻尾が揃う）。
 
 % ---------------- 完全1度 ----------------
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
-\begin{axis}[
-    width=11cm, height=5cm,
+\begin{groupplot}[
+    group style={group size=1 by 2, vertical sep=10pt},
+    width=11cm, height=4cm,
+]
+\nextgroupplot[
     title={完全1度（ユニゾン）　周波数比 1:1},
-    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    ylabel={振幅}, xticklabels=\empty,
     xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
     legend style={font=\scriptsize}, legend pos=outer north east,
 ]
 \addplot[domain=0:1,samples=200,thick,blue] {sin(1*360*x)};
 \addplot[domain=0:1,samples=200,thick,dashed,red] {sin(1*360*x)};
 \legend{根音(1), 上音(1)}
-\end{axis}
+\nextgroupplot[
+    xlabel={$t$（任意時間単位）}, ylabel={振幅（合成）},
+    xmin=0, xmax=1, ymin=-2.3, ymax=2.3,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=200,thick,black] {sin(1*360*x)+sin(1*360*x)};
+\legend{合成波}
+\end{groupplot}
 \end{tikzpicture}
 \caption{完全1度の波形（周期数 1:1）}
 \end{figure}
@@ -75,17 +88,27 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
-\begin{axis}[
-    width=11cm, height=5cm,
+\begin{groupplot}[
+    group style={group size=1 by 2, vertical sep=10pt},
+    width=11cm, height=4cm,
+]
+\nextgroupplot[
     title={短2度　周波数比 16:15},
-    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    ylabel={振幅}, xticklabels=\empty,
     xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
     legend style={font=\scriptsize}, legend pos=outer north east,
 ]
 \addplot[domain=0:1,samples=600,thick,blue] {sin(15*360*x)};
 \addplot[domain=0:1,samples=600,thick,red]  {sin(16*360*x)};
 \legend{根音(15), 上音(16)}
-\end{axis}
+\nextgroupplot[
+    xlabel={$t$（任意時間単位）}, ylabel={振幅（合成）},
+    xmin=0, xmax=1, ymin=-2.3, ymax=2.3,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=600,thick,black] {sin(15*360*x)+sin(16*360*x)};
+\legend{合成波}
+\end{groupplot}
 \end{tikzpicture}
 \caption{短2度の波形（周期数 15:16）}
 \end{figure}
@@ -94,17 +117,27 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
-\begin{axis}[
-    width=11cm, height=5cm,
+\begin{groupplot}[
+    group style={group size=1 by 2, vertical sep=10pt},
+    width=11cm, height=4cm,
+]
+\nextgroupplot[
     title={長2度　周波数比 9:8},
-    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    ylabel={振幅}, xticklabels=\empty,
     xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
     legend style={font=\scriptsize}, legend pos=outer north east,
 ]
 \addplot[domain=0:1,samples=400,thick,blue] {sin(8*360*x)};
 \addplot[domain=0:1,samples=400,thick,red]  {sin(9*360*x)};
 \legend{根音(8), 上音(9)}
-\end{axis}
+\nextgroupplot[
+    xlabel={$t$（任意時間単位）}, ylabel={振幅（合成）},
+    xmin=0, xmax=1, ymin=-2.3, ymax=2.3,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=400,thick,black] {sin(8*360*x)+sin(9*360*x)};
+\legend{合成波}
+\end{groupplot}
 \end{tikzpicture}
 \caption{長2度の波形（周期数 8:9）}
 \end{figure}
@@ -113,17 +146,27 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
-\begin{axis}[
-    width=11cm, height=5cm,
+\begin{groupplot}[
+    group style={group size=1 by 2, vertical sep=10pt},
+    width=11cm, height=4cm,
+]
+\nextgroupplot[
     title={短3度　周波数比 6:5},
-    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    ylabel={振幅}, xticklabels=\empty,
     xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
     legend style={font=\scriptsize}, legend pos=outer north east,
 ]
 \addplot[domain=0:1,samples=300,thick,blue] {sin(5*360*x)};
 \addplot[domain=0:1,samples=300,thick,red]  {sin(6*360*x)};
 \legend{根音(5), 上音(6)}
-\end{axis}
+\nextgroupplot[
+    xlabel={$t$（任意時間単位）}, ylabel={振幅（合成）},
+    xmin=0, xmax=1, ymin=-2.3, ymax=2.3,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=300,thick,black] {sin(5*360*x)+sin(6*360*x)};
+\legend{合成波}
+\end{groupplot}
 \end{tikzpicture}
 \caption{短3度の波形（周期数 5:6）}
 \end{figure}
@@ -132,17 +175,27 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
-\begin{axis}[
-    width=11cm, height=5cm,
+\begin{groupplot}[
+    group style={group size=1 by 2, vertical sep=10pt},
+    width=11cm, height=4cm,
+]
+\nextgroupplot[
     title={長3度　周波数比 5:4},
-    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    ylabel={振幅}, xticklabels=\empty,
     xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
     legend style={font=\scriptsize}, legend pos=outer north east,
 ]
 \addplot[domain=0:1,samples=300,thick,blue] {sin(4*360*x)};
 \addplot[domain=0:1,samples=300,thick,red]  {sin(5*360*x)};
 \legend{根音(4), 上音(5)}
-\end{axis}
+\nextgroupplot[
+    xlabel={$t$（任意時間単位）}, ylabel={振幅（合成）},
+    xmin=0, xmax=1, ymin=-2.3, ymax=2.3,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=300,thick,black] {sin(4*360*x)+sin(5*360*x)};
+\legend{合成波}
+\end{groupplot}
 \end{tikzpicture}
 \caption{長3度の波形（周期数 4:5）}
 \end{figure}
@@ -151,17 +204,27 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
-\begin{axis}[
-    width=11cm, height=5cm,
+\begin{groupplot}[
+    group style={group size=1 by 2, vertical sep=10pt},
+    width=11cm, height=4cm,
+]
+\nextgroupplot[
     title={完全4度　周波数比 4:3},
-    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    ylabel={振幅}, xticklabels=\empty,
     xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
     legend style={font=\scriptsize}, legend pos=outer north east,
 ]
 \addplot[domain=0:1,samples=300,thick,blue] {sin(3*360*x)};
 \addplot[domain=0:1,samples=300,thick,red]  {sin(4*360*x)};
 \legend{根音(3), 上音(4)}
-\end{axis}
+\nextgroupplot[
+    xlabel={$t$（任意時間単位）}, ylabel={振幅（合成）},
+    xmin=0, xmax=1, ymin=-2.3, ymax=2.3,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=300,thick,black] {sin(3*360*x)+sin(4*360*x)};
+\legend{合成波}
+\end{groupplot}
 \end{tikzpicture}
 \caption{完全4度の波形（周期数 3:4）}
 \end{figure}
@@ -170,36 +233,56 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
-\begin{axis}[
-    width=11cm, height=5cm,
+\begin{groupplot}[
+    group style={group size=1 by 2, vertical sep=10pt},
+    width=11cm, height=4cm,
+]
+\nextgroupplot[
     title={増4度/減5度（三全音）　周波数比 45:32},
-    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    ylabel={振幅}, xticklabels=\empty,
     xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
     legend style={font=\scriptsize}, legend pos=outer north east,
 ]
 \addplot[domain=0:1,samples=900,thick,blue] {sin(32*360*x)};
 \addplot[domain=0:1,samples=900,thick,red]  {sin(45*360*x)};
 \legend{根音(32), 上音(45)}
-\end{axis}
+\nextgroupplot[
+    xlabel={$t$（任意時間単位）}, ylabel={振幅（合成）},
+    xmin=0, xmax=1, ymin=-2.3, ymax=2.3,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=900,thick,black] {sin(32*360*x)+sin(45*360*x)};
+\legend{合成波}
+\end{groupplot}
 \end{tikzpicture}
-\caption{三全音の波形（周期数 32:45，別表記64:45の場合は根音64・上音45）}
+\caption{三全音の波形（周期数 32:45，別表記64:45の場合は根音45・上音64）}
 \end{figure}
 
 % ---------------- 完全5度 ----------------
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
-\begin{axis}[
-    width=11cm, height=5cm,
+\begin{groupplot}[
+    group style={group size=1 by 2, vertical sep=10pt},
+    width=11cm, height=4cm,
+]
+\nextgroupplot[
     title={完全5度　周波数比 3:2},
-    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    ylabel={振幅}, xticklabels=\empty,
     xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
     legend style={font=\scriptsize}, legend pos=outer north east,
 ]
 \addplot[domain=0:1,samples=200,thick,blue] {sin(2*360*x)};
 \addplot[domain=0:1,samples=200,thick,red]  {sin(3*360*x)};
 \legend{根音(2), 上音(3)}
-\end{axis}
+\nextgroupplot[
+    xlabel={$t$（任意時間単位）}, ylabel={振幅（合成）},
+    xmin=0, xmax=1, ymin=-2.3, ymax=2.3,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=200,thick,black] {sin(2*360*x)+sin(3*360*x)};
+\legend{合成波}
+\end{groupplot}
 \end{tikzpicture}
 \caption{完全5度の波形（周期数 2:3）}
 \end{figure}
@@ -208,17 +291,27 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
-\begin{axis}[
-    width=11cm, height=5cm,
+\begin{groupplot}[
+    group style={group size=1 by 2, vertical sep=10pt},
+    width=11cm, height=4cm,
+]
+\nextgroupplot[
     title={短6度　周波数比 8:5},
-    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    ylabel={振幅}, xticklabels=\empty,
     xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
     legend style={font=\scriptsize}, legend pos=outer north east,
 ]
 \addplot[domain=0:1,samples=300,thick,blue] {sin(5*360*x)};
 \addplot[domain=0:1,samples=300,thick,red]  {sin(8*360*x)};
 \legend{根音(5), 上音(8)}
-\end{axis}
+\nextgroupplot[
+    xlabel={$t$（任意時間単位）}, ylabel={振幅（合成）},
+    xmin=0, xmax=1, ymin=-2.3, ymax=2.3,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=300,thick,black] {sin(5*360*x)+sin(8*360*x)};
+\legend{合成波}
+\end{groupplot}
 \end{tikzpicture}
 \caption{短6度の波形（周期数 5:8）}
 \end{figure}
@@ -227,17 +320,27 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
-\begin{axis}[
-    width=11cm, height=5cm,
+\begin{groupplot}[
+    group style={group size=1 by 2, vertical sep=10pt},
+    width=11cm, height=4cm,
+]
+\nextgroupplot[
     title={長6度　周波数比 5:3},
-    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    ylabel={振幅}, xticklabels=\empty,
     xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
     legend style={font=\scriptsize}, legend pos=outer north east,
 ]
 \addplot[domain=0:1,samples=300,thick,blue] {sin(3*360*x)};
 \addplot[domain=0:1,samples=300,thick,red]  {sin(5*360*x)};
 \legend{根音(3), 上音(5)}
-\end{axis}
+\nextgroupplot[
+    xlabel={$t$（任意時間単位）}, ylabel={振幅（合成）},
+    xmin=0, xmax=1, ymin=-2.3, ymax=2.3,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=300,thick,black] {sin(3*360*x)+sin(5*360*x)};
+\legend{合成波}
+\end{groupplot}
 \end{tikzpicture}
 \caption{長6度の波形（周期数 3:5）}
 \end{figure}
@@ -246,17 +349,27 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
-\begin{axis}[
-    width=11cm, height=5cm,
+\begin{groupplot}[
+    group style={group size=1 by 2, vertical sep=10pt},
+    width=11cm, height=4cm,
+]
+\nextgroupplot[
     title={短7度　周波数比 16:9},
-    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    ylabel={振幅}, xticklabels=\empty,
     xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
     legend style={font=\scriptsize}, legend pos=outer north east,
 ]
 \addplot[domain=0:1,samples=500,thick,blue] {sin(9*360*x)};
 \addplot[domain=0:1,samples=500,thick,red]  {sin(16*360*x)};
 \legend{根音(9), 上音(16)}
-\end{axis}
+\nextgroupplot[
+    xlabel={$t$（任意時間単位）}, ylabel={振幅（合成）},
+    xmin=0, xmax=1, ymin=-2.3, ymax=2.3,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=500,thick,black] {sin(9*360*x)+sin(16*360*x)};
+\legend{合成波}
+\end{groupplot}
 \end{tikzpicture}
 \caption{短7度の波形（周期数 9:16，別表記9:5の場合は根音5・上音9）}
 \end{figure}
@@ -265,17 +378,27 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
-\begin{axis}[
-    width=11cm, height=5cm,
+\begin{groupplot}[
+    group style={group size=1 by 2, vertical sep=10pt},
+    width=11cm, height=4cm,
+]
+\nextgroupplot[
     title={長7度　周波数比 15:8},
-    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    ylabel={振幅}, xticklabels=\empty,
     xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
     legend style={font=\scriptsize}, legend pos=outer north east,
 ]
 \addplot[domain=0:1,samples=500,thick,blue] {sin(8*360*x)};
 \addplot[domain=0:1,samples=500,thick,red]  {sin(15*360*x)};
 \legend{根音(8), 上音(15)}
-\end{axis}
+\nextgroupplot[
+    xlabel={$t$（任意時間単位）}, ylabel={振幅（合成）},
+    xmin=0, xmax=1, ymin=-2.3, ymax=2.3,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=500,thick,black] {sin(8*360*x)+sin(15*360*x)};
+\legend{合成波}
+\end{groupplot}
 \end{tikzpicture}
 \caption{長7度の波形（周期数 8:15）}
 \end{figure}
@@ -284,17 +407,27 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
-\begin{axis}[
-    width=11cm, height=5cm,
+\begin{groupplot}[
+    group style={group size=1 by 2, vertical sep=10pt},
+    width=11cm, height=4cm,
+]
+\nextgroupplot[
     title={完全8度（オクターブ）　周波数比 2:1},
-    xlabel={$t$（任意時間単位）}, ylabel={振幅},
+    ylabel={振幅}, xticklabels=\empty,
     xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
     legend style={font=\scriptsize}, legend pos=outer north east,
 ]
 \addplot[domain=0:1,samples=200,thick,blue] {sin(1*360*x)};
 \addplot[domain=0:1,samples=200,thick,red]  {sin(2*360*x)};
 \legend{根音(1), 上音(2)}
-\end{axis}
+\nextgroupplot[
+    xlabel={$t$（任意時間単位）}, ylabel={振幅（合成）},
+    xmin=0, xmax=1, ymin=-2.3, ymax=2.3,
+    legend style={font=\scriptsize}, legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=200,thick,black] {sin(1*360*x)+sin(2*360*x)};
+\legend{合成波}
+\end{groupplot}
 \end{tikzpicture}
 \caption{完全8度の波形（周期数 1:2）}
 \end{figure}
@@ -323,19 +456,20 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 
 波形は純正律の整数比に基づく周波数で描画する。各音の周期数（サイクル数）は
 周波数比の整数値そのものとなり，$t=1$（任意時間単位）で全ての波形の位相が
-一致する（＝波の「尻尾」が揃う）。
+一致する（＝波の「尻尾」が揃う）。黒線は3音を単純に足し合わせた合成波を表す。
 
 % ---------------- メジャー ----------------
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
-\begin{axis}[
-    width=12cm, height=6cm,
+\begin{groupplot}[
+    group style={group size=1 by 2, vertical sep=10pt},
+    width=12cm, height=4.8cm,
+]
+\nextgroupplot[
     title={メジャー（長三和音）　周波数比 4:5:6},
-    xlabel={$t$（任意時間単位）},
-    ylabel={振幅},
-    xmin=0, xmax=1,
-    ymin=-1.2, ymax=1.2,
+    ylabel={振幅}, xticklabels=\empty,
+    xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
     legend style={font=\scriptsize},
     legend pos=outer north east,
 ]
@@ -343,7 +477,15 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \addplot[domain=0:1,samples=300,thick,red]             {sin(5*360*x)};
 \addplot[domain=0:1,samples=300,thick,green!60!black]  {sin(6*360*x)};
 \legend{根音(4), 第3音(5), 第5音(6)}
-\end{axis}
+\nextgroupplot[
+    xlabel={$t$（任意時間単位）}, ylabel={振幅（合成）},
+    xmin=0, xmax=1, ymin=-3.3, ymax=3.3,
+    legend style={font=\scriptsize},
+    legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=300,thick,black]           {sin(4*360*x)+sin(5*360*x)+sin(6*360*x)};
+\legend{合成波}
+\end{groupplot}
 \end{tikzpicture}
 \caption{メジャーコードの波形（周期数 4:5:6）}
 \end{figure}
@@ -352,13 +494,14 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
-\begin{axis}[
-    width=12cm, height=6cm,
+\begin{groupplot}[
+    group style={group size=1 by 2, vertical sep=10pt},
+    width=12cm, height=4.8cm,
+]
+\nextgroupplot[
     title={マイナー（短三和音）　周波数比 10:12:15},
-    xlabel={$t$（任意時間単位）},
-    ylabel={振幅},
-    xmin=0, xmax=1,
-    ymin=-1.2, ymax=1.2,
+    ylabel={振幅}, xticklabels=\empty,
+    xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
     legend style={font=\scriptsize},
     legend pos=outer north east,
 ]
@@ -366,7 +509,15 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \addplot[domain=0:1,samples=400,thick,red]             {sin(12*360*x)};
 \addplot[domain=0:1,samples=400,thick,green!60!black]  {sin(15*360*x)};
 \legend{根音(10), 第3音(12), 第5音(15)}
-\end{axis}
+\nextgroupplot[
+    xlabel={$t$（任意時間単位）}, ylabel={振幅（合成）},
+    xmin=0, xmax=1, ymin=-3.3, ymax=3.3,
+    legend style={font=\scriptsize},
+    legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=400,thick,black]           {sin(10*360*x)+sin(12*360*x)+sin(15*360*x)};
+\legend{合成波}
+\end{groupplot}
 \end{tikzpicture}
 \caption{マイナーコードの波形（周期数 10:12:15）}
 \end{figure}
@@ -375,13 +526,14 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
-\begin{axis}[
-    width=12cm, height=6cm,
+\begin{groupplot}[
+    group style={group size=1 by 2, vertical sep=10pt},
+    width=12cm, height=4.8cm,
+]
+\nextgroupplot[
     title={増三和音（オーグメント）　周波数比 16:20:25},
-    xlabel={$t$（任意時間単位）},
-    ylabel={振幅},
-    xmin=0, xmax=1,
-    ymin=-1.2, ymax=1.2,
+    ylabel={振幅}, xticklabels=\empty,
+    xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
     legend style={font=\scriptsize},
     legend pos=outer north east,
 ]
@@ -389,7 +541,15 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \addplot[domain=0:1,samples=500,thick,red]             {sin(20*360*x)};
 \addplot[domain=0:1,samples=500,thick,green!60!black]  {sin(25*360*x)};
 \legend{根音(16), 第3音(20), 第5音(25)}
-\end{axis}
+\nextgroupplot[
+    xlabel={$t$（任意時間単位）}, ylabel={振幅（合成）},
+    xmin=0, xmax=1, ymin=-3.3, ymax=3.3,
+    legend style={font=\scriptsize},
+    legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=500,thick,black]           {sin(16*360*x)+sin(20*360*x)+sin(25*360*x)};
+\legend{合成波}
+\end{groupplot}
 \end{tikzpicture}
 \caption{増三和音の波形（周期数 16:20:25）}
 \end{figure}
@@ -398,13 +558,14 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
-\begin{axis}[
-    width=12cm, height=6cm,
+\begin{groupplot}[
+    group style={group size=1 by 2, vertical sep=10pt},
+    width=12cm, height=4.8cm,
+]
+\nextgroupplot[
     title={減三和音（ディミニッシュ）　周波数比 25:30:36},
-    xlabel={$t$（任意時間単位）},
-    ylabel={振幅},
-    xmin=0, xmax=1,
-    ymin=-1.2, ymax=1.2,
+    ylabel={振幅}, xticklabels=\empty,
+    xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
     legend style={font=\scriptsize},
     legend pos=outer north east,
 ]
@@ -412,7 +573,15 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \addplot[domain=0:1,samples=600,thick,red]             {sin(30*360*x)};
 \addplot[domain=0:1,samples=600,thick,green!60!black]  {sin(36*360*x)};
 \legend{根音(25), 第3音(30), 第5音(36)}
-\end{axis}
+\nextgroupplot[
+    xlabel={$t$（任意時間単位）}, ylabel={振幅（合成）},
+    xmin=0, xmax=1, ymin=-3.3, ymax=3.3,
+    legend style={font=\scriptsize},
+    legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=600,thick,black]           {sin(25*360*x)+sin(30*360*x)+sin(36*360*x)};
+\legend{合成波}
+\end{groupplot}
 \end{tikzpicture}
 \caption{減三和音の波形（周期数 25:30:36）}
 \end{figure}
@@ -421,13 +590,14 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
-\begin{axis}[
-    width=12cm, height=6cm,
+\begin{groupplot}[
+    group style={group size=1 by 2, vertical sep=10pt},
+    width=12cm, height=4.8cm,
+]
+\nextgroupplot[
     title={サスペンデッド4（sus4）　周波数比 6:8:9},
-    xlabel={$t$（任意時間単位）},
-    ylabel={振幅},
-    xmin=0, xmax=1,
-    ymin=-1.2, ymax=1.2,
+    ylabel={振幅}, xticklabels=\empty,
+    xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
     legend style={font=\scriptsize},
     legend pos=outer north east,
 ]
@@ -435,7 +605,15 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \addplot[domain=0:1,samples=300,thick,red]             {sin(8*360*x)};
 \addplot[domain=0:1,samples=300,thick,green!60!black]  {sin(9*360*x)};
 \legend{根音(6), 第4音(8), 第5音(9)}
-\end{axis}
+\nextgroupplot[
+    xlabel={$t$（任意時間単位）}, ylabel={振幅（合成）},
+    xmin=0, xmax=1, ymin=-3.3, ymax=3.3,
+    legend style={font=\scriptsize},
+    legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=300,thick,black]           {sin(6*360*x)+sin(8*360*x)+sin(9*360*x)};
+\legend{合成波}
+\end{groupplot}
 \end{tikzpicture}
 \caption{sus4コードの波形（周期数 6:8:9）}
 \end{figure}
@@ -444,13 +622,14 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
-\begin{axis}[
-    width=12cm, height=6cm,
+\begin{groupplot}[
+    group style={group size=1 by 2, vertical sep=10pt},
+    width=12cm, height=4.8cm,
+]
+\nextgroupplot[
     title={サスペンデッド2（sus2）　周波数比 8:9:12},
-    xlabel={$t$（任意時間単位）},
-    ylabel={振幅},
-    xmin=0, xmax=1,
-    ymin=-1.2, ymax=1.2,
+    ylabel={振幅}, xticklabels=\empty,
+    xmin=0, xmax=1, ymin=-1.2, ymax=1.2,
     legend style={font=\scriptsize},
     legend pos=outer north east,
 ]
@@ -458,7 +637,15 @@ $t=1$（任意時間単位）で両者の位相が一致する（尻尾が揃う
 \addplot[domain=0:1,samples=400,thick,red]             {sin(9*360*x)};
 \addplot[domain=0:1,samples=400,thick,green!60!black]  {sin(12*360*x)};
 \legend{根音(8), 第2音(9), 第5音(12)}
-\end{axis}
+\nextgroupplot[
+    xlabel={$t$（任意時間単位）}, ylabel={振幅（合成）},
+    xmin=0, xmax=1, ymin=-3.3, ymax=3.3,
+    legend style={font=\scriptsize},
+    legend pos=outer north east,
+]
+\addplot[domain=0:1,samples=400,thick,black]           {sin(8*360*x)+sin(9*360*x)+sin(12*360*x)};
+\legend{合成波}
+\end{groupplot}
 \end{tikzpicture}
 \caption{sus2コードの波形（周期数 8:9:12）}
 \end{figure}
