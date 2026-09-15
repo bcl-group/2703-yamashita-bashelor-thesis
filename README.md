@@ -35,7 +35,7 @@
 - RNN:時刻$t-1$における隠れ層の値$\mathbb{h}(t-1)$を保持しておき、それも$\mathbb{h}(t)$に伝える
 - 隠れ層に過去の状態がすべて反映されている
 - 隠れ層に過去の状態がすべて反映されている
-![alt text](image.png)
+![alt text](images/rnn_hidden_state_diagram.png)
 
 #### RNNを用いる理由
 
@@ -115,12 +115,12 @@ $$
 - Hodkin-Hukslayモデルの数値シミュレーション（済）
     - まずは空間形状をもたない単一ニューロンの発火を確認した
     - 詳しくは「猿でもわかるニューロン発火 by Hodgkin,Huxley and Yamashita(2026/07/06)」を参照
-    ![alt text](image-4.png)
+    ![alt text](images/hodgkin_huxley_simulation.png)
 - RNN実装
     - Pytouchを使った簡単なRNNを実装した
     - sin関数の学習に成功
     - 25ステップ分の過去の波形の塊を、時間を1ステップずつずらしながら
-    ![alt text](image-5.png)
+    ![alt text](images/rnn_sin_prediction.png)
 - HH × RNN　←今ここ
   - パルス電流をHHに入力
   - パルス入力電流 $I$ に対するHHの出力 $V$ をRNNに学習させる

@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# 大容量ファイル(GitHubの100MB上限を超えるため追跡対象外)
+Python/RNN/詳解ディープラーニング.pdf
