@@ -217,7 +217,7 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-# 大容量ファイル(GitHubの100MB上限を超えるため追跡対象外)
+# 大容量ファイル(GitHubの100MB上限を超えるため追跡対象外とする)
 Python/RNN/詳解ディープラーニング.pdf
 
 # LaTeX の中間ファイル(*.log は上の Django stuff の項で既に無視される)
