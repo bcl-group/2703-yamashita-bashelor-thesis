@@ -50,7 +50,7 @@
 \algrenewcommand\algorithmicensure{\textbf{Ensure:}}
 
 \title{リカレントニューラルネットワークを用いた\\ニューロンモデルの代理モデルの構築}
-\author{山下 要平}
+\author{山下 陽平}
 \date{令和 8 年度}
 
 \begin{document}
@@ -176,6 +176,7 @@ $\gleak$ [\si{mS/cm^2}]、起電力 $E_{\mathrm{eq}}$ [\si{mV}] の電池を流�
 \TODO{図 2.1 として RC 回路図を入れる。TikZ で描くか、先輩の卒論の図を参考に自作する}
 
 \section{Hodgkin-Huxley モデル}
+\label{sec:hh}
 
 単一ニューロンの数理モデルの中で世界で最初に開発されたものが
 Hodgkin-Huxley モデル（以下 HH モデル）である\cite{hodgkin1952}。
@@ -214,28 +215,39 @@ $m, h, n$ は膜電位に依存して変化するゲート変数である。
 $\alpha_x(V), \beta_x(V)$ はそれぞれ次式で定義される。
 
 \begin{align}
-  \alpha_m(V) &= \frac{2.5 - 0.1V}{\exp(2.5 - 0.1V) - 1}, &
-  \beta_m(V)  &= 4\exp\left(-\frac{V}{18}\right) \notag\\
-  \alpha_h(V) &= 0.07\exp\left(-\frac{V}{20}\right), &
-  \beta_h(V)  &= \frac{1}{\exp(3 - 0.1V) + 1} \label{eq:rate}\\
-  \alpha_n(V) &= \frac{0.1 - 0.001V}{\exp(1 - 0.1V) - 1}, &
-  \beta_n(V)  &= 0.125\exp\left(-\frac{V}{80}\right) \notag
+  \alpha_m(V) &= \frac{0.1\,(V + 40)}{1 - \exp\left(-\dfrac{V + 40}{10}\right)}, &
+  \beta_m(V)  &= 4\exp\left(-\frac{V + 65}{18}\right) \notag\\
+  \alpha_h(V) &= 0.07\exp\left(-\frac{V + 65}{20}\right), &
+  \beta_h(V)  &= \frac{1}{1 + \exp\left(-\dfrac{V + 35}{10}\right)} \label{eq:rate}\\
+  \alpha_n(V) &= \frac{0.01\,(V + 55)}{1 - \exp\left(-\dfrac{V + 55}{10}\right)}, &
+  \beta_n(V)  &= 0.125\exp\left(-\frac{V + 65}{80}\right) \notag
 \end{align}
+
+ここで、本研究では膜電位 $V$ を、静止膜電位を $-65$ [\si{mV}] とする表記で表している。
+Hodgkin と Huxley の原論文\cite{hodgkin1952}および先行研究\cite{munechika2025}では、
+静止膜電位を $0$ [\si{mV}] とし脱分極を正の向きにとる表記が用いられているため、
+レート関数や反転電位の値の表れ方が異なる。両者は $V$ の原点の取り方が異なるだけで
+等価なモデルであるが、本研究では実装に合わせて前者の表記を用いる。
+
+なお、$\alpha_m(V)$ は $V = -40$ [\si{mV}]、$\alpha_n(V)$ は $V = -55$ [\si{mV}] に
+おいて分母と分子がともに $0$ となる。実装ではこれらの近傍において、
+L'H\^{o}pital の定理から得られる極限値（それぞれ $1.0$ と $0.1$）を用いている。
 
 まとめると、HH モデルは膜電位 $V$ とゲート変数 $m, h, n$ に関する
 4 元の連立常微分方程式である。
 
 \begin{table}[htbp]
   \centering
-  \caption{Hodgkin-Huxley モデルで使うイオンチャネルに関する定数}
+  \caption{Hodgkin-Huxley モデルで使うイオンチャネルに関する定数。
+           膜容量は $C = 1.0$ [\si{\micro F/cm^2}] とした。}
   \label{tab:hh_const}
   \begin{tabular}{lrr}
     \toprule
     イオン種 & 反転電位 $E$ [\si{mV}] & 最大コンダクタンス $\bar{g}$ [\si{mS/cm^2}] \\
     \midrule
-    $\mathrm{Na}^{+}$      &  115.0 & 120.0 \\
-    $\mathrm{K}^{+}$       &  -12.0 &  36.0 \\
-    その他のイオン (leak)   &   10.6 &   0.3 \\
+    $\mathrm{Na}^{+}$      &   50.000 & 120.0 \\
+    $\mathrm{K}^{+}$       &  -77.000 &  36.0 \\
+    その他のイオン (leak)   &  -54.387 &   0.3 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -472,8 +484,8 @@ Algorithm \ref{alg:euler} のように求める\cite{minemura2008}。
 \subsection{初期値の与え方}
 
 膜電位の初期値は静止膜電位 $V_{\mathrm{rest}} = -65.0$ [\si{mV}] を与える。
-\TODO{本研究の HH 実装では $V$ の基準をどう取っているか（$-65$ mV か $0$ mV か）を
-      確認して統一する。式\eqref{eq:rate}のレート関数は $V$ の基準に依存する}
+これは\ref{sec:hh}節で述べた表記（静止膜電位を $-65$ [\si{mV}] とする表記）に
+対応しており、式\eqref{eq:rate}のレート関数もこの表記のもとで定義されている。
 
 ゲート変数の初期値については、式\eqref{eq:hh_gate}を変形すると
 
