@@ -219,3 +219,23 @@ __marimo__/
 
 # 大容量ファイル(GitHubの100MB上限を超えるため追跡対象外)
 Python/RNN/詳解ディープラーニング.pdf
+
+# LaTeX の中間ファイル(*.log は上の Django stuff の項で既に無視される)
+*.aux
+*.toc
+*.lof
+*.lot
+*.out
+*.idx
+*.ilg
+*.ind
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.nav
+*.snm
+*.vrb
