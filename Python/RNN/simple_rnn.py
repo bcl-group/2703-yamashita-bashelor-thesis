@@ -1,80 +1,49 @@
 """
-NumPyだけで実装するシンプルなRNN（Elman型）による sin波の予測。
+NumPyだけで実装するシンプルなRNN
 
 このファイルは卒業研究用の学習教材コードであり、PyTorch / Keras / TensorFlow を
 一切使わずに、RNNの順伝播・逆伝播（BPTT）・パラメータ更新を自分で実装している。
 
-参考資料
---------
-- 『詳解ディープラーニング 第2版』第5章「リカレントニューラルネットワーク」
-  5.1 基本のアプローチ（書籍 p.256-277）
-    - 5.1.2 過去の隠れ層（p.258）        : 式(5.4)(5.5)(5.6)(5.7)(5.10)-(5.14)
-    - 5.1.3 BPTT（p.262）                : 式(5.17)-(5.23)、更新式(5.24)-(5.28)
-    - 5.1.4 重みの初期値と活性化関数（p.264）: 直交行列による初期化
-- GitHub: yusugomori/deeplearning-keras-tf2-torch の `5/03_sin_rnn_torch.py`
-  （PyTorch版。本ファイルはこのPyTorch実装をNumPyの基本演算に分解したもの）
 
-コメントの区分
---------------
-[資料参照]                    : 資料・GitHubに直接書かれている内容
-[PyTorch処理をNumPyで再実装]  : PyTorchが内部で行っている処理を自分で書き下した部分
-[補助処理]                    : 資料にはないが、動作確認・可視化のために追加した部分
-
-モデルの構造
 ------------
-    h(t) = tanh( W_xh x(t) + W_hh h(t-1) + b_h )     … 資料 式(5.4)
+    h(t) = f( W_xh x(t) + W_hh h(t-1) + b_h )     … 資料 式(5.4)
+    活性化関数f：tanh
     y    = W_hy h(T-1) + b_y                          … 資料 式(5.5),(5.15)
 
   入力 x(t) を時刻 t=0,1,...,T-1 まで順に読み込み、
-  最後の時刻の隠れ状態 h(T-1) だけを使って次の1点を予測する。
-  （PyTorch版の `y = self.l2(h[:, -1])` と同じ考え方）
+  最後の時刻の隠れ状態 h(T-1) だけを使って次の1点y(T)を予測する。
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
 
 
-# ==================================================================
-# 1. データ生成  [資料参照]
-# ==================================================================
-# GitHub `5/03_sin_rnn_torch.py` の sin() / toy_problem() と同じ定義。
 
+# データ生成  [資料参照]
 def sin(x, T=100):
-    """
-    周期Tのsin波を計算する。
+    """周期 T の sin 波を計算する。
 
-    Parameters
-    ----------
-    x : numpy.ndarray
-        時刻を表す配列。shape = (系列長,)
-    T : int
-        sin波の周期。x が T 進むと1周する。
+    Args:
+        x (numpy.ndarray): 時刻を表す配列。
+        T (int): sin 波の周期。デフォルト値は 100。
 
-    Returns
-    -------
-    numpy.ndarray
-        sin波の値。shape = x.shape
+    Returns:
+        numpy.ndarray: sin 波の値。
     """
-    # 2*pi*x/T とすることで、x=T のとき位相が 2*pi（＝1周期）になる
     return np.sin(2.0 * np.pi * x / T)
 
 
 def toy_problem(T=100, ampl=0.05):
-    """
-    ノイズ入りのsin波（トイ・プロブレム）を生成する。
+    """ノイズ入りのsin波（トイ・プロブレム）を生成する。
 
-    Parameters
-    ----------
-    T : int
-        sin波の周期。
-    ampl : float
-        加えるノイズの振幅。0.0 にするとノイズなしの純粋なsin波になる。
-
-    Returns
-    -------
-    numpy.ndarray
-        ノイズ入りsin波。shape = (2*T + 1,)  ＝ 2周期分＋1点
+    Args:
+        T (int): sin波の周期。デフォルト値は 100。
+        ampl (float): 加えるノイズの振幅。0.0 にするとノイズなしの純粋なsin波になる。
+    
+    Returns:
+        numpy.ndarray: ノイズ入りsin波。shape = (2*T + 1,)  ＝ 2周期分＋1点
     """
+
     # x = [0, 1, 2, ..., 2T] の整数時刻。2周期分のデータを作る
     x = np.arange(0, 2 * T + 1)                      # shape = (2T+1,)
 
@@ -85,30 +54,26 @@ def toy_problem(T=100, ampl=0.05):
 
 
 def create_dataset(f, maxlen):
-    """
-    1本の時系列データを、RNNの学習用の「入力系列」と「正解値」に変換する。
+    """1本の時系列データを、RNNの学習に使う入力と正解に変換する。
 
-    maxlen 個の連続した値を入力とし、その直後の1個の値を正解とする。
+    maxlen （P267ではτ）個の連続した値を入力とし、その直後の1個の値を正解とする。
+    τ=25 の場合の例：
         [f0, f1, ..., f24]  ->  f25
         [f1, f2, ..., f25]  ->  f26
         ...
+        [f(2T-25), f(2T-24), ..., f(2T-1)]  ->  f(2T)
 
-    Parameters
-    ----------
-    f : numpy.ndarray
-        元となる時系列データ。shape = (系列長,)
-    maxlen : int
-        1つの入力系列に使う時刻数（何ステップ分を見て次を予測するか）。
-
-    Returns
-    -------
-    x : numpy.ndarray
-        RNNへの入力データ。shape = (サンプル数, maxlen, 1)
-        最後の 1 は input_dim（各時刻の入力が1次元のスカラーであること）を表す。
-    t : numpy.ndarray
-        入力系列の次に来る正解値。shape = (サンプル数, 1)
+    Args:
+        f(numpy.ndarray): 元となる時系列データ。shape = (系列長,1)
+        maxlen(int): 1つの入力系列に使う時刻数（何ステップ分を見て次を予測するかを与えている。資料ではτ=25を採用）
+    
+    Returns:
+        x(numpy.ndarray): RNNへの入力データ。shape = (サンプル数, maxlen, 1)
+        t(numpy.ndarray): 入力系列の次に来る正解値。shape = (サンプル数, 1)
     """
-    length_of_sequences = len(f)
+
+
+    length_of_sequences = len(f) #2T+1
 
     x = []
     t = []
