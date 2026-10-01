@@ -5,13 +5,35 @@ RNN（Elman型）の順伝播・逆伝播（BPTT）・パラメータ更新を�
 
 ## ファイル
 
+```
+RNN/
+├── rnn/                 RNNの部品（学習させる対象に依存しない）
+│   ├── model.py         SimpleRNN（forward / backward）
+│   ├── optimizers.py    SGD, Adam
+│   ├── losses.py        mean_squared_error
+│   ├── data.py          create_dataset（窓の切り出し）, split_in_order
+│   ├── train.py         train()（ミニバッチ学習のループ）
+│   ├── callbacks.py     EarlyStopping（資料と同じ判定）
+│   └── gradcheck.py     numerical_gradient_check（BPTTの検算）
+├── sin_wave.py          sin波タスク。データ生成・逐次生成・描画・main
+└── results/sin_wave/    sin_wave.py の出力（learning_curve.png, prediction.png）
+```
+
 | ファイル | 内容 |
 |---|---|
-| `simple_rnn.py` | 本体。データ生成から学習・予測・可視化まで全部入り |
+| `rnn/` | RNN本体・最適化・学習ループ。sin波にもHHモデルにも共通で使う |
+| `sin_wave.py` | sin波の予測タスク（資料 5.1.5 の再現）。`rnn/` を読み込んで使う |
+| `sin_wave_eval.py` | 初期化・EarlyStopping の条件ごとに複数シードで回し、生成誤差 gen_mse を比較する |
+| `textbook_eval.py` | 教科書のコード（PyTorch / Keras）をそのまま複数シードで回し、同じ gen_mse で比較する（torch, tensorflow, scikit-learn が必要） |
 | `設計表.md` | 資料・GitHubのどの部分をNumPy版のどの処理に対応させたかの対応表 |
 | `詳解ディープラーニング.pdf` | 参考資料（第5章を使用） |
-| `learning_curve.png` | 実行すると生成される学習曲線 |
-| `prediction.png` | 実行すると生成される予測結果 |
+| `results/sin_wave/learning_curve.png` | 実行すると生成される学習曲線 |
+| `results/sin_wave/prediction.png` | 実行すると生成される予測結果 |
+
+新しいタスク（HHモデルの膜電位予測など）を追加するときは、`sin_wave.py` と同じ階層に
+スクリプトを1つ作り、`from rnn import SimpleRNN, Adam, train` のように部品を読み込む。
+HHモデルの時系列は `Python/HH/make_dataset.py` が `Python/HH/data/*.npz` に保存するので、
+RNN側はそのファイルを `np.load()` で読むだけでよい（HHのコードをimportする必要はない）。
 
 ## データの説明（訓練データ・検証データ・正解データとは何か）
 
@@ -121,12 +143,14 @@ f = [0.0196, 0.0414, 0.0980, 0.1925, ... ]   ← 201個の数字（時刻0〜200
 python -m pip install numpy matplotlib
 ```
 
+`Python/RNN/` に移動してから実行する（`rnn/` を読み込むため）。
+
 ```bash
-python simple_rnn.py
+python sin_wave.py
 ```
 
 > Windowsのコマンドプロンプトで日本語の出力が文字化けする場合は、
-> `python -X utf8 simple_rnn.py` で実行する。
+> `python -X utf8 sin_wave.py` で実行する。
 
 ## 実行結果（確認済み）
 
@@ -144,8 +168,13 @@ train: 140, val: 36
 
 epoch:    1, loss: 0.462414, val_loss: 0.601813
 ...
-epoch: 1000, loss: 0.001157, val_loss: 0.001360
+epoch:   64, loss: 0.001092, val_loss: 0.001349
+
+epochs: 64, val_loss: 0.001349, gen_mse: 0.0178
 ```
+
+（`init='xavier'` + EarlyStopping の場合。以前の `init='simple'` で 1000 エポック回し切った場合は
+loss: 0.001157, val_loss: 0.001360, gen_mse: 0.075。下の実験の節を参照）
 
 資料 p.271 に載っている実行結果（Keras版）は
 
@@ -167,26 +196,29 @@ Epoch 00095: early stopping
 ## 処理の流れ
 
 ```
-toy_problem()        sin波＋ノイズを生成
+toy_problem()        sin波＋ノイズを生成                          sin_wave.py
   ↓
-create_dataset()     25点 → 次の1点 の形に変換   x:(176,25,1)  t:(176,1)
+create_dataset()     25点 → 次の1点 の形に変換                    rnn/data.py
+                     x:(176,25,1)  t:(176,1)
   ↓
-split_in_order()     先頭80%を訓練、残り20%を検証
+split_in_order()     先頭80%を訓練、残り20%を検証                  rnn/data.py
   ↓
-SimpleRNN            W_xh, W_hh, b_h, W_hy, b_y を初期化
+SimpleRNN            W_xh, W_hh, b_h, W_hy, b_y を初期化          rnn/model.py
   ↓
-forward()            時刻ごとに h = tanh(x_t W_xh + h_prev W_hh + b_h)
+forward()            時刻ごとに h = tanh(x_t W_xh + h_prev W_hh + b_h)  rnn/model.py
   ↓
-mean_squared_error() 損失
+mean_squared_error() 損失                                         rnn/losses.py
   ↓
-backward()           BPTT。時間を遡って誤差を伝播させ、勾配を求める
+backward()           BPTT。時間を遡って誤差を伝播させ、勾配を求める  rnn/model.py
   ↓
-optimizer.step()     SGD または Adam でパラメータ更新
+optimizer.step()     SGD または Adam でパラメータ更新              rnn/optimizers.py
   ↓
-generate_sequence()  予測値を入力に戻しながらsin波を生成
+generate_sequence()  予測値を入力に戻しながらsin波を生成            sin_wave.py
   ↓
-plot_results()       学習曲線と予測結果を描画
+plot_results()       学習曲線と予測結果を描画                      sin_wave.py
 ```
+
+`create_dataset()` から `optimizer.step()` までの繰り返しは `rnn/train.py` の `train()` にまとめてある。
 
 ## 資料の式とコードの対応
 
@@ -214,7 +246,7 @@ SGDでも「次の1点を予測する」学習自体は成立する（損失は 
 GitHub版と同じ設定（`lr=0.001, betas=(0.9,0.999), amsgrad=True`）のAdamも自作し、
 こちらをデフォルトにしている。
 
-SGDで試す場合は `main()` の
+SGDで試す場合は `sin_wave.py` の `main()` の
 
 ```python
 optimizer = Adam(model, lr=0.001, beta1=0.9, beta2=0.999, amsgrad=True)
@@ -242,7 +274,7 @@ optimizer = SGD(lr=0.05)
 | 損失 | `nn.MSELoss(reduction='mean')` | 同じ | — |
 | 最適化 | Adam(lr=0.001, betas=(0.9,0.999), amsgrad=True) | 同じものを自作 | — |
 | エポック/バッチ | epochs=1000, batch_size=100 | 同じ | — |
-| EarlyStopping | あり（patience=10、実際は95エポックで停止） | **なし** | 指示により対象外 |
+| EarlyStopping | あり（patience=10、実際は95エポックで停止） | あり（同じ判定、`rnn/callbacks.py`）。seed=123 では103エポックで停止 | 下の10シード比較では、無いほうが生成は良かった |
 | 検証損失の計算 | バッチごとのlossを単純平均 | 検証データ全体で一度に計算 | 端数バッチの重みが正しくなるため |
 | 重みの初期化 | Xavier + 直交行列（固定） | **`simple` が既定**、`orthogonal` も選択可 | 下の実験結果による |
 | sin波の生成（評価） | 予測値を入力に戻して逐次生成 | 同じ | — |
@@ -281,6 +313,74 @@ optimizer = SGD(lr=0.05)
   ただし**シードによるばらつきが大きく、3回の試行で断定できるほどの差ではない**。
   資料に合わせたい場合は `SimpleRNN(..., init='orthogonal')` にすればよい。
 
+### 10シードでの比較（2026-09-30、`sin_wave_eval.py`）
+
+上の3シードの比較では結論が出せなかったので、EarlyStopping（ES）を実装したうえで
+seed=0〜9 の10回ずつ回して比べた。ES は資料と同じ patience=10。
+
+| 初期化 / 学習の止め方 | 平均エポック | val_loss平均 | gen_mse平均 | 中央値 | 最大 | gen_mse<0.05 |
+|---|---|---|---|---|---|---|
+| simple / ES | 202 | 0.00165 | 0.233 | 0.190 | 0.583 | 1/10 |
+| simple / 1000 | 1000 | 0.00140 | 0.144 | 0.042 | 0.670 | 6/10 |
+| orthogonal / ES | 433 | 0.00206 | 0.376 | 0.199 | 1.186 | 3/10 |
+| **orthogonal / 1000** | 1000 | 0.00166 | **0.041** | **0.030** | **0.133** | **7/10** |
+
+- **直交初期化で1000エポック回し切るのが、生成が最も良く、最も安定していた**（最悪でも 0.13）。
+  3シードで「単純な初期化のほうが安定」と見えたのは、シードの偶然だった。
+- **ESを入れると生成はむしろ悪くなった。** ESは val_loss（1点先の予測）で止めるが、
+  1点先の予測が十分でも、自分の予測を入力に戻す生成が安定するにはもっと学習が要る。
+  上の「長く学習すると崩れる」という見立ても、10シードでは支持されなかった。
+- 資料の図5-5のように正解とほぼ重なる波形（gen_mse が 0.01 程度以下）は、どの条件でも一部のシードでしか出ない。
+  資料の図は条件の良い1回分と考えるのが自然。
+
+実行方法（4条件×10シードを並列に回す。1分半ほど）:
+
+```bash
+python -X utf8 sin_wave_eval.py
+```
+
+結果の図は `results/sin_wave/gen_mse_by_condition.png`。
+
+### 教科書のコード（PyTorch / Keras）との比較と、差の原因（2026-09-30）
+
+`textbook_eval.py` で、教科書のコードをライブラリを使ったまま同じ10シードで回した
+（seed=123 では教科書のコードをそのまま実行した結果と同じ131エポックで止まることを確認済み）。
+
+| 実装 / 止め方 | gen_mse中央値 | 最大 | <0.05 |
+|---|---|---|---|
+| 教科書 PyTorch / ES | 0.016 | 0.844 | 8/10 |
+| 教科書 PyTorch / 1000 | 0.006 | 0.032 | 10/10 |
+| 教科書 Keras / ES | 0.006 | 0.655 | 8/10 |
+| 教科書 Keras / 1000 | 0.002 | 0.041 | 10/10 |
+
+NumPy版（上の表）より明らかに良かったので、教科書のコードとの違いを1つずつ直して比べた（すべて1000エポック）。
+
+| NumPy版の初期化 / AMSGrad | gen_mse中央値 | 最大 | <0.05 |
+|---|---|---|---|
+| orthogonal / 以前の実装 | 0.030 | 0.133 | 7/10 |
+| orthogonal / PyTorchと同じ | 0.007 | 0.129 | 9/10 |
+| **xavier / 以前の実装** | **0.0015** | **0.016** | **10/10** |
+| xavier / PyTorchと同じ | 0.006 | 0.060 | 9/10 |
+| xavier / PyTorchと同じ / ES | 0.026 | 0.452 | 6/10 |
+| simple / PyTorchと同じ | 0.281 | 0.825 | 0/10 |
+
+- **主な原因は W_xh（入力→隠れ層）の初期値だった。** 以前の `orthogonal` は標準偏差 sqrt(1/n_in) = 1 で、
+  教科書（PyTorch `xavier_normal_` / Keras `glorot_normal`）の sqrt(2/(n_in+n_out)) ≒ 0.20 の約5倍だった。
+  教科書と同じにする `init='xavier'` を追加した。
+- AMSGrad も教科書（PyTorch）と違っていた。以前は補正後の v_hat の最大値を保持していたが、
+  PyTorch は補正前の v の最大値を保持してから補正する。`Adam(amsgrad_raw=True)`（既定）で PyTorch と同じにした。
+  こちらは xavier と組み合わせると差がはっきりしない（10シードでは誤差の範囲）。
+- **両方を教科書に合わせた「xavier / PyTorchと同じ」は中央値 0.006 で、教科書の PyTorch 版と同じ水準になった。**
+  NumPy版は教科書を再現できている。
+- ライブラリ版・NumPy版とも、ES を入れるとまれに大きく崩れる。
+- seed=123・ES あり（教科書と同じ条件）で3つの実装の生成波形を並べた図:
+  `results/sin_wave/textbook_vs_numpy_seed123.png`（`python -X utf8 textbook_eval.py plot` で作り直せる）。
+  gen_mse は PyTorch 0.0059 / Keras 0.0070 / NumPy 0.0041 で、3つとも図5-5 と同等。
+  止まったエポックは 131 / 197 / 81 で、教科書（Keras, 95）とは一致しない。
+  Keras は同じ seed でも実行ごとに結果が変わる（別の実行では 34 エポック）。
+- `sin_wave.py` の `main()` は `init='xavier'` + ES（教科書どおり）にした。seed=123 で64エポックで止まり、
+  gen_mse = 0.018。1000エポック回し切ると 0.013。
+
 ## 今回扱っていないもの
 
-LSTM / GRU / 双方向RNN / EarlyStopping / PyTorch版・Keras版・TensorFlow版。
+LSTM / GRU / 双方向RNN / PyTorch版・Keras版・TensorFlow版。

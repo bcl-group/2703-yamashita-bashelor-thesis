@@ -1,27 +1,17 @@
 % !TeX program = lualatex
-% ==================================================================
-%  卒業論文（たたき台）
-%  RNN を用いたニューロンモデルの代理モデル構築
-%
-%  コンパイル: lualatex 卒業論文.tex を2回
-%             （目次・相互参照のため2回必要。latexmk 卒業論文.tex でもよい）
-%
-%  【このファイルの使い方】
-%  ・\TODO{...} は「これから書く／確かめる」箇所。本文中に赤字で表示される。
-%    提出前に \TODO を全部消すこと（\listoftodo は使っていないので grep で探す）。
-%  ・すでに確定している内容（HHモデルの式、RNNの式、BPTTの式、
-%    sin波での動作確認）は本文として書き込んである。
-%  ・構成は棟近先輩の卒業論文（SINDy版）の章立てを踏襲しているが、
-%    手法が SINDy → RNN に変わる部分は差し替えてある。
-% ==================================================================
+
 \documentclass[a4paper,11pt,openany]{ltjsreport}
 
 \usepackage{amsmath,amssymb,mathtools}
 \usepackage{bm}
+% array は siunitx より先に読む（luatexja のパッチが失敗するのを防ぐため）
+\usepackage{array}
 \usepackage{siunitx}
 \usepackage{graphicx}
+% 図の探索先。この .tex はリポジトリ直下ではなく 卒論/ にあるため、
+% 1つ上の階層（＝ images/ や Python/ がある場所）も探すようにする。
+\graphicspath{{../}{./}}
 \usepackage{booktabs}
-\usepackage{array}
 \usepackage{multirow}
 \usepackage{enumitem}
 \usepackage{algorithm}
@@ -49,7 +39,7 @@
 \algrenewcommand\algorithmicrequire{\textbf{Require:}}
 \algrenewcommand\algorithmicensure{\textbf{Ensure:}}
 
-\title{リカレントニューラルネットワークを用いた\\ニューロンモデルの代理モデルの構築}
+\title{神経細胞シミュレーションの計算コスト削減を目的とした\\RNN代理モデルの構築}
 \author{山下 陽平}
 \date{令和 8 年度}
 
@@ -63,8 +53,9 @@
   \vspace*{20mm}
   {\Large 令和 8 年度}\\[15mm]
   {\LARGE 卒業論文}\\[25mm]
-  {\LARGE リカレントニューラルネットワークを用いた}\\[3mm]
-  {\LARGE ニューロンモデルの代理モデルの構築}\\[35mm]
+  {\LARGE 神経細胞シミュレーションの}\\[3mm]
+  {\LARGE 計算コスト削減を目的とした}\\[3mm]
+  {\LARGE RNN代理モデルの構築}\\[32mm]
   % \TODO{題目は仮。Multi-Compartment まで到達できるかで変わるため、
   %       最終的な結果が出てから確定させる}
   {\large 指導教員 小林 泰良 助教}\\[20mm]
@@ -110,12 +101,13 @@
 計算コストを削減する手法として、本研究では代理モデル（surrogate model）の構築を考える。
 ここでの代理モデルとは、元のニューロンモデルに対し、より少ない隠れ変数、
 あるいはより高速な計算で同等の膜電位応答を再現できるモデルを指す。
-棟近先輩による先行研究では、時系列データから支配方程式をスパースに同定する手法である
-SINDy\cite{brunton2015} と主成分分析を組み合わせることで、
-Hodgkin-Huxley モデル\cite{hodgkin1952}の 4 つの状態変数
-$(V, m, h, n)$ を 2 つ $(V, g')$ に圧縮した代理モデルが構築されている\cite{munechika2025}。
-この手法では空間計算量の削減には成功したが、同定された微分方程式の右辺の項数が
-十分にスパースにならず、時間計算量はかえって増加するという課題が残されている。
+%棟近先輩：時系列データから支配方程式をスパースに同定する手法
+%SINDy\cite{brunton2015} と主成分分析を組み合わせることで、
+%Hodgkin-Huxley モデル\cite{hodgkin1952}の 4 つの状態変数
+%$(V, m, h, n)$ を 2 つ $(V, g')$ に圧縮した代理モデルが構築されている
+%\cite{munechika2025}。
+%この手法では空間計算量の削減には成功したが、同定された微分方程式の右辺の項数が
+%十分にスパースにならず、時間計算量はかえって増加するという課題が残されている。
 
 そこで本研究では、代理モデルの構築手法としてリカレントニューラルネットワーク
 （Recurrent Neural Network, 以下 RNN）を用いる。RNN を用いる理由は次の 3 点である。
