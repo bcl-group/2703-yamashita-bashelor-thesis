@@ -1,0 +1,20 @@
+[project]
+name = "2703-yamashita-bashelor-thesis"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "yoheiyamahita-svg", email = "yoheiyamashita0821@gmail.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "matplotlib>=3.10.9",
+    "numpy>=2.2.6",
+]
+
+[project.scripts]
+2703-yamashita-bashelor-thesis = "2703_yamashita_bashelor_thesis:main"
+
+[build-system]
+requires = ["uv_build>=0.12.21,<0.13.0"]
+build-backend = "uv_build"
