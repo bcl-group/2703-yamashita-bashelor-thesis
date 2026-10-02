@@ -93,7 +93,35 @@ def run_experiment(seed=123, init='simple', epochs=1000, patience=None,
         'sin_true': sin_true,
         'gen': gen,
         'T': T,
+        'maxlen': maxlen,
+        'n_train': len(x_train),
     }
+
+
+def plot_data_split(f, sin_true, maxlen, n_train, save_dir=RESULT_DIR):
+    # 学習に使ったノイズ入りsin波を、訓練／検証で色分けして描く
+    #   訓練の問題 i（0〜n_train-1）は f[i]〜f[i+maxlen-1] を見て f[i+maxlen] を当てる
+    #   → 訓練で使う点は f[0]〜f[n_train-1+maxlen]
+    #   検証の問題は f[n_train]〜f[200]（答えは f[n_train+maxlen]〜f[200]）
+    os.makedirs(save_dir, exist_ok=True)
+
+    time = np.arange(len(f))
+    train_end = n_train - 1 + maxlen            # 訓練で使う最後の点（=164）
+
+    fig = plt.figure(figsize=(10, 4))
+    plt.plot(time[:train_end + 1], f[:train_end + 1],
+             color='tab:blue', linewidth=1, marker='o', markersize=2,
+             label='train (t=0-{})'.format(train_end))
+    plt.plot(time[train_end:], f[train_end:],
+             color='tab:orange', linewidth=1, marker='o', markersize=2,
+             label='val (t={}-{})'.format(train_end + 1, len(f) - 1))
+    plt.xlim([0, len(f) - 1])
+    plt.ylim([-1.5, 1.5])
+    plt.xlabel('time')
+    plt.ylabel('value')
+    plt.legend(loc='lower left')
+    fig.tight_layout()
+    fig.savefig(os.path.join(save_dir, 'data_split.png'), dpi=120)
 
 
 def plot_results(hist, f, sin_true, gen, T, save_dir=RESULT_DIR):
@@ -138,6 +166,7 @@ def main():
     print('epochs: {}, val_loss: {:.6f}, gen_mse: {:.4f}'.format(
         r['epochs_run'], r['val_loss'], r['gen_mse']))
 
+    plot_data_split(r['f'], r['sin_true'], r['maxlen'], r['n_train'])
     plot_results(r['hist'], r['f'], r['sin_true'], r['gen'], r['T'])
 
 

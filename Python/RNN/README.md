@@ -29,6 +29,7 @@ RNN/
 | `詳解ディープラーニング.pdf` | 参考資料（第5章を使用） |
 | `results/sin_wave/learning_curve.png` | 実行すると生成される学習曲線 |
 | `results/sin_wave/prediction.png` | 実行すると生成される予測結果 |
+| `results/sin_wave/data_split.png` | 学習に使ったノイズ入りsin波。訓練の答えに使う区間（青, t=0-164）と検証の答えの区間（橙, t=165-200）を色分けしたもの |
 
 新しいタスク（HHモデルの膜電位予測など）を追加するときは、`sin_wave.py` と同じ階層に
 スクリプトを1つ作り、`from rnn import SimpleRNN, Adam, train` のように部品を読み込む。

@@ -1,5 +1,7 @@
+import argparse
 import json
 import os
+import time
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,7 +9,7 @@ import matplotlib.pyplot as plt
 from rnn import (
     SimpleRNN,
     Adam,
-    train,
+    mean_squared_error,
     EarlyStopping,
     numerical_gradient_check,
 )
@@ -17,7 +19,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(BASE_DIR, '..', 'HH', 'data', 'teacher_thesis.npz')
 RESULT_DIR = os.path.join(BASE_DIR, 'results', 'hh')
 
-WINDOW_MS = 20.0
 # 正解 V の時刻で分ける（訓練 / 検証 / テスト = 60 / 20 / 20）
 SPLIT_MS = (540.0, 720.0)
 
@@ -28,18 +29,10 @@ def load_hh(path=DATA_PATH):
     return d['t'], d['I_ext'], d['V'], meta
 
 
-def create_hh_dataset(I, V, maxlen):
-    # I[i : i+maxlen] → V[i+maxlen]
-    x = []
-    t = []
-
-    for i in range(len(I) - maxlen):
-        x.append(I[i:i + maxlen])
-        t.append(V[i + maxlen])
-
-    x = np.array(x).reshape(-1, maxlen, 1)
-    t = np.array(t).reshape(-1, 1)
-
+def create_hh_sequence(I, V):
+    # I(t) → V(t+dt) を全時刻で1点ずつ対応させる。shape は (1, 系列長, 1)
+    x = I[:-1].reshape(1, -1, 1)
+    t = V[1:].reshape(1, -1, 1)
     return x, t
 
 
@@ -56,63 +49,89 @@ class Standardizer:
         return a * self.std + self.mean
 
 
-def predict(model, x, batch_size=1000):
-    # 窓が多いので、まとめて forward するとメモリが足りなくなる
-    y = [model.forward(x[s:s + batch_size]) for s in range(0, len(x), batch_size)]
-    return np.concatenate(y, axis=0)
-
-
 def count_spikes(V):
     return int(np.sum((V[:-1] < 0.0) & (V[1:] >= 0.0)))
 
 
-def run_experiment(seed=123, epochs=1000, patience=10, check_grad=True,
-                   verbose_every=1):
+def train_sequence(model, optimizer, x, t, n_train, idx_val,
+                   epochs=1000, verbose_every=10, early_stopping=None):
+    # 訓練区間（先頭 n_train 点）を h=0 から流し、全体で1回 BPTT して1回更新する。
+    # 検証は 0 から系列全体を流して、検証区間の誤差を測る（h を途切れさせないため）
+    x_train = x[:, :n_train]
+    t_train = t[:, :n_train]
+    hist = {'loss': [], 'val_loss': []}
+
+    for epoch in range(epochs):
+        y = model.forward(x_train)
+        loss = mean_squared_error(t_train, y)
+        grads = model.backward(t_train)
+        optimizer.step(model, grads)
+
+        y_all = model.forward(x)
+        val_loss = mean_squared_error(t[:, idx_val], y_all[:, idx_val])
+
+        hist['loss'].append(loss)
+        hist['val_loss'].append(val_loss)
+
+        if verbose_every and ((epoch + 1) % verbose_every == 0 or epoch == 0):
+            print('epoch: {:4d}, loss: {:.6f}, val_loss: {:.6f}'.format(
+                epoch + 1, loss, val_loss))
+
+        if early_stopping is not None and early_stopping(val_loss):
+            if verbose_every:
+                print('epoch: {:4d}, loss: {:.6f}, val_loss: {:.6f}'.format(
+                    epoch + 1, loss, val_loss))
+            break
+
+    return hist
+
+
+def run_experiment(seed=123, epochs=1000, patience=None, lr=0.001,
+                   check_grad=True, verbose_every=10):
     np.random.seed(seed)
 
     t_ms, I, V, meta = load_hh()
-    dt = meta['dt_ms']
-    maxlen = int(round(WINDOW_MS / dt))
 
     # 標準化の平均・標準偏差は訓練区間だけから求める
     train_mask = t_ms < SPLIT_MS[0]
     I_scaler = Standardizer(I[train_mask])
     V_scaler = Standardizer(V[train_mask])
 
-    x, t = create_hh_dataset(I_scaler.transform(I), V_scaler.transform(V),
-                             maxlen)
-    t_target = t_ms[maxlen:]
+    x, t = create_hh_sequence(I_scaler.transform(I), V_scaler.transform(V))
+    t_target = t_ms[1:]
 
     idx_train = t_target < SPLIT_MS[0]
     idx_val = (t_target >= SPLIT_MS[0]) & (t_target < SPLIT_MS[1])
     idx_test = t_target >= SPLIT_MS[1]
+    n_train = int(idx_train.sum())
 
-    x_train, t_train = x[idx_train], t[idx_train]
-    x_val, t_val = x[idx_val], t[idx_val]
-
-    print('dt = {} ms, maxlen = {} ({} ms)'.format(dt, maxlen, WINDOW_MS))
+    print('dt = {} ms'.format(meta['dt_ms']))
     print('x.shape = {}, t.shape = {}'.format(x.shape, t.shape))
     print('train: {}, val: {}, test: {}'.format(
-        idx_train.sum(), idx_val.sum(), idx_test.sum()))
+        n_train, idx_val.sum(), idx_test.sum()))
     print('I: mean = {:.3f}, std = {:.3f} / V: mean = {:.3f}, std = {:.3f}'.format(
         I_scaler.mean, I_scaler.std, V_scaler.mean, V_scaler.std))
     print()
 
-    model = SimpleRNN(input_dim=1, hidden_dim=50, output_dim=1, init='xavier')
+    model = SimpleRNN(input_dim=1, hidden_dim=50, output_dim=1, init='xavier',
+                      return_sequences=True)
 
     if check_grad:
-        numerical_gradient_check(model, x_train[:8], t_train[:8])
+        # 系列全体だと数値微分が重いので、先頭 200 点で検算する
+        numerical_gradient_check(model, x[:, :200], t[:, :200])
 
-    optimizer = Adam(model, lr=0.001, beta1=0.9, beta2=0.999, amsgrad=True)
+    optimizer = Adam(model, lr=lr, beta1=0.9, beta2=0.999, amsgrad=True)
 
     es = EarlyStopping(patience=patience) if patience is not None else None
 
-    hist = train(model, optimizer, x_train, t_train, x_val, t_val,
-                 epochs=epochs, batch_size=100, verbose_every=verbose_every,
-                 early_stopping=es)
+    start = time.time()
+    hist = train_sequence(model, optimizer, x, t, n_train, idx_val,
+                          epochs=epochs, verbose_every=verbose_every,
+                          early_stopping=es)
+    elapsed = time.time() - start
 
-    V_pred = V_scaler.inverse(predict(model, x)).ravel()
-    V_true = V[maxlen:]
+    V_pred = V_scaler.inverse(model.forward(x)).ravel()
+    V_true = V[1:]
 
     scores = {}
     for name, idx in [('train', idx_train), ('val', idx_val), ('test', idx_test)]:
@@ -126,7 +145,9 @@ def run_experiment(seed=123, epochs=1000, patience=10, check_grad=True,
 
     return {
         'seed': seed,
+        'lr': lr,
         'epochs_run': len(hist['loss']),
+        'elapsed': elapsed,
         'hist': hist,
         'model': model,
         'scalers': (I_scaler, V_scaler),
@@ -136,7 +157,6 @@ def run_experiment(seed=123, epochs=1000, patience=10, check_grad=True,
         't_target': t_target,
         'V_true': V_true,
         'V_pred': V_pred,
-        'maxlen': maxlen,
     }
 
 
@@ -148,7 +168,9 @@ def save_model(r, save_dir=RESULT_DIR):
     np.savez(os.path.join(save_dir, 'model.npz'),
              I_mean=I_scaler.mean, I_std=I_scaler.std,
              V_mean=V_scaler.mean, V_std=V_scaler.std,
-             maxlen=r['maxlen'], seed=r['seed'], **params)
+             seed=r['seed'], lr=r['lr'],
+             loss=np.array(r['hist']['loss']),
+             val_loss=np.array(r['hist']['val_loss']), **params)
 
 
 def plot_results(r, save_dir=RESULT_DIR):
@@ -201,16 +223,26 @@ def plot_results(r, save_dir=RESULT_DIR):
 
 
 def main():
-    r = run_experiment(seed=123, epochs=1000, patience=10, check_grad=True,
-                       verbose_every=1)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--epochs', type=int, default=1000)
+    parser.add_argument('--patience', type=int, default=None,
+                        help='指定しなければ EarlyStopping を使わない')
+    parser.add_argument('--lr', type=float, default=0.001)
+    parser.add_argument('--seed', type=int, default=123)
+    parser.add_argument('--out', default=RESULT_DIR, help='結果の保存先')
+    args = parser.parse_args()
+
+    r = run_experiment(seed=args.seed, epochs=args.epochs,
+                       patience=args.patience, lr=args.lr,
+                       check_grad=True, verbose_every=10)
     print()
-    print('epochs: {}'.format(r['epochs_run']))
+    print('epochs: {}, time: {:.0f} s'.format(r['epochs_run'], r['elapsed']))
     for name, s in r['scores'].items():
         print('{:5s}: RMSE = {:6.2f} mV, MAE = {:6.2f} mV, spikes HH/RNN = {}/{}'.format(
             name, s['rmse_mV'], s['mae_mV'], s['spikes_true'], s['spikes_pred']))
 
-    save_model(r)
-    plot_results(r)
+    save_model(r, args.out)
+    plot_results(r, args.out)
 
 
 if __name__ == '__main__':
