@@ -57,3 +57,14 @@ def ej_path(tmp_path):
     path = tmp_path / "ejdict.tsv"
     path.write_text(_EJ_TEXT, encoding="utf-8")
     return path
+
+
+@pytest.fixture
+def client(tmp_path, wn_path, ej_path):
+    from app import create_app
+    from vocab.dictionary import Dictionary, EJDict, WordNetDict
+    from vocab.store import VocabStore
+
+    store = VocabStore(tmp_path / "v.json")
+    app = create_app(store, Dictionary(WordNetDict(wn_path), EJDict(ej_path)))
+    return app.test_client()
