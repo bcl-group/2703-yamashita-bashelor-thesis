@@ -37,8 +37,7 @@ def random_pulse_current(t, i_min=-5.0, i_max=20.0, interval=20.0, seed=None):
     return amplitudes[segment_index]
 
 
-def random_timing_pulse_current(t, i_min=5.0, i_max=30.0, width=5.0,
-                                rate=0.02, seed=None):
+def random_timing_pulse_current(t, i_min=5.0, i_max=30.0, width=5.0, rate=0.02, seed=None):
     rng = np.random.default_rng(seed)
 
     dt = t[1] - t[0]
