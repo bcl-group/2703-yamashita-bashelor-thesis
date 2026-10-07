@@ -69,3 +69,26 @@ def test_suggest_falls_back_to_other_when_pos_unknown():
     assert suggest_senses({"wordnet": {}, "english_pos": ["名詞", "動詞"], "ejdict": ["行く"]}) == [
         {"pos": "その他", "meanings": ["行く"]}]
     assert suggest_senses({"wordnet": {}, "english_pos": [], "ejdict": []}) == []
+
+
+def _d(wn_path, ej_path):
+    return Dictionary(WordNetDict(wn_path), EJDict(ej_path))
+
+
+def test_inflection_entry_resolves_to_base(wn_path, ej_path):
+    d = _d(wn_path, ej_path)
+    assert d.lookup("went")["lemma"] == "go"
+    assert d.lookup("ran")["lemma"] == "run"
+    # 変化形以外の意味もある語はそのまま
+    assert d.lookup("found")["lemma"] == "found"
+
+
+def test_wordnet_lemma_without_japanese_is_not_preferred(wn_path, ej_path):
+    assert _d(wn_path, ej_path).lookup("rates")["lemma"] == "rate"
+
+
+def test_acronym_headword_has_lower_priority(wn_path, ej_path):
+    d = _d(wn_path, ej_path)
+    assert d.lookup("uses")["lemma"] == "use"
+    r = d.lookup("LSTM")
+    assert r["lemma"] == "lstm" and r["found"] is True and r["ejdict"] == ["長短期記憶"]

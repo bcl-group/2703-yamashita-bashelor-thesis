@@ -7,12 +7,14 @@ from .irregular import IRREGULAR
 
 _EDGE = re.compile(r"^[^a-z]+|[^a-z]+$")
 _SPACES = re.compile(r"\s+")
+_POSSESSIVE = re.compile(r"'s$")
 _VOWELS = set("aeiou")
 
 
 def normalize(text: str) -> str:
-    """前後の英字以外を除き、連続空白を1つにして小文字化する。"""
-    s = _EDGE.sub("", text.strip().lower())
+    """前後の英字以外と所有格 's を除き、連続空白を1つにして小文字化する。"""
+    s = text.strip().lower().replace("’", "'").replace("‘", "'")
+    s = _EDGE.sub("", _POSSESSIVE.sub("", _EDGE.sub("", s)))
     return _SPACES.sub(" ", s)
 
 
@@ -27,20 +29,21 @@ def _rule_candidates(word: str) -> list[str]:
     if len(word) < 4:
         return []
     out: list[str] = []
+    # notes → note を not より、hoped → hope を hop より先に試す
+    if word.endswith("s") and not word.endswith("ss"):
+        out.append(word[:-1])
     if word.endswith("ies"):
         out.append(word[:-3] + "y")
     if word.endswith("es"):
         out.append(word[:-2])
-    if word.endswith("s") and not word.endswith("ss"):
-        out.append(word[:-1])
     if word.endswith("ied"):
         out.append(word[:-3] + "y")
     if word.endswith("ed"):
         stem = word[:-2]
-        out += [stem, stem + "e", *_undouble(stem)]
+        out += [stem + "e", stem, *_undouble(stem)]
     if word.endswith("ing"):
         stem = word[:-3]
-        out += [stem, stem + "e", *_undouble(stem)]
+        out += [stem + "e", stem, *_undouble(stem)]
     return out
 
 

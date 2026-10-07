@@ -82,6 +82,7 @@ def main() -> None:
     dictionary = Dictionary.from_dir(APP_DIR / "data")
     if not dictionary.available:
         print("辞書がありません: uv run python 単語帳アプリ/setup_dict.py を実行してください")
+    dictionary.warm_up()
     create_app(store, dictionary).run(host="127.0.0.1", port=5000)
 
 

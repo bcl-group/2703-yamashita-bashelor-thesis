@@ -350,6 +350,7 @@ function reveal() {
 
 async function answer(result) {
   if (!quiz.revealed) return;
+  quiz.revealed = false;  // 連打・長押しで二重に記録しない
   await api("POST", `/api/quiz/${encodeURIComponent(quiz.entry.word)}`, { result });
   nextQuiz();
 }
@@ -359,7 +360,7 @@ $("#quiz-correct").addEventListener("click", () => answer("correct"));
 $("#quiz-wrong").addEventListener("click", () => answer("wrong"));
 
 document.addEventListener("keydown", (e) => {
-  if ($("#tab-quiz").hidden) return;
+  if ($("#tab-quiz").hidden || e.repeat) return;
   if (e.key === " ") { e.preventDefault(); reveal(); }
   else if (e.key === "ArrowRight") answer("correct");
   else if (e.key === "ArrowLeft") answer("wrong");

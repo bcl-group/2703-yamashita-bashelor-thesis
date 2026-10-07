@@ -18,6 +18,8 @@ _WN_ROWS = [
     ("recurrent", "G-a", "a", None, []),
     ("go", "H-v", "v", 5, []),
     ("go", "I-n", "n", 1, []),
+    ("rates", "J-n", "n", None, []),
+    ("rate", "K-n", "n", 3, ["率"]),
 ]
 
 _EJ_TEXT = (
@@ -25,6 +27,15 @@ _EJ_TEXT = (
     "neural network\t神経回路網\n"
     "state-of-the-art\t最新式の\n"
     "color,colour\t色\n"
+    "went\tgoの過去\n"
+    "go\t行く\n"
+    "ran\trunの過去形\n"
+    "run\t走る\n"
+    "found\tfindの過去・過去分詞 / …を創設する\n"
+    "find\t見つける\n"
+    "USES\tUnited States Employment Service全米雇用局\n"
+    "use\t使う\n"
+    "LSTM\t長短期記憶\n"
 )
 
 
