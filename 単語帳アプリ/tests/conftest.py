@@ -15,6 +15,9 @@ _WN_ROWS = [
     ("neural_network", "D-n", "n", None, ["ニューラルネットワーク"]),
     ("fast", "E-r", "r", None, ["速く"]),
     ("fast", "F-a", "a", None, ["速い"]),
+    ("recurrent", "G-a", "a", None, []),
+    ("go", "H-v", "v", 5, []),
+    ("go", "I-n", "n", 1, []),
 ]
 
 _EJ_TEXT = (

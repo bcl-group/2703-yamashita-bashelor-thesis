@@ -19,6 +19,14 @@ WHERE w.lang = 'eng' AND w.lemma = ?
 ORDER BY COALESCE(s.freq, 0) DESC, s.synset, js.rowid
 """
 
+_WN_POS_SQL = """
+SELECT DISTINCT sy.pos
+FROM word w
+JOIN sense s   ON s.wordid = w.wordid AND s.lang = 'eng'
+JOIN synset sy ON sy.synset = s.synset
+WHERE w.lang = 'eng' AND w.lemma = ?
+"""
+
 
 def _wn_key(lemma: str) -> str:
     # WordNet の複合語は neural_network のように _ でつなぐ
@@ -44,6 +52,11 @@ class WordNetDict:
             if jpn not in meanings:
                 meanings.append(jpn)
         return {p: groups[p] for p in POS_ORDER if p in groups}
+
+    def english_pos(self, lemma: str) -> list[str]:
+        """英語WordNet上の品詞（日本語訳の有無によらない）。POS_ORDER 順。"""
+        found = {WN_POS[r[0]] for r in self._con.execute(_WN_POS_SQL, (_wn_key(lemma),))}
+        return [p for p in POS_ORDER if p in found]
 
 
 class EJDict:
@@ -98,9 +111,21 @@ class Dictionary:
             "lemma": lemma,
             "found": found,
             "wordnet": self.wordnet.lookup(lemma) if self.wordnet else {},
+            "english_pos": self.wordnet.english_pos(lemma) if self.wordnet else [],
             "ejdict": self.ejdict.lookup(lemma) if self.ejdict else [],
         }
 
 
 def default_senses(wordnet: dict[str, list[str]], top: int = 3) -> list[dict]:
     return [{"pos": pos, "meanings": ms[:top]} for pos, ms in wordnet.items()]
+
+
+def suggest_senses(result: dict, top: int = 3) -> list[dict]:
+    """保存内容の初期値。日本語WordNetに訳がなければ EJDict の訳で補う。"""
+    if result["wordnet"]:
+        return default_senses(result["wordnet"], top)
+    if not result["ejdict"]:
+        return []
+    pos = result["english_pos"]
+    # 品詞が1つに決まらない場合は「その他」に入れ、画面で付け替えてもらう
+    return [{"pos": pos[0] if len(pos) == 1 else "その他", "meanings": result["ejdict"][:top]}]

@@ -8,7 +8,7 @@ from pathlib import Path
 
 from flask import Flask, jsonify, request
 
-from vocab.dictionary import POS_ORDER, Dictionary, default_senses
+from vocab.dictionary import POS_ORDER, Dictionary, suggest_senses
 from vocab.lemmatize import normalize
 from vocab.store import CorruptVocabError, VocabStore
 
@@ -33,7 +33,7 @@ def create_app(store: VocabStore, dictionary: Dictionary) -> Flask:
         if not normalize(word):
             return jsonify({"error": "英単語を入力してください"}), 400
         r = dictionary.lookup(word)
-        r["default"] = default_senses(r["wordnet"])
+        r["default"] = suggest_senses(r)
         r["saved"] = store.get(r["lemma"])
         return jsonify(r)
 

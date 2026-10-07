@@ -1,4 +1,4 @@
-from vocab.dictionary import Dictionary, EJDict, WordNetDict, default_senses
+from vocab.dictionary import Dictionary, EJDict, WordNetDict, default_senses, suggest_senses
 
 
 def test_wordnet_groups_by_pos_sorted_by_freq_and_deduped(wn_path):
@@ -32,7 +32,7 @@ def test_dictionary_lookup_lemmatizes(wn_path, ej_path):
 def test_dictionary_not_found(wn_path, ej_path):
     r = Dictionary(WordNetDict(wn_path), EJDict(ej_path)).lookup("transformerz")
     assert r == {"input": "transformerz", "lemma": "transformerz", "found": False,
-                 "wordnet": {}, "ejdict": []}
+                 "wordnet": {}, "english_pos": [], "ejdict": []}
 
 
 def test_dictionary_without_files(tmp_path):
@@ -44,3 +44,28 @@ def test_dictionary_without_files(tmp_path):
 def test_default_senses():
     assert default_senses({"名詞": ["a", "b", "c", "d"], "動詞": ["e"]}) == [
         {"pos": "名詞", "meanings": ["a", "b", "c"]}, {"pos": "動詞", "meanings": ["e"]}]
+
+
+def test_english_pos_without_japanese(wn_path):
+    wn = WordNetDict(wn_path)
+    assert wn.lookup("recurrent") == {}
+    assert wn.english_pos("recurrent") == ["形容詞"]
+    assert wn.english_pos("go") == ["名詞", "動詞"]
+
+
+def test_suggest_prefers_wordnet():
+    r = {"wordnet": {"名詞": ["a", "b", "c", "d"]}, "english_pos": ["名詞"], "ejdict": ["x"]}
+    assert suggest_senses(r) == [{"pos": "名詞", "meanings": ["a", "b", "c"]}]
+
+
+def test_suggest_falls_back_to_ejdict_with_english_pos():
+    r = {"wordnet": {}, "english_pos": ["形容詞"], "ejdict": ["再発する", "x", "y", "z"]}
+    assert suggest_senses(r) == [{"pos": "形容詞", "meanings": ["再発する", "x", "y"]}]
+
+
+def test_suggest_falls_back_to_other_when_pos_unknown():
+    assert suggest_senses({"wordnet": {}, "english_pos": [], "ejdict": ["…経由で"]}) == [
+        {"pos": "その他", "meanings": ["…経由で"]}]
+    assert suggest_senses({"wordnet": {}, "english_pos": ["名詞", "動詞"], "ejdict": ["行く"]}) == [
+        {"pos": "その他", "meanings": ["行く"]}]
+    assert suggest_senses({"wordnet": {}, "english_pos": [], "ejdict": []}) == []
