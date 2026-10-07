@@ -43,3 +43,16 @@ def test_quiz(client):
     assert client.post("/api/quiz/net", json={"result": "correct"}).get_json()["review"]["correct"] == 1
     assert client.post("/api/quiz/net", json={"result": "x"}).status_code == 400
     assert client.post("/api/quiz/none", json={"result": "correct"}).status_code == 404
+
+
+def test_is_running_detects_listening_port():
+    import socket
+
+    from app import is_running
+
+    with socket.socket() as s:
+        s.bind(("127.0.0.1", 0))
+        s.listen()
+        port = s.getsockname()[1]
+        assert is_running("127.0.0.1", port) is True
+    assert is_running("127.0.0.1", port) is False

@@ -1,9 +1,14 @@
 """英語論文単語帳アプリ（Flask）。
 
-起動: uv run python 単語帳アプリ/app.py → http://127.0.0.1:5000
+起動: uv run python 単語帳アプリ/app.py → http://127.0.0.1:5000 がブラウザで開く
+（--no-browser でブラウザを開かない）
 """
 
+import argparse
+import socket
 import sys
+import threading
+import webbrowser
 from pathlib import Path
 
 from flask import Flask, jsonify, request
@@ -13,6 +18,18 @@ from vocab.lemmatize import normalize
 from vocab.store import CorruptVocabError, VocabStore
 
 APP_DIR = Path(__file__).resolve().parent
+HOST = "127.0.0.1"
+PORT = 5000
+URL = f"http://{HOST}:{PORT}"
+
+
+def is_running(host: str, port: int) -> bool:
+    """そのポートで既にサーバが待ち受けているか。"""
+    try:
+        with socket.create_connection((host, port), timeout=0.5):
+            return True
+    except OSError:
+        return False
 
 
 def create_app(store: VocabStore, dictionary: Dictionary) -> Flask:
@@ -75,6 +92,17 @@ def create_app(store: VocabStore, dictionary: Dictionary) -> Flask:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description="論文単語帳")
+    parser.add_argument("--no-browser", action="store_true", help="起動時にブラウザを開かない")
+    args = parser.parse_args()
+
+    # 二重起動した場合は、既存のサーバをブラウザで開くだけにする
+    if is_running(HOST, PORT):
+        print(f"既に起動しています: {URL}")
+        if not args.no_browser:
+            webbrowser.open(URL)
+        return
+
     try:
         store = VocabStore(APP_DIR / "vocab.json")
     except CorruptVocabError as e:
@@ -83,7 +111,11 @@ def main() -> None:
     if not dictionary.available:
         print("辞書がありません: uv run python 単語帳アプリ/setup_dict.py を実行してください")
     dictionary.warm_up()
-    create_app(store, dictionary).run(host="127.0.0.1", port=5000)
+    if not args.no_browser:
+        # サーバが待ち受けを始めてから開く
+        threading.Timer(1.0, webbrowser.open, args=(URL,)).start()
+    print(f"{URL} で起動しました。このウィンドウを閉じると終了します。")
+    create_app(store, dictionary).run(host=HOST, port=PORT)
 
 
 if __name__ == "__main__":
