@@ -2,6 +2,37 @@
 ### RNNを用いた神経細胞モデル（Multi-Compertmentモデル）の代理モデル構築による高速シミュレーション
 微分方程式で記述されるニューロンモデルをRNNを用いた代理モデルで近似し、高速シミュレーションを実現する研究です。
 
+## フォルダ構成
+
+```
+.
+├── src/                 研究コードのライブラリ部分（実験から import して使う）
+│   ├── neuron/          HHモデルの数値計算（hh.py）と入力電流の生成（current.py）
+│   └── rnn/             NumPy だけで書いた RNN（モデル・BPTT・最適化・学習ループ）
+├── experiments/         src/ を使って実際に動かすスクリプト
+│   ├── hh/              HH の動作確認（run_hh.py）と教師データ作成（make_dataset.py）
+│   ├── sin_wave/        RNN の動作確認として sin 波を学習させる実験
+│   └── hh_surrogate/    HH の入力電流 I → 膜電位 V を RNN に学習させる実験
+├── data/hh/             make_dataset.py が作る教師データ（.npz）
+├── results/             実験の出力（図・学習済みパラメータ）
+├── thesis/              卒業論文（.tex / .pdf）と発表スライド
+├── docs/                README 用の図、RNN の設計メモ、タスク表
+├── notes/               勉強ノート（数値解析・深層学習ゼミなど）
+├── references/          関連論文と論文紹介の原稿
+└── PROGRESS.md          進捗と今後の予定
+```
+
+## 実行方法
+
+[uv](https://docs.astral.sh/uv/) で依存関係（numpy, matplotlib）を入れて、リポジトリ直下から実行する。
+
+```bash
+uv sync
+uv run python experiments/hh/make_dataset.py          # HH の教師データを data/hh/ に作る
+uv run python experiments/sin_wave/sin_wave.py        # sin 波の学習（結果は results/sin_wave/）
+uv run python experiments/hh_surrogate/hh_surrogate.py  # HH の I → V を RNN で学習
+```
+
 ## 背景
 ### 脳
 - 脳の情報処理は，ニューロン間で伝達される電気信号（スパイク）によって実現される[1]。
@@ -35,7 +66,7 @@
 - RNN:時刻$t-1$における隠れ層の値$\mathbb{h}(t-1)$を保持しておき、それも$\mathbb{h}(t)$に伝える
 - 隠れ層に過去の状態がすべて反映されている
 - 隠れ層に過去の状態がすべて反映されている
-![alt text](images/rnn_hidden_state_diagram.png)
+![alt text](docs/images/rnn_hidden_state_diagram.png)
 
 #### RNNを用いる理由
 
@@ -114,13 +145,13 @@ $$
 ## 研究の現在位置
 - Hodkin-Hukslayモデルの数値シミュレーション（済）
     - まずは空間形状をもたない単一ニューロンの発火を確認した
-    - 詳しくは「猿でもわかるニューロン発火 by Hodgkin,Huxley and Yamashita(2026/07/06)」を参照
-    ![alt text](images/hodgkin_huxley_simulation.png)
+    - 詳しくは「[猿でもわかるニューロン発火 by Hodgkin,Huxley and Yamashita(2026/07/06)](notes/saru_series/猿でもわかるニューロン発火by-Hodgkin-Huxley-and-Yamashita.md)」を参照
+    ![alt text](docs/images/hodgkin_huxley_simulation.png)
 - RNN実装
     - Pytouchを使った簡単なRNNを実装した
     - sin関数の学習に成功
     - 25ステップ分の過去の波形の塊を、時間を1ステップずつずらしながら
-    ![alt text](images/rnn_sin_prediction.png)
+    ![alt text](docs/images/rnn_sin_prediction.png)
 - HH × RNN　←今ここ
   - パルス電流をHHに入力
   - パルス入力電流 $I$ に対するHHの出力 $V$ をRNNに学習させる

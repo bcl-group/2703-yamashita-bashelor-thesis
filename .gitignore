@@ -218,7 +218,7 @@ __marimo__/
 .streamlit/secrets.toml
 
 # 大容量ファイル(GitHubの100MB上限を超えるため追跡対象外とする)
-Python/RNN/詳解ディープラーニング.pdf
+references/詳解ディープラーニング.pdf
 
 # LaTeX の中間ファイル(*.log は上の Django stuff の項で既に無視される)
 *.aux
@@ -240,5 +240,9 @@ Python/RNN/詳解ディープラーニング.pdf
 *.snm
 *.vrb
 
-# 単語帳アプリの辞書データ
-単語帳アプリ/data/
+# ローカル環境・OS・エディタのファイル
+.yamashita/
+.superpowers/
+.claude/settings.local.json
+.DS_Store
+~$*
