@@ -1,0 +1,480 @@
+{
+  "condition": {
+    "seed": 123,
+    "lr": 0.001,
+    "data_path": "/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/data/hh/teacher_thesis.npz",
+    "epochs_run": 1000,
+    "hidden_dim": 50
+  },
+  "opcost": {
+    "HH": {
+      "exp": 6,
+      "div": 7,
+      "pm": 26,
+      "mul": 25
+    },
+    "RNN": {
+      "exp": 50,
+      "div": 51,
+      "pm": 2702,
+      "mul": 2651
+    }
+  },
+  "metrics": {
+    "train": {
+      "rmse": 22.333883668757725,
+      "mae": 14.087410094759798,
+      "spike_count": [
+        53.0,
+        0.0
+      ],
+      "latency": [
+        1.8900000000000006,
+        NaN
+      ],
+      "mean_isi": [
+        16.666666666669293,
+        NaN
+      ],
+      "std_isi": [
+        5.125280161321791,
+        NaN
+      ],
+      "periodicity_gap": NaN,
+      "spike_shape_corr": NaN,
+      "spike_features": {
+        "peak_voltage": [
+          40.82918347125086,
+          NaN
+        ],
+        "AP_amplitude": [
+          NaN,
+          NaN
+        ],
+        "AP_begin_voltage": [
+          -63.05784719458904,
+          NaN
+        ],
+        "AP_rise_rate": [
+          64.86136934180854,
+          NaN
+        ],
+        "AP_fall_rate": [
+          -45.953193104344976,
+          NaN
+        ],
+        "AP_duration_half_width": [
+          NaN,
+          NaN
+        ],
+        "AP_rise_time": [
+          1.6000000000000227,
+          NaN
+        ],
+        "AP_fall_time": [
+          2.5,
+          NaN
+        ],
+        "AHP_depth": [
+          -17.917748355556682,
+          NaN
+        ],
+        "AHP_time_from_peak": [
+          2.799999999999999,
+          NaN
+        ]
+      },
+      "diverged": false
+    },
+    "steady 5": {
+      "rmse": 7.151138044127149,
+      "mae": 3.9777915155318535,
+      "spike_count": [
+        1.0,
+        0.0
+      ],
+      "latency": [
+        13.18999999999997,
+        NaN
+      ],
+      "mean_isi": [
+        NaN,
+        NaN
+      ],
+      "std_isi": [
+        NaN,
+        NaN
+      ],
+      "periodicity_gap": NaN,
+      "spike_shape_corr": NaN,
+      "spike_features": {
+        "peak_voltage": [
+          38.9549702070325,
+          NaN
+        ],
+        "AP_amplitude": [
+          92.7079699050573,
+          NaN
+        ],
+        "AP_begin_voltage": [
+          -53.75299969802479,
+          NaN
+        ],
+        "AP_rise_rate": [
+          92.70796990505762,
+          NaN
+        ],
+        "AP_fall_rate": [
+          -45.52421778249162,
+          NaN
+        ],
+        "AP_duration_half_width": [
+          1.2999999999999954,
+          NaN
+        ],
+        "AP_rise_time": [
+          0.9999999999999964,
+          NaN
+        ],
+        "AP_fall_time": [
+          2.499999999999991,
+          NaN
+        ],
+        "AHP_depth": [
+          -13.902739506046537,
+          NaN
+        ],
+        "AHP_time_from_peak": [
+          2.79999999999999,
+          NaN
+        ]
+      },
+      "diverged": false
+    },
+    "steady 10": {
+      "rmse": 23.93919628224937,
+      "mae": 16.40234660983333,
+      "spike_count": [
+        20.0,
+        0.0
+      ],
+      "latency": [
+        12.089999999999973,
+        NaN
+      ],
+      "mean_isi": [
+        14.63333333333319,
+        NaN
+      ],
+      "std_isi": [
+        0.04714045207922833,
+        NaN
+      ],
+      "periodicity_gap": NaN,
+      "spike_shape_corr": NaN,
+      "spike_features": {
+        "peak_voltage": [
+          39.974463444184735,
+          NaN
+        ],
+        "AP_amplitude": [
+          95.85670285183632,
+          NaN
+        ],
+        "AP_begin_voltage": [
+          -55.88223940765158,
+          NaN
+        ],
+        "AP_rise_rate": [
+          87.14245713803332,
+          NaN
+        ],
+        "AP_fall_rate": [
+          -44.1179688407307,
+          NaN
+        ],
+        "AP_duration_half_width": [
+          1.2999999999999954,
+          NaN
+        ],
+        "AP_rise_time": [
+          1.099999999999996,
+          NaN
+        ],
+        "AP_fall_time": [
+          2.5999999999999908,
+          NaN
+        ],
+        "AHP_depth": [
+          -18.94456576482395,
+          NaN
+        ],
+        "AHP_time_from_peak": [
+          2.79999999999999,
+          NaN
+        ]
+      },
+      "diverged": false
+    },
+    "steady 15": {
+      "rmse": 23.8733491927427,
+      "mae": 17.33190465081203,
+      "spike_count": [
+        22.0,
+        0.0
+      ],
+      "latency": [
+        11.689999999999975,
+        NaN
+      ],
+      "mean_isi": [
+        12.714999999999744,
+        NaN
+      ],
+      "std_isi": [
+        0.035707142142525614,
+        NaN
+      ],
+      "periodicity_gap": NaN,
+      "spike_shape_corr": NaN,
+      "spike_features": {
+        "peak_voltage": [
+          40.78790144103643,
+          NaN
+        ],
+        "AP_amplitude": [
+          104.18873429518013,
+          NaN
+        ],
+        "AP_begin_voltage": [
+          -63.400832854143694,
+          NaN
+        ],
+        "AP_rise_rate": [
+          65.11795893448782,
+          NaN
+        ],
+        "AP_fall_rate": [
+          -44.2063118255569,
+          NaN
+        ],
+        "AP_duration_half_width": [
+          1.399999999999995,
+          NaN
+        ],
+        "AP_rise_time": [
+          1.5999999999999943,
+          NaN
+        ],
+        "AP_fall_time": [
+          2.5999999999999908,
+          NaN
+        ],
+        "AHP_depth": [
+          -19.51623164208786,
+          NaN
+        ],
+        "AHP_time_from_peak": [
+          2.79999999999999,
+          NaN
+        ]
+      },
+      "diverged": false
+    },
+    "ramp 0-30": {
+      "rmse": 15.421870636412036,
+      "mae": 9.429993576404321,
+      "spike_count": [
+        11.0,
+        0.0
+      ],
+      "latency": [
+        178.78999999999414,
+        NaN
+      ],
+      "mean_isi": [
+        10.755555555555926,
+        NaN
+      ],
+      "std_isi": [
+        0.4030746032703635,
+        NaN
+      ],
+      "periodicity_gap": NaN,
+      "spike_shape_corr": NaN,
+      "spike_features": {
+        "peak_voltage": [
+          21.377499400981037,
+          NaN
+        ],
+        "AP_amplitude": [
+          70.98386331950945,
+          NaN
+        ],
+        "AP_begin_voltage": [
+          -49.60636391852842,
+          NaN
+        ],
+        "AP_rise_rate": [
+          64.53078483592135,
+          NaN
+        ],
+        "AP_fall_rate": [
+          -44.80407996426996,
+          NaN
+        ],
+        "AP_duration_half_width": [
+          1.0999999999999375,
+          NaN
+        ],
+        "AP_rise_time": [
+          1.0999999999999375,
+          NaN
+        ],
+        "AP_fall_time": [
+          2.0999999999998806,
+          NaN
+        ],
+        "AHP_depth": [
+          -16.17809137904301,
+          NaN
+        ],
+        "AHP_time_from_peak": [
+          2.3999999999998636,
+          NaN
+        ]
+      },
+      "diverged": false
+    },
+    "sin 10Hz": {
+      "rmse": 16.371372656348093,
+      "mae": 9.145954600300659,
+      "spike_count": [
+        10.0,
+        0.0
+      ],
+      "latency": [
+        12.489999999999972,
+        NaN
+      ],
+      "mean_isi": [
+        27.387499999998784,
+        NaN
+      ],
+      "std_isi": [
+        24.86752086055083,
+        NaN
+      ],
+      "periodicity_gap": NaN,
+      "spike_shape_corr": NaN,
+      "spike_features": {
+        "peak_voltage": [
+          39.70363358162839,
+          NaN
+        ],
+        "AP_amplitude": [
+          95.35436160525536,
+          NaN
+        ],
+        "AP_begin_voltage": [
+          -55.650728023626975,
+          NaN
+        ],
+        "AP_rise_rate": [
+          79.46196800437976,
+          NaN
+        ],
+        "AP_fall_rate": [
+          -45.778801557837454,
+          NaN
+        ],
+        "AP_duration_half_width": [
+          1.2999999999999954,
+          NaN
+        ],
+        "AP_rise_time": [
+          1.1999999999999957,
+          NaN
+        ],
+        "AP_fall_time": [
+          2.499999999999991,
+          NaN
+        ],
+        "AHP_depth": [
+          -15.65602510324559,
+          NaN
+        ],
+        "AHP_time_from_peak": [
+          2.6999999999999904,
+          NaN
+        ]
+      },
+      "diverged": false
+    },
+    "pulse 20Hz": {
+      "rmse": 22.617848304150353,
+      "mae": 13.286357317887644,
+      "spike_count": [
+        18.0,
+        0.0
+      ],
+      "latency": [
+        11.489999999999975,
+        NaN
+      ],
+      "mean_isi": [
+        16.349999999999767,
+        NaN
+      ],
+      "std_isi": [
+        6.711464072763463,
+        NaN
+      ],
+      "periodicity_gap": NaN,
+      "spike_shape_corr": NaN,
+      "spike_features": {
+        "peak_voltage": [
+          41.578998573610214,
+          NaN
+        ],
+        "AP_amplitude": [
+          106.37874489427924,
+          NaN
+        ],
+        "AP_begin_voltage": [
+          -64.79974632066902,
+          NaN
+        ],
+        "AP_rise_rate": [
+          70.91916326285308,
+          NaN
+        ],
+        "AP_fall_rate": [
+          -44.345961158182,
+          NaN
+        ],
+        "AP_duration_half_width": [
+          1.4999999999999947,
+          NaN
+        ],
+        "AP_rise_time": [
+          1.4999999999999947,
+          NaN
+        ],
+        "AP_fall_time": [
+          2.5999999999999908,
+          NaN
+        ],
+        "AHP_depth": [
+          -16.36408386844169,
+          NaN
+        ],
+        "AHP_time_from_peak": [
+          2.79999999999999,
+          NaN
+        ]
+      },
+      "diverged": false
+    }
+  }
+}
