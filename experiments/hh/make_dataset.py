@@ -1,3 +1,4 @@
+import inspect
 import json
 import os
 import sys
@@ -12,38 +13,82 @@ import matplotlib.pyplot as plt
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'src'))
 
 from neuron.hh import simulate, V_REST
-from neuron.current import random_pulse_current
+from neuron.current import random_pulse_current, munechika_train_current
 
-
+# このファイルがあるフォルダ（experiments/hh/）と、データの保存先（data/hh/）
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, '..', '..', 'data', 'hh')
+# 実際に呼ぶ電流関数
+CURRENT_FUNCS = {
+    'random_pulse_current': random_pulse_current,
+    'munechika_train_current': munechika_train_current,
+}
 
-
+#   name    : 保存するファイル名（拡張子なし）
+#   note    : 条件の説明。meta に残す
+#   dt, T   : 時間刻みとシミュレーションの長さ [ms]
+#   kind    : 使う電流関数の名前
+#   current : 電流関数に渡す引数。書かなかった引数は関数の既定値を使う
 DATASETS = [
     {
         'name': 'teacher_slide',
-        'note': '棟近先輩の進捗報告スライド p.7 の教師電流の条件',
+        'note': '棟近先輩のスライド p.7 と範囲（-5〜20）・区間幅（20 ms）だけ合わせた一様乱数の電流。'
+                '値の分布は棟近先輩と違う（同じ電流は munechika_train）',
         'dt': 0.01,
         'T': 9000.0,
+        'kind': 'random_pulse_current',
         'current': {'i_min': -5.0, 'i_max': 20.0, 'interval': 20.0, 'seed': 0},
     },
     {
         'name': 'teacher_thesis',
         'note': '棟近先輩の卒業論文 Algorithm 2 の条件',
-        'dt': 0.05,
+        'dt': 0.01,
         'T': 900.0,
+        'kind': 'random_pulse_current',
         'current': {'i_min': 0.0, 'i_max': 20.0, 'interval': 10.0, 'seed': 0},
+    },
+    {
+        'name': 'munechika_train',
+        'note': '棟近先輩の SINDyNeuroSurrogate の train() と同じ電流',
+        'dt': 0.01,
+        'T': 9000.0,
+        'kind': 'munechika_train_current',
+        'current': {},
     },
 ]
 
 
 def make_one(config):
+    """
+    1 つの条件でデータを作り、npz と確認用の図を保存する。
+
+    処理の流れ:
+        1. 電流関数の引数を決める（既定値 + config['current'] で上書き）
+        2. 入力電流 I_ext を作る
+        3. HH モデルを計算する
+        4. 発散していないか確かめ、スパイク数を数える
+        5. 時系列と条件（meta）を npz に保存する
+        6. 最初の 500 ms を図にして png で保存する
+
+    Args:
+        config (dict): DATASETS の要素 1 つ。
+
+    Returns:
+        dict: 保存先のパスと、表示用の要約（ステップ数、スパイク数、計算時間など）。
+
+    Raises:
+        RuntimeError: 膜電位が nan や inf になった（計算が発散した）とき。
+    """
     name = config['name']
     dt = config['dt']
     T = config['T']
 
+    func = CURRENT_FUNCS[config['kind']]
+    params = {k: p.default for k, p in inspect.signature(func).parameters.items() if k != 't'}
+    params.update(config['current'])
+
     t = np.arange(0, T, dt)
-    I_ext = random_pulse_current(t, **config['current'])
+    I_ext = func(t, **params)
 
     start = time.time()
     V, m, h, n = simulate(t, I_ext, V0=V_REST)
@@ -62,7 +107,7 @@ def make_one(config):
         'T_ms': T,
         'n_steps': len(t),
         'V_rest_mV': V_REST,
-        'current': dict(config['current'], kind='random_pulse_current'),
+        'current': dict(params, kind=config['kind']),
         'n_spikes': n_spikes,
         'columns': {
             't': '時刻 (ms)',
@@ -81,28 +126,28 @@ def make_one(config):
         meta=json.dumps(meta, ensure_ascii=False),
     )
 
-    n_show = min(len(t), int(500.0 / dt))
+    width = max(10.0, T / 50.0)
 
-    fig, axes = plt.subplots(3, 1, figsize=(10, 7), sharex=True)
+    fig, axes = plt.subplots(3, 1, figsize=(width, 7), sharex=True)
 
-    axes[0].plot(t[:n_show], I_ext[:n_show], color='red', linewidth=0.8)
+    axes[0].plot(t, I_ext, color='red', linewidth=0.8)
     axes[0].set_ylabel(r'$I_{ext}$ [$\mu$A/cm$^2$]')
     axes[0].grid(True, linestyle='--', alpha=0.5)
 
-    axes[1].plot(t[:n_show], V[:n_show], color='blue', linewidth=0.8)
+    axes[1].plot(t, V, color='blue', linewidth=0.8)
     axes[1].set_ylabel('V [mV]')
     axes[1].grid(True, linestyle='--', alpha=0.5)
 
-    axes[2].plot(t[:n_show], m[:n_show], color='green', linewidth=0.8, label='m')
-    axes[2].plot(t[:n_show], h[:n_show], color='green', linewidth=0.8,
-                 linestyle='--', label='h')
-    axes[2].plot(t[:n_show], n[:n_show], color='magenta', linewidth=0.8, label='n')
+    axes[2].plot(t, m, color='green', linewidth=0.8, label='m')
+    axes[2].plot(t, h, color='green', linewidth=0.8, linestyle='--', label='h')
+    axes[2].plot(t, n, color='magenta', linewidth=0.8, label='n')
     axes[2].set_ylabel('gate')
     axes[2].set_xlabel('Time [ms]')
+    axes[2].set_xlim(0, T)
     axes[2].legend(loc='upper right')
     axes[2].grid(True, linestyle='--', alpha=0.5)
 
-    fig.suptitle(f'{name}  (first {int(n_show * dt)} ms of {int(T)} ms)')
+    fig.suptitle(f'{name}  ({int(T)} ms)')
     fig.tight_layout()
     fig_path = os.path.join(DATA_DIR, f'{name}.png')
     fig.savefig(fig_path, dpi=110)
