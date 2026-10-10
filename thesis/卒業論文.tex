@@ -66,6 +66,24 @@
   \vfill
 \end{titlepage}
 
+% ==================================================================
+\chapter*{概要}
+% ==================================================================
+% 目的：方法：結果 = 3:3:4 を目安にする。先行研究には触れない。
+
+大規模な脳シミュレーションでは、ニューロンモデルが保持する隠れ変数のために、
+必要なメモリがニューロン数に比例して増大する。
+本研究では、Hodgkin-Huxley モデルを対象として、外部電流に対する膜電位応答を再現する
+リカレントニューラルネットワーク（RNN）の代理モデルを構築し、
+元のモデルと比べて再現精度と計算コストを評価することを目的とした。
+
+RNN は NumPy の配列演算のみで実装し、BPTT による勾配が数値微分と一致することを確かめた。
+ランダムなパルス電流を与えた Hodgkin-Huxley モデルのシミュレーションから教師データを作成し、
+学習した RNN に自身の予測値を入力として戻しながら膜電位応答を生成させた。
+生成した応答は、波形の誤差、スパイクの形状、計算コストの観点で元のモデルと比較した。
+
+\TODO{結果を書く（全体の 4 割程度）。目的に対してどのような結果が得られたかを数値で示す}
+
 \tableofcontents
 \clearpage
 
@@ -84,7 +102,7 @@
 
 近年の研究によると、ニューロンは刺激シーケンスの弁別や排他的論理和演算といった
 複雑な演算を行っており、これにはニューロンそのものが持つ空間形状が大きく関わっている
-ことが分かってきた\cite{gidon2020,branco2010}。
+ことが報告されている\cite{gidon2020,branco2010}。
 ニューロンの空間形状をモデル化に組み入れた数理モデルが Multi-Compartment モデルであり、
 このモデルはニューロンを電気的に連結された複数の区画（コンパートメント）の群として
 表現することで、上記のような特性を忠実に再現する。
@@ -92,25 +110,24 @@
 状態として保持するため、シミュレーションに多くのメモリを必要とする\cite{yamazaki2021}。
 マウスの脳（約 $10^{8\sim9}$ 個のニューロンを持つ）程度の規模であっても、
 国内最高性能のスーパーコンピュータである富岳でも扱いきれないほどに
-空間計算量が増大してしまう\cite{kobayashi2024}。
+空間計算量が増大する\cite{kobayashi2024}。
 脳シミュレーションにおいては、隠れ変数の値そのものを直接知る必要はないにもかかわらず、
 隠れ変数を格納するためのメモリはニューロン数とコンパートメント数に比例して
-増加してしまう。したがって、大規模な脳モデルのシミュレーションを実現するためには、
+増加する。したがって、大規模な脳モデルのシミュレーションを実現するためには、
 ニューロンモデルをシミュレーションする際の計算コストを削減することが重要である。
 
 計算コストを削減する手法として、本研究では代理モデル（surrogate model）の構築を考える。
 ここでの代理モデルとは、元のニューロンモデルに対し、より少ない隠れ変数、
 あるいはより高速な計算で同等の膜電位応答を再現できるモデルを指す。
-%棟近先輩：時系列データから支配方程式をスパースに同定する手法
-%SINDy\cite{brunton2015} と主成分分析を組み合わせることで、
-%Hodgkin-Huxley モデル\cite{hodgkin1952}の 4 つの状態変数
-%$(V, m, h, n)$ を 2 つ $(V, g')$ に圧縮した代理モデルが構築されている
-%\cite{munechika2025}。
-%この手法では空間計算量の削減には成功したが、同定された微分方程式の右辺の項数が
-%十分にスパースにならず、時間計算量はかえって増加するという課題が残されている。
+先行研究\cite{munechika2025}では、時系列データから支配方程式をスパースに同定する手法である
+SINDy\cite{brunton2015} と主成分分析を組み合わせ、
+Hodgkin-Huxley モデル\cite{hodgkin1952}の 4 つの状態変数 $(V, m, h, n)$ を
+2 つ $(V, g')$ に圧縮した代理モデルが構築されている。
+この手法により空間計算量は削減されたが、同定された微分方程式の右辺の項数が
+十分に少なくならず、時間計算量はかえって増加するという課題が残されている。
 
 そこで本研究では、代理モデルの構築手法としてリカレントニューラルネットワーク
-（Recurrent Neural Network, 以下 RNN）を用いる。RNN を用いる理由は次の 3 点である。
+（Recurrent Neural Network、以下 RNN）を用いる。RNN を用いる理由は次の 3 点である。
 
 \begin{enumerate}[label=(\arabic*)]
   \item \textbf{内部状態を保持できる}。
@@ -136,6 +153,11 @@ RNN による代理モデルが機能するかをまず確かめる。そのよ�
 PyTorch などの深層学習フレームワークを用いず、NumPy の基本的な配列演算のみで
 RNN を実装する。これにより、順伝播・誤差逆伝播・パラメータ更新の各過程を
 すべて追跡可能な形で記述する。
+
+以上を踏まえ、本研究の目的は、HH モデルを対象として外部電流に対する膜電位応答を再現する
+RNN 代理モデルを構築し、元のモデルと比べて再現精度と計算コストを評価することである。
+この評価により、RNN による代理モデルを Multi-Compartment モデルへ適用できるかを
+判断する材料を得る。
 
 % ==================================================================
 \chapter{基礎知識}
@@ -183,7 +205,6 @@ HH モデルは、イオン電流をナトリウムイオン電流 $\INa$、カ�
                    -\gK(V,t)\left(V(t)-\EK\right) + \Iext(t)
   \label{eq:hh_v}
 \end{equation}
-
 ここで、ナトリウムコンダクタンス $\gNa(V,t)$ とカリウムコンダクタンス $\gK(V,t)$ は
 $V, t$ に従って変化する。
 
@@ -215,40 +236,51 @@ $\alpha_x(V), \beta_x(V)$ はそれぞれ次式で定義される。
   \beta_n(V)  &= 0.125\exp\left(-\frac{V + 65}{80}\right) \notag
 \end{align}
 
-ここで、本研究では膜電位 $V$ を、静止膜電位を $-65$ [\si{mV}] とする表記で表している。
+ここで、本研究では膜電位 $V$ を、静止膜電位を \SI{-65}{mV} とする表記で表している。
 Hodgkin と Huxley の原論文\cite{hodgkin1952}および先行研究\cite{munechika2025}では、
-静止膜電位を $0$ [\si{mV}] とし脱分極を正の向きにとる表記が用いられているため、
+静止膜電位を \SI{0}{mV} とし脱分極を正の向きにとる表記が用いられているため、
 レート関数や反転電位の値の表れ方が異なる。両者は $V$ の原点の取り方が異なるだけで
 等価なモデルであるが、本研究では実装に合わせて前者の表記を用いる。
 
-なお、$\alpha_m(V)$ は $V = -40$ [\si{mV}]、$\alpha_n(V)$ は $V = -55$ [\si{mV}] に
+なお、$\alpha_m(V)$ は $V = \SI{-40}{mV}$、$\alpha_n(V)$ は $V = \SI{-55}{mV}$ に
 おいて分母と分子がともに $0$ となる。実装ではこれらの近傍において、
 L'H\^{o}pital の定理から得られる極限値（それぞれ $1.0$ と $0.1$）を用いている。
 
 まとめると、HH モデルは膜電位 $V$ とゲート変数 $m, h, n$ に関する
-4 元の連立常微分方程式である。
+4 元の連立常微分方程式（式\eqref{eq:hh_v}、\eqref{eq:hh_gate}）である。
+HH モデルに時刻 \SIrange{10}{40}{ms} の間だけ \SI{10}{\micro A/cm^2} の定常電流を
+与えたときの応答を図\ref{fig:hh_sim}に示す。
+上段は膜電位 $V$ と外部電流 $\Iext$、下段はゲート変数 $m, h, n$ の時間変化である。
+電流を与えている間に 2 回のスパイクが発生し、膜電位はピークで約 \SI{40}{mV} に達した。
+各スパイクでは、まず $m$ が急激に増加し、それに続いて $h$ が減少して $n$ が増加した。
+電流を止めると、膜電位とゲート変数はいずれも静止状態の値に戻った。
+$m$ の増加による Na チャネルの開口が膜電位を急上昇させ、
+$h$ の減少による Na チャネルの不活性化と $n$ の増加による K チャネルの開口が
+膜電位を静止膜電位付近まで戻すことで、スパイクが形成される。
 
-\begin{table}[htbp]
+\begin{table}[tbp]
   \centering
   \caption{Hodgkin-Huxley モデルで使うイオンチャネルに関する定数。
-           膜容量は $C = 1.0$ [\si{\micro F/cm^2}] とした。}
+           膜容量は $C = \SI{1.0}{\micro F/cm^2}$ とした。}
   \label{tab:hh_const}
   \begin{tabular}{lrr}
     \toprule
     イオン種 & 反転電位 $E$ [\si{mV}] & 最大コンダクタンス $\bar{g}$ [\si{mS/cm^2}] \\
     \midrule
     $\mathrm{Na}^{+}$      &   50.000 & 120.0 \\
-    $\mathrm{K}^{+}$       &  -77.000 &  36.0 \\
-    その他のイオン (leak)   &  -54.387 &   0.3 \\
+    $\mathrm{K}^{+}$       & $-77.000$ &  36.0 \\
+    その他のイオン (leak)   & $-54.387$ &   0.3 \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-\begin{figure}[htbp]
+\begin{figure}[tbp]
   \centering
   \includegraphics[width=0.85\linewidth]{images/hodgkin_huxley_simulation.png}
   \caption{Hodgkin-Huxley モデルのシミュレーション結果。
-           \TODO{図の説明を書く。与えた電流の振幅・時間、上から何のグラフかを明記する}}
+           時刻 \SIrange{10}{40}{ms} に \SI{10}{\micro A/cm^2} の定常電流を与えた。
+           上段は膜電位 $V$（青、左軸）と外部電流 $\Iext$（赤、右軸）、
+           下段はゲート変数 $m, h, n$ を表す。破線はスパイクのピーク時刻を示す。}
   \label{fig:hh_sim}
 \end{figure}
 
@@ -264,6 +296,9 @@ Multi-Compartment モデルは、ニューロンの空間形状を電気的に�
   I_i^{(\mathrm{axial})} = \sum_{j \in \mathrm{neighbors}} g_{i,j}\left(V_j - V_i\right) + I_{\mathrm{inj}}
   \label{eq:axial}
 \end{equation}
+ここで、$V_i$ はコンパートメント $i$ の膜電位、$g_{i,j}$ はコンパートメント $i, j$ 間の
+コンダクタンス、$I_{\mathrm{inj}}$ はコンパートメント $i$ に外部から注入される電流であり、
+和はコンパートメント $i$ に隣接するコンパートメント $j$ についてとる。
 
 \TODO{どの Multi-Compartment モデルを対象とするかが決まっていない。
       小林先生から紹介された論文を読んで、対象とするモデル（コンパートメント数、
@@ -285,12 +320,12 @@ RNN は、並びに規則性のあるデータを学習することで、
 一般的なニューラルネットワークは「入力層 $\bm{x}(t)$ -- 隠れ層 $\bm{h}(t)$ --
 出力層 $\bm{y}(t)$」という構造を持つが、
 RNN ではこれに加えて時刻 $t-1$ における隠れ層の値 $\bm{h}(t-1)$ を保持しておき、
-それも時刻 $t$ の隠れ層に伝える\cite{sugomori2019}。
+それも時刻 $t$ の隠れ層に伝える（図\ref{fig:rnn_diagram}）\cite{sugomori2019}。
 時刻 $t$ の状態を $t-1$ の状態として保持しフィードバックさせるため、
 $\bm{h}(t-1)$ には再帰的に過去の状態がすべて反映されていることになる。
 これがリカレント（再帰型）ニューラルネットワークと呼ばれる理由である。
 
-\begin{figure}[htbp]
+\begin{figure}[tbp]
   \centering
   \includegraphics[width=0.6\linewidth]{images/rnn_hidden_state_diagram.png}
   \caption{過去の隠れ層を加えたニューラルネットワークの構造。}
@@ -305,7 +340,6 @@ $\bm{h}(t-1)$ には再帰的に過去の状態がすべて反映されている
   \bm{h}(t) &= f\left(W\bm{x}(t) + U\bm{h}(t-1) + \bm{b}\right) \label{eq:rnn_h}\\
   \bm{y}(t) &= g\left(V\bm{h}(t) + \bm{c}\right)                \label{eq:rnn_y}
 \end{align}
-
 ここで $f(\cdot), g(\cdot)$ は活性化関数、$\bm{b}, \bm{c}$ はバイアスベクトルである。
 $W$ は入力層から隠れ層への重み、$U$ は過去の隠れ層から隠れ層への重み（再帰重み）、
 $V$ は隠れ層から出力層への重みを表す。
@@ -328,7 +362,6 @@ ReLU は出力が入力に比例し最大値が $+\infty$ であるため、
   \bm{p}(t) &\coloneqq W\bm{x}(t) + U\bm{h}(t-1) + \bm{b} \label{eq:p}\\
   \bm{q}(t) &\coloneqq V\bm{h}(t) + \bm{c}                \label{eq:q}
 \end{align}
-
 と定義する。これに対する誤差項を
 
 \begin{equation}
@@ -336,7 +369,6 @@ ReLU は出力が入力に比例し最大値が $+\infty$ であるため、
   \bm{e}_o(t) \coloneqq \frac{\partial E}{\partial \bm{q}(t)}
   \label{eq:err}
 \end{equation}
-
 とすると、各パラメータの勾配は次のように表せる。
 
 \begin{align}
@@ -354,8 +386,8 @@ ReLU は出力が入力に比例し最大値が $+\infty$ であるため、
   \bm{e}_h(t) &= f'(\bm{p}(t)) \odot V^{\mathsf{T}}\bm{e}_o(t) \label{eq:eh}\\
   \bm{e}_o(t) &= g'(\bm{q}(t)) \odot \left(\bm{y}(t) - \bm{t}(t)\right) \label{eq:eo}
 \end{align}
-
-で与えられる。これらの式自体は正しいが、RNN ではネットワークの順伝播で
+で与えられる。ここで、$\odot$ は要素ごとの積（アダマール積）、
+$\bm{t}(t)$ は時刻 $t$ における正解値を表す。これらの式自体は正しいが、RNN ではネットワークの順伝播で
 時刻 $t-1$ における隠れ層の出力 $\bm{h}(t-1)$ を考えたため、
 逆伝播の際も $t-1$ における誤差を考える必要がある。
 すなわち、順伝播において $\bm{h}(t)$ が $\bm{h}(t-1)$ の再帰関係式で
@@ -363,25 +395,33 @@ ReLU は出力が入力に比例し最大値が $+\infty$ であるため、
 表す必要がある。このとき誤差は時間を遡って逆伝播していることになるので、
 これを Backpropagation Through Time（以下 BPTT）と呼ぶ\cite{werbos1990}。
 
-$\bm{e}_h(t-1) = \partial E / \partial \bm{p}(t-1)$ であることから、
-再帰関係式を求めると
+$\bm{e}_h(t-1) = \partial E / \partial \bm{p}(t-1)$ であり、
+$\bm{p}(t-1)$ は $\bm{h}(t-1) = f(\bm{p}(t-1))$ を通して $\bm{p}(t)$ に影響する。
+ここでは本研究の実装と同じく、出力を最後の時刻でのみとる場合を考える。
+連鎖律より、再帰関係式は次のように求まる。
 
 \begin{align}
   \bm{e}_h(t-1)
-   &= \frac{\partial E}{\partial \bm{p}(t)} \odot \frac{\partial \bm{p}(t)}{\partial \bm{p}(t-1)} \notag\\
-   &= \bm{e}_h(t) \odot \left(
-        \frac{\partial \bm{p}(t)}{\partial \bm{h}(t-1)}
-        \frac{\partial \bm{h}(t-1)}{\partial \bm{p}(t-1)} \right) \label{eq:bptt}\\
-   &= \bm{e}_h(t) \odot \left( U f'(\bm{p}(t-1)) \right) \notag
+   &= \left( \frac{\partial \bm{p}(t)}{\partial \bm{p}(t-1)} \right)^{\mathsf{T}}
+      \frac{\partial E}{\partial \bm{p}(t)} \notag\\
+   &= \left( \frac{\partial \bm{p}(t)}{\partial \bm{h}(t-1)}
+             \frac{\partial \bm{h}(t-1)}{\partial \bm{p}(t-1)} \right)^{\mathsf{T}}
+      \bm{e}_h(t) \notag\\
+   &= \left( U \,\mathrm{diag}\!\left(f'(\bm{p}(t-1))\right) \right)^{\mathsf{T}} \bm{e}_h(t) \notag\\
+   &= f'(\bm{p}(t-1)) \odot \left( U^{\mathsf{T}} \bm{e}_h(t) \right)
+   \label{eq:bptt}
 \end{align}
-
-が得られる。よって、再帰的に
+ここで、式\eqref{eq:p}より $\partial \bm{p}(t) / \partial \bm{h}(t-1) = U$、
+$\bm{h}(t-1) = f(\bm{p}(t-1))$ は要素ごとの関数なので
+$\partial \bm{h}(t-1) / \partial \bm{p}(t-1) = \mathrm{diag}(f'(\bm{p}(t-1)))$ である。
+対角行列との積は要素ごとの積に書き換えられるため、最後の行が得られる。
+出力を各時刻でとる場合は、括弧内に $V^{\mathsf{T}} \bm{e}_o(t-1)$ が加わる。
+よって、再帰的に
 
 \begin{equation}
-  \bm{e}_h(t-z-1) = \bm{e}_h(t-z) \odot \left( U f'(\bm{p}(t-z-1)) \right)
+  \bm{e}_h(t-z-1) = f'(\bm{p}(t-z-1)) \odot \left( U^{\mathsf{T}} \bm{e}_h(t-z) \right)
   \label{eq:bptt_z}
 \end{equation}
-
 の関係で表すことができる。これによりすべての勾配が計算できるため、
 各パラメータの更新式は学習率を $\eta$ として次のようになる。
 
@@ -395,7 +435,7 @@ $\bm{e}_h(t-1) = \partial E / \partial \bm{p}(t-1)$ であることから、
 
 この $\tau$ がどれくらいの過去まで遡って時間依存性を見るか（すなわちデータ長）を
 表すので、理想的には $\tau \to +\infty$ とすべきである。
-しかし、現実には勾配が消失（あるいは爆発）してしまうことを防ぐため、
+しかし、現実には勾配が消失（あるいは爆発）することを防ぐため、
 $\tau = 10 \sim 100$ 程度に設定するのが一般的である\cite{sugomori2019}。
 
 \subsection{再帰計算がある場合の重みの初期値}
@@ -452,7 +492,6 @@ HH モデルの実体は $n$ 元 1 階連立常微分方程式
   \frac{d\bm{x}}{dt} = \bm{f}(\bm{x}, t)
   \label{eq:ode}
 \end{equation}
-
 である。今回扱うモデルにおいては $\bm{f}$ が非線形の関数であるため、
 解析解を求めることは非常に困難である。そこで、シミュレーションの手法として
 数値計算手法の一つである陽的 Euler 法を用いた。
@@ -460,7 +499,7 @@ Euler 法では、区間 $[a,b]$ を刻み幅 $h$ で等間隔に $n$ 等分し�
 $t_0, t_1, \dots, t_n$ に対し、各点での近似解 $x_0, x_1, \dots, x_n$ を
 Algorithm \ref{alg:euler} のように求める\cite{minemura2008}。
 
-\begin{algorithm}[htbp]
+\begin{algorithm}[tbp]
   \caption{Euler 法}
   \label{alg:euler}
   \begin{algorithmic}[1]
@@ -475,8 +514,8 @@ Algorithm \ref{alg:euler} のように求める\cite{minemura2008}。
 
 \subsection{初期値の与え方}
 
-膜電位の初期値は静止膜電位 $V_{\mathrm{rest}} = -65.0$ [\si{mV}] を与える。
-これは\ref{sec:hh}節で述べた表記（静止膜電位を $-65$ [\si{mV}] とする表記）に
+膜電位の初期値は静止膜電位 $V_{\mathrm{rest}} = \SI{-65.0}{mV}$ を与える。
+これは\ref{sec:hh}節で述べた表記（静止膜電位を \SI{-65}{mV} とする表記）に
 対応しており、式\eqref{eq:rate}のレート関数もこの表記のもとで定義されている。
 
 ゲート変数の初期値については、式\eqref{eq:hh_gate}を変形すると
@@ -486,7 +525,6 @@ Algorithm \ref{alg:euler} のように求める\cite{minemura2008}。
     = -\left( x - \frac{\alpha_x(V)}{\alpha_x(V) + \beta_x(V)} \right)
   \label{eq:gate_relax}
 \end{equation}
-
 となる。この式は、ゲート変数 $x$ が $\alpha_x(V) / (\alpha_x(V) + \beta_x(V))$ に
 おいて $dx/dt = 0$、すなわち定常状態になることを意味する。
 時刻 $t=0$ の初期値において傾きが $0$ であってほしいので、
@@ -501,7 +539,6 @@ Algorithm \ref{alg:euler} のように求める\cite{minemura2008}。
     \end{pmatrix}
   \label{eq:gate_init}
 \end{equation}
-
 とする。
 
 \subsection{外部電流の生成方法}
@@ -512,7 +549,7 @@ Algorithm \ref{alg:euler} のように求める\cite{minemura2008}。
 ランダムな振幅を持つパルス電流の組み合わせとして与える
 （Algorithm \ref{alg:iext}）。
 
-\begin{algorithm}[htbp]
+\begin{algorithm}[tbp]
   \caption{$\Iext$ の決定}
   \label{alg:iext}
   \begin{algorithmic}[1]
@@ -522,15 +559,18 @@ Algorithm \ref{alg:euler} のように求める\cite{minemura2008}。
            $t_0 = [0,\Delta], t_1 = [\Delta, 2\Delta], \dots$ を得る
     \For{$i = 0, 1, \dots, n$}
       \State $[I_{\min}, I_{\max}]$ の中から一様乱数で $I_{\mathrm{rnd}}$ を選ぶ
-      \State 区間 $t_i$ の間は $I_{\mathrm{rnd}}$ [\si{mA}] の定常電流が流れているものとする
+      \State 区間 $t_i$ の間は $I_{\mathrm{rnd}}$ [\si{\micro A/cm^2}] の定常電流が流れているものとする
     \EndFor
     \State \Return $\Iext = [\Iext^{(0)}, \Iext^{(1)}, \dots, \Iext^{(n)}]$
   \end{algorithmic}
 \end{algorithm}
 
 \TODO{パラメータを確定させる。先行研究\cite{munechika2025}では
-      $\Delta = 10$ ms、$I_{\max} = 20$ mA、$dt = 0.05$ ms、$T_{\mathrm{sim}} = 900$ ms、
-      最新の進捗報告では $-5 \sim 20$ mA、$20$ ms 幅、$dt = 0.01$ ms が使われている。
+      $\Delta = \SI{10}{ms}$、$I_{\max} = \SI{20}{\micro A/cm^2}$、$dt = \SI{0.05}{ms}$、
+      $T_{\mathrm{sim}} = \SI{900}{ms}$、
+      最新の進捗報告では \SIrange{-5}{20}{\micro A/cm^2}、\SI{20}{ms} 幅、$dt = \SI{0.01}{ms}$ が使われている。
+      （先行研究の単位は mA と書かれていたが、HH モデルの電流は \si{\micro A/cm^2} なので、
+      数値の意味が同じかを確認する）
       本研究でどの条件を使うかを決め、その理由も書く}
 
 \section{学習データの作成}
@@ -547,14 +587,13 @@ RNN の学習には、一定長の入力系列とその直後の正解値の組�
 すなわち、$\tau$ 点の系列を入力とし、その次の 1 点を予測する教師あり学習とする。
 窓を 1 時刻ずつずらしながらこの組を作るため、
 元の時系列の長さを $L$ とするとサンプル数は $L - \tau$ となる。
-入力データ $X$ と正解データ$\bm{t}$ の形状はそれぞれ
+入力データ $X$ と正解データ $\bm{t}$ の形状はそれぞれ
 
 \begin{equation}
   X \in \mathbb{R}^{(L-\tau) \times \tau \times D}, \qquad
   \bm{t} \in \mathbb{R}^{(L-\tau) \times K}
   \label{eq:shapes}
 \end{equation}
-
 となる（$D$ は入力次元、$K$ は出力次元）。
 一定長に分割するのは BPTT における計算の都合という理由もあるが、
 データ数を増やして学習できるという理由もある\cite{sugomori2019}。
@@ -575,19 +614,19 @@ RNN の学習には、一定長の入力系列とその直後の正解値の組�
 本研究では、RNN の内部計算を理解することを目的として、
 PyTorch などのフレームワークを使わず NumPy の基本的な配列演算のみで
 RNN を実装した。以下、実装した処理を順に述べる。
+実装の主要部分は付録\ref{app:code}に示す。
 
 \subsection{順伝播}
 
 時刻 $t = 0$ には 1 つ前の時刻が存在しないため、隠れ状態の初期値は
 $\bm{h}(-1) = \bm{0}$ とする。その後、式\eqref{eq:rnn_h}に従って
 時刻ごとに隠れ状態を更新する。実装では、バッチを行方向に並べるため、
-資料の式とは行列の左右が入れ替わった形
+式\eqref{eq:rnn_h}とは行列の左右が入れ替わった形
 
 \begin{equation}
   P = X_t W + H_{t-1} U + \bm{b}, \qquad H_t = \tanh(P)
   \label{eq:forward_impl}
 \end{equation}
-
 で計算している。出力は最後の時刻の隠れ状態のみを用い、
 回帰問題であるため活性化関数は恒等関数とする。
 
@@ -614,7 +653,6 @@ $\bm{h}(-1) = \bm{0}$ とする。その後、式\eqref{eq:rnn_h}に従って
   \frac{\partial E}{\partial w} \simeq \frac{E(w + \epsilon) - E(w - \epsilon)}{2\epsilon}
   \label{eq:numgrad}
 \end{equation}
-
 と比較する検算を行った（\ref{sec:sin_result}節）。
 
 パラメータの更新には、まず式\eqref{eq:update}の最も基本的な勾配降下法を用いた。
@@ -712,7 +750,6 @@ sin 波の予測問題で確認した。周期 $T = 100$ の sin 波に振幅 $0
   f(t) = \sin\left(\frac{2\pi}{T}t\right) + 0.05u, \qquad u \sim U(-1,1)
   \label{eq:toy}
 \end{equation}
-
 を $t = 0, \dots, 2T$ について生成し、$\tau = 25$ として
 式\eqref{eq:window}の形式に変換した。データの形状は
 $X \in \mathbb{R}^{176 \times 25 \times 1}$、$\bm{t} \in \mathbb{R}^{176 \times 1}$
@@ -722,7 +759,7 @@ BPTT の実装が正しいことを確認するため、式\eqref{eq:numgrad}の
 比較した。結果を表\ref{tab:gradcheck}に示す。いずれのパラメータについても
 相対誤差は $10^{-7}$ 以下であり、BPTT の実装は正しいことが確認できた。
 
-\begin{table}[htbp]
+\begin{table}[tbp]
   \centering
   \caption{BPTT による勾配と数値微分による勾配の比較}
   \label{tab:gradcheck}
@@ -739,27 +776,31 @@ BPTT の実装が正しいことを確認するため、式\eqref{eq:numgrad}の
   \end{tabular}
 \end{table}
 
-学習は $1000$ エポック、バッチサイズ $100$ で行った。
+学習は $1{,}000$ エポック、バッチサイズ $100$ で行った。
 損失は訓練・検証ともに $0.0013$ 程度で下げ止まった。
 これは学習データに加えたノイズの分散 $0.05^2/3 \simeq 8.3\times10^{-4}$ と
 ほぼ同じ水準であり、ノイズ成分は原理的に学習できないため、
 これ以上損失は下がらない。
 
 \ref{sec:inference}節の方法で最初の 25 点のみから波形を生成させた結果を
-図\ref{fig:sin_pred}に示す。ノイズなしの sin 波とほぼ一致する波形を
-生成できており、実装した RNN が時系列の周期性を学習できていることが分かる。
+図\ref{fig:sin_pred}に示す。横軸は時刻 $t$、縦軸は $f(t)$ の値である。
+RNN が生成した波形はノイズなしの sin 波とほぼ一致した。
+本物のデータを参照せずにこの波形を生成できたことから、
+実装した RNN は時系列の周期性を学習できている。
 
-\begin{figure}[htbp]
+\begin{figure}[tbp]
   \centering
   \includegraphics[width=0.8\linewidth]{images/rnn_sin_prediction.png}
   \caption{実装した RNN による sin 波の生成。
-           \TODO{NumPy 実装での最新の図（results/sin\_wave/prediction.png）に差し替える}}
+           \TODO{NumPy 実装での最新の図（results/sin\_wave/prediction.png）に差し替える。
+           現在の図は軸名が Time・Value で、比較対象（True）がノイズ入りの系列になっている。
+           軸名を $t$・$f(t)$ にし、本文どおりノイズなしの sin 波と比較する図にする}}
   \label{fig:sin_pred}
 \end{figure}
 
 なお、パラメータ更新に最も基本的な勾配降下法を用いた場合、
 次の 1 点の予測（損失の低下）自体は達成できたが、
-予測値を入力に戻して波形を生成させると形が崩れてしまった。
+予測値を入力に戻して波形を生成させると形が崩れた。
 Adam を用いることでこの問題は解消した。
 \TODO{この比較結果（表）を載せる。README.md に測定値がある}
 
@@ -779,7 +820,9 @@ Adam を用いることでこの問題は解消した。
       (1) 波形の比較図と RMSE・MAE
       (2) スパイク特徴量の比較表
       (3) 定常電流振幅の掃引に対するスパイク数、ramp 電流に対する閾値、sin 波応答
-      (4) 計算コストの比較表}
+      (4) 計算コストの比較表
+      各結果が第 1 章の目的（再現精度と計算コストの評価）のどちらに対応するかを明記する。
+      図の説明は「何を表すか（軸）→ 図から分かる事実 → 考察」の順で書く}
 
 \section{考察}
 
@@ -791,7 +834,10 @@ Adam を用いることでこの問題は解消した。
         GPU による並列化に向く、という対比ができるはず
       ・自己回帰による誤差累積の影響
       ・学習データに含まれない入力に対する外挿性能の限界
-      ・Multi-Compartment モデルへ拡張した場合に期待される計算コスト削減量の見積もり}
+      ・Multi-Compartment モデルへ拡張した場合に期待される計算コスト削減量の見積もり
+      書き方：各考察がどの結果に対応するかを明記する。結果が生じた理由の仮説は複数挙げ、
+      どれがもっともらしいか、どれを棄却できるかを議論する。
+      サンプル数のような自明な問題には紙面を割かない}
 
 % ==================================================================
 \chapter{まとめ}
@@ -801,7 +847,9 @@ Adam を用いることでこの問題は解消した。
       ・本研究は RNN を用いてニューロンモデルの代理モデルを構築した
       ・RNN は PyTorch を使わず NumPy のみで実装し、BPTT が正しいことを数値微分で確認した
       ・（結果のまとめ）
-      ・今後は Multi-Compartment モデルに対する代理モデルの構築を行う}
+      ・今後は Multi-Compartment モデルに対する代理モデルの構築を行う
+      第 1 章の目的が達成されたかどうかがはっきり分かるように書く。
+      今後の展望は考察と重複させない}
 
 % ==================================================================
 \chapter*{謝辞}
@@ -817,106 +865,103 @@ Adam を用いることでこの問題は解消した。
 % 参考文献
 % ==================================================================
 \begin{thebibliography}{99}
+% 形式：著者, ``論文題目,'' 雑誌名, 巻(号), ページ, 発行年.（本は 著者, 書名, 出版社, ページ, 発行年.）
+% 著者が 3 人以上のときは筆頭著者 + et al.。本文で引用した順に並べる。
 
 \bibitem{yamazaki2021}
-山﨑 匡, 五十嵐 潤.
-\newblock はじめての神経回路シミュレーション: 1 ニューロンからヒト全脳モデルまで.
-\newblock 森北出版株式会社, 2021, pp.~56--61.
+山﨑 匡, 五十嵐 潤,
+はじめての神経回路シミュレーション: 1 ニューロンからヒト全脳モデルまで,
+森北出版, pp.~56--61, 2021.
 
 \bibitem{kandel2022}
-Eric R. Kandel et al.
-\newblock カンデル神経科学. 第 2 版.
-\newblock メディカル・サイエンス・インターナショナル, 2022, p.~57.
+E. R. Kandel et al.,
+カンデル神経科学 第 2 版,
+メディカル・サイエンス・インターナショナル, p.~57, 2022.
 
 \bibitem{gidon2020}
-Albert Gidon et al.
-\newblock Dendritic Action Potentials and Computation in Human Layer 2/3 Cortical Neurons.
-\newblock \textit{Science}, Jan. 2020.
-\newblock doi: 10.1126/science.aax6239.
+A. Gidon et al.,
+``Dendritic action potentials and computation in human layer 2/3 cortical neurons,''
+\textit{Science}, 367(6473), 83--89, 2020.
 
 \bibitem{branco2010}
-Tiago Branco, Beverley A. Clark, Michael H\"ausser.
-\newblock Dendritic Discrimination of Temporal Input Sequences in Cortical Neurons.
-\newblock \textit{Science}, 329.5999 (Sept. 2010), p.~1671.
-\newblock doi: 10.1126/science.1189664.
+T. Branco et al.,
+``Dendritic discrimination of temporal input sequences in cortical neurons,''
+\textit{Science}, 329(5999), 1671--1675, 2010.
 
 \bibitem{kobayashi2024}
-Kobayashi Taira, Tamura Akira, Rin Kuriyama.
-\newblock Development of a lightweight and customizable biophysical neuron simulator. 2024.
-\newblock \url{https://researchmap.jp/tairakobayashi/presentations/48836360}
-
-\bibitem{hodgkin1952}
-A. L. Hodgkin, A. F. Huxley.
-\newblock A Quantitative Description of Membrane Current and Its Application to
-Conduction and Excitation in Nerve.
-\newblock \textit{The Journal of Physiology}, 117.4 (Aug. 1952), pp.~500--544.
-\newblock doi: 10.1113/jphysiol.1952.sp004764.
-
-\bibitem{miyagawa2013}
-宮川 博義, 井上 雅司.
-\newblock ニューロンの生物物理. 第 2 版.
-\newblock 丸善出版, 2013.
-
-\bibitem{minemura2008}
-峯村 吉泰.
-\newblock C と Java で学ぶ数値シミュレーション入門.
-\newblock 森北出版株式会社, 2008, pp.~155--157.
-
-\bibitem{brunton2015}
-Steven L. Brunton, Joshua L. Proctor, J. Nathan Kutz.
-\newblock Discovering Governing Equations from Data: Sparse Identification of
-Nonlinear Dynamical Systems. Sept. 2015.
-\newblock doi: 10.1073/pnas.1517384113.
+T. Kobayashi et al.,
+``Development of a lightweight and customizable biophysical neuron simulator,''
+2024, \url{https://researchmap.jp/tairakobayashi/presentations/48836360}.
+% \TODO{発表した学会名を確認して追記する}
 
 \bibitem{munechika2025}
-棟近 春樹.
-\newblock Hodgkin-Huxley モデルの計算コスト削減を目指したサロゲートモデルの開発.
-\newblock 卒業論文, 山口大学理学部物理・情報科学科, 令和 6 年度.
+棟近 春樹,
+Hodgkin-Huxley モデルの計算コスト削減を目指したサロゲートモデルの開発,
+卒業論文, 山口大学 理学部 物理・情報科学科, 令和 6 年度.
 % \TODO{先輩の卒論の引用形式を先生に確認する。
 %       また、進捗報告スライド（2026年）を引用する場合の書き方も確認が必要}
 
+\bibitem{brunton2015}
+S. L. Brunton et al.,
+``Discovering governing equations from data by sparse identification of
+nonlinear dynamical systems,''
+\textit{Proceedings of the National Academy of Sciences}, 113(15), 3932--3937, 2016.
+
+\bibitem{hodgkin1952}
+A. L. Hodgkin, A. F. Huxley,
+``A quantitative description of membrane current and its application to
+conduction and excitation in nerve,''
+\textit{The Journal of Physiology}, 117(4), 500--544, 1952.
+
+\bibitem{miyagawa2013}
+宮川 博義, 井上 雅司,
+ニューロンの生物物理 第 2 版,
+丸善出版, 2013.
+
 \bibitem{sugomori2019}
-巣籠 悠輔.
-\newblock 詳解ディープラーニング 第 2 版: TensorFlow/Keras・PyTorch による時系列データ処理.
-\newblock マイナビ出版, 2019.
+巣籠 悠輔,
+詳解ディープラーニング 第 2 版: TensorFlow/Keras・PyTorch による時系列データ処理,
+マイナビ出版, 2019.
 % 第 5 章（pp.~255--277）がリカレントニューラルネットワーク
 
 \bibitem{elman1990}
-Jeffrey L. Elman.
-\newblock Finding Structure in Time.
-\newblock \textit{Cognitive Science}, 14.2 (1990), pp.~179--211.
-\newblock doi: 10.1207/s15516709cog1402\_1.
+J. L. Elman,
+``Finding structure in time,''
+\textit{Cognitive Science}, 14(2), 179--211, 1990.
 
 \bibitem{werbos1990}
-Paul J. Werbos.
-\newblock Backpropagation Through Time: What It Does and How to Do It.
-\newblock \textit{Proceedings of the IEEE}, 78.10 (Oct. 1990), pp.~1550--1560.
-\newblock doi: 10.1109/5.58337.
+P. J. Werbos,
+``Backpropagation through time: What it does and how to do it,''
+\textit{Proceedings of the IEEE}, 78(10), 1550--1560, 1990.
 
 \bibitem{saxe2014}
-Andrew M. Saxe, James L. McClelland, Surya Ganguli.
-\newblock Exact Solutions to the Nonlinear Dynamics of Learning in Deep Linear
-Neural Networks. 2014.
-\newblock arXiv: 1312.6120.
+A. M. Saxe et al.,
+``Exact solutions to the nonlinear dynamics of learning in deep linear neural networks,''
+\textit{International Conference on Learning Representations (ICLR)}, 2014.
+
+\bibitem{minemura2008}
+峯村 吉泰,
+C と Java で学ぶ数値シミュレーション入門,
+森北出版, pp.~155--157, 2008.
 
 \bibitem{kingma2015}
-Diederik P. Kingma, Jimmy Ba.
-\newblock Adam: A Method for Stochastic Optimization. 2015.
-\newblock arXiv: 1412.6980.
+D. P. Kingma, J. Ba,
+``Adam: A method for stochastic optimization,''
+\textit{International Conference on Learning Representations (ICLR)}, 2015.
 
-\bibitem{chen2019}
-Ricky T. Q. Chen et al.
-\newblock Neural Ordinary Differential Equations. Dec. 2019.
-\newblock doi: 10.48550/arXiv.1806.07366.
+% 本文で引用していないため一時的に外している。考察で Neural ODE に触れるなら戻す。
+% \bibitem{chen2019}
+% R. T. Q. Chen et al.,
+% ``Neural ordinary differential equations,''
+% \textit{Advances in Neural Information Processing Systems}, 31, 2018.
 
 \end{thebibliography}
 
 % ==================================================================
 \appendix
-\chapter{付録}
+\chapter{実装したコード}
+\label{app:code}
 % ==================================================================
-
-\section{実装したコード}
 
 \TODO{NumPy による RNN の実装（src/rnn/model.py）の主要部分を載せるか、
       リポジトリの URL を記載する}

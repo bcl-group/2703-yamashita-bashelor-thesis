@@ -225,9 +225,9 @@ def load_block(path):
     return model, in_scaler, out_scaler, str(d['data_path'])
 
 
-def plot_block(r, save_dir=RESULT_DIR, show_ms=100.0):
+def plot_block(r, save_dir=RESULT_DIR):
+    # 教師強制の予測の図は eval で描く（block{n}_tf_train.png）。ここでは学習曲線だけ
     os.makedirs(save_dir, exist_ok=True)
-    names = BLOCKS[r['block']]['outputs']
 
     fig1 = plt.figure()
     plt.plot(r['hist']['loss'], color='black', linewidth=1, label='train loss')
@@ -237,25 +237,6 @@ def plot_block(r, save_dir=RESULT_DIR, show_ms=100.0):
     plt.legend()
     plt.title('RNN{} learning curve'.format(r['block']))
     fig1.savefig(os.path.join(save_dir, 'block{}_learning_curve.png'.format(r['block'])),
-                 dpi=120)
-
-    # 細かい形が見えるように先頭 show_ms だけ描く
-    t_target = r['t_ms'][:len(r['Y_true'])]
-    show = t_target < show_ms
-    fig2, axes = plt.subplots(len(names), 1, figsize=(10, 1.8 * len(names)),
-                              sharex=True, squeeze=False)
-    for i, (ax, name) in enumerate(zip(axes[:, 0], names)):
-        ax.plot(t_target[show], r['Y_true'][show, i], color='gray', linestyle='--',
-                linewidth=0.8, label='HH')
-        ax.plot(t_target[show], r['Y_pred'][show, i], color='black', linewidth=0.8,
-                label='RNN{}'.format(r['block']))
-        ax.set_ylabel(name)
-        ax.set_title('RMSE = {:.4g}'.format(r['rmse'][name]), fontsize=8)
-    axes[0, 0].legend(loc='upper right')
-    axes[-1, 0].set_xlabel('Time [ms]')
-    fig2.suptitle('RNN{} (teacher forcing, first {:.0f} ms)'.format(r['block'], show_ms))
-    fig2.tight_layout()
-    fig2.savefig(os.path.join(save_dir, 'block{}_prediction.png'.format(r['block'])),
                  dpi=120)
     plt.close('all')
 
@@ -315,17 +296,27 @@ def run_closed_loop(blocks, I, V0=V_REST):
 
 
 def predict_case(blocks, t_ms, I, V, m, h, n):
-    V_pred, _, _ = run_closed_loop(blocks, I, V0=V[0])
+    V_pred, AB_pred, G_pred = run_closed_loop(blocks, I, V0=V[0])
     V_true = V[1:]
     err = V_pred - V_true
     dt = float(t_ms[1] - t_ms[0])
 
     # どのブロックで誤差が出るかを見るため、正解を入れたとき（教師強制）の誤差も求める
     tf_rmse = {}
+    tf = {}
     for b, (model, in_s, out_s) in blocks.items():
         X, Y = block_data(b, I, V, m, h, n)
-        tf_rmse['RNN{}'.format(b)] = block_rmse(
-            Y, forward_sequence(model, in_s, out_s, X), BLOCKS[b]['outputs'])
+        Y_pred = forward_sequence(model, in_s, out_s, X)
+        tf[b] = {'X': X, 'Y_true': Y, 'Y_pred': Y_pred}
+        tf_rmse['RNN{}'.format(b)] = block_rmse(Y, Y_pred, BLOCKS[b]['outputs'])
+
+    # 閉ループでの内部の変数。AB は時刻 t_k、G は t_{k+1} の値（run_closed_loop の返り値と同じ）
+    closed_loop = {
+        'AB_pred': AB_pred,
+        'AB_true': rate_constants(V)[:-1],
+        'G_pred': G_pred,
+        'G_true': np.stack([m, h, n], axis=1)[1:],
+    }
 
     return {
         't_ms': t_ms,
@@ -339,6 +330,8 @@ def predict_case(blocks, t_ms, I, V, m, h, n):
         'spikes_pred': count_spikes(V_pred),
         'metrics': compare_waveforms(V_true, V_pred, dt),
         'teacher_forcing_rmse': tf_rmse,
+        'teacher_forcing': tf,
+        'closed_loop': closed_loop,
     }
 
 
@@ -418,6 +411,194 @@ def plot_eval(cases, save_dir):
     plt.close('all')
 
 
+def tf_time(b, t_ms):
+    # 教師強制の出力の時刻。RNN1 は入力と同じ時刻 t_k、RNN2・RNN3 は次の時刻 t_{k+1}
+    return t_ms[:-1] if b == 1 else t_ms[1:]
+
+
+def plot_blocks_tf(cases, save_dir):
+    """各ブロック単体（教師強制）の図: 学習電流全体と、評価用電流ごと。"""
+    eval_names = [name for name in cases if name != 'train']
+
+    for b, spec in BLOCKS.items():
+        names = spec['outputs']
+
+        # 学習電流 900 ms 全体
+        c = cases['train']
+        tf = c['teacher_forcing'][b]
+        t = tf_time(b, c['t_ms'])
+        fig, axes = plt.subplots(len(names), 1, figsize=(12, 1.8 * len(names)),
+                                 sharex=True, squeeze=False)
+        for i, (ax, name) in enumerate(zip(axes[:, 0], names)):
+            ax.plot(t, tf['Y_true'][:, i], color='gray', linestyle='--', linewidth=0.8,
+                    label='HH')
+            ax.plot(t, tf['Y_pred'][:, i], color='black', linewidth=0.6,
+                    label='RNN{}'.format(b))
+            ax.set_ylabel(name)
+            ax.set_xlim(t[0], t[-1])
+            ax.set_title('RMSE = {:.4g}'.format(c['teacher_forcing_rmse']['RNN{}'.format(b)][name]),
+                         fontsize=8)
+        axes[0, 0].legend(loc='upper right')
+        axes[-1, 0].set_xlabel('Time [ms]')
+        fig.suptitle('RNN{} teacher forcing (train current)'.format(b))
+        fig.tight_layout()
+        fig.savefig(os.path.join(save_dir, 'block{}_tf_train.png'.format(b)), dpi=120)
+        plt.close(fig)
+
+        # 評価用電流: 行 = 電流、列 = 出力
+        fig, axes = plt.subplots(len(eval_names), len(names),
+                                 figsize=(max(9.0, 3.2 * len(names)), 1.9 * len(eval_names)),
+                                 sharex=True, squeeze=False)
+        for r, case_name in enumerate(eval_names):
+            c = cases[case_name]
+            tf = c['teacher_forcing'][b]
+            t = tf_time(b, c['t_ms'])
+            for i, name in enumerate(names):
+                ax = axes[r, i]
+                ax.plot(t, tf['Y_true'][:, i], color='gray', linestyle='--', linewidth=0.8)
+                ax.plot(t, tf['Y_pred'][:, i], color='black', linewidth=0.6)
+                ax.set_xlim(t[0], t[-1])
+                ax.text(0.98, 0.95, 'RMSE {:.3g}'.format(
+                            c['teacher_forcing_rmse']['RNN{}'.format(b)][name]),
+                        transform=ax.transAxes, ha='right', va='top', fontsize=7)
+                if r == 0:
+                    ax.set_title(name, fontsize=9)
+                if i == 0:
+                    ax.set_ylabel(case_name, fontsize=8)
+        for ax in axes[-1]:
+            ax.set_xlabel('Time [ms]')
+        fig.suptitle('RNN{} teacher forcing (eval currents)  gray: HH, black: RNN{}'.format(b, b))
+        fig.tight_layout()
+        fig.savefig(os.path.join(save_dir, 'block{}_tf_eval.png'.format(b)), dpi=110)
+        plt.close(fig)
+
+
+def plot_blocks_parity(cases, save_dir, n_points=5000, seed=0):
+    """
+    予測と正解の対応図（教師強制）。点が多すぎるので各条件から n_points 点を間引いて描く。
+      RNN1: 横軸 V、縦軸 α, β。HH の式の曲線に RNN の点が乗っているか
+      RNN2, RNN3: 横軸 正解の変化量 x(t+dt) - x(t)、縦軸 RNN の変化量。
+                  閉ループでは変化量の誤差が積み重なるので、値そのものではなく変化量で比べる
+    """
+    rng = np.random.default_rng(seed)
+    eval_names = [name for name in cases if name != 'train']
+
+    def sample(n):
+        return rng.choice(n, size=min(n, n_points), replace=False)
+
+    # RNN1
+    names = BLOCKS[1]['outputs']
+    V_grid = np.linspace(-100.0, 50.0, 500)
+    AB_grid = rate_constants(V_grid)
+    fig, axes = plt.subplots(2, 3, figsize=(12, 6.5))
+    for i, (ax, name) in enumerate(zip(axes.ravel(), names)):
+        ax.plot(V_grid, AB_grid[:, i], color='gray', linestyle='--', linewidth=1.0,
+                label='HH (formula)')
+        for case_name, color in [('train', 'black')] + [(n, 'tab:orange') for n in eval_names]:
+            tf = cases[case_name]['teacher_forcing'][1]
+            idx = sample(len(tf['X']))
+            ax.scatter(tf['X'][idx, 0], tf['Y_pred'][idx, i], s=1, color=color, alpha=0.3,
+                       label='RNN1 train' if case_name == 'train' else None)
+        ax.scatter([], [], s=4, color='tab:orange', label='RNN1 eval')
+        ax.set_xlabel('V [mV]')
+        ax.set_title(name, fontsize=9)
+    axes[0, 0].legend(fontsize=7, markerscale=3)
+    fig.suptitle('RNN1: rate constants vs V (teacher forcing)')
+    fig.tight_layout()
+    fig.savefig(os.path.join(save_dir, 'block1_parity.png'), dpi=120)
+    plt.close(fig)
+
+    # RNN2, RNN3: 変化量どうしの対応
+    for b, state_cols in [(2, slice(6, 9)), (3, slice(3, 4))]:
+        names = BLOCKS[b]['outputs']
+        fig, axes = plt.subplots(1, len(names), figsize=(4.2 * len(names), 4.2), squeeze=False)
+        for i, (ax, name) in enumerate(zip(axes[0], names)):
+            all_d = []
+            for case_name, color in [('train', 'black')] + [(n, 'tab:orange') for n in eval_names]:
+                tf = cases[case_name]['teacher_forcing'][b]
+                now = tf['X'][:, state_cols][:, i]
+                d_true = tf['Y_true'][:, i] - now
+                d_pred = tf['Y_pred'][:, i] - now
+                idx = sample(len(now))
+                ax.scatter(d_true[idx], d_pred[idx], s=1, color=color, alpha=0.3,
+                           label='train' if case_name == 'train' else None)
+                all_d.append(np.stack([d_true, d_pred], axis=1))
+            # ごく一部の外れ値で軸が広がらないよう、0.1〜99.9 パーセンタイルの範囲を描く
+            all_d = np.concatenate(all_d)
+            lo, hi = np.percentile(all_d, [0.1, 99.9])
+            pad = 0.05 * (hi - lo)
+            lo, hi = lo - pad, hi + pad
+            n_out = int(np.sum(np.any((all_d < lo) | (all_d > hi), axis=1)))
+            ax.plot([lo, hi], [lo, hi], color='gray', linestyle='--', linewidth=1.0,
+                    label='y = x')
+            ax.set_xlim(lo, hi)
+            ax.set_ylim(lo, hi)
+            ax.scatter([], [], s=4, color='tab:orange', label='eval')
+            ax.set_xlabel('true  {0}(t+dt) - {0}(t)'.format(name))
+            ax.set_ylabel('RNN{}  {}(t+dt) - {}(t)'.format(b, name, name))
+            ax.set_title('{}  ({} of {} points outside)'.format(name, n_out, len(all_d)),
+                         fontsize=9)
+        axes[0, 0].legend(fontsize=7, markerscale=3)
+        fig.suptitle('RNN{}: one-step change, RNN vs HH (teacher forcing)'.format(b))
+        fig.tight_layout()
+        fig.savefig(os.path.join(save_dir, 'block{}_parity.png'.format(b)), dpi=120)
+        plt.close(fig)
+
+
+def plot_closed_loop_states(cases, save_dir):
+    """3つをつないで回したときの内部の変数（V, m, h, n, α, β）を HH と比べる。"""
+    # 学習電流: 全変数を縦に並べる
+    c = cases['train']
+    cl = c['closed_loop']
+    t_ab = c['t_ms'][:-1]
+    t_next = c['t_ms'][1:]
+    rows = ([('V [mV]', t_next, c['V_true'], c['V_pred'])]
+            + [(name, t_next, cl['G_true'][:, i], cl['G_pred'][:, i])
+               for i, name in enumerate(GATE_NAMES)]
+            + [(name, t_ab, cl['AB_true'][:, i], cl['AB_pred'][:, i])
+               for i, name in enumerate(AB_NAMES)])
+    fig, axes = plt.subplots(len(rows), 1, figsize=(12, 1.5 * len(rows)), sharex=True)
+    for ax, (label, t, y_true, y_pred) in zip(axes, rows):
+        ax.plot(t, y_true, color='gray', linestyle='--', linewidth=0.8, label='HH')
+        ax.plot(t, y_pred, color='black', linewidth=0.6, label='RNN x3 (closed loop)')
+        ax.set_ylabel(label, fontsize=8)
+        ax.set_xlim(t[0], t[-1])
+    axes[0].legend(loc='upper right', fontsize=8)
+    axes[-1].set_xlabel('Time [ms]')
+    fig.suptitle('Closed loop internal states (train current)')
+    fig.tight_layout()
+    fig.savefig(os.path.join(save_dir, 'closedloop_states_train.png'), dpi=110)
+    plt.close(fig)
+
+    # 評価用電流: 行 = 電流、列 = V, m, h, n
+    eval_names = [name for name in cases if name != 'train']
+    cols = ['V [mV]'] + GATE_NAMES
+    fig, axes = plt.subplots(len(eval_names), len(cols),
+                             figsize=(3.4 * len(cols), 1.9 * len(eval_names)),
+                             sharex=True, squeeze=False)
+    for r, case_name in enumerate(eval_names):
+        c = cases[case_name]
+        cl = c['closed_loop']
+        t = c['t_ms'][1:]
+        series = [(c['V_true'], c['V_pred'])] + [
+            (cl['G_true'][:, i], cl['G_pred'][:, i]) for i in range(3)]
+        for j, (y_true, y_pred) in enumerate(series):
+            ax = axes[r, j]
+            ax.plot(t, y_true, color='gray', linestyle='--', linewidth=0.8)
+            ax.plot(t, y_pred, color='black', linewidth=0.6)
+            ax.set_xlim(t[0], t[-1])
+            if r == 0:
+                ax.set_title(cols[j], fontsize=9)
+            if j == 0:
+                ax.set_ylabel(case_name, fontsize=8)
+    for ax in axes[-1]:
+        ax.set_xlabel('Time [ms]')
+    fig.suptitle('Closed loop V, m, h, n (eval currents)  gray: HH, black: RNN x3')
+    fig.tight_layout()
+    fig.savefig(os.path.join(save_dir, 'closedloop_states_eval.png'), dpi=110)
+    plt.close(fig)
+
+
 def main():
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers(dest='command', required=True)
@@ -439,6 +620,8 @@ def main():
     p_eval = sub.add_parser('eval', help='保存した3つのブロックをつないで評価する')
     p_eval.add_argument('--dir', default=RESULT_DIR, help='block1〜3.npz があるフォルダ')
     p_eval.add_argument('--out', default=None, help='結果の保存先（既定は --dir と同じ）')
+    p_eval.add_argument('--data', default=None,
+                        help='学習電流の npz（既定は block の学習に使ったファイル）')
 
     args = parser.parse_args()
 
@@ -462,6 +645,16 @@ def main():
                 os.path.join(args.dir, 'block{}.npz'.format(b)))
             blocks[b] = (model, in_s, out_s)
 
+        if args.data is not None:
+            data_path = args.data
+        elif not os.path.exists(data_path):
+            # 別のマシン（サーバー）で学習したときは絶対パスが合わないので、
+            # このリポジトリの data/hh/ にある同じ名前のファイルを使う
+            local = os.path.join(os.path.dirname(DATA_PATH), os.path.basename(data_path))
+            print('学習時のデータが見つからないので、こちらを使う: {}'.format(
+                os.path.normpath(local)))
+            data_path = local
+
         start = time.time()
         cases = evaluate(blocks, data_path)
         print('評価にかかった時間: {:.0f} s'.format(time.time() - start))
@@ -469,6 +662,9 @@ def main():
         report(cases, blocks)
         save_metrics(cases, blocks, args.dir, out)
         plot_eval(cases, out)
+        plot_blocks_tf(cases, out)
+        plot_blocks_parity(cases, out)
+        plot_closed_loop_states(cases, out)
 
 
 if __name__ == '__main__':

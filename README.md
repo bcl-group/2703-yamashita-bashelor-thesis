@@ -14,13 +14,16 @@
 .
 ├── src/                 研究コードのライブラリ部分（実験から import して使う）
 │   ├── neuron/          HHモデルの数値計算（hh.py）と入力電流の生成（current.py）
-│   └── rnn/             NumPy だけで書いた RNN（モデル・BPTT・最適化・学習ループ）
+│   ├── rnn/             NumPy だけで書いた RNN（モデル・BPTT・最適化・学習ループ）
+│   └── evaluation/      波形・スパイクの評価指標（waveform.py）と演算回数の比較（opcost.py）
 ├── experiments/         src/ を使って実際に動かすスクリプト
 │   ├── hh/              HH の動作確認（run_hh.py）と教師データ作成（make_dataset.py）
 │   ├── sin_wave/        RNN の動作確認として sin 波を学習させる実験
-│   └── hh_surrogate/    HH の入力電流 I → 膜電位 V を RNN に学習させる実験
+│   └── hh_surrogate/    HH の代理モデルの実験（実験設定は 学習タスク.md）
+│       ├── hh_surrogate.py  モデル1：RNN 1個で I(t) → V(t+dt)
+│       └── hh_modular.py    モデル2：HH の式の構造に合わせた RNN 3個
 ├── data/hh/             make_dataset.py が作る教師データ（.npz）
-├── results/             実験の出力（図・学習済みパラメータ）
+├── results/             実験の出力（図・学習済みパラメータ・評価指標 metrics.json）
 ├── thesis/              卒業論文（.tex / .pdf）と発表スライド
 ├── docs/                README 用の図、RNN の設計メモ、タスク表
 ├── notes/               勉強ノート（数値解析・深層学習ゼミなど）
@@ -34,9 +37,13 @@
 
 ```bash
 uv sync
-uv run python experiments/hh/make_dataset.py          # HH の教師データを data/hh/ に作る
-uv run python experiments/sin_wave/sin_wave.py        # sin 波の学習（結果は results/sin_wave/）
-uv run python experiments/hh_surrogate/hh_surrogate.py  # HH の I → V を RNN で学習
+uv run python -X utf8 experiments/hh/make_dataset.py                          # HH の教師データを data/hh/ に作る
+uv run python -X utf8 experiments/sin_wave/sin_wave.py                        # sin 波の学習（results/sin_wave/）
+uv run python -X utf8 experiments/hh_surrogate/hh_surrogate.py --epochs 1000  # モデル1（results/hh_surrogate/）
+uv run python -X utf8 experiments/hh_surrogate/hh_modular.py train --block 1  # モデル2 の RNN1 を学習
+uv run python -X utf8 experiments/hh_surrogate/hh_modular.py train --block 2  # モデル2 の RNN2 を学習
+uv run python -X utf8 experiments/hh_surrogate/hh_modular.py train --block 3  # モデル2 の RNN3 を学習
+uv run python -X utf8 experiments/hh_surrogate/hh_modular.py eval             # 3つをつないで評価（results/hh_modular/）
 ```
 
 ## 背景
@@ -159,11 +166,19 @@ $$
     - 25ステップ分の過去の波形の塊を、時間を1ステップずつずらしながら
     ![alt text](docs/images/rnn_sin_prediction.png)
 - HH × RNN　←今ここ
-  - パルス電流をHHに入力
-  - パルス入力電流 $I$ に対するHHの出力 $V$ をRNNに学習させる
-  -  $I$ と $V$ の組だけでは学習が難しい場合
-      - 一部HH，一部RNNのハイブリッド
-      -  $I$ と $V$ だけでなく，パラメータ $g,m,n,h,\alpha,\beta$なども学習させる（詳しくはREAD MEに）
+  - 教師データ（済）：10 ms ごとに 0〜20 µA/cm² で値が変わる階段状の電流を HH に入れ，900 ms（dt = 0.01 ms）計算した
+  - 構造の違う2つのモデルを NumPy で自作した RNN で作り，学習に使っていない6種類の電流（定常・ランプ・sin・パルス）でも評価している。設定の詳細は [学習タスク.md](experiments/hh_surrogate/学習タスク.md)
+  - モデル1：RNN 1個で $I(t) \to V(t+dt)$ を学習（済）
+      - どの電流でも RNN はスパイクを1発も出せていない（RMSE 7〜24 mV）
+  - モデル2：HH の式の構造に合わせて RNN を3つに分けた（済）
+      - RNN1： $V(t) \to \alpha, \beta(t)$
+      - RNN2： $\alpha, \beta(t),\ m, h, n(t) \to m, h, n(t+dt)$
+      - RNN3： $m, h, n(t),\ V(t),\ I(t) \to V(t+dt)$
+      - 各ブロックに正解を入れたとき（教師強制）は，HH とほぼ重なる
+      ![RNN1 の教師強制](results/hh_modular/block1_tf_train.png)
+      - 3つをつなぎ，出した値を次の時刻の入力に戻して回すと（閉ループ），最初の数発のあと $V$ が約 −110 mV に落ちて戻らない（RMSE 31〜59 mV）
+      ![閉ループの内部変数](results/hh_modular/closedloop_states_train.png)
+      - どのブロックの誤差が積み重なって崩れるのかを，1ステップの変化量の対応図（`results/hh_modular/block{n}_parity.png`）で調べている
   - 同時進行で簡単なMulti Compertmentモデルを実装
 - Multi Compertment実装 ～2026年 8/10
 - Multi Compertment × RNN 〜2026年末
