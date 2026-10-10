@@ -1,12 +1,161 @@
 # RNN Neuro Surrogate
-### RNNを用いた神経細胞モデル（Multi-Compertmentモデル）の代理モデル構築による高速シミュレーション
-微分方程式で記述されるニューロンモデルをRNNを用いた代理モデルで近似し、高速シミュレーションを実現する研究です。
+### 神経細胞シミュレーションの計算コスト削減を目的とした RNN 代理モデルの構築
 
-# 卒業研究
+大規模な脳シミュレーションでは、ニューロンモデルの微分方程式を数値積分する計算と、モデルが持つ状態変数を保存するメモリが大きな負担になる。本研究では、ニューロンモデルの入力電流に対する膜電位の応答を RNN（Recurrent Neural Network）で再現する代理モデルを作り、計算コストを削減する方法を探す。最終的な対象は Multi-Compartment モデルである。まず、より単純な Hodgkin-Huxley（HH）モデルで、RNN の代理モデルが成り立つかを確かめている。
 
-## 進捗状況
-[PROGRESS.md](PROGRESS.md) を確認してください。
+| 項目 | 内容 |
+|---|---|
+| 対象 | HH モデル（いずれは Multi-Compartment モデル） |
+| 代理モデル | Elman 型 RNN。PyTorch などを使わず、NumPy だけで実装した |
+| 比べる構造 | モデル1：RNN 1 個で $I \to V$ ／ モデル2：HH の式に合わせて RNN を 3 つに分けたもの |
+| 評価 | 波形の誤差、スパイクの数・間隔・形、1 ステップあたりの演算回数 |
+| 現状 | どちらのモデルも、自分の出力を入力に戻して回すとスパイクを再現できない（[結果](#結果)） |
 
+進捗の詳細は [PROGRESS.md](PROGRESS.md)、実験設定の詳細は [学習タスク.md](experiments/hh_surrogate/学習タスク.md) を参照。
+
+## 目次
+- [背景](#背景)
+- [方法](#方法)
+- [結果](#結果)
+- [今後の予定](#今後の予定)
+- [フォルダ構成](#フォルダ構成)
+- [実行方法](#実行方法)
+- [参考文献](#参考文献)
+
+## 背景
+### 脳シミュレーションの計算コスト
+脳の情報処理は、ニューロン間を伝わる電気信号（スパイク）によって実現される [1]。ヒトの脳には約 $10^{11}$ 個のニューロンがあり [2]、すべてを同時に観測することは難しい。そこで、ニューロンを数理モデルで表し、計算機上でシミュレーションして脳の情報処理を調べる方法が広く使われている。
+
+ニューロンは、刺激の順序の弁別や XOR のような非線形演算を行う。これにはニューロンの空間形状、特に樹状突起が関わっている [3][4]。形状を取り入れたモデルが Multi-Compartment モデルである。このモデルはニューロンを電気的につながった多数の区画（コンパートメント）に分け、区画ごとに膜電位と状態変数を計算する。そのため、メモリと計算量が区画数とニューロン数に比例して増える。マウスの脳（$10^{8}$〜$10^{9}$ 個のニューロン）の規模でも、スーパーコンピュータ富岳で扱いきれない [5]。
+
+### 先行研究と本研究の方針
+棟近 [7] は、SINDy（データから微分方程式をスパースに同定する手法）と主成分分析を組み合わせ、HH モデルの 4 つの状態変数 $(V, m, h, n)$ を 2 つに減らした代理モデルを作った。状態変数の数は減ったが、同定した式の項が多く、1 ステップの演算回数はかえって増えた。
+
+本研究では、代理モデルに RNN を使う。理由は次の 3 つである。
+1. **内部状態を持てる**：膜電位は現在の入力だけでなく、過去の膜電位や状態変数にも依存する。RNN は過去の情報を隠れ状態として持ち越せる。
+2. **時系列を扱える**：膜電位は時間とともに変わる時系列データであり、RNN は時系列の時間的な相関を学習するモデルである。
+3. **GPU で並列化しやすい**：RNN の計算は主に行列積なので、多数のニューロンをまとめて GPU で計算しやすい。
+
+RNN の内部の計算を追えるように、順伝播・BPTT（時間方向の誤差逆伝播）・Adam をすべて NumPy で自作した。
+
+### RNN
+RNN は、1 時刻前の隠れ状態 $\boldsymbol{h}(t-1)$ を現在の計算にも使うニューラルネットワークである。そのため、$\boldsymbol{h}(t)$ には過去の入力の情報が反映される。
+
+$$
+\begin{aligned}
+\boldsymbol{h}(t) &= \tanh\left(\boldsymbol{x}(t) W_{xh} + \boldsymbol{h}(t-1) W_{hh} + \boldsymbol{b}_h\right), \\
+\boldsymbol{y}(t) &= \boldsymbol{h}(t) W_{hy} + \boldsymbol{b}_y.
+\end{aligned}
+$$
+
+ここで、$\boldsymbol{x}(t)$ は入力、$\boldsymbol{y}(t)$ は出力、$W_{xh}, W_{hh}, W_{hy}$ は重み行列、$\boldsymbol{b}_h, \boldsymbol{b}_y$ はバイアスである。
+
+![RNN の隠れ状態の模式図](docs/images/rnn_hidden_state_diagram.png)
+
+### Hodgkin-Huxley モデル
+HH モデルは、Hodgkin と Huxley がイカの巨大軸索の電位固定実験の結果から作った、ニューロンを空間上の 1 点として表すモデルである [6]。$\mathrm{Na^+}$ と $\mathrm{K^+}$ のチャネルの開閉と膜電位の変化を、非線形の連立微分方程式で表す。以下は静止電位を −65 mV とする表記で、`src/neuron/hh.py` と同じである。
+
+$$
+C_m \frac{dV}{dt}
+= -\bar{g}_{\mathrm{Na}}\, m^3 h \,(V - E_{\mathrm{Na}})
+  -\bar{g}_{\mathrm{K}}\, n^4 \,(V - E_{\mathrm{K}})
+  -g_{\mathrm{L}} \,(V - E_{\mathrm{L}})
+  +I_{\mathrm{ext}}(t),
+$$
+
+$$
+\frac{dx}{dt} = \alpha_x(V)\,(1 - x) - \beta_x(V)\, x, \qquad x \in \{m, h, n\},
+$$
+
+$$
+\begin{aligned}
+\alpha_m(V) &= \frac{0.1\,(V + 40)}{1 - \exp\left(-(V + 40)/10\right)}, &
+\beta_m(V) &= 4 \exp\left(-(V + 65)/18\right), \\
+\alpha_h(V) &= 0.07 \exp\left(-(V + 65)/20\right), &
+\beta_h(V) &= \frac{1}{1 + \exp\left(-(V + 35)/10\right)}, \\
+\alpha_n(V) &= \frac{0.01\,(V + 55)}{1 - \exp\left(-(V + 55)/10\right)}, &
+\beta_n(V) &= 0.125 \exp\left(-(V + 65)/80\right).
+\end{aligned}
+$$
+
+ここで、$V$ [mV] は膜電位、$t$ [ms] は時刻、$I_{\mathrm{ext}}$ [µA/cm²] は外部電流である。$m$ と $h$ は $\mathrm{Na^+}$ チャネルの活性化・不活性化ゲート、$n$ は $\mathrm{K^+}$ チャネルの活性化ゲートを表し、0〜1 の値をとる。$\alpha_x, \beta_x$ [1/ms] はゲートが開く・閉じる速さで、膜電位だけで決まる。パラメータは $C_m = 1$ µF/cm²、$\bar{g}_{\mathrm{Na}} = 120$ mS/cm²、$\bar{g}_{\mathrm{K}} = 36$ mS/cm²、$g_{\mathrm{L}} = 0.3$ mS/cm²、$E_{\mathrm{Na}} = 50$ mV、$E_{\mathrm{K}} = -77$ mV、$E_{\mathrm{L}} = -54.4$ mV である。
+
+10〜40 ms に 10 µA/cm² の電流を入れたときの応答を下に示す。電流を入れると $m$ が急に増えて膜電位が上がり、遅れて $h$ の減少と $n$ の増加が起きて膜電位が下がる。
+
+![HH モデルのシミュレーション結果](docs/images/hodgkin_huxley_simulation.png)
+
+## 方法
+### RNN の動作確認（sin 波）
+実装した RNN が時系列を学習できるかを、ノイズを加えた sin 波で確かめた。過去 25 点から次の 1 点を予測するように学習させ、推論では最初の 25 点だけを与えて、予測値を入力に戻しながら波形を生成させた。生成した波形は、ノイズのない sin 波とほぼ一致した。BPTT の勾配が数値微分と一致することも確かめた。
+
+![NumPy で実装した RNN による sin 波の生成](results/sin_wave/prediction.png)
+
+### 教師データ
+10 ms ごとに 0〜20 µA/cm² の一様乱数で値が変わる階段状の電流を HH モデルに入れ、陽的オイラー法（dt = 0.01 ms）で 900 ms（90,000 ステップ）計算した。スパイクは 53 発である。
+
+![教師データ（上から入力電流、膜電位、ゲート変数）](data/hh/teacher_thesis.png)
+
+### 2 つのモデル
+どちらのモデルも、外から与えるのは入力電流 $I(t)$ と初期状態だけである。推論では、モデルが出した値を次の時刻の入力に戻して回す（閉ループ）。
+
+| | モデル1：RNN 1 個 | モデル2：RNN 3 個 |
+|---|---|---|
+| ファイル | `hh_surrogate.py` | `hh_modular.py` |
+| 構造 | $I(t) \to V(t+dt)$ | RNN1： $V(t) \to \alpha, \beta(t)$ <br> RNN2： $\alpha, \beta(t),\ m, h, n(t) \to m, h, n(t+dt)$ <br> RNN3： $m, h, n(t),\ V(t),\ I(t) \to V(t+dt)$ |
+| 学習 | 電流全体を 10 ms ずつに区切ってミニバッチで学習 | 3 つを別々に学習する。入力には HH の正解の値を使う（教師強制） |
+| 隠れ層 | 50 | 各 50 |
+| 演算回数 / ステップ | 5,454 | 18,300 |
+
+モデル2は、HH の式の各部分（速度定数、ゲート変数の更新、膜電位の更新）を RNN に置き換えたものである。構造を式に合わせることで、何を学習させるかを RNN に明示できる。また、各ブロックの誤差を別々に調べられるので、どこで誤差が出たかを切り分けられる。HH モデルの演算回数は 1 ステップあたり 64 回である。
+
+### 評価
+学習に使った電流に加えて、学習に使っていない 6 種類の電流（定常 5, 10, 15 µA/cm²、0→30 µA/cm² のランプ、10 Hz の sin、20 Hz のパルス。各 300 ms）で評価した。条件と指標は棟近 [7] に合わせた。
+
+## 結果
+### モデル1：スパイクを出せない
+モデル1の出力は、入力電流に合わせて上下するだけで、どの電流でもスパイクを出さなかった（下図。灰色の破線が HH、黒の実線が RNN、赤が入力電流）。RNN は電流の大きさに応じた膜電位の平均的な値を学習しているが、発火の仕組みは学習できていない。
+
+![モデル1の評価用電流に対する応答](results/hh_surrogate/prediction_eval.png)
+
+### モデル2：ブロック単体は正確だが、つなぐと崩れる
+各ブロックに正解の値を入れたとき（教師強制）、出力は HH とほぼ重なった。たとえば RNN1 の $\alpha, \beta$ の RMSE は 0.0001〜0.01 程度である。
+
+![RNN1 の教師強制（学習電流）](results/hh_modular/block1_tf_train.png)
+
+しかし 3 つをつないで閉ループで回すと、学習電流では最初の数発のあと $V$ が −110 mV 付近まで下がり、戻らなかった。評価用電流では、電流が 0 の最初の 10 ms のうちに $V$ が約 −100 mV まで下がった。
+
+![モデル2の閉ループでの内部変数（学習電流）](results/hh_modular/closedloop_states_train.png)
+
+![モデル2の評価用電流に対する応答](results/hh_modular/prediction_eval.png)
+
+### 2 つのモデルの比較
+| 電流 | HH のスパイク数 | モデル1 RMSE [mV] | モデル1 スパイク数 | モデル2 RMSE [mV] | モデル2 スパイク数 |
+|---|---:|---:|---:|---:|---:|
+| 学習電流（900 ms） | 53 | 22.3 | 0 | 54.5 | 13 |
+| 定常 5 | 1 | 7.2 | 0 | 41.4 | 0 |
+| 定常 10 | 20 | 23.9 | 0 | 55.0 | 0 |
+| 定常 15 | 22 | 23.9 | 0 | 59.2 | 0 |
+| ランプ 0→30 | 11 | 15.4 | 0 | 41.0 | 3 |
+| sin 10 Hz | 10 | 16.4 | 0 | 49.1 | 0 |
+| パルス 20 Hz | 18 | 22.6 | 0 | 30.7 | 48 |
+
+スパイク数は eFEL で数えた値（`metrics.json`）である。モデル2のランプとパルスのスパイクは、HH のスパイクではなく、膜電位の細かい振動を数えたものである。RMSE はモデル1のほうが小さいが、これは平均的な膜電位にとどまっているためで、スパイクを再現できているわけではない。
+
+### 調べていること：閉ループで崩れる原因
+dt = 0.01 ms では、1 ステップの間に $V, m, h, n$ はほとんど変わらない。そのため、値そのものの誤差が小さくても、1 ステップの変化量の誤差は相対的に大きい可能性がある。そこで、教師強制での変化量を HH と比べた（下図。横軸が HH、縦軸が RNN3 の $V(t+dt) - V(t)$）。正解の変化量がほぼ 0 のところで、RNN3 は ±1 mV 程度の変化を出している点がある。閉ループではこの変化量の誤差が毎ステップ積み重なり、$V$ がずれていくと考えている。
+
+![RNN3 の 1 ステップの変化量（教師強制）](results/hh_modular/block3_parity.png)
+
+## 今後の予定
+- HH × RNN（←今ここ）
+  - モデル2が閉ループで崩れる原因を特定し、直す。
+  - 並行して、簡単な Multi-Compartment モデルを実装する。
+- Multi-Compartment × RNN 〜2026 年末
+  - RNN に何を学習させるかを決める。
+  - 検証・評価を行う。
+  - 可能なら大規模シミュレーションを行う。
+- 卒論執筆 〜2027 年 3 月
+- 修士課程では、より複雑な Multi-Compartment モデルを RNN に学習させる。
 
 ## フォルダ構成
 
@@ -31,9 +180,11 @@
 └── PROGRESS.md          進捗と今後の予定
 ```
 
+HH モデルの導出は、勉強ノート「[猿でもわかるニューロン発火 by Hodgkin, Huxley and Yamashita（2026/07/06）](notes/saru_series/猿でもわかるニューロン発火by-Hodgkin-Huxley-and-Yamashita.md)」にまとめている。
+
 ## 実行方法
 
-[uv](https://docs.astral.sh/uv/) で依存関係（numpy, matplotlib）を入れて、リポジトリ直下から実行する。
+[uv](https://docs.astral.sh/uv/) で依存関係（numpy, matplotlib）を入れ、リポジトリ直下から実行する。
 
 ```bash
 uv sync
@@ -46,175 +197,17 @@ uv run python -X utf8 experiments/hh_surrogate/hh_modular.py train --block 3  # 
 uv run python -X utf8 experiments/hh_surrogate/hh_modular.py eval             # 3つをつないで評価（results/hh_modular/）
 ```
 
-## 背景
-### 脳
-- 脳の情報処理は，ニューロン間で伝達される電気信号（スパイク）によって実現される[1]。
-- ニューロンの活動をシミュレーションすることで，脳の情報処理機構を解析する研究が行われている。
-- 実際の脳には約1000億個のニューロンが存在するため，全ニューロンを直接観測することは困難である。
-- そのため，ニューロンを数理モデルとして表現し，シミュレーションによって解析する手法が広く用いられている
-    
-    
-### Multi-Compartmentモデル
-- 高精度なニューロンモデルとして，Multi-Compartmentモデルが利用されている。
-- ニューロンを複数のコンパートメントに分割し，各コンパートメントの膜電位や状態変数を計算することで，形状を考慮した電位伝播を再現できる。
-- 単一コンパートメントモデルでは表現できない
-  - 樹状突起での入力統合
-  - 時間的・空間的な刺激シーケンスの弁別
-  - 非線形演算（XOR演算など）
-  を再現できる。
-- 一方，各コンパートメントごとに状態変数を保持し，連立微分方程式を数値積分する必要があるため，
-  - 計算量
-  - メモリ使用量
-  が非常に大きい。
-- 大規模脳シミュレーションでは，この計算コストが大きな課題となっている．
+## 参考文献
+[1] 山﨑匡, 五十嵐潤, はじめての神経回路シミュレーション：1 ニューロンからヒト全脳モデルまで, 森北出版, pp. 56–61, 2021.
 
-### RNN
-#### 時系列データ
-- RNNでは、並びに規則性・パターンがある（または、ありそうに見える）データを学習することで未知の時系列データが与えられたとき、そのデータの未来の状態を予測する。
-#### 過去の隠れ層
-- 時系列データを保持するためには、過去の状態をモデル内で保持しておく必要
-- 現在に対する過去からの目に見えない影響を把握しておく必要
-- これらを過去の隠れ層として定義
-- 一般的なNN:入力層$\mathbb{x}(t)$-隠れ層$\mathbb{h}(t)$-出力層$\mathbb{y}(t)$
-- RNN:時刻$t-1$における隠れ層の値$\mathbb{h}(t-1)$を保持しておき、それも$\mathbb{h}(t)$に伝える
-- 隠れ層に過去の状態がすべて反映されている
-- 隠れ層に過去の状態がすべて反映されている
-![alt text](docs/images/rnn_hidden_state_diagram.png)
+[2] E. R. Kandel ら, カンデル神経科学 第 2 版, メディカル・サイエンス・インターナショナル, p. 57, 2022.
 
-#### RNNを用いる理由
+[3] A. Gidon et al., Dendritic action potentials and computation in human layer 2/3 cortical neurons, Science, 367(6473), pp. 83–87, 2020. doi: [10.1126/science.aax6239](https://doi.org/10.1126/science.aax6239)
 
-#### ① 内部状態を保持できる
+[4] T. Branco, B. A. Clark, M. Häusser, Dendritic discrimination of temporal input sequences in cortical neurons, Science, 329(5999), pp. 1671–1675, 2010. doi: [10.1126/science.1189664](https://doi.org/10.1126/science.1189664)
 
-- Multi-Compartmentモデルでは，現在の膜電位は現在の入力だけでなく，過去の膜電位や各コンパートメントの状態にも依存する。
-- RNNは隠れ状態（Hidden State）として過去の情報を保持できる。
-- 動的システムの状態遷移を自然に学習できるため，サロゲートモデルとして適している。
+[5] T. Kobayashi et al., Development of a lightweight and customizable biophysical neuron simulator, 2024. https://researchmap.jp/tairakobayashi/presentations/48836360
 
----
+[6] A. L. Hodgkin, A. F. Huxley, A quantitative description of membrane current and its application to conduction and excitation in nerve, The Journal of Physiology, 117(4), pp. 500–544, 1952. doi: [10.1113/jphysiol.1952.sp004764](https://doi.org/10.1113/jphysiol.1952.sp004764)
 
-#### ② 時系列データとの親和性
-
-- 膜電位は時間とともに変化する時系列データである。
-- RNNは時系列データの時間相関を学習するニューラルネットワークである。
-- Multi-Compartmentモデルの時間発展を近似するモデルとして適している。
-
----
-
-#### ③ GPUによる高速化
-
-- RNNの学習・推論は主に行列演算で構成される。
-    - $\mathbb{h}(t)=f(W\mathbb{x}(t)+U\mathbb{h}(t-1))+\mathbb{b}$
-    - $\mathbb{y}(t)=g(V\mathbb{h}(t))+\mathbb{c}$
-- GPUは行列演算を高速に実行できるため，CPUによる数値積分より高速な推論が期待できる。
-- サロゲートモデル化することで，大規模脳シミュレーションの高速化が期待される。
-
-### Hodkin-Hukslayモデル
-1952年 イギリスケンブリッジ大学 A.L.Hodkin ＆ A.F.Hukslayが，イカの巨大軸索の活動電位と，$Na^+$チャネル、$K^{+}$チャネルの開閉を電位固定法を用いた実験によって測定
-- ニューロンを空間上の1点として表現
-- 多入力を受け，和をとり，閾値を超えるかどうかを判定し，スパイクを発生させるという機構は実現可能
-- 入力電流に対するイオンチャネルの開閉（膜のコンダクタンス）と膜電位の上下動を非線形連立微分方程式によって表現
-$$
-
-\begin{aligned}
-C\frac{dV}{dt}
-&=
--g_{\mathrm{leak}}(V(t)-E_{\mathrm{leak}})
--g_{\mathrm{Na}}(V,t)(V(t)-E_{\mathrm{Na}})
--g_{\mathrm{K}}(V,t)(V(t)-E_{\mathrm{K}})
-+I_{\mathrm{ext}}(t)
-\\[6pt]
-\end{aligned}
-$$
-$$
-\begin{cases}
-g_{\mathrm{Na}}(V,t)
-&=
-\bar{g}_{\mathrm{Na}}\,m^{3}(V,t)h(V,t)
-\\[6pt]
-g_{\mathrm{K}}(V,t)
-&=
-\bar{g}_{\mathrm{K}}\,n^{4}(V,t)
-\end{cases}
-$$
-
-
-$$
-\begin{cases}
-\frac{d}{dt} m(V,t) &= \alpha_m(V)(1 - m(V,t)) - \beta_m(V)m(V,t) \\
-\frac{d}{dt} h(V,t) &= \alpha_h(V)(1 - h(V,t)) - \beta_h(V)h(V,t) \\
-\frac{d}{dt} n(V,t) &= \alpha_n(V)(1 - n(V,t)) - \beta_n(V)n(V,t)
-\end{cases}
-$$
-$$
-\begin{cases}
-\alpha_m(V) &= \frac{2.5 - 0.1V}{\exp(2.5 - 0.1V) - 1} \\[1.5ex]
-\beta_m(V) &= 4 \exp\left(-\frac{V}{18}\right) \\[1.5ex]
-\alpha_h(V) &= 0.07 \exp\left(-\frac{V}{20}\right) \\[1.5ex]
-\beta_h(V) &= \frac{1}{\exp(3 - 0.1V) + 1} \\[1.5ex]
-\alpha_n(V) &= \frac{0.1 - 0.001V}{\exp(1 - 0.1V) - 1} \\[1.5ex]
-\beta_n(V) &= 0.125 \exp\left(-\frac{V}{80}\right)
-\end{cases}
-$$
-
-## 研究の現在位置
-- Hodkin-Hukslayモデルの数値シミュレーション（済）
-    - まずは空間形状をもたない単一ニューロンの発火を確認した
-    - 詳しくは「[猿でもわかるニューロン発火 by Hodgkin,Huxley and Yamashita(2026/07/06)](notes/saru_series/猿でもわかるニューロン発火by-Hodgkin-Huxley-and-Yamashita.md)」を参照
-    ![alt text](docs/images/hodgkin_huxley_simulation.png)
-- RNN実装
-    - Pytouchを使った簡単なRNNを実装した
-    - sin関数の学習に成功
-    - 25ステップ分の過去の波形の塊を、時間を1ステップずつずらしながら
-    ![alt text](docs/images/rnn_sin_prediction.png)
-- HH × RNN　←今ここ
-  - 教師データ（済）：10 ms ごとに 0〜20 µA/cm² で値が変わる階段状の電流を HH に入れ，900 ms（dt = 0.01 ms）計算した
-  - 構造の違う2つのモデルを NumPy で自作した RNN で作り，学習に使っていない6種類の電流（定常・ランプ・sin・パルス）でも評価している。設定の詳細は [学習タスク.md](experiments/hh_surrogate/学習タスク.md)
-  - モデル1：RNN 1個で $I(t) \to V(t+dt)$ を学習（済）
-      - どの電流でも RNN はスパイクを1発も出せていない（RMSE 7〜24 mV）
-  - モデル2：HH の式の構造に合わせて RNN を3つに分けた（済）
-      - RNN1： $V(t) \to \alpha, \beta(t)$
-      - RNN2： $\alpha, \beta(t),\ m, h, n(t) \to m, h, n(t+dt)$
-      - RNN3： $m, h, n(t),\ V(t),\ I(t) \to V(t+dt)$
-      - 各ブロックに正解を入れたとき（教師強制）は，HH とほぼ重なる
-      ![RNN1 の教師強制](results/hh_modular/block1_tf_train.png)
-      - 3つをつなぎ，出した値を次の時刻の入力に戻して回すと（閉ループ），最初の数発のあと $V$ が約 −110 mV に落ちて戻らない（RMSE 31〜59 mV）
-      ![閉ループの内部変数](results/hh_modular/closedloop_states_train.png)
-      - どのブロックの誤差が積み重なって崩れるのかを，1ステップの変化量の対応図（`results/hh_modular/block{n}_parity.png`）で調べている
-  - 同時進行で簡単なMulti Compertmentモデルを実装
-- Multi Compertment実装 ～2026年 8/10
-- Multi Compertment × RNN 〜2026年末
-  - RNNに何を学習させるかを決める
-  - 検証・評価
-  - できれば大規模シミュレーションしてみたい
-- 卒論執筆 〜2027年3月
-- 修士過程からはより複雑なMulti CompertmentをRNNに学習させる
-    
-
-
-
-
-# 参考文献
-[^1]：山﨑 匡 and 五十嵐 潤. はじめての神経回路シミュレーション:1ニューロンからヒト全脳モ
-デルまで. 森北出版株式会社,2021年12月22日, pp. 56–61.
-
-
-[^2] Eric R. Kandel et al. カンデル神経科学. 第2版. メディカル・サイエンス・インターナショ
-ナル, 2022, p. 57.
-
-[^3] Gidon Albert. Dendritic Action Potentials and Computation in Human Layer 2/3 Corti
-cal Neurons | Science. https://www.science.org/doi/10.1126/science.aax6239. Jan. 2020.
-(Visited on 09/05/2024).
-
-[^4] Tiago Branco, Beverley A. Clark, and Michael Häusser. “Dendritic Discrimination of
-Temporal Input Sequences in Cortical Neurons”. In: Science (New York, N.Y.) 329.5999
-(Sept. 2010), p. 1671. doi: 10.1126/science.1189664. (Visited on 09/05/2024).
-
-[^5] Kaaya, Tamura Akira, and Rin Kuriyama. “Development of a lightweight and cus
-tomizable biophysical neuron simulator”. 2024. url: https : / / researchmap . jp /
-tairakobayashi/presentations/48836360.
-
-[^6] A. L. Hodgkin and A. F. Huxley. “A Quantitative Description of Membrane Current
-and Its Application to Conduction and Excitation in Nerve”. In: The Journal of Physi
-ology 117.4 (Aug. 1952), pp. 500–544. issn: 0022-3751. doi: 10.1113/jphysiol.1952.
-sp004764.
-
-[^7] 棟近先輩の卒論
+[7] 棟近春樹, Hodgkin-Huxley モデルの計算コスト削減を目指したサロゲートモデルの開発, 卒業論文, 山口大学 理学部 物理・情報科学科, 令和 6 年度.
