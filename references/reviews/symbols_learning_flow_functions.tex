@@ -1,0 +1,224 @@
+\documentclass[a4paper,10pt]{ltjsarticle}
+\usepackage[margin=18mm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{longtable,booktabs,array}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newcolumntype{S}{>{\centering\arraybackslash}p{30mm}}
+\newcolumntype{M}{p{60mm}}
+\newcolumntype{T}{p{40mm}}
+\newcolumntype{P}{p{24mm}}
+\newcommand{\cat}[2]{u\mathbin{\underset{#1}{\wedge}}#2}
+\newcommand{\note}[1]{\textcolor{red!70!black}{#1}}
+
+\newenvironment{symtab}{%
+  \par\noindent\begin{tabular}{SMTP}
+  \toprule
+  記号 & 意味 & 型・値域・値 & 初出 \\
+  \midrule
+}{\bottomrule\end{tabular}\par\medskip}
+
+\title{記号表：Learning flow functions of spiking systems}
+\author{Aguiar, Das, Johansson (L4DC 2024, PMLR 242:591--602)}
+\date{作成：2026年10月14日}
+
+\begin{document}
+\maketitle
+
+\noindent
+「初出」は論文 PDF のページ・節・式番号（¶ は段落番号）．
+\note{赤字}は誤植の可能性や，同じ文字が別の意味で使われている箇所への注意．
+
+%======================================================
+\section{§2.1 コンダクタンスベースモデル（式(1)(2)）}
+\begin{symtab}
+$V$ & 膜電位 & $\mathbb{R}$ [mV] & p.3 式(1) \\
+$u$ & 外部入力電流 & $\mathbb{R}$ [$\mu$A] & p.3 式(1) \\
+$C_m$ & 膜容量 & $C_m>0$ & p.3 式(1) \\
+$g_{\text{leak}},\ V_{\text{leak}}$ & 漏れコンダクタンス，反転電位 & 定数 & p.3 式(1) \\
+$N_I$ & イオン電流の本数 & 自然数（HH では 2） & p.3 式(1) \\
+$I_k(V,m_k,n_k)$ & $k$ 番目のイオン電流 $g_k m_k^{\alpha_k} n_k^{\beta_k}(V-V_k)$ & $\mathbb{R}$ & p.4 第1行 \\
+$g_k,\ V_k$ & $k$ 番目の電流の最大コンダクタンス，反転電位 & $g_k>0,\ V_k\in\mathbb{R}$ & p.4 第1行 \\
+$\alpha_k,\ \beta_k$ & ゲート変数に付く指数 \note{（開閉速度 $\alpha_x(V)$ とは別物）} & 非負整数 & p.4 第1行 \\
+$m=(m_k),\ n=(n_k)$ & ゲート変数（チャネルの開き具合） & $[0,1]^{N_I}$ & p.3 式(1) \\
+$A_m(V),\ A_n(V)$ & ゲート方程式の係数行列 & $N_I\times N_I$ 対角行列 & p.3 式(1) \\
+$b_m(V),\ b_n(V)$ & ゲート方程式の定数項 & $\mathbb{R}^{N_I}$ & p.3 式(1) \\
+\midrule
+$n$ & 結合するニューロンの個数 \note{（ゲート変数 $n$ と同じ文字）} & 自然数 & p.4 式(2) \\
+$i,\ j$ & ニューロンの番号 & $1,\dots,n$ & p.4 式(2) \\
+$V_i,\ u_i$ & ニューロン $i$ の膜電位，入力電流 & $\mathbb{R}$ & p.4 式(2) \\
+$C_m^i,\ g^i_{\text{leak}},\ V^i_{\text{leak}}$,\newline $N_I^i,\ I_k^i$ & ニューロン $i$ 固有のパラメータ・電流 & 式(1) と同様 & p.4 式(2) \\
+$m^i,\ n^i$ & ニューロン $i$ のゲート変数（$V_i$ のみに依存） & 式(1) と同様 & p.4 式(2) \\
+$\epsilon_{ij}$ & ニューロン $j$ から $i$ への電気シナプスの重み & $\epsilon_{ij}\ge 0$ & p.4 式(2) \\
+\end{symtab}
+
+%======================================================
+\section{§2.2 フロー関数}
+\begin{symtab}
+$\xi(t)$ & 状態 & $\mathbb{R}^{d_x}$ & p.4 式(3) \\
+$x$ & 初期状態 $\xi(0)$ & $\mathcal{X}$ & p.4 式(3) \\
+$u(t)$ & 入力（時刻 $t$ での値） & $\mathcal{U}\subset\mathbb{R}^{d_u}$ & p.4 式(3) \\
+$\eta(t)$ & 出力 & $\mathbb{R}^{d_y}$ & p.4 式(3) \\
+$f$ & ベクトル場（右辺） & $\mathbb{R}^{d_x}\times\mathbb{R}^{d_u}\to\mathbb{R}^{d_x}$ & p.4 式(3) \\
+$h$ & 出力写像（状態から膜電位を取り出す） & $\mathbb{R}^{d_x}\to\mathbb{R}^{d_y}$ & p.4 式(3) \\
+$d_x,\ d_u,\ d_y$ & 状態・入力・出力の次元 & 4.1: $4,1,1$／4.2: $10,1,2$ & p.4 式(3) \\
+$\mathcal{X}$ & 初期状態の集合（不変集合） & $\subset\mathbb{R}^{d_x}$ & p.4 §2.2 ¶1 \\
+$\mathcal{U}$ & 入力値の集合 & $\subset\mathbb{R}^{d_u}$ & p.4 §2.2 ¶1 \\
+$\mathbb{U}$ & 入力関数の集合 $L^\infty(\mathbb{R}_{\ge0},\mathcal{U})$ & 可測・本質的有界な関数 & p.4 §2.2 ¶1 \\
+$\varphi(t,x,u)$ & フロー関数（時刻 $t$ の状態） & $\mathbb{R}_{\ge0}\times\mathcal{X}\times\mathbb{U}\to\mathcal{X}$ & p.4 §2.2 ¶1 \\
+$\cat{s}{v}$ & 連結：$[0,s)$ は $u$，$t\ge s$ は $v(t-s)$ & $\mathbb{U}$ & p.4 §2.2 ¶1 \\
+$\Delta$ & 入力の切り替え周期 & $\Delta>0$（実験では 10\,ms） & p.4 §2.2 ¶2 \\
+$\mathbb{U}^0_\Delta$ & 時刻 $k\Delta$ で切り替わる区分定数入力の集合 & $\subset\mathbb{U}$ & p.4 §2.2 ¶2 \\
+$\omega_k$ & 区間 $[k\Delta,(k+1)\Delta)$ での入力値 & $\mathcal{U}$ & p.4 §2.2 ¶2 \\*
+& \multicolumn{3}{l}{\note{本文の「$k\ge1$」は $k\ge 0$ の誤植と思われる}} \\
+$\sigma^s$ & 時間シフト $(\sigma^s u)(t)=u(t+s)$ & $\mathbb{U}\to\mathbb{U}$ & p.4 §2.2 ¶2 \\
+$\mathbb{U}_\Delta$ & $\bigcup_{s\in[0,\Delta)}\sigma^s(\mathbb{U}^0_\Delta)$（切り替え時刻がずれた階段も含む） & $\subset\mathbb{U}$ & p.4 §2.2 ¶2 \\
+\end{symtab}
+
+%======================================================
+\section{§2.3 問題設定（式(4)）}
+\begin{symtab}
+$y(t,x,u)$ & 真の出力軌道 $h(\varphi(t,x,u))$ & $\mathbb{R}^{d_y}$ & p.5 §2.3 \\
+$\hat y(t,x,u)$ & 代理モデルの出力 & $\mathbb{R}^{d_y}$ & p.5 式(4) \\
+$\ell_T(\hat y)$ & 期待損失（時間平均した L1 誤差の期待値） & $\mathbb{R}_{\ge0}$ & p.5 式(4) \\
+$T$ & 時間区間の長さ & 4.1: 500\,ms／4.2: 1000\,ms & p.5 式(4) \\
+$P_x,\ P_u$ & 初期状態・入力の確率分布（$P_u$ の台は $\mathbb{U}_\Delta$） & 分布 & p.5 §2.3 \\
+$\|\cdot\|_1$ & L1 ノルム（成分の絶対値の和） & & p.5 式(4) \\
+$\mathcal{H}$ & 仮説クラス（RNN で表せる $\hat y$ の集合） & $\hat y:\mathbb{R}_{\ge0}\times\mathbb{R}^{d_x}\times\mathbb{U}_\Delta\to\mathbb{R}^{d_x}$ & p.5 §2.3 \\*
+& \multicolumn{3}{l}{\note{値域は本文では $\mathbb{R}^{d_x}$ だが，$\hat y$ は出力なので $\mathbb{R}^{d_y}$ が正しいと思われる}} \\
+\end{symtab}
+
+%======================================================
+\section{§3 手法}
+\subsection*{§3.1 アーキテクチャ（式(5)，Fig.1）}
+\begin{symtab}
+$u_\omega$ & 値 $\omega$ をとる定数入力 & $\mathbb{U}$ & p.5 §3.1 \\
+$k_t$ & $\lfloor t/\Delta\rfloor$（時刻 $t$ が何番目の区間か） & 非負整数 & p.5 §3.1 \\
+$x_k$ & 式(5)の中間状態 $\varphi(k\Delta,x,u)$ \note{（$x$ の添字は §3.2 では軌道番号）} & $\mathcal{X}$ & p.5 式(5) \\
+$\Phi(\tau,x,\omega)$ & 1ステップ写像 $\varphi(\tau\Delta,x,u_\omega)$ & $[0,1]\times\mathcal{X}\times\mathcal{U}\to\mathcal{X}$ & p.5 §3.1 \\
+$\tau_k$ & $k$ 番目のステップで進む時間の割合：$k<k_t$ で 1，$k=k_t$ で $(t-k_t\Delta)/\Delta$ & $[0,1]$ & p.5 §3.1 \\
+$\delta$ & 入力のずれ（$v=\sigma^\delta u$） & $[0,\Delta)$ & p.5 §3.1 \\*
+& \multicolumn{3}{l}{\note{最初の定数区間の長さは $\Delta-\delta$ になるはず（本文の式は $\delta$）}} \\
+$z_0$ & Encoder の出力（LSTM 隠れ状態の初期値） & $\mathbb{R}^{24}$（4.2 では $\mathbb{R}^{32}$） & p.6 Fig.1 \\
+$z_k$ & $k$ ステップ後の RNN 隠れ状態 & 同上 & p.6 Fig.1 \\
+$\tilde z$ & 最終セルの出力（Decoder への入力） & 同上 & p.6 Fig.1 \\
+\end{symtab}
+
+\subsection*{§3.2 データ収集（式(6)(7)）}
+\begin{symtab}
+$N$ & 軌道の本数 \note{（$N_I$ とは別）} & 4.1: 800／4.2: 200 & p.6 式(6) \\
+$K$ & 1軌道あたりのサンプル数（間引き前） & 4.1: 50000 & p.6 式(6) \\
+$i$ & 軌道の番号 \note{（式(2)ではニューロン番号）} & $1,\dots,N$ & p.6 式(6) \\
+$k$ & 軌道内のサンプル番号 \note{（式(1)では電流番号，式(5)ではステップ番号）} & $1,\dots,K$ & p.6 式(6) \\
+$x_i,\ u_i$ & $i$ 番目の軌道の初期状態・入力 & $\sim P_x,\ P_u$ & p.6 式(6) \\
+$t_{ik}$ & サンプル時刻（$[0,T]$ 上一様，$k$ について増加） & $[0,T]$ & p.6 式(6) \\
+$\xi_{ik}$ & 状態サンプル $\varphi(t_{ik},x_i,u_i)$ & $\mathbb{R}^{d_x}$ & p.6 式(6) \\
+$\hat\ell_T(\hat y)$ & 経験損失（$\ell_T$ のモンテカルロ近似） & $\mathbb{R}_{\ge0}$ & p.6 式(7) \\
+\end{symtab}
+
+\subsection*{§3.3 棄却サンプリング}
+\begin{symtab}
+$p(t,x_i,u_i)$ & 残したいサンプル時刻の密度（出力が大きいほど大きい） & $\ge 0$ & p.6 §3.3 \\
+$\alpha$ & $p\propto\alpha(y)$ とするときの増加関数 \note{（指数 $\alpha_k$ とは別）} & & p.6 §3.3 \\
+$\Upsilon_{ik}$ & 棄却判定用の一様乱数 & $\mathrm{Uniform}([0,1])$ & p.7 §3.3 \\
+$M_i$ & $\max_k p(t_{ik},x_i,u_i)$（採用率は約 $1/M_i$） & $>0$ & p.7 §3.3 \\
+$\alpha_i$ & 多出力時に各出力を同じ範囲にそろえる単調関数 & & p.7 §3.3 \\
+$\tilde y$ & $y$ を $[0,1]$ に正規化したもの & $[0,1]$ & p.8 Data collection \\
+\end{symtab}
+
+\subsection*{§3.4 窓付き損失}
+\begin{symtab}
+$j$ & 予測先のサンプル番号（$j\ge k$） & & p.7 §3.4 \\
+$J_{ik}$ & 起点 $k$ からの予測先の番号集合 & $\subset[k,K]$ & p.7 §3.4 \\
+$|J_{ik}|$ & $J_{ik}$ の要素数 & 実験では最大 5 & p.7, p.9 \\
+$\hat\ell^{\text{win}}(\hat y)$ & 窓付き経験損失 & $\mathbb{R}_{\ge0}$ & p.7 §3.4 \\
+$L$ & RNN 入力系列の最大長 $1+\max\lfloor(t_{ij}-t_{ik})/\Delta\rfloor$ & 実験では 20 & p.7 §3.4 \\
+\end{symtab}
+
+%======================================================
+\section{§4 数値実験}
+\begin{symtab}
+$I_1=g_1m_1^3n_1(V-V_1)$ & Na 電流（$m_1$: 活性化，$n_1$: 不活性化） & & p.8 Dynamics \\
+$I_2=g_2n_2^4(V-V_2)$ & K 電流（$\alpha_2=0$ なので $m_2$ は不使用） & & p.8 Dynamics \\
+$I_3=g_3n_3(V-V_3)$ & 追加の K 電流（4.2 のみ） & & p.9 §4.2 \\
+$\omega_{10k+j}=\omega_{10k}$ & 入力値を 10 区間ずつ共有（100\,ms ごとに変化） & $\omega_{10k}\sim\mathrm{U}([0,1])$ $\mu$A & p.8 Data collection \\
+$\epsilon_{12},\ \epsilon_{21}$ & 本文の値：$0.1$\,S，$0$\,S & & p.10 第1行 \\*
+& \multicolumn{3}{l}{\note{実装・Fig.4 から，実際は $\epsilon_{21}=0.1,\ \epsilon_{12}=0$（1→2 方向）と読める}} \\
+\end{symtab}
+
+\subsection*{慣習記号との対応（HH モデル）}
+\begin{center}
+\begin{tabular}{cccl}
+\toprule
+論文 & HH 慣習 & 実装変数 & 意味 \\
+\midrule
+$m_1$ & $m$ & \texttt{m} & Na 活性化ゲート \\
+$n_1$ & $h$ & \texttt{h} & Na 不活性化ゲート \\
+$n_2$ & $n$ & \texttt{n} & K 活性化ゲート \\
+$n_3$ & $p$ & \texttt{p} & M 電流（遅い K）ゲート（4.2 のみ） \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%======================================================
+\section{一般の「流れ」（日本語版 Wikipedia「流れ (数学)」）}
+\begin{symtab}
+$X$ & 位相空間（相空間） & & §1 定義 \\
+$\varphi(t,x)$ & 流れ（時間 $t$ が先，点 $x$ が後） & $\mathbb{R}\times X\to X$，連続 & §1 定義 \\
+$\varphi^t$ & 時間 $t$ 写像 $x\mapsto\varphi(t,x)$（図では $\varphi_t$ とも書く） & 同相写像 & §1 定義 \\
+$\mathrm{id}_X$ & 恒等写像 & & §1 式(2) \\*
+& \multicolumn{3}{l}{条件：$\varphi^t\circ\varphi^s=\varphi^{t+s}$ (1)，$\varphi^0=\mathrm{id}_X$ (2)} \\
+$\varphi^{-t}$ & $\varphi^t$ の逆写像 & & §1 定義 \\
+$O(x_0)$ & $x_0$ を通る軌道 $\{\varphi^t(x_0)\mid t\in\mathbb{R}\}$ & $\subset X$ & §1 式(3) \\
+$\boldsymbol f$ & 自励系 $d\boldsymbol x/dt=\boldsymbol f(\boldsymbol x)$ のベクトル場 & $C^r$ なら $\varphi^t$ も $C^r$ 微分同相 & §2 式(4) \\
+\end{symtab}
+
+\subsection*{論文との対応}
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+ & 流れ（Wikipedia） & フロー関数（論文） \\
+\midrule
+写像 & $\varphi:\mathbb{R}\times X\to X$ & $\varphi:\mathbb{R}_{\ge0}\times\mathcal{X}\times\mathbb{U}\to\mathcal{X}$ \\
+恒等性 & $\varphi(0,x)=x$ & $\varphi(0,x,u)=x$ \\
+合成則 & $\varphi(t,\varphi(s,x))=\varphi(t+s,x)$ & $\varphi(t,\varphi(s,x,u),v)=\varphi(t+s,x,\cat{s}{v})$ \\
+代数構造 & 群 $(\mathbb{R},+)$ の作用 & 半群 $(\mathbb{R}_{\ge0},+)$（入力付き） \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%======================================================
+\section{補足：解説で導入した記号（論文には出てこない）}
+\begin{symtab}
+$\alpha_x(V),\ \beta_x(V)$ & ゲート $x\in\{m,h,n\}$ の開く速度・閉じる速度 & [1/ms] & 実装 \\
+$\tau_x(V),\ x_\infty(V)$ & 時定数 $1/(\alpha_x+\beta_x)$，定常値 $\alpha_x/(\alpha_x+\beta_x)$ & & \\
+$V_T$ & 速度関数のしきい値パラメータ & $-56.2$\,mV & 実装 \\
+$p_\infty(V),\ \tau_p(V)$ & M 電流ゲートの定常値・時定数 & & 実装 \\
+$E$ & 結合行列 $(\epsilon_{ij})$ & $n\times n$ & \\
+$L$ & ラプラシアン $\mathrm{diag}(E\mathbf 1)-E$ \note{（§3.4 の系列長 $L$ と衝突）} & $n\times n$ & \\
+$\Psi^t(x,u)$ & 拡大空間上のセミフロー $(\varphi(t,x,u),\sigma^t u)$ \note{（論文の $\Phi$ と区別するため $\Psi$ とした）} & $\mathcal{X}\times\mathbb{U}\to\mathcal{X}\times\mathbb{U}$ & \\
+\end{symtab}
+
+%======================================================
+\section{同じ文字が複数の意味で使われている記号}
+\begin{center}
+\begin{tabular}{cl}
+\toprule
+文字 & 意味 \\
+\midrule
+$\alpha$ & 指数 $\alpha_k$（§2.1）／密度の増加関数 $\alpha$，正規化関数 $\alpha_i$（§3.3）／開閉速度 $\alpha_x(V)$（補足） \\
+$n$ & ゲート変数 $n,\ n_k$（式(1)）／ニューロン数（式(2)）／HH の K ゲート $n$ \\
+$h$ & 出力写像（式(3)）／HH の Na 不活性化ゲート $h$ \\
+$i$ & ニューロン番号（式(2)）／軌道番号（§3.2） \\
+$k$ & イオン電流の番号（式(1)）／時間ステップ（式(5)）／サンプル番号（§3.2） \\
+$x$ & 初期状態／中間状態 $x_k$（式(5)）／軌道の初期状態 $x_i$（§3.2） \\
+$u$ & 入力関数／入力値／ニューロン $i$ の入力 $u_i$／定数入力 $u_\omega$／軌道の入力 $u_i$ \\
+$N$ & 軌道の本数 $N$／イオン電流の本数 $N_I$ \\
+$L$ & 系列長（§3.4）／ラプラシアン（補足） \\
+$\Phi$ & 1ステップ写像（§3.1）\quad ※補足の拡大セミフローは $\Psi$ と表記 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}
