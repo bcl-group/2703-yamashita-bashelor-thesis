@@ -6,7 +6,8 @@
 import math
 from pathlib import Path
 
-OUT = Path(r"C:\Users\c058dew\2703-yamashita-bashelor-thesis\references\reviews\figures\bptt_unrolled.svg")
+# スクリプトと同じフォルダに保存する（フォルダを移動しても動くように）
+OUT = Path(__file__).with_name("bptt_unrolled.svg")
 
 C_HX = "#2563eb"   # 入力→隠れ層
 C_HH = "#ea580c"   # 隠れ層→次時刻の隠れ層（再帰辺）
