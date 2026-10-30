@@ -35,8 +35,18 @@ fi
 if [ ! -x "$PY" ]; then
     uv venv --python 3.11 "$FL/.venv"
     # PyPI の semble は別物なので、著者の GitHub から入れる
-    uv pip install --python "$PY" -e "$FL" torch scipy wandb pyyaml matplotlib \
-        "semble @ git+https://github.com/mcpca/semble@366f3ef079c9b31116d6f46bc40ff3b8c927d317"
+    # PyTorch：Tesla V100対応のCUDA 12.6版
+uv pip install --python "$PY" \
+    --index-url https://download.pytorch.org/whl/cu126 \
+    "torch==2.14.0"
+
+# flow-learning本体：依存パッケージは別途インストールする
+uv pip install --python "$PY" --no-deps -e "$FL"
+
+# その他の実験用パッケージ
+uv pip install --python "$PY" \
+    scipy wandb pyyaml matplotlib \
+    "semble @ git+https://github.com/mcpca/semble@366f3ef079c9b31116d6f46bc40ff3b8c927d317"
 fi
 "$PY" -c "import torch; print('torch', torch.__version__, 'cuda:', torch.cuda.is_available())"
 
