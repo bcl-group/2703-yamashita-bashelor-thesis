@@ -1,21 +1,27 @@
 """
-flow-learning（Learning flow functions of spiking systems）の学習済みモデルに
-src/neuron/current.py の電流を入れ、正解の HH FS と並べてグラフにする。
+論文（Learning flow functions of spiking systems, L4DC 2024）のコードで学習したモデルに電流を入れ、
+正解の HH モデルと膜電位を並べてグラフにする。
 
-元の experiments/interactive_test.py は semble の乱数電流しか使えないので、
-電流の作り方だけを current.py に差し替えたもの。
+論文のコード（flow-learning の 2407-l4dc ブランチ）は書き換えず、学習結果の .pth を読み込むだけ。
+このスクリプトで足しているのは「モデルに入れる電流」だけである。
 
-時間と単位の対応（semble の HodgkinHuxleyFS）:
-    モデル時間 1 = 100 ms（time_scale = 100）
+    --currents paper      : 論文 §4（図2・図4）と同じ作り方。学習データと同じ分布の電流と初期状態
+                            （100 ms ごとに U[0, 1] uA から引き直す電流、V(0) ~ U[-100, 100] mV など）
+    --currents current_py : src/neuron/current.py の電流（入力 0 で落ち着かせた静止状態から始める）
+
+時間と単位の対応（論文コードの dynamics.py）:
+    モデル時間 1 = time_scale [ms] = 100 ms
     入力の刻み Δ = 0.1（モデル時間）= 10 ms。入力は Δ ごとに一定値
-    膜電位の状態 v = V / 100（V は mV）
+    膜電位の状態 v = V / v_scale（v_scale = 100、V は mV）
     電流の単位は uA/cm^2（current.py と同じ）
 
 current.py の電流は dt_ms ごとの値なので、10 ms ごとに平均して階段状の入力にする。
-正解の HH FS も、モデルと同じ階段状の入力で計算する。
+正解の HH も、モデルと同じ階段状の入力で計算する。
 
-実行方法（リポジトリのルートから。flow-learning の .venv を使う）:
-    external/flow-learning/.venv/Scripts/python -X utf8 experiments/flow_learning/predict_current_py.py <モデルのフォルダ>
+実行方法（卒論リポジトリのルートから。論文コード用の .venv を使う）:
+    PY=external/flow-learning-l4dc/.venv/bin/python
+    $PY -X utf8 experiments/flow_learning/predict_current_py.py <学習結果の .pth> --currents paper
+    $PY -X utf8 experiments/flow_learning/predict_current_py.py <学習結果の .pth> --currents current_py
 """
 import os
 import sys
@@ -25,15 +31,12 @@ from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 import torch
-import yaml
 from scipy.integrate import solve_ivp
 
-# src/（neuron）を import できるようにする
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'src'))
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
 
-from flumen import CausalFlowModel
-from flumen.utils import pack_model_inputs
-from semble import make_trajectory_sampler
+# src/（neuron）を import できるようにする
+sys.path.insert(0, os.path.join(ROOT, 'src'))
 
 from neuron.current import (
     step_current,
@@ -44,8 +47,6 @@ from neuron.current import (
     random_pulse_current,
     random_timing_pulse_current,
 )
-
-MS_PER_MODEL_TIME = 100.0  # モデル時間 1 が何 ms か（HodgkinHuxleyFS.time_scale）
 
 # 学習データの電流は 0〜1 uA/cm^2 なので、振幅はその範囲に収める
 # 値: t [ms] を受け取り、同じ shape の電流 [uA/cm^2] を返す関数
@@ -63,31 +64,42 @@ CURRENTS = {
 
 def parse_args():
     ap = ArgumentParser()
-    ap.add_argument('model_dir', type=str, help='state_dict.pth と metadata.yaml があるフォルダ')
-    ap.add_argument('--t_end', type=float, default=1000.0, help='シミュレーションの長さ [ms]')
+    ap.add_argument('exp_path', type=str, help='論文コード（load_data.py）が保存した学習結果の .pth')
+    ap.add_argument('--l4dc_root', type=str, default=os.path.join(ROOT, 'external', 'flow-learning-l4dc'),
+                    help='論文コード（2407-l4dc ブランチ）のフォルダ')
+    ap.add_argument('--currents', choices=['paper', 'current_py'], default='paper')
+    ap.add_argument('--n_paper', type=int, default=2, help='paper のときに描く軌道の本数（論文の図は 2 本）')
+    ap.add_argument('--seed', type=int, default=0, help='paper のときの乱数の seed')
+    ap.add_argument('--t_end', type=float, default=None,
+                    help='シミュレーションの長さ [ms]。省略すると論文の図と同じ（1 細胞 1000 ms、2 細胞 1400 ms）')
     ap.add_argument('--dt_ms', type=float, default=0.01, help='current.py に渡す時刻の刻み [ms]')
     ap.add_argument('--n_eval', type=int, default=3000, help='膜電位を評価する時刻の数')
-    ap.add_argument('--out', type=str, default='results/flow_learning/predict_current_py.png')
+    ap.add_argument('--out', type=str, default=None,
+                    help='保存先。省略すると results/flow_learning/<学習名>_<currents>.png')
     return ap.parse_args()
 
 
-def load_model(model_dir):
+def load_experiment(exp_path, l4dc_root):
     """
-    学習済みモデルと、学習時の設定を読み込む。
+    論文コードの学習結果を読み込む。
+
+    .pth には Experiment オブジェクトがまるごと pickle されていて、学習データの生成器
+    （dynamics.py などのクラス）も入っている。読み込むには論文コードを import できる必要がある。
 
     Returns:
-        model (CausalFlowModel): 推論モードのモデル
-        metadata (dict): metadata.yaml の中身（data_settings に dynamics と control_delta がある）
+        experiment (flow_model.Experiment): 学習結果。generator.sampler に学習時のサンプラーがある
+        model (CausalFlowModel): 検証損失が最小のときの重みを入れたモデル（推論モード）
+        pack_model_inputs (function): 論文コードの入力整形関数
     """
-    model_dir = Path(model_dir)
-    with open(model_dir / 'metadata.yaml', 'r') as f:
-        metadata = yaml.load(f, Loader=yaml.FullLoader)
-    state_dict = torch.load(model_dir / 'state_dict.pth', weights_only=False, map_location='cpu')
+    l4dc_root = os.path.abspath(l4dc_root)
+    sys.path.insert(0, os.path.join(l4dc_root, 'experiments'))
+    sys.path.insert(0, l4dc_root)
+    from flow_model import pack_model_inputs
 
-    model = CausalFlowModel(**metadata['args'])
-    model.load_state_dict(state_dict)
+    experiment = torch.load(exp_path, map_location='cpu', weights_only=False)
+    model = experiment.load_model()
     model.eval()
-    return model, metadata
+    return experiment, model, pack_model_inputs
 
 
 def to_control_sequence(I, dt_ms, delta_ms, n_control):
@@ -113,17 +125,17 @@ def to_control_sequence(I, dt_ms, delta_ms, n_control):
 
 def simulate_true(dyn, x0, u, delta, t_eval, method):
     """
-    階段状の入力 u で HH FS を数値積分する（semble の TrajectorySampler.get_example と同じ）。
+    階段状の入力 u で HH を数値積分する（論文コードの TrajectorySampler.get_example と同じ式）。
 
     Args:
-        dyn: semble の Dynamics（HodgkinHuxleyFS）
-        x0 (np.ndarray): 初期状態 (v, n, m, h)。shape (4,)
+        dyn: 論文コードの Dynamics（HodgkinHuxleyFS / HodgkinHuxleyFFE など）
+        x0 (np.ndarray): 初期状態。shape (n,)
         u (np.ndarray): 入力。shape (n_control, 1)
         delta (float): 入力の刻み（モデル時間）
         t_eval (np.ndarray): 状態を出す時刻（モデル時間）。shape (n_eval,)
 
     Returns:
-        np.ndarray: 状態。shape (n_eval, 4)
+        np.ndarray: 状態。shape (n_eval, n)
     """
     def f(t, y):
         return dyn(y, u[int(np.floor(t / delta))])
@@ -133,83 +145,102 @@ def simulate_true(dyn, x0, u, delta, t_eval, method):
     return sol.y.T
 
 
-def resting_state(dyn, method, t_rest=10.0):
+def resting_state(dyn, x_init, method, t_rest=30.0):
     """
-    入力 0 で t_rest（モデル時間）だけ動かし、最後の状態を静止状態とする。
+    入力 0 で t_rest（モデル時間。30 = 3 s）だけ動かし、最後の状態を静止状態とする。
+    2 細胞モデルの RSA 型は適応電流が遅い（数百 ms）ので、長めに動かす。
 
     Returns:
-        np.ndarray: 静止状態 (v, n, m, h)。shape (4,)
+        np.ndarray: 静止状態。shape (n,)
     """
-    x_init = np.array([-0.7, 0.0, 0.0, 1.0])
     sol = solve_ivp(lambda t, y: dyn(y, np.zeros(1)), (0.0, t_rest), x_init, method=method)
     return sol.y[:, -1]
 
 
 def main():
     args = parse_args()
-    model, metadata = load_model(args.model_dir)
+    experiment, model, pack_model_inputs = load_experiment(args.exp_path, args.l4dc_root)
 
-    sampler = make_trajectory_sampler(metadata['data_settings'])
+    sampler = experiment.generator.sampler
     dyn = sampler._dyn
     method = sampler._ode_method
-    delta = sampler._delta                          # モデル時間（0.1）
-    delta_ms = delta * MS_PER_MODEL_TIME            # 10 ms
-    mask = np.array([bool(v) for v in dyn.mask])    # 出力する状態（v だけ）
+    delta = sampler._delta                              # モデル時間（0.1）
+    ms = dyn.time_scale                                 # モデル時間 1 あたりの ms（100）
+    delta_ms = delta * ms                               # 10 ms
+    mask = np.array([bool(v) for v in dyn.mask])        # 出力する状態（各細胞の v）
+    n_out = int(mask.sum())
+    two_cells = n_out > 1
 
-    T = args.t_end / MS_PER_MODEL_TIME              # モデル時間での長さ
+    t_end = args.t_end if args.t_end else (1400.0 if two_cells else 1000.0)
+    T = t_end / ms                                      # モデル時間での長さ
     n_control = 1 + int(np.floor(T / delta))
     t_ms = np.arange(0.0, n_control * delta_ms, args.dt_ms)
-    t_eval = np.linspace(0.0, T, args.n_eval)       # モデル時間。shape (n_eval,)
+    t_eval = np.linspace(0.0, T, args.n_eval)           # モデル時間。shape (n_eval,)
 
-    x0 = resting_state(dyn, method)
-    print(f'静止状態 x0 = {x0}（V = {100 * x0[0]:.2f} mV）')
+    # 初期状態と入力の乱数を固定する（論文コードの reset_rngs は seed を取らないので、生成器を直接差し替える）
+    sampler._seq_gen._rng = np.random.default_rng(args.seed)
+    sampler.state_generator.rng = np.random.default_rng(args.seed + 1000)
 
-    fig, axes = plt.subplots(len(CURRENTS), 2, figsize=(13, 2.2 * len(CURRENTS)),
-                             sharex=True, gridspec_kw={'width_ratios': [3, 1]})
+    # 各条件: (名前, 初期状態 x0 shape (n,), 細かい電流 I shape (N,) か None, 入力 u shape (n_control, 1))
+    cases = []
+    if args.currents == 'current_py':
+        x0 = resting_state(dyn, sampler.state_generator.sample(), method)
+        print(f'静止状態 V = {dyn.v_scale * x0[mask]} mV')
+        for name, make_I in CURRENTS.items():
+            I = make_I(t_ms)
+            cases.append((name, x0, I, to_control_sequence(I, args.dt_ms, delta_ms, n_control)))
+    else:
+        for i in range(args.n_paper):
+            x0 = sampler.state_generator.sample()
+            u = sampler._seq_gen.sample(time_range=(0.0, T), delta=delta)[:n_control]
+            cases.append((f'paper {i}', x0, None, u))
 
-    for row, (name, make_I) in enumerate(CURRENTS.items()):
-        I = make_I(t_ms)                                           # shape (N,)
-        u = to_control_sequence(I, args.dt_ms, delta_ms, n_control)  # shape (n_control, 1)
+    n_rows = n_out + 1
+    fig = plt.figure(figsize=(9, (1.6 * n_out + 0.9) * len(cases) + 0.5))
+    subfigs = np.atleast_1d(fig.subfigures(len(cases), 1))
 
-        y_true = simulate_true(dyn, x0, u, delta, t_eval, method)[:, mask]  # shape (n_eval, 1)
+    for sf, (name, x0, I, u) in zip(subfigs, cases):
+        y_true = simulate_true(dyn, x0, u, delta, t_eval, method)[:, mask]   # shape (n_eval, n_out)
 
-        with torch.no_grad():
-            x0_feed, u_feed, skips, tau = pack_model_inputs(x0, t_eval.reshape(-1, 1), u, delta)
-            y_pred = model.forward_trajectory(x0_feed, u_feed, skips, tau).numpy().reshape(-1, 1)
+        # 論文コードの入力整形 → 予測。予測は時刻の降順で返るので反転する
+        # 最後の時刻で入力の添字が 1 つはみ出さないよう、最後の値を 1 つ足しておく
+        u_feed = np.vstack([u, u[-1:]]).astype(np.float32)
+        x0_feed, _, rnn_input, deltas = pack_model_inputs(x0, t_eval, u_feed, delta)
+        y_pred = np.flip(experiment.predict(model, x0_feed, rnn_input, deltas), 0)  # shape (n_eval, n_out)
 
-        V_true = 100.0 * y_true[:, 0]
-        V_pred = 100.0 * y_pred[:, 0]
-        rmse = np.sqrt(np.mean((V_true - V_pred) ** 2))
-        print(f'{name:>20s}: RMSE = {rmse:.2f} mV')
+        V_true = dyn.v_scale * y_true
+        V_pred = dyn.v_scale * y_pred
+        rmse = np.sqrt(np.mean((V_true - V_pred) ** 2, axis=0))             # shape (n_out,)
+        v0 = dyn.v_scale * x0[mask]
+        print(f'{name:>20s}: V(0) = {np.round(v0, 1)} mV, RMSE = {np.round(rmse, 2)} mV')
 
-        t_plot = t_eval * MS_PER_MODEL_TIME
-        ax = axes[row, 0]
-        ax.plot(t_plot, V_true, 'b--', lw=1.0, label='HH FS（正解）')
-        ax.plot(t_plot, V_pred, c='orange', lw=1.0, label='flow-learning')
-        ax.set_ylabel(f'{name}\nV [mV]', fontsize=9)
-        ax.set_title(f'RMSE = {rmse:.2f} mV', fontsize=9, loc='right')
-        ax.grid(True, ls='--', alpha=0.5)
+        axes = sf.subplots(n_rows, 1, sharex=True, height_ratios=[2] * n_out + [1])
+        t_plot = t_eval * ms
+        for k in range(n_out):
+            ax = axes[k]
+            ax.plot(t_plot, V_pred[:, k], c='orange', lw=1.0, label='Prediction')
+            ax.plot(t_plot, V_true[:, k], 'b--', lw=1.0, label='True')
+            ax.set_ylabel(f'$V_{k + 1}$ [mV]' if two_cells else '$V$ [mV]')
+            ax.text(0.99, 0.95, f'RMSE {rmse[k]:.1f} mV', transform=ax.transAxes,
+                    ha='right', va='top', fontsize=8)
+        ax = axes[-1]
+        if I is not None:
+            ax.plot(t_ms, I, c='gray', lw=0.8)
+        ax.step(np.arange(n_control) * delta_ms, u[:, 0], where='post')
+        ax.set_ylabel('$u$ [$\\mu$A]')
+        ax.set_xlabel('$t$ [ms]')
+        sf.suptitle(f'{name}', fontsize=10, x=0.02, ha='left')
+        sf.subplots_adjust(hspace=0)
 
-        ax = axes[row, 1]
-        ax.plot(t_ms, I, c='gray', lw=0.8, label='current.py')
-        ax.step(np.arange(n_control) * delta_ms, u[:, 0], where='post', c='k', lw=1.0,
-                label='入力 u（10 ms 平均）')
-        ax.set_ylabel('I [uA/cm²]', fontsize=9)
-        ax.grid(True, ls='--', alpha=0.5)
+    axes_first = subfigs[0].axes[0]
+    axes_first.legend(loc='upper center', fontsize=8, ncol=2)
 
-    axes[0, 0].legend(fontsize=8, loc='upper left')
-    axes[0, 1].legend(fontsize=8, loc='upper left')
-    axes[-1, 0].set_xlabel('Time [ms]')
-    axes[-1, 1].set_xlabel('Time [ms]')
-    fig.tight_layout()
-
-    out = Path(args.out)
+    stem = Path(args.exp_path).parent.name
+    out = Path(args.out or os.path.join(ROOT, 'results', 'flow_learning', f'{stem}_{args.currents}.png'))
     out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out, dpi=150)
-    print(f'保存: {out}')
+    print(f'保存: {os.path.normpath(out)}')
 
 
 if __name__ == '__main__':
-    # Windows と Linux サーバーのどちらでも日本語が出るように、候補を並べておく
-    plt.rcParams['font.family'] = ['Yu Gothic', 'Meiryo', 'Noto Sans CJK JP', 'IPAexGothic', 'sans-serif']
     main()
