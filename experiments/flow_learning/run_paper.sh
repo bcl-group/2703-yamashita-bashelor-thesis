@@ -47,10 +47,13 @@ echo "l4dc commit: $(git -C "$L4" rev-parse --short HEAD)"
 # ---- 2. 環境 ----
 # torch 2.14 + CUDA 12.6 は V100（SM 7.0）で動く（2.15 + CUDA 13 は非対応）。
 # pyDOE2 は Python 3.12 で消えた imp を使うので Python 3.11 にする。
-if [ ! -x "$PY" ]; then
-    uv venv --python 3.11 "$L4/.venv"
+# 完了の目印は「全部インストールできた」ときだけ作る。途中で失敗しても、再実行でインストールをやり直す。
+ENV_OK="$L4/.venv/.deps_installed"
+if [ ! -f "$ENV_OK" ]; then
+    [ -x "$PY" ] || uv venv --python 3.11 "$L4/.venv"
     uv pip install --python "$PY" --index-url https://download.pytorch.org/whl/cu126 "torch==2.14.0"
     uv pip install --python "$PY" numpy scipy pyDOE2 matplotlib
+    touch "$ENV_OK"
 fi
 
 # GPU 上で LSTM が実際に動くかを、学習の前に確かめる（動かなければここで止まる）
@@ -90,7 +93,21 @@ done
 BEST="$L4/$($RUN experiments/scripts/find_best_model.py "outputs/$NAME")"
 echo "best model: $BEST"
 
-# ---- 5. 膜電位の応答を描く ----
+# ---- 5. 損失の分布（図3） ----
+# 論文コードの compute_stats.py が outputs/<名前>/<名前>_stats.csv（1 行 = 1 モデル）を書く。
+# 作図は plot_loss_box.py（論文の l4dc_loss_plot.py は seaborn・LaTeX が要り、図を保存しないため）。
+# 失敗しても予測の図（6.）は描けるように、ここでは止めない。
+echo "=== loss stats: $(date '+%F %T') ==="
+if $RUN experiments/scripts/compute_stats.py "outputs/$NAME"; then
+    cp "outputs/$NAME/${NAME}_stats.csv" "$RES/${NAME}_stats.csv"
+    MPLBACKEND=Agg "$PY" -X utf8 "$ROOT/experiments/flow_learning/plot_loss_box.py" \
+        "$RES/${NAME}_stats.csv" --out "$RES/${NAME}_loss_box.png" --paper "$TARGET" \
+        || echo "警告: 損失の箱ひげ図を描けなかった"
+else
+    echo "警告: compute_stats.py が失敗した（損失の分布は描かない）"
+fi
+
+# ---- 6. 膜電位の応答を描く（図2・図4） ----
 echo "=== predict: $(date '+%F %T') ==="
 cd "$ROOT"
 for CUR in paper current_py; do
