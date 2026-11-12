@@ -11,9 +11,24 @@ dependencies = [
     "efel>=5.7.34",
     "matplotlib>=3.10.9",
     "numpy>=2.2.6",
+    # GPU サーバ（tesla4）は Tesla V100（compute capability 7.0）。
+    # torch 2.15 以降・CUDA 13 ビルドは V100 に非対応なので 2.14 系 + CUDA 12.6 ビルドに固定する。
+    "torch>=2.14,<2.15",
 ]
 
 [dependency-groups]
 dev = [
     "pytest>=9.1.1",
 ]
+
+# Linux（GPU サーバ）では CUDA 12.6 版の torch を PyTorch 公式から取る。
+# Windows（手元の PC）は PyPI の torch（CPU 版）のまま。
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cu126", marker = "sys_platform == 'linux'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true

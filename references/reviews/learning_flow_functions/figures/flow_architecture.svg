@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1290 625" width="1290" height="625">
+<defs>
+<marker id="arr-334155" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/></marker>
+<marker id="arr-ea580c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ea580c"/></marker>
+<marker id="arr-64748b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/></marker>
+</defs>
+<rect width="1290" height="625" fill="#ffffff"/>
+<g transform="translate(0,-58)">
+<text x="308.0" y="112.0" font-size="15" text-anchor="end" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">入力電流 <tspan font-style="italic">u</tspan>(<tspan font-style="italic">t</tspan>)</text>
+<text x="308.0" y="132.0" font-size="13" text-anchor="end" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">（Δ ごとに一定）</text>
+<text x="308.0" y="152.0" font-size="11" text-anchor="end" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">※値は説明用。§4.1 の学習データ</text>
+<text x="308.0" y="167.0" font-size="11" text-anchor="end" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">では 100 ms ごとに変化</text>
+<path d="M 314.0 205.0 L 1030.0 205.0" fill="none" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr-64748b)"/>
+<text x="1036.0" y="210.0" font-size="15" text-anchor="start" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">t</tspan></text>
+<path d="M 320.0 163 L 490.0 163" stroke="#334155" stroke-width="2.5"/>
+<text x="405.0" y="153.0" font-size="16" text-anchor="middle" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">ω</tspan><tspan dy="4.8" font-size="12">0</tspan><tspan dy="-4.8">&#8203;</tspan></text>
+<path d="M 490.0 127 L 660.0 127" stroke="#334155" stroke-width="2.5"/>
+<path d="M 490.0 163 L 490.0 127" stroke="#334155" stroke-width="2.5"/>
+<text x="575.0" y="117.0" font-size="16" text-anchor="middle" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">ω</tspan><tspan dy="4.8" font-size="12">1</tspan><tspan dy="-4.8">&#8203;</tspan></text>
+<path d="M 660.0 181 L 830.0 181" stroke="#334155" stroke-width="2.5"/>
+<path d="M 660.0 127 L 660.0 181" stroke="#334155" stroke-width="2.5"/>
+<text x="745.0" y="171.0" font-size="16" text-anchor="middle" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">ω</tspan><tspan dy="4.8" font-size="12">2</tspan><tspan dy="-4.8">&#8203;</tspan></text>
+<path d="M 830.0 143 L 915.0 143" stroke="#334155" stroke-width="2.5"/>
+<path d="M 915.0 143 L 1000.0 143" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 4"/>
+<path d="M 830.0 181 L 830.0 143" stroke="#334155" stroke-width="2.5"/>
+<text x="915.0" y="133.0" font-size="16" text-anchor="middle" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">ω</tspan><tspan dy="4.8" font-size="12">3</tspan><tspan dy="-4.8">&#8203;</tspan></text>
+<path d="M 320.0 201 L 320.0 209" stroke="#64748b" stroke-width="1.5"/>
+<text x="320.0" y="227.0" font-size="13" text-anchor="middle" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">0</text>
+<path d="M 490.0 201 L 490.0 209" stroke="#64748b" stroke-width="1.5"/>
+<text x="490.0" y="227.0" font-size="13" text-anchor="middle" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">10</text>
+<path d="M 660.0 201 L 660.0 209" stroke="#64748b" stroke-width="1.5"/>
+<text x="660.0" y="227.0" font-size="13" text-anchor="middle" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">20</text>
+<path d="M 830.0 201 L 830.0 209" stroke="#64748b" stroke-width="1.5"/>
+<text x="830.0" y="227.0" font-size="13" text-anchor="middle" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">30</text>
+<text x="1000.0" y="227.0" font-size="13" text-anchor="middle" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">40 ms</text>
+<path d="M 1000.0 201 L 1000.0 209" stroke="#64748b" stroke-width="1.5"/>
+<path d="M 915.0 95 L 915.0 209" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="915.0" y="89.0" font-size="14" text-anchor="middle" fill="#ea580c" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">予測する時刻 <tspan font-style="italic">t</tspan> = 35 ms</text>
+<path d="M 320.0 236 L 320.0 246 M 320.0 241 L 490.0 241 M 490.0 236 L 490.0 246" stroke="#64748b" stroke-width="1.2" fill="none"/>
+<text x="405.0" y="236.0" font-size="12" text-anchor="middle" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">Δ = 10 ms</text>
+<rect x="12" y="284" width="110" height="92" rx="8" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+<text x="67.0" y="312.0" font-size="15" text-anchor="middle" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">初期状態</text>
+<text x="67.0" y="338.0" font-size="17" text-anchor="middle" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">x</tspan> ∈ ℝ⁴</text>
+<text x="67.0" y="362.0" font-size="11" text-anchor="middle" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">(<tspan font-style="italic">V</tspan>/100, <tspan font-style="italic">n</tspan>, <tspan font-style="italic">m</tspan>, <tspan font-style="italic">h</tspan>)</text>
+<rect x="145" y="278" width="130" height="104" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+<text x="210.0" y="306.0" font-size="15" text-anchor="middle" fill="#2563eb" font-weight="bold" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">符号化器 <tspan font-style="italic">E</tspan></text>
+<text x="210.0" y="332.0" font-size="13" text-anchor="middle" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">4→24→24→24→24</text>
+<text x="210.0" y="352.0" font-size="11" text-anchor="middle" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">隠れ3層：tanh</text>
+<text x="210.0" y="368.0" font-size="11" text-anchor="middle" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">出力層：線形</text>
+<path d="M 122.0 330.0 L 143.0 330.0" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr-334155)"/>
+<rect x="342" y="260" width="650" height="140" rx="12" fill="none" stroke="#475569" stroke-width="1.3" stroke-dasharray="6 5"/>
+<text x="352.0" y="283.0" font-size="13" text-anchor="start" fill="#475569" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">LSTM：1層・隠れ状態 24 次元・4 セルとも同じ重み</text>
+<rect x="350" y="292.0" width="110" height="76" rx="8" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+<text x="405.0" y="336.0" font-size="16" text-anchor="middle" fill="#475569" font-weight="bold" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">LSTM</text>
+<text x="405.0" y="434.0" font-size="15" text-anchor="middle" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">(<tspan font-style="italic">ω</tspan><tspan dy="4.5" font-size="11">0</tspan><tspan dy="-4.5">&#8203;</tspan>, <tspan font-style="italic">τ</tspan><tspan dy="4.5" font-size="11">0</tspan><tspan dy="-4.5">&#8203;</tspan>)</text>
+<text x="405.0" y="454.0" font-size="13" text-anchor="middle" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">τ</tspan><tspan dy="3.9" font-size="9">0</tspan><tspan dy="-3.9">&#8203;</tspan> = 1</text>
+<path d="M 405.0 414.0 L 405.0 370.0" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr-334155)"/>
+<rect x="520" y="292.0" width="110" height="76" rx="8" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+<text x="575.0" y="336.0" font-size="16" text-anchor="middle" fill="#475569" font-weight="bold" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">LSTM</text>
+<text x="575.0" y="434.0" font-size="15" text-anchor="middle" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">(<tspan font-style="italic">ω</tspan><tspan dy="4.5" font-size="11">1</tspan><tspan dy="-4.5">&#8203;</tspan>, <tspan font-style="italic">τ</tspan><tspan dy="4.5" font-size="11">1</tspan><tspan dy="-4.5">&#8203;</tspan>)</text>
+<text x="575.0" y="454.0" font-size="13" text-anchor="middle" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">τ</tspan><tspan dy="3.9" font-size="9">1</tspan><tspan dy="-3.9">&#8203;</tspan> = 1</text>
+<path d="M 575.0 414.0 L 575.0 370.0" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr-334155)"/>
+<rect x="690" y="292.0" width="110" height="76" rx="8" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+<text x="745.0" y="336.0" font-size="16" text-anchor="middle" fill="#475569" font-weight="bold" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">LSTM</text>
+<text x="745.0" y="434.0" font-size="15" text-anchor="middle" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">(<tspan font-style="italic">ω</tspan><tspan dy="4.5" font-size="11">2</tspan><tspan dy="-4.5">&#8203;</tspan>, <tspan font-style="italic">τ</tspan><tspan dy="4.5" font-size="11">2</tspan><tspan dy="-4.5">&#8203;</tspan>)</text>
+<text x="745.0" y="454.0" font-size="13" text-anchor="middle" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">τ</tspan><tspan dy="3.9" font-size="9">2</tspan><tspan dy="-3.9">&#8203;</tspan> = 1</text>
+<path d="M 745.0 414.0 L 745.0 370.0" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr-334155)"/>
+<rect x="860" y="292.0" width="110" height="76" rx="8" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+<text x="915.0" y="336.0" font-size="16" text-anchor="middle" fill="#475569" font-weight="bold" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">LSTM</text>
+<text x="915.0" y="434.0" font-size="15" text-anchor="middle" fill="#ea580c" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">(<tspan font-style="italic">ω</tspan><tspan dy="4.5" font-size="11">3</tspan><tspan dy="-4.5">&#8203;</tspan>, <tspan font-style="italic">τ</tspan><tspan dy="4.5" font-size="11">3</tspan><tspan dy="-4.5">&#8203;</tspan>)</text>
+<text x="915.0" y="454.0" font-size="13" text-anchor="middle" fill="#ea580c" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">τ</tspan><tspan dy="3.9" font-size="9">3</tspan><tspan dy="-3.9">&#8203;</tspan> = 0.5</text>
+<path d="M 915.0 414.0 L 915.0 370.0" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr-334155)"/>
+<path d="M 275.0 330.0 L 348.0 330.0" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr-334155)"/>
+<text x="316.5" y="318.0" font-size="15" text-anchor="middle" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">(<tspan font-style="italic">h</tspan><tspan dy="4.5" font-size="11">0</tspan><tspan dy="-4.5">&#8203;</tspan>, <tspan font-style="italic">c</tspan><tspan dy="4.5" font-size="11">0</tspan><tspan dy="-4.5">&#8203;</tspan>)</text>
+<text x="316.5" y="352.0" font-size="12" text-anchor="middle" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">c</tspan><tspan dy="3.6" font-size="9">0</tspan><tspan dy="-3.6">&#8203;</tspan> = 0</text>
+<path d="M 460.0 330.0 L 518.0 330.0" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr-334155)"/>
+<text x="490.0" y="318.0" font-size="14" text-anchor="middle" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">(<tspan font-style="italic">h</tspan><tspan dy="4.5" font-size="11">1</tspan><tspan dy="-4.5">&#8203;</tspan>, <tspan font-style="italic">c</tspan><tspan dy="4.5" font-size="11">1</tspan><tspan dy="-4.5">&#8203;</tspan>)</text>
+<path d="M 630.0 330.0 L 688.0 330.0" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr-334155)"/>
+<text x="660.0" y="318.0" font-size="14" text-anchor="middle" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">(<tspan font-style="italic">h</tspan><tspan dy="4.5" font-size="11">2</tspan><tspan dy="-4.5">&#8203;</tspan>, <tspan font-style="italic">c</tspan><tspan dy="4.5" font-size="11">2</tspan><tspan dy="-4.5">&#8203;</tspan>)</text>
+<path d="M 800.0 330.0 L 858.0 330.0" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr-334155)"/>
+<text x="830.0" y="318.0" font-size="14" text-anchor="middle" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">(<tspan font-style="italic">h</tspan><tspan dy="4.5" font-size="11">3</tspan><tspan dy="-4.5">&#8203;</tspan>, <tspan font-style="italic">c</tspan><tspan dy="4.5" font-size="11">3</tspan><tspan dy="-4.5">&#8203;</tspan>)</text>
+<rect x="780" y="500" width="315" height="92" rx="8" fill="#ffedd5" stroke="#ea580c" stroke-width="2"/>
+<text x="937.5" y="530.0" font-size="15" text-anchor="middle" fill="#ea580c" font-weight="bold" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">潜在表現の線形補間</text>
+<text x="806.0" y="562.0" font-size="16" text-anchor="start" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">z</tspan></text>
+<text x="811.8" y="553.2" font-size="12.8" text-anchor="middle" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">~</text>
+<text x="815.9" y="562.0" font-size="16" text-anchor="start" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">&#160;= (1 − <tspan font-style="italic">τ</tspan><tspan dy="4.8" font-size="12">3</tspan><tspan dy="-4.8">&#8203;</tspan>) <tspan font-style="italic">h</tspan><tspan dy="4.8" font-size="12">3</tspan><tspan dy="-4.8">&#8203;</tspan> + <tspan font-style="italic">τ</tspan><tspan dy="4.8" font-size="12">3</tspan><tspan dy="-4.8">&#8203;</tspan> <tspan font-style="italic">h</tspan><tspan dy="4.8" font-size="12">4</tspan><tspan dy="-4.8">&#8203;</tspan>  ∈ ℝ²⁴</text>
+<circle cx="830.0" cy="330" r="4" fill="#ea580c"/>
+<path d="M 830.0 330.0 L 830.0 498.0" fill="none" stroke="#ea580c" stroke-width="2" marker-end="url(#arr-ea580c)"/>
+<text x="822.0" y="448.0" font-size="15" text-anchor="end" fill="#ea580c" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">h</tspan><tspan dy="4.5" font-size="11">3</tspan><tspan dy="-4.5">&#8203;</tspan></text>
+<path d="M 970.0 330.0 L 1045.0 330.0 L 1045.0 498.0" fill="none" stroke="#ea580c" stroke-width="2" marker-end="url(#arr-ea580c)"/>
+<text x="1010.0" y="318.0" font-size="14" text-anchor="middle" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">(<tspan font-style="italic">h</tspan><tspan dy="4.5" font-size="11">4</tspan><tspan dy="-4.5">&#8203;</tspan>, <tspan font-style="italic">c</tspan><tspan dy="4.5" font-size="11">4</tspan><tspan dy="-4.5">&#8203;</tspan>)</text>
+<text x="1053.0" y="448.0" font-size="15" text-anchor="start" fill="#ea580c" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">h</tspan><tspan dy="4.5" font-size="11">4</tspan><tspan dy="-4.5">&#8203;</tspan></text>
+<path d="M 941.0 460.0 L 941.0 498.0" fill="none" stroke="#ea580c" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr-ea580c)"/>
+<rect x="1130" y="494" width="140" height="104" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+<text x="1200.0" y="522.0" font-size="15" text-anchor="middle" fill="#2563eb" font-weight="bold" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">復号器 <tspan font-style="italic">D</tspan></text>
+<text x="1200.0" y="548.0" font-size="13" text-anchor="middle" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">24→24→24→24→1</text>
+<text x="1200.0" y="568.0" font-size="11" text-anchor="middle" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">隠れ3層：tanh</text>
+<text x="1200.0" y="584.0" font-size="11" text-anchor="middle" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">出力層：線形</text>
+<path d="M 1095.0 546.0 L 1128.0 546.0" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr-334155)"/>
+<text x="1106.5" y="536.0" font-size="15" text-anchor="start" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">z</tspan></text>
+<text x="1111.9" y="527.8" font-size="12.0" text-anchor="middle" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">~</text>
+<path d="M 1200.0 598.0 L 1200.0 628.0" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr-334155)"/>
+<text x="1200.0" y="650.0" font-size="17" text-anchor="middle" fill="#0f172a" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">ŷ</tspan>(<tspan font-style="italic">t</tspan>, <tspan font-style="italic">x</tspan>, <tspan font-style="italic">u</tspan>)</text>
+<text x="1200.0" y="672.0" font-size="14" text-anchor="middle" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">≈ <tspan font-style="italic">V</tspan>(<tspan font-style="italic">t</tspan>) / 100</text>
+<text x="30.0" y="520.0" font-size="14" text-anchor="start" fill="#0f172a" font-weight="bold" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">記号</text>
+<text x="30.0" y="546.0" font-size="13" text-anchor="start" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">ω</tspan><tspan dy="3.9" font-size="9">j</tspan><tspan dy="-3.9">&#8203;</tspan>：区間 <tspan font-style="italic">j</tspan> の電流値</text>
+<text x="30.0" y="570.0" font-size="13" text-anchor="start" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">τ</tspan><tspan dy="3.9" font-size="9">j</tspan><tspan dy="-3.9">&#8203;</tspan>：区間 <tspan font-style="italic">j</tspan> のうち進める割合（0〜1）</text>
+<text x="30.0" y="594.0" font-size="13" text-anchor="start" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif">(<tspan font-style="italic">h</tspan><tspan dy="3.9" font-size="9">j</tspan><tspan dy="-3.9">&#8203;</tspan>, <tspan font-style="italic">c</tspan><tspan dy="3.9" font-size="9">j</tspan><tspan dy="-3.9">&#8203;</tspan>)：<tspan font-style="italic">j</tspan> 回更新した後の LSTM の隠れ状態・セル状態（各 24 次元）</text>
+<text x="30.0" y="618.0" font-size="13" text-anchor="start" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">h</tspan><tspan dy="3.9" font-size="9">4</tspan><tspan dy="-3.9">&#8203;</tspan> は (<tspan font-style="italic">ω</tspan><tspan dy="3.9" font-size="9">3</tspan><tspan dy="-3.9">&#8203;</tspan>, 0.5) で更新した結果（40 ms の状態ではない）</text>
+<text x="30.0" y="642.0" font-size="13" text-anchor="start" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">k</tspan><tspan dy="3.9" font-size="9">t</tspan><tspan dy="-3.9">&#8203;</tspan> = ⌊<tspan font-style="italic">t</tspan>/Δ⌋ = 3 → セルは <tspan font-style="italic">k</tspan><tspan dy="3.9" font-size="9">t</tspan><tspan dy="-3.9">&#8203;</tspan> + 1 = 4 個</text>
+<text x="30.0" y="666.0" font-size="13" text-anchor="start" fill="#64748b" font-weight="normal" font-family="'Noto Sans JP','Yu Gothic','Hiragino Sans',sans-serif"><tspan font-style="italic">τ</tspan><tspan dy="3.9" font-size="9">3</tspan><tspan dy="-3.9">&#8203;</tspan> = (35 − 3·10)/10 = 0.5</text>
+</g>
+</svg>
