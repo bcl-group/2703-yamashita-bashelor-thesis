@@ -1,6 +1,12 @@
 {
   "condition": {
-    "block_dir": "C:\\Users\\c058dew\\2703-yamashita-bashelor-thesis\\results\\hh_modular",
+    "block_dir": "results\\hh_modular",
+    "target": {
+      "RNN1": "abs",
+      "RNN2": "abs",
+      "RNN3": "abs"
+    },
+    "clip": false,
     "hidden_dim": {
       "RNN1": 50,
       "RNN2": 50,
@@ -476,6 +482,71 @@
         ]
       },
       "diverged": false
+    },
+    "OU 10±3": {
+      "rmse": 54.92942568810204,
+      "mae": 49.34841506471721,
+      "spike_count": [
+        19.0,
+        0.0
+      ],
+      "latency": [
+        11.989999999999974,
+        NaN
+      ],
+      "mean_isi": [
+        15.099999999999735,
+        NaN
+      ],
+      "std_isi": [
+        1.8032650126597045,
+        NaN
+      ],
+      "periodicity_gap": NaN,
+      "spike_shape_corr": NaN,
+      "spike_features": {
+        "peak_voltage": [
+          40.66899055941096,
+          NaN
+        ],
+        "AP_amplitude": [
+          101.2079823563449,
+          NaN
+        ],
+        "AP_begin_voltage": [
+          -60.53899179693395,
+          NaN
+        ],
+        "AP_rise_rate": [
+          67.47198823756351,
+          NaN
+        ],
+        "AP_fall_rate": [
+          -45.89007858493693,
+          NaN
+        ],
+        "AP_duration_half_width": [
+          1.399999999999995,
+          NaN
+        ],
+        "AP_rise_time": [
+          1.4999999999999947,
+          NaN
+        ],
+        "AP_fall_time": [
+          2.499999999999991,
+          NaN
+        ],
+        "AHP_depth": [
+          -18.582945891370898,
+          NaN
+        ],
+        "AHP_time_from_peak": [
+          2.8999999999999897,
+          NaN
+        ]
+      },
+      "diverged": false
     }
   },
   "teacher_forcing_rmse": {
@@ -603,6 +674,24 @@
       },
       "RNN3": {
         "V": 0.31812756668445497
+      }
+    },
+    "OU 10±3": {
+      "RNN1": {
+        "alpha_m": 0.009376031196079463,
+        "beta_m": 0.011578352958101607,
+        "alpha_h": 0.00016647615209939684,
+        "beta_h": 0.002035043085765998,
+        "alpha_n": 0.0007463057141583263,
+        "beta_n": 7.89409735819281e-05
+      },
+      "RNN2": {
+        "m": 0.0016142271704339241,
+        "h": 0.000891553951016851,
+        "n": 0.0005591853522173932
+      },
+      "RNN3": {
+        "V": 0.25005392065364546
       }
     }
   }

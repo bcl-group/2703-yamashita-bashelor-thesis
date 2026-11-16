@@ -246,3 +246,9 @@ references/詳解ディープラーニング.pdf
 .claude/settings.local.json
 .DS_Store
 ~$*
+
+# 複数軌道の教師データ（数百 MB。experiments/hh/make_dataset_multi.py で作り直せる）
+data/hh/teacher_multi.*
+data/hh/teacher_ou.*
+data/hh/teacher_near.*
+data/traub/teacher_modular.npz

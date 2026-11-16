@@ -60,6 +60,13 @@ BLOCKS = {
 
 
 def load_hh_full(path=DATA_PATH):
+    # path はカンマ区切りで複数指定できる（軌道の向きにつなげる。どれも複数軌道の npz で同じ dt・長さ）
+    paths = path.split(',')
+    if len(paths) > 1:
+        parts = [load_hh_full(p) for p in paths]
+        t, meta = parts[0][0], parts[0][6]
+        meta = dict(meta, sources=[os.path.normpath(p) for p in paths])
+        return (t, *[np.concatenate([q[i] for q in parts]) for i in range(1, 6)], meta)
     d = np.load(path)
     meta = json.loads(str(d['meta']))
     return d['t'], d['I_ext'], d['V'], d['m'], d['h'], d['n'], meta
@@ -71,18 +78,41 @@ def rate_constants(V):
                      alpha_n(V), beta_n(V)], axis=1)
 
 
-def block_data(block, I, V, m, h, n):
+TARGETS = ('abs', 'delta')
+# RNN2, RNN3 の入力 X のうち、出力と同じ変数（更新前の値）が入っている列
+STATE_COLS = {2: slice(6, 9), 3: slice(3, 4)}
+
+
+def block_data(block, I, V, m, h, n, target='abs'):
     """
     ブロックの入力 X(t) と正解 Y を、物理単位のまま作る。
 
     Args:
         block (int): 1, 2, 3。
         I, V, m, h, n (np.ndarray): shape (N,)。
+        target (str): RNN2, RNN3 の正解の形。
+            'abs'  : 次の時刻の値 x(t+dt)
+            'delta': 1ステップの変化量 Δx = x(t+dt) - x(t)
+            RNN1 の α, β は V の同時刻の関数なので、どちらでも同じ（値そのもの）。
 
     Returns:
         tuple[np.ndarray, np.ndarray]: X (N-1, 入力次元), Y (N-1, 出力次元)。
             k 番目の行が時刻 t_k の入力と、それに対応する正解。
     """
+    X, Y = _block_data_abs(block, I, V, m, h, n)
+    if target == 'delta' and block in STATE_COLS:
+        Y = Y - X[:, STATE_COLS[block]]
+    return X, Y
+
+
+def to_next_value(block, X, Y, target):
+    # ブロックの出力 Y を「次の時刻の値」に直す。delta なら更新前の値 x(t) を足す
+    if target == 'delta' and block in STATE_COLS:
+        return Y + X[:, STATE_COLS[block]]
+    return Y
+
+
+def _block_data_abs(block, I, V, m, h, n):
     AB = rate_constants(V)                       # (N, 6)
     G = np.stack([m, h, n], axis=1)              # (N, 3)
 
@@ -140,48 +170,125 @@ def block_rmse(Y_true, Y_pred, names):
 
 def train_block(block, epochs=1000, patience=None, lr=0.001, batch_size=10,
                 chunk_ms=10.0, hidden_dim=50, seed=123, data_path=DATA_PATH,
-                check_grad=True, verbose_every=10):
+                check_grad=True, verbose_every=10, target='abs', init_path=None,
+                backend='numpy', device='auto', threads=None, checkpoint_dir=None):
+    # backend: 'numpy'（src/rnn の手書き BPTT）か 'torch'（同じ式の RNN を PyTorch で学習し、
+    #          重みを NumPy 版に書き戻す。src/rnn/torch_backend.py）
+    # init_path: 保存済みの block{n}.npz。指定すると、その重みと標準化の値から学習を続ける
     np.random.seed(seed)
     spec = BLOCKS[block]
 
     t_ms, I, V, m, h, n, meta = load_hh_full(data_path)
     dt = meta['dt_ms']
 
-    X, Y = block_data(block, I, V, m, h, n)
-    in_scaler = ColumnStandardizer.fit(X)
-    out_scaler = ColumnStandardizer.fit(Y)
+    # 軌道が1本なら shape (N,)、複数本（teacher_multi.npz）なら (本数, N)。
+    # どちらも (本数, N) にそろえ、軌道ごとに X, Y を作る（軌道をまたいで1ステップを作らない）
+    if V.ndim == 1:
+        I, V, m, h, n = (a[None] for a in (I, V, m, h, n))
+    n_traj = len(V)
+    xy = lambda i: block_data(block, I[i], V[i], m[i], h[i], n[i], target=target)
 
+    # out_scaler は正解 Y（delta なら変化量）の平均・標準偏差で標準化する。全軌道で1つ
+    # 続きから学習するときは、元のモデルと同じ標準化を使う（変えると重みの意味がずれる）
+    if init_path is not None:
+        init_model, in_scaler, out_scaler, _ = load_block(init_path)
+        if init_model.target != target:
+            raise ValueError('init の target ({}) と --target ({}) が違う'.format(
+                init_model.target, target))
+    else:
+        # 全軌道をつなげた配列を作らずに、軌道ごとの和・2乗和から平均と標準偏差を求める（メモリ節約）
+        cnt, sx, sxx, sy, syy = 0, 0.0, 0.0, 0.0, 0.0
+        for i in range(n_traj):
+            X, Y = xy(i)
+            cnt += len(X)
+            sx, sxx = sx + X.sum(0), sxx + (X ** 2).sum(0)
+            sy, syy = sy + Y.sum(0), syy + (Y ** 2).sum(0)
+        std = lambda s, ss: np.sqrt(np.maximum(ss / cnt - (s / cnt) ** 2, 0.0))
+        in_scaler = ColumnStandardizer(sx / cnt, std(sx, sxx))
+        out_scaler = ColumnStandardizer(sy / cnt, std(sy, syy))
+
+    # 区間は軌道ごとに切り、全軌道の区間をまとめる。torch で学習するときは float32 で持つ
+    # （torch 側も float32 で計算するので精度は変わらない。メモリが半分になる）
     chunk_len = int(round(chunk_ms / dt))
-    x = make_chunks(in_scaler.transform(X), chunk_len)
-    t = make_chunks(out_scaler.transform(Y), chunk_len)
+    dtype = np.float32 if backend == 'torch' else np.float64
+    XY = []   # 学習後の誤差の確認に使う最初の 20 本だけ残す
+    x = t = None
+    for i in range(n_traj):
+        X, Y = xy(i)
+        cx = make_chunks(in_scaler.transform(X), chunk_len)
+        cy = make_chunks(out_scaler.transform(Y), chunk_len)
+        if x is None:
+            nc = len(cx)
+            x = np.empty((n_traj * nc, chunk_len, cx.shape[2]), dtype=dtype)
+            t = np.empty((n_traj * nc, chunk_len, cy.shape[2]), dtype=dtype)
+        x[i * nc:(i + 1) * nc] = cx
+        t[i * nc:(i + 1) * nc] = cy
+        if i < 20:
+            XY.append((X, Y))
+    del I, V, m, h, n, xy   # 元の軌道はもう使わない
 
-    print('RNN{}: {} -> {}'.format(block, spec['inputs'], spec['outputs']))
+    print('RNN{}: {} -> {}  (target = {})'.format(block, spec['inputs'], spec['outputs'],
+                                                 target))
     print('data = {}'.format(os.path.normpath(data_path)))
     print('dt = {} ms, chunk = {} ms ({} steps)'.format(dt, chunk_ms, chunk_len))
     print('x.shape = {}, t.shape = {}'.format(x.shape, t.shape))
     print()
 
-    model = SimpleRNN(input_dim=X.shape[1], hidden_dim=hidden_dim,
-                      output_dim=Y.shape[1], init='xavier', return_sequences=True)
+    model = SimpleRNN(input_dim=x.shape[2], hidden_dim=hidden_dim,
+                      output_dim=t.shape[2], init='xavier', return_sequences=True)
+    prev_loss = []
+    if init_path is not None:
+        for name in model.param_names():
+            setattr(model, name, getattr(init_model, name).copy())
+        prev_loss = list(np.load(init_path)['loss'])
+        print('init = {}（これまで {} エポック）'.format(os.path.normpath(init_path), len(prev_loss)))
+        check_grad = False
 
-    if check_grad:
+    if check_grad and backend == 'numpy':
         numerical_gradient_check(model, x[:2, :200], t[:2, :200])
 
     optimizer = Adam(model, lr=lr, beta1=0.9, beta2=0.999, amsgrad=True)
     es = EarlyStopping(patience=patience) if patience is not None else None
 
     start = time.time()
-    hist = train_chunks(model, optimizer, x, t, epochs=epochs,
-                        batch_size=batch_size, verbose_every=verbose_every,
-                        early_stopping=es)
-    elapsed = time.time() - start
+    if backend == 'torch':
+        import torch
+        from rnn.torch_backend import train_chunks_torch
+        if threads:
+            torch.set_num_threads(threads)
+        model.target = target
 
-    # 学習電流全体を1本で流したときの誤差（教師強制、物理単位）
-    Y_pred = forward_sequence(model, in_scaler, out_scaler, X)
+        def checkpoint(h):
+            # 途中経過も block{n}.npz に上書き保存する（止まっても --init で続きから学習できる）
+            if checkpoint_dir:
+                save_block({'block': block, 'target': target, 'seed': seed, 'lr': lr,
+                            'chunk_ms': chunk_ms, 'data_path': data_path,
+                            'hist': {'loss': prev_loss + list(h['loss'])}, 'model': model,
+                            'in_scaler': in_scaler, 'out_scaler': out_scaler}, checkpoint_dir)
+
+        hist = train_chunks_torch(model, x, t, epochs=epochs, batch_size=batch_size,
+                                  lr=lr, verbose_every=verbose_every,
+                                  early_stopping=es, device=device,
+                                  checkpoint_every=10, on_checkpoint=checkpoint)
+    else:
+        hist = train_chunks(model, optimizer, x, t, epochs=epochs,
+                            batch_size=batch_size, verbose_every=verbose_every,
+                            early_stopping=es)
+    elapsed = time.time() - start
+    hist['loss'] = prev_loss + list(hist['loss'])   # 学習曲線は前回の分からつなげる
+
+    # 学習データの軌道を1本ずつ流したときの誤差（教師強制、物理単位）。軌道が多いときは最初の 20 本。
+    # 次の時刻の値に直してから比べる（入力が正解なので、delta でも変化量の誤差と同じ値になる）
+    Y_pred = np.concatenate([
+        to_next_value(block, X, forward_sequence(model, in_scaler, out_scaler, X), target)
+        for X, _ in XY[:20]])
+    Y = np.concatenate([to_next_value(block, X, Y, target) for X, Y in XY[:20]])
     rmse = block_rmse(Y, Y_pred, spec['outputs'])
+    model.target = target
 
     return {
         'block': block,
+        'target': target,
         'seed': seed,
         'lr': lr,
         'chunk_ms': chunk_ms,
@@ -207,7 +314,8 @@ def save_block(r, save_dir=RESULT_DIR):
     np.savez(path,
              in_mean=r['in_scaler'].mean, in_std=r['in_scaler'].std,
              out_mean=r['out_scaler'].mean, out_std=r['out_scaler'].std,
-             block=r['block'], seed=r['seed'], lr=r['lr'], chunk_ms=r['chunk_ms'],
+             block=r['block'], target=r['target'], seed=r['seed'], lr=r['lr'],
+             chunk_ms=r['chunk_ms'],
              data_path=r['data_path'], loss=np.array(r['hist']['loss']), **params)
     print('saved:', os.path.normpath(path))
 
@@ -220,6 +328,8 @@ def load_block(path):
                       output_dim=output_dim, return_sequences=True)
     for name in model.param_names():
         setattr(model, name, d[name].copy())
+    # target がない古いファイルは、次の時刻の値を直接出すモデル
+    model.target = str(d['target']) if 'target' in d.files else 'abs'
     in_scaler = ColumnStandardizer(d['in_mean'], d['in_std'])
     out_scaler = ColumnStandardizer(d['out_mean'], d['out_std'])
     return model, in_scaler, out_scaler, str(d['data_path'])
@@ -249,14 +359,17 @@ def rnn_step(model, x, h):
     return h @ model.W_hy + model.b_y, h
 
 
-def run_closed_loop(blocks, I, V0=V_REST):
+def run_closed_loop(blocks, I, V0=V_REST, clip=False):
     """
     3つのブロックをつなぎ、I(t) だけを与えて V を逐次計算する。
 
     Args:
         blocks (dict[int, tuple]): {1: (model, in_scaler, out_scaler), 2: ..., 3: ...}。
+            model.target が 'delta' のブロックは変化量を出すので、更新前の値に足す。
         I (np.ndarray): 入力電流 [uA/cm^2]。shape (N,)。
         V0 (float): 膜電位の初期値 [mV]。ゲート変数はその定常値から始める（HH と同じ）。
+        clip (bool): True なら出力を物理的にとりうる範囲に収める。
+            α, β >= 0（速度定数は正）、0 <= m, h, n <= 1（ゲート変数は開いている割合）。
 
     Returns:
         tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -279,13 +392,20 @@ def run_closed_loop(blocks, I, V0=V_REST):
     for k in range(N - 1):
         y1, h1 = rnn_step(m1, in1.transform(np.array([V])), h1)
         ab = out1.inverse(y1)
+        if clip:
+            ab = np.maximum(ab, 0.0)
 
         y2, h2 = rnn_step(m2, in2.transform(np.concatenate([ab, g])), h2)
         g_next = out2.inverse(y2)
+        if m2.target == 'delta':
+            g_next = g + g_next
+        if clip:
+            g_next = np.clip(g_next, 0.0, 1.0)
 
         # RNN3 には更新前の m, h, n(t) を渡す（hh.py のオイラー法と同じ順番）
         y3, h3 = rnn_step(m3, in3.transform(np.concatenate([g, [V, I[k]]])), h3)
-        V = float(out3.inverse(y3)[0])
+        dV_or_V = float(out3.inverse(y3)[0])
+        V = V + dV_or_V if m3.target == 'delta' else dV_or_V
         g = g_next
 
         V_out[k] = V
@@ -295,8 +415,8 @@ def run_closed_loop(blocks, I, V0=V_REST):
     return V_out, AB_out, G_out
 
 
-def predict_case(blocks, t_ms, I, V, m, h, n):
-    V_pred, AB_pred, G_pred = run_closed_loop(blocks, I, V0=V[0])
+def predict_case(blocks, t_ms, I, V, m, h, n, clip=False):
+    V_pred, AB_pred, G_pred = run_closed_loop(blocks, I, V0=V[0], clip=clip)
     V_true = V[1:]
     err = V_pred - V_true
     dt = float(t_ms[1] - t_ms[0])
@@ -305,8 +425,10 @@ def predict_case(blocks, t_ms, I, V, m, h, n):
     tf_rmse = {}
     tf = {}
     for b, (model, in_s, out_s) in blocks.items():
-        X, Y = block_data(b, I, V, m, h, n)
-        Y_pred = forward_sequence(model, in_s, out_s, X)
+        # 図や RMSE は「次の時刻の値」で揃える（delta のブロックも x(t) を足して直す）
+        X, Y = block_data(b, I, V, m, h, n, target=model.target)
+        Y_pred = to_next_value(b, X, forward_sequence(model, in_s, out_s, X), model.target)
+        Y = to_next_value(b, X, Y, model.target)
         tf[b] = {'X': X, 'Y_true': Y, 'Y_pred': Y_pred}
         tf_rmse['RNN{}'.format(b)] = block_rmse(Y, Y_pred, BLOCKS[b]['outputs'])
 
@@ -335,16 +457,16 @@ def predict_case(blocks, t_ms, I, V, m, h, n):
     }
 
 
-def evaluate(blocks, data_path):
+def evaluate(blocks, data_path, clip=False):
     t_ms, I, V, m, h, n, meta = load_hh_full(data_path)
     dt = meta['dt_ms']
-    cases = {'train': predict_case(blocks, t_ms, I, V, m, h, n)}
+    cases = {'train': predict_case(blocks, t_ms, I, V, m, h, n, clip=clip)}
 
     t_eval = np.arange(0, EVAL_T, dt)
     for name, func, params in EVAL_CURRENTS:
         I_eval = make_eval_current(t_eval, func, params)
         V_e, m_e, h_e, n_e = simulate(t_eval, I_eval, V0=V_REST)
-        cases[name] = predict_case(blocks, t_eval, I_eval, V_e, m_e, h_e, n_e)
+        cases[name] = predict_case(blocks, t_eval, I_eval, V_e, m_e, h_e, n_e, clip=clip)
     return cases
 
 
@@ -370,11 +492,13 @@ def report(cases, blocks):
     print(format_cost('HH', HH_COST, 'RNN x3', modular_cost(blocks)))
 
 
-def save_metrics(cases, blocks, block_dir, save_dir):
+def save_metrics(cases, blocks, block_dir, save_dir, clip=False):
     os.makedirs(save_dir, exist_ok=True)
     out = {
         'condition': {
             'block_dir': os.path.normpath(block_dir),
+            'target': {'RNN{}'.format(b): blk[0].target for b, blk in blocks.items()},
+            'clip': clip,
             'hidden_dim': {'RNN{}'.format(b): blk[0].hidden_dim
                            for b, blk in blocks.items()},
         },
@@ -616,19 +740,34 @@ def main():
     p_train.add_argument('--seed', type=int, default=123)
     p_train.add_argument('--data', default=DATA_PATH)
     p_train.add_argument('--out', default=RESULT_DIR, help='block{n}.npz の保存先')
+    p_train.add_argument('--target', default='abs', choices=TARGETS,
+                         help='RNN2, RNN3 の正解: abs = 次の時刻の値、delta = 1ステップの変化量')
+    p_train.add_argument('--backend', default='numpy', choices=['numpy', 'torch'],
+                         help='numpy = 手書き BPTT、torch = PyTorch で学習（速い。保存形式は同じ）')
+    p_train.add_argument('--device', default='auto',
+                         help='--backend torch のとき: auto（GPU があれば GPU）, cpu, cuda')
+    p_train.add_argument('--threads', type=int, default=None,
+                         help='--backend torch の CPU スレッド数（複数を並列に回すときは減らす）')
+    p_train.add_argument('--init', default=None,
+                         help='保存済みの block{n}.npz から学習を続ける（重みと標準化を引き継ぐ）')
 
     p_eval = sub.add_parser('eval', help='保存した3つのブロックをつないで評価する')
     p_eval.add_argument('--dir', default=RESULT_DIR, help='block1〜3.npz があるフォルダ')
     p_eval.add_argument('--out', default=None, help='結果の保存先（既定は --dir と同じ）')
     p_eval.add_argument('--data', default=None,
                         help='学習電流の npz（既定は block の学習に使ったファイル）')
+    p_eval.add_argument('--clip', action='store_true',
+                        help='閉ループで α, β >= 0、0 <= m, h, n <= 1 に収める')
 
     args = parser.parse_args()
 
     if args.command == 'train':
         r = train_block(args.block, epochs=args.epochs, patience=args.patience,
                         lr=args.lr, batch_size=args.batch_size, chunk_ms=args.chunk_ms,
-                        hidden_dim=args.hidden, seed=args.seed, data_path=args.data)
+                        hidden_dim=args.hidden, seed=args.seed, data_path=args.data,
+                        target=args.target, init_path=args.init,
+                        backend=args.backend, device=args.device, threads=args.threads,
+                        checkpoint_dir=args.out)
         print()
         print('epochs: {}, time: {:.0f} s'.format(r['epochs_run'], r['elapsed']))
         print('教師強制のときの RMSE（学習電流全体）:')
@@ -656,11 +795,11 @@ def main():
             data_path = local
 
         start = time.time()
-        cases = evaluate(blocks, data_path)
+        cases = evaluate(blocks, data_path, clip=args.clip)
         print('評価にかかった時間: {:.0f} s'.format(time.time() - start))
         print()
         report(cases, blocks)
-        save_metrics(cases, blocks, args.dir, out)
+        save_metrics(cases, blocks, args.dir, out, clip=args.clip)
         plot_eval(cases, out)
         plot_blocks_tf(cases, out)
         plot_blocks_parity(cases, out)

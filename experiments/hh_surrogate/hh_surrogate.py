@@ -23,6 +23,7 @@ from neuron.current import (
     ramp_current,
     sin_current,
     pulse_train_current,
+    ou_current,
 )
 from evaluation import compare_waveforms, format_metrics, HH_COST, rnn_cost, format_cost
 
@@ -35,6 +36,7 @@ RESULT_DIR = os.path.join(BASE_DIR, '..', '..', 'results', 'hh_surrogate')
 #   定常 5, 10, 15 : 卒論 p.17 §4.4.1
 #   ramp / sin / pulse の値、長さ 300 ms、前後 10 ms の無入力:
 #     SINDyNeuroSurrogate の _current_catalog.py の既定値と scripts/catalog.py の _STIM
+#   OU : 平均 10 のまわりを相関時間 1 ms で揺らぐ電流（Jolivet et al., 2008 と同じ形）。seed 固定
 EVAL_T = 300.0
 EVAL_SILENCE = 10.0
 EVAL_CURRENTS = [
@@ -44,6 +46,7 @@ EVAL_CURRENTS = [
     ('ramp 0-30',  ramp_current,        {'i_start': 0.0, 'i_end': 30.0}),
     ('sin 10Hz',   sin_current,         {'amplitude': 7.5, 'freq': 10.0, 'offset': 7.5}),
     ('pulse 20Hz', pulse_train_current, {'amplitude': 20.0, 'width': 25.0, 'interval': 50.0}),
+    ('OU 10±3',    ou_current,          {'mean': 10.0, 'sigma': 3.0, 'tau': 1.0, 'seed': 0}),
 ]
 
 
