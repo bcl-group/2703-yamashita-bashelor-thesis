@@ -1,0 +1,2 @@
+# 第4ラウンド: 検証で最良だった RNN₃（k_3_w3）から、K=2000（20 ms）だけで続ける
+chain --tag k_3_w3_K2000 --train 3 --b3 results/hh_improve/k_3_w3_b3.pt --lr 5e-7 --K-sched 2000:300 --wthr 3 --batch 16 --eval-every 50 --log-every 25

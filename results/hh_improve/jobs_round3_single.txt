@@ -1,0 +1,3 @@
+# RNN 1 個型: 電流の切り替えが多い teacher_multi を混ぜる
+single --tag s_mix_h64_aux --data data/hh/teacher_ou.npz,data/hh/teacher_multi.npz --H 64 --aux 0.3 --L 2000 --burn 500 --iters 3000
+single --tag s_mix_h128_aux --data data/hh/teacher_ou.npz,data/hh/teacher_multi.npz --H 128 --aux 0.3 --L 2000 --burn 500 --iters 3000

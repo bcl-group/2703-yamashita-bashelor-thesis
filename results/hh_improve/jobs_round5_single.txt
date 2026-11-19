@@ -1,0 +1,9 @@
+# 第5ラウンド: RNN 1 個型を評価と同じ条件（静止状態から）で閉ループを主に学習する。電流はその場で生成
+# V だけを戻す型（ゲートは隠れ状態が持つ）
+single_cl --tag cl_v_rnn --cell rnn --aux 0.3 --iters 600 --ep-ms 60 --batch 16 --alpha-iters 300 --lr 1e-3 --eval-every 100 --log-every 25
+single_cl --tag cl_v_gru --cell gru --aux 0.3 --iters 600 --ep-ms 60 --batch 16 --alpha-iters 300 --lr 1e-3 --eval-every 100 --log-every 25
+# m, h, n も予測して戻す型
+single_cl --tag cl_s_rnn --state --cell rnn --iters 600 --ep-ms 60 --batch 16 --alpha-iters 300 --lr 1e-3 --eval-every 100 --log-every 25
+single_cl --tag cl_s_gru --state --cell gru --iters 600 --ep-ms 60 --batch 16 --alpha-iters 300 --lr 1e-3 --eval-every 100 --log-every 25
+single_cl --tag cl_s_rnn_h128 --state --cell rnn --H 128 --iters 600 --ep-ms 60 --batch 16 --alpha-iters 300 --lr 1e-3 --eval-every 100 --log-every 25
+single_cl --tag cl_s_rnn_noonpol --state --cell rnn --onpol 0 --iters 600 --ep-ms 60 --batch 16 --alpha-iters 300 --lr 1e-3 --eval-every 100 --log-every 25

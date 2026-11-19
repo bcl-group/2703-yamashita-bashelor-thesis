@@ -1,0 +1,8 @@
+# 第6ラウンド: Markov MLP（入力 V,m,h,n,I → 出力 ΔV,Δm,Δh,Δn、再帰なし）を事前学習だけで詰める
+# 教師の状態に摂動を足し、正解は HH の式から計算する。閉ループの微調整はしない（--iters 0）
+single_cl --tag mm_base --H 128 --layers 2 --pre-iters 50000 --state --cell mlp --iters 0 --bank 2048 --ep-ms 100 --pre-batch 1024 --pre-lr 1e-3 --threads 2
+single_cl --tag mm_rel --H 128 --layers 2 --pre-iters 50000 --pre-rel 0.02 --state --cell mlp --iters 0 --bank 2048 --ep-ms 100 --pre-batch 1024 --pre-lr 1e-3 --threads 2
+single_cl --tag mm_w256 --H 256 --layers 3 --pre-iters 50000 --pre-rel 0.02 --state --cell mlp --iters 0 --bank 2048 --ep-ms 100 --pre-batch 1024 --pre-lr 1e-3 --threads 2
+single_cl --tag mm_sv05 --H 128 --layers 2 --pre-iters 50000 --pre-rel 0.02 --pre-sv 0.5 --pre-sg 0.005 --state --cell mlp --iters 0 --bank 2048 --ep-ms 100 --pre-batch 1024 --pre-lr 1e-3 --threads 2
+single_cl --tag mm_sv5 --H 128 --layers 2 --pre-iters 50000 --pre-rel 0.02 --pre-sv 5 --pre-sg 0.05 --state --cell mlp --iters 0 --bank 2048 --ep-ms 100 --pre-batch 1024 --pre-lr 1e-3 --threads 2
+single_cl --tag mm_w256_long --H 256 --layers 3 --pre-iters 150000 --pre-rel 0.02 --state --cell mlp --iters 0 --bank 2048 --ep-ms 100 --pre-batch 1024 --pre-lr 1e-3 --threads 2

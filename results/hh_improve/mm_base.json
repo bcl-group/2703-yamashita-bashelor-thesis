@@ -1,0 +1,298 @@
+{
+"args": {
+"cmd": "single_cl",
+"tag": "mm_base",
+"data": "C:\\Users\\c058dew\\2703-yamashita-bashelor-thesis\\data\\hh\\teacher_ou.npz",
+"H": 128,
+"layers": 2,
+"iters": 0,
+"batch": 32,
+"L": 1000,
+"lr": 0.001,
+"noise": 0.0,
+"wsub": 1.0,
+"seed": 0,
+"threads": 2,
+"log_every": 200,
+"init": null,
+"state": true,
+"phys": false,
+"pre_iters": 50000,
+"pre_lr": 0.001,
+"pre_batch": 1024,
+"pre_sv": 2.0,
+"pre_sg": 0.02,
+"pre_rel": 0.0,
+"onpol": 1.0,
+"cell": "mlp",
+"aux": 0.0,
+"ep_ms": 100.0,
+"seg": 500,
+"rest_ms": 20.0,
+"alpha_iters": 300,
+"eval_every": 100,
+"bank": 2048,
+"bank_every": 200
+},
+"loss": [],
+"eval": [
+[
+0,
+0,
+0.01128806361254179
+],
+[
+0,
+12,
+0.9044622184760593
+]
+],
+"best": [
+12,
+0.9044622184760593,
+0
+],
+"test": {
+"label": "mm_base (val best it 0)",
+"n100": 20,
+"mean": 0.9103584135823956,
+"rows": [
+{
+"name": "step 10 (50-150ms)",
+"spikes": [
+7,
+7
+],
+"match": 1.0,
+"rmse": 4.806979013610342
+},
+{
+"name": "step 5 (50-250ms)",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"rmse": 0.14392979166453523
+},
+{
+"name": "step 30 1ms",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"rmse": 0.069082411610819
+},
+{
+"name": "step -5 (50-150ms)",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"rmse": 0.5173383176454149
+},
+{
+"name": "const 2.5",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"rmse": 0.64418744481968
+},
+{
+"name": "const 5",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"rmse": 0.06155076996331159
+},
+{
+"name": "const 7",
+"spikes": [
+18,
+18
+],
+"match": 1.0,
+"rmse": 14.829877302830774
+},
+{
+"name": "const 10",
+"spikes": [
+21,
+21
+],
+"match": 1.0,
+"rmse": 20.53402948002221
+},
+{
+"name": "const 20",
+"spikes": [
+26,
+26
+],
+"match": 1.0,
+"rmse": 3.2142143183439735
+},
+{
+"name": "ramp 0-20",
+"spikes": [
+1,
+0
+],
+"match": 0.0,
+"rmse": 3.25544328587266
+},
+{
+"name": "ramp 0-30",
+"spikes": [
+17,
+15
+],
+"match": 0.8823529411764706,
+"rmse": 17.556089499224612
+},
+{
+"name": "sin 5Hz 5±5",
+"spikes": [
+6,
+6
+],
+"match": 1.0,
+"rmse": 2.1602634438921227
+},
+{
+"name": "sin 10Hz 7.5±7.5",
+"spikes": [
+16,
+16
+],
+"match": 0.25,
+"rmse": 21.12406301257008
+},
+{
+"name": "sin 50Hz 10±10",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"rmse": 0.07587248952935903
+},
+{
+"name": "pulse 10/1ms/10ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"rmse": 0.9424652258857286
+},
+{
+"name": "pulse 20/25ms/50ms",
+"spikes": [
+18,
+18
+],
+"match": 1.0,
+"rmse": 0.4677412658343482
+},
+{
+"name": "pulse 40/0.5ms/20ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"rmse": 0.09956760577743717
+},
+{
+"name": "random step -5~20/20ms",
+"spikes": [
+24,
+24
+],
+"match": 1.0,
+"rmse": 1.5465097880672192
+},
+{
+"name": "random step 0~20/10ms",
+"spikes": [
+31,
+31
+],
+"match": 1.0,
+"rmse": 3.890630255229678
+},
+{
+"name": "random pulse 5ms",
+"spikes": [
+15,
+15
+],
+"match": 0.9333333333333333,
+"rmse": 6.624814557157618
+},
+{
+"name": "random pulse 1ms 0~40",
+"spikes": [
+6,
+6
+],
+"match": 1.0,
+"rmse": 0.14322334723823998
+},
+{
+"name": "OU 5±3",
+"spikes": [
+25,
+26
+],
+"match": 0.9230769230769231,
+"rmse": 8.786838577713821
+},
+{
+"name": "OU 10±3",
+"spikes": [
+34,
+34
+],
+"match": 1.0,
+"rmse": 4.268545515972593
+},
+{
+"name": "OU 7±5 (tau 5ms)",
+"spikes": [
+27,
+27
+],
+"match": 1.0,
+"rmse": 3.684884285416776
+},
+{
+"name": "level+OU",
+"spikes": [
+72,
+70
+],
+"match": 0.6805555555555556,
+"rmse": 23.24410552202197
+},
+{
+"name": "munechika train",
+"spikes": [
+85,
+85
+],
+"match": 1.0,
+"rmse": 3.704160439395332
+}
+],
+"sec": 135.4789571762085
+},
+"sec": 1151.1008820533752
+}

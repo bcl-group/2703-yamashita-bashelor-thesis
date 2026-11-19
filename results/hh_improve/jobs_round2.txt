@@ -1,0 +1,4 @@
+# 3 ブロック閉ループ微調整（基準モデルから）。lr と更新するブロックの比較
+chain --tag c3_lr1e-6 --train 3 --lr 1e-6 --iters 600 --K 100 --batch 16 --eval-every 100 --log-every 50
+chain --tag c3_lr1e-5 --train 3 --lr 1e-5 --iters 600 --K 100 --batch 16 --eval-every 100 --log-every 50
+chain --tag c123_lr1e-6 --train 123 --lr 1e-6 --iters 600 --K 100 --batch 16 --eval-every 100 --log-every 50

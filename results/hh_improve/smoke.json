@@ -1,0 +1,61 @@
+{
+"args": {
+"cmd": "chain",
+"tag": "smoke",
+"data": "C:\\Users\\c058dew\\2703-yamashita-bashelor-thesis\\data\\hh\\teacher_ou.npz",
+"H": 64,
+"layers": 1,
+"iters": 6,
+"batch": 16,
+"L": 1000,
+"lr": 0.0001,
+"noise": 0.0,
+"wsub": 1.0,
+"seed": 0,
+"threads": 2,
+"log_every": 2,
+"init": null,
+"b1": "C:\\Users\\c058dew\\2703-yamashita-bashelor-thesis\\results\\hh_modular_ou\\block1.npz",
+"b2": "C:\\Users\\c058dew\\2703-yamashita-bashelor-thesis\\results\\hh_modular_ou\\block2.npz",
+"b3": "C:\\Users\\c058dew\\2703-yamashita-bashelor-thesis\\results\\hh_modular_ou\\block3.npz",
+"train": "123",
+"K": 50,
+"burn": 100,
+"wtraj": 1.0,
+"onpol": 1.0,
+"eval_every": 1000
+},
+"traj": [
+7.034723765612976e-05,
+0.001007070874858687,
+0.000250784838597944,
+0.00034504076564435734,
+0.0008576329671904433,
+0.0003632725265176304
+],
+"onpol": [
+0.0015062976526783675,
+0.028102714101545734,
+0.002905719253019508,
+0.01911754699505771,
+0.0022799636936047954,
+0.0021552750895030147
+],
+"eval": [
+[
+0,
+19,
+0.9271348947551614
+],
+[
+6,
+7,
+0.5773582810889408
+]
+],
+"best": [
+19,
+0.9271348947551614
+],
+"sec": 2331.139657974243
+}

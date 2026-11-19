@@ -1,0 +1,12 @@
+block --block 3 --H 64 --tag a3_h64
+block --block 3 --H 128 --tag a3_h128
+block --block 3 --H 64 --layers 2 --tag a3_h64x2
+block --block 3 --H 64 --whh0 --whh-pen 1e-3 --tag a3_h64_nomem
+block --block 3 --H 64 --feat --tag a3_h64_feat
+block --block 3 --H 64 --wsub 10 --tag a3_h64_wsub10
+block --block 3 --H 64 --noise 0.01 --tag a3_h64_noise001
+block --block 3 --H 64 --noise 0.1 --tag a3_h64_noise01
+single --H 64 --L 2000 --burn 500 --tag s_h64
+single --H 64 --L 2000 --burn 500 --aux 0.3 --tag s_h64_aux
+single --H 128 --L 2000 --burn 500 --aux 0.3 --tag s_h128_aux
+single --H 64 --L 2000 --burn 500 --aux 0.3 --leak 0.05 --iters 1500 --tag s_h64_aux_leak

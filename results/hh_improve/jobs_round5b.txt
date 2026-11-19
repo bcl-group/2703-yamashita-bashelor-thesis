@@ -1,0 +1,4 @@
+# 第5ラウンド（追加、Codex 案）: 再帰のない Markov MLP と、HH の電流の式を組み込んだ単一ネット
+# 摂動した状態で 1 ステップを事前学習 → 完全な閉ループ（α=0）で微調整
+single_cl --tag cl_m_mlp --state --cell mlp --layers 2 --H 128 --pre-iters 20000 --pre-lr 1e-3 --lr 1e-4 --alpha-iters 1 --iters 300 --ep-ms 60 --batch 16 --eval-every 50 --log-every 25 --threads 1
+single_cl --tag cl_p_mlp --phys --cell mlp --layers 2 --H 64 --pre-iters 20000 --pre-lr 1e-3 --lr 1e-4 --alpha-iters 1 --iters 300 --ep-ms 60 --batch 16 --eval-every 50 --log-every 25 --threads 1

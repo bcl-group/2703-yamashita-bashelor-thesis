@@ -1,0 +1,5 @@
+# 第3ラウンド: K を 1 → 5 → 20 ms と伸ばす閉ループ微調整。最良の時点は検証用の 17 電流で選ぶ
+chain --tag k_123_w3 --train 123 --lr 1e-6 --K-sched 100:200,500:200,2000:200 --wthr 3 --batch 16 --eval-every 100 --log-every 50
+chain --tag k_3_w3 --train 3 --lr 1e-6 --K-sched 100:200,500:200,2000:200 --wthr 3 --batch 16 --eval-every 100 --log-every 50
+chain --tag k_123_w1 --train 123 --lr 1e-6 --K-sched 100:200,500:200,2000:200 --wthr 1 --batch 16 --eval-every 100 --log-every 50
+single --tag s_h64_ro200 --init results/hh_improve/s_h64.pt --rollout 200 --burn 300 --iters 1000 --lr 1e-4 --batch 32 --log-every 100
