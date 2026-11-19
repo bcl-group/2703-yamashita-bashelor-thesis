@@ -1,0 +1,6 @@
+# 第3段階: 閉ループで 3 つとも微調整（K = 100 → 500 → 2000 ステップ、各 200 回。hh_improve の k_3_w3 と同じ段階）
+chain --b1 b1   --b2 b2 --b3 b3_s  --tag c_s
+chain --b1 b1_i --b2 b2 --b3 b3_s  --tag c_s_i
+chain --b1 b1   --b2 b2 --b3 b3_sg --tag c_s_g
+chain --b1 b1_i --b2 b2 --b3 b3_sg --tag c_s_ig
+chain --b1 b1   --b2 b2 --b3 b3_p  --tag c_p

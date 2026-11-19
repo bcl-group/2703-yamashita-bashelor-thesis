@@ -1,0 +1,6 @@
+# 第2段階: 3 つをつないで評価（微調整前）。s = 図どおりの直列、p = これまでの接続、i = I を RNN1 にも、g = RNN3 が G も出す
+eval --b1 b1   --b2 b2 --b3 b3_s  --tag e_s
+eval --b1 b1_i --b2 b2 --b3 b3_s  --tag e_s_i
+eval --b1 b1   --b2 b2 --b3 b3_sg --tag e_s_g
+eval --b1 b1_i --b2 b2 --b3 b3_sg --tag e_s_ig
+eval --b1 b1   --b2 b2 --b3 b3_p  --tag e_p
