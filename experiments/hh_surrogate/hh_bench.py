@@ -95,6 +95,41 @@ def reference(val=False):
     return names, I, Vt, lens
 
 
+def n_coincident(t_true, t_pred, window=2.0):
+    # 正解の各スパイクに ±window ms 以内の予測スパイクを 1 つずつ対応させた数（近いものから、1 つの予測は 1 回だけ）
+    used = np.zeros(len(t_pred), dtype=bool)
+    n = 0
+    for s in t_true:
+        cand = np.where(~used & (np.abs(t_pred - s) <= window))[0]
+        if len(cand):
+            used[cand[np.argmin(np.abs(t_pred[cand] - s))]] = True
+            n += 1
+    return n
+
+
+def coincidence_factor(t_true, t_pred, T, window=2.0):
+    """
+    coincidence factor Γ（Kistler et al. 1997; Jolivet et al. 2008）。
+
+        Γ = (N_coinc - <N_coinc>) / (½ (N_true + N_pred)) · 1/𝒩
+        <N_coinc> = 2 ν Δ N_true      予測が発火率 ν = N_pred / T のポアソン過程だったときの偶然の一致数
+        𝒩 = 1 - 2 ν Δ                  完全に一致したとき Γ = 1 にする正規化
+
+    Args:
+        t_true, t_pred: スパイク時刻 [ms]。T: 電流の長さ [ms]。window: Δ [ms]
+    Returns:
+        float。両方 0 発なら 1（このプロジェクトでの約束。論文では定義されない）
+    """
+    n1, n2 = len(t_true), len(t_pred)
+    if n1 == 0 and n2 == 0:
+        return 1.0
+    nu = n2 / T
+    norm = 1.0 - 2.0 * nu * window
+    if norm <= 0:
+        return float('nan')
+    return (n_coincident(t_true, t_pred, window) - 2.0 * nu * window * n1) / (0.5 * (n1 + n2)) / norm
+
+
 def score(run, label=None, out_json=None, val=False):
     """
     Returns:
@@ -111,13 +146,15 @@ def score(run, label=None, out_json=None, val=False):
             vp = np.nan_to_num(vp, nan=1e3, posinf=1e3, neginf=-1e3)
         st, sp = tc.spike_times(Vt[i], DT), tc.spike_times(vp, DT)
         rows.append({'name': name, 'spikes': (len(st), len(sp)), 'match': tc.match_rate(st, sp),
+                     'gamma': coincidence_factor(st, sp, (lens[i] - 1) * DT),
                      'rmse': float(np.sqrt(np.mean((vp - Vt[i]) ** 2)))})
     res = {'label': label, 'n100': int(sum(r['match'] == 1.0 for r in rows)),
-           'mean': float(np.mean([r['match'] for r in rows])), 'rows': rows, 'sec': sec}
+           'mean': float(np.mean([r['match'] for r in rows])),
+           'gamma': float(np.mean([r['gamma'] for r in rows])), 'rows': rows, 'sec': sec}
     if label:
         fails = ', '.join('{} {:.0%}'.format(r['name'], r['match']) for r in rows if r['match'] < 1)
-        print('[{}] 100%: {}/{}  平均 {:.3f}  ({:.0f} s)  不一致: {}'.format(
-            label, res['n100'], len(rows), res['mean'], sec, fails), flush=True)
+        print('[{}] 100%: {}/{}  平均 {:.3f}  Γ {:.3f}  ({:.0f} s)  不一致: {}'.format(
+            label, res['n100'], len(rows), res['mean'], res['gamma'], sec, fails), flush=True)
     if out_json:
         os.makedirs(os.path.dirname(out_json), exist_ok=True)
         json.dump(res, open(out_json, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)

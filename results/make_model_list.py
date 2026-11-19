@@ -1,5 +1,6 @@
 # HH 代理モデルの一覧を Excel にまとめる（results/HHモデル一覧.xlsx）
 # 使い方（リポジトリのルートで）: uv run python -X utf8 results/make_model_list.py
+import json
 import os
 
 from openpyxl import Workbook
@@ -8,6 +9,7 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'HHモデル一覧.xlsx')
+GAMMA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'gamma')   # rescore_gamma.py の結果
 N_TEST, N_VAL = 26, 17
 
 # (分類, タグ, 構造, 学習, 検証17本, テスト26本, 平均一致率, テストで外れた電流, 備考, 結果ファイル)
@@ -49,12 +51,25 @@ ROWS = [
     ('RNN 3 個', 'k_3_w3_K2000', 'k_3_w3 の RNN3', 'k_3_w3 から K=20 ms で 300 回、lr 5e-7', 13, 22, 0.924,
      'ramp 0-20, ramp 0-30, sin 10Hz, random pulse 5ms', 'k_3_w3 をさらに長い窓で微調整したやつ（変化なし）',
      'results/hh_improve/k_3_w3_K2000_b3.pt'),
-    ('RNN 3 個（直列）', 'hh_serial（s / s_i / s_g / s_ig）',
-     'RNN1→RNN2→RNN3 を同じ時刻で直列。RNN3 は g(t+dt) を入力。I を RNN1 に入れる版、G も出す版あり',
-     '教師強制 → 閉ループ微調整 K=1→5→20 ms', None, None, None, '実行中',
-     'ホワイトボードのやつ（別チャットの図）', 'results/hh_serial/'),
-    ('RNN 3 個（直列）', 'hh_serial（p）', '比較用: 同じコードで RNN3 に g(t) を入れる（従来の並列）',
-     '同上', None, None, None, '実行中', 'ホワイトボードのやつの比較用', 'results/hh_serial/'),
+    ('RNN 3 個（直列）', 'e_s', 'RNN1(V) → RNN2 → RNN3(g(t+dt), V, I → ΔV) を同じ時刻で直列、各 H64',
+     '教師強制、各 3000 回（微調整前）', 2, 6, 0.576, '20 本',
+     'ホワイトボードのやつ（別チャットの図）', 'results/hh_serial/e_s.json'),
+    ('RNN 3 個（直列）', 'e_s_i', '同上、RNN1 に I も入れる', '同上', 3, 6, 0.610, '20 本',
+     'ホワイトボードのやつ。RNN1 に I を入れても変わらない', 'results/hh_serial/e_s_i.json'),
+    ('RNN 3 個（直列）', 'e_s_g', '同上、RNN3 がコンダクタンス G_Na, G_K も出す（補助出力）', '同上', 3, 11, 0.670,
+     'step 10, const 7・10・20, ramp 0-20・0-30, sin 10Hz など 15 本',
+     'ホワイトボードのやつ。G も出させると +5 本（直列型で最良）', 'results/hh_serial/e_s_g.json'),
+    ('RNN 3 個（直列）', 'e_s_ig', '同上、RNN1 に I + RNN3 が G も出す', '同上', 3, 10, 0.655, '16 本',
+     'ホワイトボードのやつ', 'results/hh_serial/e_s_ig.json'),
+    ('RNN 3 個（直列）', 'e_p', '比較用: 同じコードで RNN3 に g(t) を入れる（従来の並列）', '同上', 3, 7, 0.572, '19 本',
+     'ホワイトボードのやつの比較用。直列と並列の差はほぼない', 'results/hh_serial/e_p.json'),
+    ('RNN 3 個（直列）', 'c_s_i', 'e_s_i と同じ', 'e_s_i から閉ループ微調整 K=1→5→20 ms、3 ブロックとも、lr 1e-6',
+     4, 6, 0.623, '20 本', 'ホワイトボードのやつを閉ループで微調整したやつ（上がらない）',
+     'results/hh_serial/c_s_i_b*.pt'),
+    ('RNN 3 個（直列）', 'c_p', 'e_p と同じ', 'e_p から閉ループ微調整（同上）', 4, 6, 0.592, '20 本',
+     '比較用を閉ループで微調整したやつ（上がらない）', 'results/hh_serial/c_p_b*.pt'),
+    ('RNN 3 個（直列）', 'c_s / c_s_g / c_s_ig', 'e_s / e_s_g / e_s_ig と同じ', '閉ループ微調整（同上）',
+     None, None, None, '学内サーバで実行中', 'ホワイトボードのやつを閉ループで微調整したやつ', '学内サーバの results/hh_serial/'),
     # ---- RNN 1 個（再帰あり）----
     ('RNN 1 個', 's_h64', '[V, I] → ΔV、tanh RNN H64（ゲートは隠れ状態）', '教師強制', None, 0, 0.215,
      '26 本すべて', '電流が切れても発火し続ける', 'results/hh_improve/s_h64.pt'),
@@ -91,6 +106,18 @@ ROWS = [
      'const 7, ramp 0-20, munechika train', 'mm_rel を広く・深くしたやつ', 'results/hh_improve/mm_w256.pt'),
     ('Markov MLP', 'mm_w256_long', 'MLP 256×3', 'mm_w256 の事前学習を 15 万回に', 16, 23, 0.941,
      'ramp 0-20, ramp 0-30, OU 5±3', 'mm_w256 を長く学習したやつ（検証では最良）', 'results/hh_improve/mm_w256_long.pt'),
+    ('Markov MLP', 'mm_rel_s1', 'MLP 128×2、SiLU', 'mm_rel と同じ、seed 1', 11, 22, 0.921,
+     'ramp 0-20, ramp 0-30, OU 5±3, munechika train', 'mm_rel の seed を変えたやつ（seed で 3 本動く）',
+     'results/hh_improve/mm_rel_s1.pt'),
+    ('Markov MLP', 'mm_rel_relu', 'MLP 128×2、ReLU', 'mm_rel と同じ（活性化関数だけ ReLU）', 11, 20, 0.882,
+     'const 7, const 10, ramp 0-20, ramp 0-30, OU 5±3, munechika train', 'mm_rel を ReLU にしたやつ（exp なし）',
+     'results/hh_improve/mm_rel_relu.pt'),
+    ('Markov MLP', 'mm_rel_relu_s1', 'MLP 128×2、ReLU', '同上、seed 1', 14, 19, 0.883,
+     'const 20, ramp 0-20, ramp 0-30, sin 10Hz, random pulse 5ms, OU 5±3, level+OU', 'mm_rel_relu の seed を変えたやつ',
+     'results/hh_improve/mm_rel_relu_s1.pt'),
+    ('Markov MLP', 'mm_w256_relu', 'MLP 256×3、ReLU', 'mm_w256 と同じ（活性化関数だけ ReLU）', 11, 20, 0.910,
+     'const 7, ramp 0-20, ramp 0-30, sin 10Hz, random pulse 5ms, munechika train', 'mm_w256 を ReLU にしたやつ',
+     'results/hh_improve/mm_w256_relu.pt'),
     # ---- ハイブリッド ----
     ('ハイブリッド', 'cl_p_mlp', 'MLP 64×2 は V → g∞, q（各ゲート）だけ。Δg = q(g∞−g)、ΔV は HH の電流の式',
      '摂動した状態で 1 ステップ事前学習 2 万回', 17, 23, 0.957, 'ramp 0-30, random pulse 5ms, OU 5±3',
@@ -102,9 +129,59 @@ ROWS = [
      'results/flow_learning/'),
 ]
 
+# タグ → 学習・評価に使ったソースコード（スクリプトとサブコマンド）。引数は results/*/jobs_*.txt を参照
+S = 'experiments/hh_surrogate/'
+SOURCE = {
+    'hh_modular_ou': S + 'hh_modular.py（train --block 1〜3 --target delta → eval --clip）',
+    'a3_h64x2': S + 'hh_improve.py block --block 3',
+    'a3_h128': S + 'hh_improve.py block --block 3',
+    'a3_h64_feat': S + 'hh_improve.py block --block 3 --feat',
+    'a3_h64': S + 'hh_improve.py block --block 3',
+    'a3_h64_noise001': S + 'hh_improve.py block --block 3 --noise',
+    'a3_h64_noise01': S + 'hh_improve.py block --block 3 --noise',
+    'a3_h64_wsub10': S + 'hh_improve.py block --block 3 --wsub',
+    'a3_h64_nomem': S + 'hh_improve.py block --block 3 --whh0 --whh-pen',
+    'c123_lr1e-6': S + 'hh_improve.py chain --train 123',
+    'k_3_w3': S + 'hh_improve.py chain --train 3 --K-sched',
+    'k_123_w3': S + 'hh_improve.py chain --train 123 --K-sched',
+    'k_123_w1': S + 'hh_improve.py chain --train 123 --K-sched',
+    'k_3_w3_K2000': S + 'hh_improve.py chain --train 3 --b3 k_3_w3_b3.pt',
+    'e_s': S + 'hh_serial.py（block → eval）',
+    'e_s_i': S + 'hh_serial.py（block --i1 → eval）',
+    'e_s_g': S + 'hh_serial.py（block --gout → eval）',
+    'e_s_ig': S + 'hh_serial.py（block --i1 --gout → eval）',
+    'e_p': S + 'hh_serial.py（block --conn parallel → eval）',
+    'c_s_i': S + 'hh_serial.py chain',
+    'c_p': S + 'hh_serial.py chain',
+    'c_s / c_s_g / c_s_ig': S + 'hh_serial.py chain',
+    's_h64': S + 'hh_improve.py single',
+    's_h64_aux': S + 'hh_improve.py single --aux',
+    's_h64_aux_leak': S + 'hh_improve.py single --aux --leak',
+    's_h64_ro200': S + 'hh_improve.py single --rollout --init',
+    's_mix_h64_aux_r': S + 'hh_improve.py single --aux（--data に 2 ファイル）',
+    's_mix_h128_aux_r': S + 'hh_improve.py single --aux（--data に 2 ファイル）',
+    'cl_v_rnn / cl_v_gru': S + 'hh_improve.py single_cl --cell rnn / gru',
+    'cl_s_rnn / cl_s_rnn_h128 / cl_s_gru / cl_s_rnn_noonpol': S + 'hh_improve.py single_cl --state',
+    'cl_m_mlp': S + 'hh_improve.py single_cl --state --cell mlp --pre-iters',
+    'mm_base': S + 'hh_improve.py single_cl --state --cell mlp --pre-iters',
+    'mm_rel': S + 'hh_improve.py single_cl --state --cell mlp --pre-iters --pre-rel',
+    'mm_sv05': S + 'hh_improve.py single_cl --state --cell mlp --pre-rel --pre-sv --pre-sg',
+    'mm_sv5': S + 'hh_improve.py single_cl --state --cell mlp --pre-rel --pre-sv --pre-sg',
+    'mm_w256': S + 'hh_improve.py single_cl --state --cell mlp --pre-rel --H 256 --layers 3',
+    'mm_w256_long': S + 'hh_improve.py single_cl --state --cell mlp --pre-rel --H 256 --layers 3',
+    'cl_p_mlp': S + 'hh_improve.py single_cl --phys --cell mlp --pre-iters',
+    'mm_rel_s1': S + 'hh_improve.py single_cl --state --cell mlp --pre-rel --seed 1',
+    'mm_rel_relu': S + 'hh_improve.py single_cl --state --cell mlp --pre-rel --act relu',
+    'mm_rel_relu_s1': S + 'hh_improve.py single_cl --state --cell mlp --pre-rel --act relu --seed 1',
+    'mm_w256_relu': S + 'hh_improve.py single_cl --state --cell mlp --pre-rel --act relu --H 256 --layers 3',
+    'hhfs（学内サーバ 10 本）': 'experiments/flow_learning/run_paper.sh fs（external/flow-learning-l4dc の論文コード）、'
+                            '評価は predict_current_py.py',
+}
+
 HEAD = ['No', '分類', 'モデル（タグ）', '構造', '学習方法', '検証 17 本\n100% 一致', 'テスト 26 本\n100% 一致',
-        'テスト\n一致した割合', 'テスト\n平均一致率', 'テスト\n順位', 'テストで外れた電流', '備考', '結果ファイル']
-WIDTH = [5, 14, 26, 46, 40, 11, 11, 11, 10, 8, 40, 44, 36]
+        'テスト\n一致した割合', 'テスト\n平均一致率', 'テスト\n平均 Γ', 'テスト順位\n(100% 一致)',
+        'テスト順位\n(平均 Γ)', 'テストで外れた電流', '備考', 'ソースコード', '結果ファイル']
+WIDTH = [5, 14, 26, 46, 40, 11, 11, 11, 10, 10, 11, 11, 40, 44, 48, 36]
 FILL = {'RNN 3 個': 'DCE6F1', 'RNN 3 個（直列）': 'FDE9D9', 'RNN 1 個': 'F2DCDB', 'Markov MLP': 'EBF1DE',
         'ハイブリッド': 'EDEDED', 'flow function': 'FFF2CC'}
 
@@ -119,7 +196,8 @@ border = Border(left=thin, right=thin, top=thin, bottom=thin)
 ws['A1'] = 'HH 代理モデルの一覧（26 本のテスト電流でのスパイク時刻の一致、±2 ms）'
 ws['A1'].font = Font(name='Arial', size=12, bold=True)
 ws['A2'] = ('100% 一致 = その電流のスパイクがすべて ±2 ms 以内で一致した本数。検証 17 本は最良の時点を選ぶのに使った別の電流。'
-            '「—」は未評価。数値は実験ログ（results/hh_improve/logs など）から転記')
+            '平均 Γ = coincidence factor（Kistler et al. 1997; Jolivet et al. 2008、Δ = 2 ms）の 26 本の平均。'
+            '「—」は未評価。一致率は実験ログ、Γ は results/rescore_gamma.py で採点し直した値')
 ws['A2'].font = Font(name='Arial', size=9, italic=True)
 r0 = 4
 for j, (h, w) in enumerate(zip(HEAD, WIDTH), 1):
@@ -131,31 +209,54 @@ for j, (h, w) in enumerate(zip(HEAD, WIDTH), 1):
     ws.column_dimensions[get_column_letter(j)].width = w
 ws.row_dimensions[r0].height = 32
 
+def gamma_of(tag):
+    """
+    results/gamma/<タグ>.json（results/rescore_gamma.py の出力）から 26 本の平均 Γ を読む。
+    「a / b」のようにまとめた行は、それぞれの値を「/」でつないだ文字列にする。採点していなければ None
+    """
+    vs = []
+    for t in tag.split(' / '):
+        p = os.path.join(GAMMA_DIR, t.strip() + '.json')
+        if not os.path.exists(p):
+            return None
+        vs.append(json.load(open(p, encoding='utf-8'))['gamma'])
+    return vs[0] if len(vs) == 1 else ' / '.join('{:.3f}'.format(v) for v in vs)
+
+
 first, last = r0 + 1, r0 + len(ROWS)
 for i, row in enumerate(ROWS):
     r = first + i
     cat, tag, arch, train, val, test, mean, fails, note, path = row
-    vals = [i + 1, cat, tag, arch, train, val, test, None, mean, None, fails, note, path]
+    gam = gamma_of(tag)
+    vals = [i + 1, cat, tag, arch, train, val, test, None, mean, gam, None, None, fails, note, SOURCE[tag], path]
     for j, v in enumerate(vals, 1):
         c = ws.cell(r, j, v if v is not None else None)
         c.font = font
         c.border = border
         c.fill = PatternFill('solid', fgColor=FILL[cat])
         c.alignment = Alignment(vertical='top', wrap_text=True,
-                                horizontal='center' if j in (1, 6, 7, 8, 9, 10) else 'left')
+                                horizontal='center' if j in (1, 6, 7, 8, 9, 10, 11, 12) else 'left')
     if val is None:
         ws.cell(r, 6, '—')
     if test is None:
         ws.cell(r, 7, '—')
         ws.cell(r, 8, '—')
-        ws.cell(r, 10, '—')
+        ws.cell(r, 11, '—')
     else:
         ws.cell(r, 8, f'=G{r}/{N_TEST}').number_format = '0%'
-        ws.cell(r, 10, f'=IF(ISNUMBER(G{r}),RANK(G{r},$G${first}:$G${last},0),"—")')
+        ws.cell(r, 11, f'=IF(ISNUMBER(G{r}),RANK(G{r},$G${first}:$G${last},0),"—")')
     if mean is None:
         ws.cell(r, 9, '—')
     else:
         ws.cell(r, 9).number_format = '0.000'
+    if gam is None:
+        ws.cell(r, 10, '—')
+        ws.cell(r, 12, '—')
+    elif isinstance(gam, float):
+        ws.cell(r, 10).number_format = '0.000'
+        ws.cell(r, 12, f'=IF(ISNUMBER(J{r}),RANK(J{r},$J${first}:$J${last},0),"—")')
+    else:
+        ws.cell(r, 12, '—')
     if test is not None and test >= 22:
         ws.cell(r, 7).font = Font(name='Arial', size=10, bold=True)
 
@@ -171,7 +272,7 @@ for k, (cat, col) in enumerate(FILL.items()):
     c.font = font
     c.fill = PatternFill('solid', fgColor=col)
     c.border = border
-ws.cell(lr + 1, 4, 'テスト順位は 100% 一致の本数の多い順（同数は同順位）。一致した割合 = 100% 一致の本数 / 26').font = font
+ws.cell(lr + 1, 4, 'テスト順位は 100% 一致の本数、または平均 Γ の大きい順（同じ値は同順位）。一致した割合 = 100% 一致の本数 / 26').font = font
 
 wb.save(OUT)
 print('saved', OUT)
