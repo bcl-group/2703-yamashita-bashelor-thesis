@@ -109,7 +109,7 @@ def save_net(net, path, info):
 
 
 def load_net(p):
-    d = torch.load(resolve(p), weights_only=False)
+    d = torch.load(resolve(p), weights_only=False, map_location='cpu')
     net = hi.Net(**d['cfg'])
     net.load_state_dict(d['state'])
     net = net.double()
@@ -148,7 +148,7 @@ def run(nets, I_np):
     """hb.score の約束どおり: I (B, N) -> V (B, N-1)。V(0) = V_REST、ゲートは定常値から。"""
     cfg = chain_cfg(nets)
     B, N = I_np.shape
-    I = torch.from_numpy(np.asarray(I_np, dtype=np.float64))
+    I = torch.from_numpy(np.asarray(I_np, dtype=np.float64)).to(hi.DEV)
     v = torch.full((B,), H_.V_REST, dtype=torch.float64)
     g = torch.tensor(H_.steady_state_gates(H_.V_REST), dtype=torch.float64).repeat(B, 1)
     hs = [n.zeros(B, torch.float64) for n in nets]
@@ -157,7 +157,7 @@ def run(nets, I_np):
         for k in range(N - 1):
             v, g, hs, _ = step(nets, cfg, v, g, I[:, k], hs)
             out[:, k] = v
-    return out.numpy()
+    return out.cpu().numpy()
 
 
 def score(nets, label, val=False):
@@ -354,6 +354,7 @@ def main():
     common.add_argument('--seed', type=int, default=0)
     common.add_argument('--threads', type=int, default=2)
     common.add_argument('--log-every', type=int, default=200)
+    common.add_argument('--device', default='cpu', help='cpu か cuda（cuda:0 など）')
 
     pb = sub.add_parser('block', parents=[common])
     pb.add_argument('--block', type=int, required=True, choices=[1, 2, 3])
@@ -390,6 +391,7 @@ def main():
 
     a = p.parse_args()
     torch.set_num_threads(a.threads)
+    hi.set_device(a.device)
     os.makedirs(OUT_DIR, exist_ok=True)
     {'block': train_block, 'eval': evaluate, 'chain': train_chain}[a.cmd](a)
 

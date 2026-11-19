@@ -1,0 +1,11 @@
+# 学内サーバ（GPU）用: Markov MLP の事前学習を GPU で回す。mm_rel（SiLU, 128×2, 25/26）の再現性と、ReLU・幅・学習回数の比較
+# 使い方（リポジトリのルートで）: nohup bash results/hh_improve/run_jobs.sh results/hh_improve/jobs_gpu_mlp.txt 6 > results/hh_improve/logs/jobs_gpu_mlp.out 2>&1 &
+single_cl --tag g_silu128_s0 --H 128 --layers 2 --act silu --seed 0 --pre-iters 50000 --state --cell mlp --iters 0 --bank 2048 --ep-ms 100 --pre-batch 1024 --pre-lr 1e-3 --pre-rel 0.02 --threads 2 --device cuda
+single_cl --tag g_relu128_s0 --H 128 --layers 2 --act relu --seed 0 --pre-iters 50000 --state --cell mlp --iters 0 --bank 2048 --ep-ms 100 --pre-batch 1024 --pre-lr 1e-3 --pre-rel 0.02 --threads 2 --device cuda
+single_cl --tag g_silu128_s1 --H 128 --layers 2 --act silu --seed 1 --pre-iters 50000 --state --cell mlp --iters 0 --bank 2048 --ep-ms 100 --pre-batch 1024 --pre-lr 1e-3 --pre-rel 0.02 --threads 2 --device cuda
+single_cl --tag g_relu128_s1 --H 128 --layers 2 --act relu --seed 1 --pre-iters 50000 --state --cell mlp --iters 0 --bank 2048 --ep-ms 100 --pre-batch 1024 --pre-lr 1e-3 --pre-rel 0.02 --threads 2 --device cuda
+single_cl --tag g_silu128_s2 --H 128 --layers 2 --act silu --seed 2 --pre-iters 50000 --state --cell mlp --iters 0 --bank 2048 --ep-ms 100 --pre-batch 1024 --pre-lr 1e-3 --pre-rel 0.02 --threads 2 --device cuda
+single_cl --tag g_relu128_s2 --H 128 --layers 2 --act relu --seed 2 --pre-iters 50000 --state --cell mlp --iters 0 --bank 2048 --ep-ms 100 --pre-batch 1024 --pre-lr 1e-3 --pre-rel 0.02 --threads 2 --device cuda
+single_cl --tag g_relu256x3 --H 256 --layers 3 --act relu --pre-iters 50000 --state --cell mlp --iters 0 --bank 2048 --ep-ms 100 --pre-batch 1024 --pre-lr 1e-3 --pre-rel 0.02 --threads 2 --device cuda
+single_cl --tag g_silu128_200k --H 128 --layers 2 --act silu --pre-iters 200000 --state --cell mlp --iters 0 --bank 2048 --ep-ms 100 --pre-batch 1024 --pre-lr 1e-3 --pre-rel 0.02 --threads 2 --device cuda
+single_cl --tag g_relu128_200k --H 128 --layers 2 --act relu --pre-iters 200000 --state --cell mlp --iters 0 --bank 2048 --ep-ms 100 --pre-batch 1024 --pre-lr 1e-3 --pre-rel 0.02 --threads 2 --device cuda

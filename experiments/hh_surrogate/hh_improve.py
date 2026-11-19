@@ -42,6 +42,18 @@ OUT_DIR = os.path.join(hb.ROOT, 'results', 'hh_improve')
 DT = 0.01
 N_VALID_TRAJ = 10          # 最後の 10 軌道は 1 ステップ誤差の検証用（学習に使わない）
 
+# 計算する装置。--device cuda で GPU を使う（set_device が既定の装置も切り替える）。cpu のときは何も変えない
+DEV = torch.device('cpu')
+
+
+def set_device(name):
+    global DEV
+    DEV = torch.device(name)
+    if DEV.type != 'cpu':
+        torch.set_default_device(DEV)   # torch.full / zeros / randn などは DEV に作られる
+        torch.backends.cuda.matmul.allow_tf32 = False   # 精度を CPU と揃える（TF32 は使わない）
+        torch.backends.cudnn.allow_tf32 = False
+
 
 # ---------------- HH の式（torch、float64） ----------------
 
@@ -76,16 +88,16 @@ def d_V(g, V, I):
 class Net(nn.Module):
     """標準化 + 段を重ねた tanh RNN + 線形の読み出し（+ 補助の読み出し）。"""
 
-    def __init__(self, d_in, H, layers, d_out, d_aux=0, feat=0, leak=0.0, cell='rnn', phys=False):
+    def __init__(self, d_in, H, layers, d_out, d_aux=0, feat=0, leak=0.0, cell='rnn', phys=False, act='silu'):
         super().__init__()
         self.cfg = dict(d_in=d_in, H=H, layers=layers, d_out=d_out, d_aux=d_aux, feat=feat, leak=leak,
-                        cell=cell, phys=phys)
+                        cell=cell, phys=phys, act=act)
         d_rnn = d_in + {0: 0, 2: 6, 3: 4}[feat]
         if cell == 'mlp':
-            # 再帰のない MLP（Markov 型）。layers 段の Linear + SiLU
+            # 再帰のない MLP（Markov 型）。layers 段の Linear + 活性化関数（act: silu か relu）
             mods, d = [], d_rnn
             for _ in range(layers):
-                mods += [nn.Linear(d, H), nn.SiLU()]
+                mods += [nn.Linear(d, H), {'silu': nn.SiLU(), 'relu': nn.ReLU()}[act]]   # MLP の活性化関数
                 d = H
             self.mlp = nn.Sequential(*mods)
         elif cell == 'gru':
@@ -187,7 +199,7 @@ def save_net(net, path, info):
 def load_net(path):
     if path.endswith('.npz'):
         return from_simple(*hm.load_block(path)[:3])
-    d = torch.load(path, weights_only=False)
+    d = torch.load(path, weights_only=False, map_location='cpu')
     net = Net(**d['cfg'])
     net.load_state_dict(d['state'])
     return net.double()
@@ -220,7 +232,7 @@ class Windows:
         si = self.rng.integers(s_min, N - L - 1, size=B)
         idx = torch.from_numpy(si[:, None] + np.arange(L + 1)[None])
         ti = torch.from_numpy(ti)[:, None]
-        g = lambda k: d[k][ti, idx].double()                         # (B, L+1)
+        g = lambda k: d[k][ti, idx].double().to(DEV)                 # (B, L+1)
         return g('I'), g('V'), torch.stack([g('m'), g('h'), g('n')], -1)
 
     def sample(self, B, L, valid=False, s_min=5000):
@@ -247,11 +259,10 @@ def perturb(V, G, sigma, rng_t):
     if sigma <= 0:
         return V, G
     B = V.shape[0]
-    sigma = sigma * (torch.rand(B, 1, generator=rng_t, dtype=V.dtype) < 0.5)
-    V = V + sigma * (2.0 * torch.randn(B, 1, generator=rng_t, dtype=V.dtype)
-                     + 0.4 * torch.randn(V.shape, generator=rng_t, dtype=V.dtype))
-    G = G + sigma[..., None] * (0.02 * torch.randn(B, 1, 3, generator=rng_t, dtype=G.dtype)
-                     + 0.004 * torch.randn(G.shape, generator=rng_t, dtype=G.dtype))
+    r = lambda *sh: torch.randn(*sh, generator=rng_t, dtype=V.dtype, device='cpu').to(V.device)
+    sigma = sigma * (torch.rand(B, 1, generator=rng_t, dtype=V.dtype, device='cpu') < 0.5).to(V.device)
+    V = V + sigma * (2.0 * r(B, 1) + 0.4 * r(*V.shape))
+    G = G + sigma[..., None] * (0.02 * r(B, 1, 3) + 0.004 * r(*G.shape))
     return V, G.clamp(0.0, 1.0)
 
 
@@ -351,7 +362,7 @@ def block_valid(net, data, block, L):
 def run3(nets, I_np):
     n1, n2, n3 = nets
     B, N = I_np.shape
-    I = torch.from_numpy(I_np)
+    I = torch.from_numpy(I_np).to(DEV)
     V = torch.full((B,), H_.V_REST, dtype=torch.float64)
     g = torch.tensor(H_.steady_state_gates(H_.V_REST), dtype=torch.float64).repeat(B, 1)
     h1, h2, h3 = n1.zeros(B, torch.float64), n2.zeros(B, torch.float64), n3.zeros(B, torch.float64)
@@ -365,7 +376,7 @@ def run3(nets, I_np):
             V = V + dv[:, 0]
             g = (g + dg).clamp(0.0, 1.0)
             out[:, k] = V
-    return out.numpy()
+    return out.cpu().numpy()
 
 
 BASE = os.path.join(hb.ROOT, 'results', 'hh_modular_ou')
@@ -498,7 +509,7 @@ def gen_current(B, N, rng):
         I[b] += ou
         for k in rng.integers(0, N, size=rng.poisson(N * DT / 50)):
             I[b, k:k + int(rng.uniform(0.5, 2) / DT)] += rng.uniform(10, 40)
-    return torch.from_numpy(I)
+    return torch.from_numpy(I).to(DEV)
 
 
 @torch.no_grad()
@@ -551,7 +562,7 @@ def state_step(net, x, hs):
 def run_state(net, I_np, rest_ms=20.0):
     # 状態を戻す型の閉ループ。入力 [V, m, h, n, I]、出力 [ΔV, Δm, Δh, Δn]
     B, N = I_np.shape
-    I = torch.from_numpy(I_np)
+    I = torch.from_numpy(I_np).to(DEV)
     hs = net.zeros(B, torch.float64)
     V = torch.full((B,), H_.V_REST, dtype=torch.float64)
     g = torch.tensor(H_.steady_state_gates(H_.V_REST), dtype=torch.float64).repeat(B, 1)
@@ -564,7 +575,7 @@ def run_state(net, I_np, rest_ms=20.0):
             V = (V + y[:, 0]).clamp(-100.0, 60.0)
             g = (g + y[:, 1:]).clamp(0.0, 1.0)
             out[:, k] = V
-    return out.numpy()
+    return out.cpu().numpy()
 
 
 def train_single_cl(a):
@@ -581,7 +592,8 @@ def train_single_cl(a):
     rng = np.random.default_rng(a.seed)
     st = a.state or a.phys
     d_in, d_out = (1, 6) if a.phys else ((5, 4) if st else (2, 1))
-    net = Net(d_in, a.H, a.layers, d_out, d_aux=3 if (a.aux > 0 and not st) else 0, cell=a.cell, phys=a.phys)
+    net = Net(d_in, a.H, a.layers, d_out, d_aux=3 if (a.aux > 0 and not st) else 0, cell=a.cell, phys=a.phys,
+              act=a.act)
     I0 = gen_current(32, 20000, rng)
     V0, G0 = hh_sim(I0)
     if a.phys:
@@ -594,7 +606,7 @@ def train_single_cl(a):
         net.set_scalers(torch.stack([V0[:, :-1], I0], -1).reshape(-1, 2).float(),
                         (V0[:, 1:] - V0[:, :-1]).reshape(-1, 1).float())
     if a.init:
-        d = torch.load(a.init, weights_only=False)
+        d = torch.load(a.init, weights_only=False, map_location='cpu')
         net = Net(**d['cfg'])
         net.load_state_dict(d['state'])
     net = net.float()
@@ -690,7 +702,7 @@ def train_single_cl(a):
                     y, hs = net.cell(torch.stack([vin, If[:, k]], 1), hs)
                     v = (vin + y[:, 0]).clamp(-100.0, 60.0)
                     if net.aux is not None:
-                        loss = loss + a.aux * ((net.aux(hs[-1]) - (Gf[:, k + 1] - G_MEAN) / G_STD) ** 2).mean(-1)
+                        loss = loss + a.aux * ((net.aux(hs[-1]) - (Gf[:, k + 1] - G_MEAN.to(Gf.device)) / G_STD.to(Gf.device)) ** 2).mean(-1)
                 loss = loss + ((v - Vf[:, k + 1]) / 20.0) ** 2
             loss = loss.mean() / a.seg
             opt.zero_grad()
@@ -706,7 +718,7 @@ def train_single_cl(a):
                 it + 1, alpha, np.mean(log['loss'][-a.log_every:]), time.time() - t0), flush=True)
         if (it + 1) % a.eval_every == 0 or it + 1 == a.iters:
             evaluate(it + 1)
-    d = torch.load(path, weights_only=False)
+    d = torch.load(path, weights_only=False, map_location='cpu')
     net = Net(**d['cfg'])
     net.load_state_dict(d['state'])
     net = net.double()
@@ -724,7 +736,7 @@ def single_loss(net, I, V, G, a, rng_t):
     # 教師強制: 入力 [V(t), I(t)]、正解 ΔV。最初の burn ステップは隠れ状態を作る区間として損失に入れない
     Vin = V
     if a.noise > 0:
-        Vin = V + a.noise * 0.4 * torch.randn(V.shape, generator=rng_t, dtype=V.dtype)
+        Vin = V + a.noise * 0.4 * torch.randn(V.shape, generator=rng_t, dtype=V.dtype, device='cpu').to(V.device)
     X = torch.stack([Vin[:, :-1], I[:, :-1]], -1)
     Y = (V[:, 1:] - Vin[:, :-1])[..., None]          # 雑音を足した V から正しい次の V へ戻す量
     _, ys, z, _ = net(X.float())
@@ -733,7 +745,7 @@ def single_loss(net, I, V, G, a, rng_t):
     w = 1.0 + (a.wsub - 1.0) * ((Vb > -70) & (Vb < -40)).float()
     loss = (w * e2).sum() / w.sum()
     if net.aux is not None:
-        gz = (G[:, :-1].float() - G_MEAN) / G_STD
+        gz = (G[:, :-1].float() - G_MEAN.to(G.device)) / G_STD.to(G.device)
         loss = loss + a.aux * ((net.aux(z) - gz) ** 2)[:, a.burn:].mean()
     return loss
 
@@ -760,7 +772,7 @@ def rollout_loss(net, I, V, a):
 def run_single(net, I_np, rest_ms=20.0):
     # 静止状態の隠れ状態を作るため、最初に rest_ms だけ V = V_REST, I = 0 を入れてから閉ループ
     B, N = I_np.shape
-    I = torch.from_numpy(I_np)
+    I = torch.from_numpy(I_np).to(DEV)
     hs = net.zeros(B, torch.float64)
     V = torch.full((B,), H_.V_REST, dtype=torch.float64)
     out = torch.empty(B, N - 1, dtype=torch.float64)
@@ -771,7 +783,7 @@ def run_single(net, I_np, rest_ms=20.0):
             y, hs = net.cell(torch.stack([V, I[:, k]], 1), hs)
             V = (V + y[:, 0]).clamp(-100.0, 60.0)
             out[:, k] = V
-    return out.numpy()
+    return out.cpu().numpy()
 
 
 def train_single(a):
@@ -783,7 +795,7 @@ def train_single(a):
     net.set_scalers(torch.stack([V[:, :-1], I[:, :-1]], -1).reshape(-1, 2).float(),
                     (V[:, 1:] - V[:, :-1]).reshape(-1, 1).float())
     if a.init:
-        d = torch.load(a.init, weights_only=False)
+        d = torch.load(a.init, weights_only=False, map_location='cpu')
         net.load_state_dict(d['state'])
     opt = torch.optim.Adam(net.parameters(), lr=a.lr)
     log = {'args': vars(a), 'loss': [], 'valid': []}
@@ -837,6 +849,7 @@ def main():
     common.add_argument('--threads', type=int, default=2)
     common.add_argument('--log-every', type=int, default=200)
     common.add_argument('--init', default=None)
+    common.add_argument('--device', default='cpu', help='cpu か cuda（cuda:0 など）')
     pb = sub.add_parser('block', parents=[common])
     pb.add_argument('--block', type=int, required=True, choices=[1, 2, 3])
     pb.add_argument('--feat', action='store_true', help='積の特徴量を入力に足す（RNN2, RNN3）')
@@ -874,6 +887,7 @@ def main():
     pl.add_argument('--pre-rel', type=float, default=0.0, help='>0 なら ΔV を相対誤差で学習（値は下限 [mV]）')
     pl.add_argument('--onpol', type=float, default=1.0, help='--state のとき、式で計算した 1 ステップの正解との損失の重み')
     pl.add_argument('--cell', default='rnn', choices=['rnn', 'gru', 'mlp'])
+    pl.add_argument('--act', default='silu', choices=['silu', 'relu'], help='MLP の活性化関数')
     pl.add_argument('--aux', type=float, default=0.0)
     pl.add_argument('--ep-ms', type=float, default=100.0, help='1 本の学習系列の長さ [ms]')
     pl.add_argument('--seg', type=int, default=500, help='truncated BPTT の区切り（ステップ）')
@@ -887,8 +901,10 @@ def main():
         pe.add_argument(f'--b{k}', default=os.path.join(BASE, f'block{k}.npz'))
     pe.add_argument('--label', default='eval3')
     pe.add_argument('--threads', type=int, default=2)
+    pe.add_argument('--device', default='cpu')
     a = p.parse_args()
     torch.set_num_threads(a.threads)
+    set_device(a.device)
     os.makedirs(OUT_DIR, exist_ok=True)
     if a.cmd == 'block':
         train_block(a)

@@ -1,0 +1,6 @@
+# 第7ラウンド: Markov MLP の活性化関数を SiLU → ReLU に（exp を使わない）。条件は mm_rel と同じ
+# seed による揺れを見るため、SiLU も seed を変えて 1 本回す
+single_cl --tag mm_rel_relu --H 128 --layers 2 --act relu --state --cell mlp --iters 0 --bank 2048 --ep-ms 100 --pre-batch 1024 --pre-lr 1e-3 --pre-iters 50000 --pre-rel 0.02 --threads 1
+single_cl --tag mm_rel_relu_s1 --H 128 --layers 2 --act relu --seed 1 --state --cell mlp --iters 0 --bank 2048 --ep-ms 100 --pre-batch 1024 --pre-lr 1e-3 --pre-iters 50000 --pre-rel 0.02 --threads 1
+single_cl --tag mm_rel_s1 --H 128 --layers 2 --act silu --seed 1 --state --cell mlp --iters 0 --bank 2048 --ep-ms 100 --pre-batch 1024 --pre-lr 1e-3 --pre-iters 50000 --pre-rel 0.02 --threads 1
+single_cl --tag mm_w256_relu --H 256 --layers 3 --act relu --state --cell mlp --iters 0 --bank 2048 --ep-ms 100 --pre-batch 1024 --pre-lr 1e-3 --pre-iters 50000 --pre-rel 0.02 --threads 1
