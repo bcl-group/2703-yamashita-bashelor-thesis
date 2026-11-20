@@ -41,7 +41,7 @@
 
 ### 10/23(金)〜10/31(金)
 - やったこと
-  - Troubモデルの実装のための勉強を行いました（はじめての神経回路シミュレーション を読む）
+  - Traubモデルの実装のための勉強を行いました（はじめての神経回路シミュレーション を読む）
   - 論文読み
     - Learning flow functions of spiking systems（[原稿](references/reviews/learning_flow_functions/論文紹介_learning_flow_functions.md)）
     - Traub1991_CA3
