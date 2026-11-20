@@ -68,7 +68,10 @@ MODELS = {
     'e_s_g': lambda: serial('b1', 'b2', 'b3_sg'),
     'e_s_ig': lambda: serial('b1_i', 'b2', 'b3_sg'),
     'e_p': lambda: serial('b1', 'b2', 'b3_p'),
+    'c_s': lambda: serial('c_s_b1', 'c_s_b2', 'c_s_b3'),
     'c_s_i': lambda: serial('c_s_i_b1', 'c_s_i_b2', 'c_s_i_b3'),
+    'c_s_g': lambda: serial('c_s_g_b1', 'c_s_g_b2', 'c_s_g_b3'),
+    'c_s_ig': lambda: serial('c_s_ig_b1', 'c_s_ig_b2', 'c_s_ig_b3'),
     'c_p': lambda: serial('c_p_b1', 'c_p_b2', 'c_p_b3'),
     # RNN 1 個、Markov MLP、式組込み MLP
     **{t: (lambda t=t: single(t)) for t in
