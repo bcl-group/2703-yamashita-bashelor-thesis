@@ -92,7 +92,7 @@ class Net(nn.Module):
         super().__init__()
         self.cfg = dict(d_in=d_in, H=H, layers=layers, d_out=d_out, d_aux=d_aux, feat=feat, leak=leak,
                         cell=cell, phys=phys, act=act)
-        d_rnn = d_in + {0: 0, 2: 6, 3: 4}[feat]
+        d_rnn = d_in + {0: 0, 2: 6, 3: 4, 5: 4}[feat]
         if cell == 'mlp':
             # 再帰のない MLP（Markov 型）。layers 段の Linear + 活性化関数（act: silu か relu）
             mods, d = [], d_rnn
@@ -118,6 +118,11 @@ class Net(nn.Module):
             return torch.cat([x, torch.stack([a, b, a * V, b * V], -1)], -1)
         if f == 2:
             return torch.cat([x, x[..., 0:6:2] * x[..., 6:9], x[..., 1:6:2] * x[..., 6:9]], -1)
+        if f == 5:
+            # 状態を戻す型（入力 V, m, h, n, I）: m^3 h, n^4 と、それぞれに V を掛けたもの（Na・K 電流の形）
+            V, m, h, n = x[..., 0], x[..., 1], x[..., 2], x[..., 3]
+            a, b = m ** 3 * h, n ** 4
+            return torch.cat([x, torch.stack([a, b, a * V, b * V], -1)], -1)
         return x
 
     def set_scalers(self, X, Y):
@@ -512,6 +517,92 @@ def gen_current(B, N, rng):
     return torch.from_numpy(I).to(DEV)
 
 
+def gen_hard(N, rng):
+    """
+    苦手な場面を多く含む電流を 1 本作る (N,)。テスト・検証の電流そのものは作らない（長さ・傾き・水準は乱数）。
+      hold  : 50〜500 ms の一定区間を続ける。水準の半分は閾値付近 U[4, 12]、残りは U[-5, 30]
+      ramp  : 100〜3000 ms かけて直線で次の水準へ（ゆっくり閾値をまたぐ）。端の半分は閾値付近
+      nearou: 閾値付近の平均 U[4, 10] のまわりを OU でゆらす（τ 1〜10 ms、σ 0〜3）。平均は 100〜1000 ms ごとに変える
+    hold と ramp には弱い OU（σ 0〜1）を重ねる
+    """
+    kind = rng.choice(['hold', 'ramp', 'nearou'])
+    lvl_draw = lambda: rng.uniform(4, 12) if rng.random() < 0.5 else rng.uniform(-5, 30)
+    I = np.zeros(N)
+    t, lvl = 0, lvl_draw()
+    while t < N:
+        if kind == 'hold':
+            L = max(1, int(rng.uniform(50, 500) / DT))
+            I[t:t + L] = lvl
+            lvl = lvl_draw()
+        elif kind == 'ramp':
+            L = max(1, int(rng.uniform(100, 3000) / DT))
+            nxt = lvl_draw()
+            I[t:t + L] = np.linspace(lvl, nxt, L)[:N - t]
+            lvl = nxt
+        else:
+            L = max(1, int(rng.uniform(100, 1000) / DT))
+            I[t:t + L] = rng.uniform(4, 10)
+        t += L
+    tau = rng.uniform(1, 10) if kind == 'nearou' else rng.uniform(1, 5)
+    sig = rng.uniform(0, 3) if kind == 'nearou' else rng.uniform(0, 1)
+    a = math.exp(-DT / tau)
+    e = rng.standard_normal(N) * sig * math.sqrt(1 - a * a)
+    ou = np.zeros(N)
+    for k in range(1, N):
+        ou[k] = a * ou[k - 1] + e[k]
+    return I + ou
+
+
+@torch.no_grad()
+def hh_states(I, stride=1):
+    """
+    静止状態から HH の陽的オイラー法を回し、stride ステップごとの状態 [V, m, h, n, I] を集める（長い電流でもメモリを抑える）。
+    I: (B, N) -> X: (B * ceil(N / stride), 5)
+    """
+    B, N = I.shape
+    V = torch.full((B,), H_.V_REST, dtype=torch.float64)
+    g = torch.tensor(H_.steady_state_gates(H_.V_REST), dtype=torch.float64).repeat(B, 1)
+    out = []
+    for k in range(N):
+        if k % stride == 0:
+            out.append(torch.cat([V[:, None], g, I[:, k, None]], 1))
+        V, g = V + d_V(g, V, I[:, k]), g + d_gates(rates(V), g)
+    return torch.stack(out, 1).reshape(-1, 5)
+
+
+def hard_states(n, T_ms, rng, stride, chunk=256):
+    # 苦手な電流 n 本（各 T_ms）で HH を回し、stride ごとの状態を集める
+    N = int(T_ms / DT)
+    out = []
+    for c0 in range(0, n, chunk):
+        Ic = torch.from_numpy(np.stack([gen_hard(N, rng) for _ in range(min(chunk, n - c0))])).to(DEV)
+        out.append(hh_states(Ic, stride))
+    return torch.cat(out)
+
+
+@torch.no_grad()
+def rollout_states(net, I, stride, rest_ms=20.0):
+    """
+    DAgger 用: モデルを閉ループで回し、実際に通った（正解からずれた）状態 [V, m, h, n, I] を stride ごとに集める。
+    正解はあとで exact_step で計算する（入力の厳密な関数なので、ずれた状態でも正しい）
+    """
+    B, N = I.shape
+    hs = net.zeros(B, torch.float32)
+    V = torch.full((B,), H_.V_REST, dtype=torch.float64)
+    g = torch.tensor(H_.steady_state_gates(H_.V_REST), dtype=torch.float64).repeat(B, 1)
+    for _ in range(int(rest_ms / DT)):
+        _, hs, _ = state_step(net, torch.cat([V[:, None], g, torch.zeros(B, 1, dtype=torch.float64)], 1).float(), hs)
+    out = []
+    for k in range(N):
+        x = torch.cat([V[:, None], g, I[:, k, None]], 1)
+        if k % stride == 0:
+            out.append(x)
+        y, hs, _ = state_step(net, x.float(), hs)
+        V = (V + y[:, 0].double()).clamp(-100.0, 60.0)
+        g = (g + y[:, 1:].double()).clamp(0.0, 1.0)
+    return torch.stack(out, 1).reshape(-1, 5)
+
+
 @torch.no_grad()
 def hh_sim(I):
     # 静止状態から HH の陽的オイラー法。I: (B, N) -> V: (B, N+1), G: (B, N+1, 3)
@@ -593,7 +684,7 @@ def train_single_cl(a):
     st = a.state or a.phys
     d_in, d_out = (1, 6) if a.phys else ((5, 4) if st else (2, 1))
     net = Net(d_in, a.H, a.layers, d_out, d_aux=3 if (a.aux > 0 and not st) else 0, cell=a.cell, phys=a.phys,
-              act=a.act)
+              act=a.act, feat=5 if (a.sfeat and st and not a.phys) else 0)
     I0 = gen_current(32, 20000, rng)
     V0, G0 = hh_sim(I0)
     if a.phys:
@@ -635,34 +726,61 @@ def train_single_cl(a):
         bI = gen_current(a.bank, N, rng)
         bV, bG = hh_sim(bI)
         X = torch.cat([bV[:, :-1, None], bG[:, :-1], bI[..., None]], -1).reshape(-1, 5)
+        del bV, bG
+        if a.hard > 0:
+            # 苦手な電流の状態を足す（長いので間引く）
+            Xh = hard_states(a.hard, a.hard_ms, rng, a.hard_stride)
+            print('苦手な電流の状態: {} 本 × {:.0f} ms → {} 個（通常 {} 個）  ({:.0f} s)'.format(
+                a.hard, a.hard_ms, Xh.shape[0], X.shape[0], time.time() - t0), flush=True)
+            X = torch.cat([X, Xh])
         popt = torch.optim.Adam(net.parameters(), lr=a.pre_lr)
-        for pi in range(a.pre_iters):
-            for gr in popt.param_groups:
-                gr['lr'] = lr_at(pi, a.pre_iters, a.pre_lr)
-            x = X[torch.from_numpy(rng.integers(0, X.shape[0], size=a.pre_batch))].clone()
-            mask = (torch.rand(a.pre_batch, 1, dtype=x.dtype) < 0.5).to(x.dtype)
-            x[:, :1] += mask * a.pre_sv * torch.randn(a.pre_batch, 1, dtype=x.dtype)
-            x[:, 1:4] = (x[:, 1:4] + mask * a.pre_sg * torch.randn(a.pre_batch, 3, dtype=x.dtype)).clamp(0, 1)
-            xf = x.float()
-            if a.phys:
-                _, _, (ginf, q) = state_step(net, xf, net.zeros(a.pre_batch, torch.float32))
-                gt, qt = phys_targets(x[:, 0])
-                ploss = (((ginf - gt.float()) / 0.1) ** 2).mean() + (((q - qt.float()) / 0.01) ** 2).mean()
-            else:
-                y, _, _ = state_step(net, xf, net.zeros(a.pre_batch, torch.float32))
-                yt = exact_step(x).float()
-                if a.pre_rel > 0:
-                    # ΔV は増分の大きさで割った相対誤差（下限 pre_rel mV）の Huber。静止付近の小さな ΔV も同じ重みで合わせる
-                    e0 = (y[:, 0] - yt[:, 0]) / yt[:, 0].abs().clamp(min=a.pre_rel)
-                    ploss = nn.functional.huber_loss(e0, torch.zeros_like(e0), delta=1.0)                         + (((y[:, 1:] - yt[:, 1:]) / net.os_[1:]) ** 2).mean()
+        total = a.pre_iters + a.dagger * a.dagger_iters
+        sched = [(0, a.pre_iters)] + [(r + 1, a.dagger_iters) for r in range(a.dagger)]
+        pi = 0
+        for rnd, n_it in sched:
+            if rnd > 0:
+                # DAgger: 今のモデルを閉ループで回して通った状態を集め、学習データに足す
+                nd = a.dagger_n
+                Nd = int(a.dagger_ms / DT)
+                Id = torch.cat([gen_current(nd // 2, Nd, rng),
+                                torch.from_numpy(np.stack([gen_hard(Nd, rng) for _ in range(nd - nd // 2)])).to(DEV)])
+                Xd = rollout_states(net, Id, a.dagger_stride)
+                X = torch.cat([X, Xd])
+                print('DAgger {}: 閉ループの状態 {} 個を追加 → 計 {} 個  ({:.0f} s)'.format(
+                    rnd, Xd.shape[0], X.shape[0], time.time() - t0), flush=True)
+                evaluate(pi)
+            for _ in range(n_it):
+                for gr in popt.param_groups:
+                    if a.dagger_restart_lr and rnd > 0:
+                        gr['lr'] = lr_at(pi - a.pre_iters - (rnd - 1) * a.dagger_iters, a.dagger_iters, a.pre_lr * 0.3)
+                    else:
+                        gr['lr'] = lr_at(pi, total, a.pre_lr)
+                pi += 1
+                x = X[torch.from_numpy(rng.integers(0, X.shape[0], size=a.pre_batch))].clone()
+                mask = (torch.rand(a.pre_batch, 1, dtype=x.dtype) < 0.5).to(x.dtype)
+                x[:, :1] += mask * a.pre_sv * torch.randn(a.pre_batch, 1, dtype=x.dtype)
+                x[:, 1:4] = (x[:, 1:4] + mask * a.pre_sg * torch.randn(a.pre_batch, 3, dtype=x.dtype)).clamp(0, 1)
+                xf = x.float()
+                if a.phys:
+                    _, _, (ginf, q) = state_step(net, xf, net.zeros(a.pre_batch, torch.float32))
+                    gt, qt = phys_targets(x[:, 0])
+                    ploss = (((ginf - gt.float()) / 0.1) ** 2).mean() + (((q - qt.float()) / 0.01) ** 2).mean()
                 else:
-                    ploss = (((y - yt) / net.os_) ** 2).mean()
-            popt.zero_grad()
-            ploss.backward()
-            popt.step()
-            if (pi + 1) % 500 == 0:
-                print('pre {:5d} loss {:.3e}  ({:.0f} s)'.format(pi + 1, ploss.item(), time.time() - t0), flush=True)
-        evaluate(0)
+                    y, _, _ = state_step(net, xf, net.zeros(a.pre_batch, torch.float32))
+                    yt = exact_step(x).float()
+                    if a.pre_rel > 0:
+                        # ΔV は増分の大きさで割った相対誤差（下限 pre_rel mV）の Huber。静止付近の小さな ΔV も同じ重みで合わせる
+                        e0 = (y[:, 0] - yt[:, 0]) / yt[:, 0].abs().clamp(min=a.pre_rel)
+                        ploss = nn.functional.huber_loss(e0, torch.zeros_like(e0), delta=1.0) \
+                            + (((y[:, 1:] - yt[:, 1:]) / net.os_[1:]) ** 2).mean()
+                    else:
+                        ploss = (((y - yt) / net.os_) ** 2).mean()
+                popt.zero_grad()
+                ploss.backward()
+                popt.step()
+                if pi % 500 == 0:
+                    print('pre {:5d} loss {:.3e}  ({:.0f} s)'.format(pi, ploss.item(), time.time() - t0), flush=True)
+        evaluate(pi)
     for it in range(a.iters):
         alpha = max(0.0, 1.0 - it / max(1, a.alpha_iters))
         for gr in opt.param_groups:
@@ -831,6 +949,151 @@ def train_single(a):
               ensure_ascii=False, indent=0)
 
 
+# ---------------- (A') MLP 3 個（分割の構造はそのまま、各ブロックを再帰のない MLP に） ----------------
+
+def m3_step(nets, V, g, I_k):
+    """
+    MLP 3 個の 1 ステップ（hh.py の陽的オイラー法と同じ順番。RNN3 には更新前の g を渡す）。
+    V: (B,)、g: (B, 3)、I_k: (B,) -> V_next, g_next, (ab, dg, dv)
+    """
+    n1, n2, n3 = nets
+    hz = [torch.zeros(V.shape[0], 1, dtype=V.dtype)]      # MLP は隠れ状態を使わない（形だけ渡す）
+    ab, _ = n1.cell(V[:, None], hz)
+    ab = ab.clamp(min=0.0)
+    dg, _ = n2.cell(torch.cat([ab, g], 1), hz)
+    dv, _ = n3.cell(torch.cat([g, V[:, None], I_k[:, None]], 1), hz)
+    V_next = (V + dv[:, 0]).clamp(-100.0, 60.0)
+    g_next = (g + dg).clamp(0.0, 1.0)
+    return V_next, g_next, (ab, dg, dv)
+
+
+@torch.no_grad()
+def run_m3(nets, I_np):
+    # hb.score の約束どおり: I (B, N) -> V (B, N-1)
+    B, N = I_np.shape
+    I = torch.from_numpy(I_np).to(DEV)
+    dt = next(nets[0].parameters()).dtype
+    V = torch.full((B,), H_.V_REST, dtype=dt)
+    g = torch.tensor(H_.steady_state_gates(H_.V_REST), dtype=dt).repeat(B, 1)
+    out = torch.empty(B, N - 1, dtype=torch.float64)
+    for k in range(N - 1):
+        V, g, _ = m3_step(nets, V, g, I[:, k].to(dt))
+        out[:, k] = V.double()
+    return out.cpu().numpy()
+
+
+@torch.no_grad()
+def rollout_states_m3(nets, I, stride):
+    # DAgger 用: MLP 3 個を閉ループで回し、通った状態 [V, m, h, n, I] を stride ごとに集める
+    B, N = I.shape
+    V = torch.full((B,), H_.V_REST, dtype=torch.float32)
+    g = torch.tensor(H_.steady_state_gates(H_.V_REST), dtype=torch.float32).repeat(B, 1)
+    out = []
+    for k in range(N):
+        if k % stride == 0:
+            out.append(torch.cat([V[:, None], g, I[:, k, None].float()], 1).double())
+        V, g, _ = m3_step(nets, V, g, I[:, k].float())
+    return torch.stack(out, 1).reshape(-1, 5)
+
+
+def train_m3(a):
+    """
+    MLP 3 個を、状態 [V, m, h, n, I] の集まりから同時に学習する。どのブロックの正解も HH の式で厳密に計算する:
+        RNN1: V -> α, β(6)                    標準化した 2 乗誤差
+        RNN2: α, β, m, h, n -> Δm, Δh, Δn      標準化した 2 乗誤差（入力の α, β は式の値）
+        RNN3: m, h, n, V, I -> ΔV               --pre-rel > 0 なら相対誤差の Huber（Markov MLP と同じ）
+    状態は single_cl の事前学習と同じ作り方（通常の電流 + 苦手な電流 + 摂動 + DAgger）。
+    """
+    torch.manual_seed(a.seed)
+    rng = np.random.default_rng(a.seed)
+    N = int(a.ep_ms / DT)
+    t0 = time.time()
+    bI = gen_current(a.bank, N, rng)
+    bV, bG = hh_sim(bI)
+    X = torch.cat([bV[:, :-1, None], bG[:, :-1], bI[..., None]], -1).reshape(-1, 5)
+    del bV, bG
+    if a.hard > 0:
+        Xh = hard_states(a.hard, a.hard_ms, rng, a.hard_stride)
+        print('苦手な電流の状態: {} 本 × {:.0f} ms → {} 個（通常 {} 個）  ({:.0f} s)'.format(
+            a.hard, a.hard_ms, Xh.shape[0], X.shape[0], time.time() - t0), flush=True)
+        X = torch.cat([X, Xh])
+    act = a.act
+    nets = [Net(1, a.H, a.layers, 6, cell='mlp', act=act), Net(9, a.H, a.layers, 3, cell='mlp', act=act),
+            Net(5, a.H, a.layers, 1, cell='mlp', act=act, feat=3 if a.sfeat else 0)]
+    sub = X[torch.from_numpy(rng.integers(0, X.shape[0], size=200000))]
+    V_, g_, I_ = sub[:, 0], sub[:, 1:4], sub[:, 4]
+    ab_ = rates(V_)
+    nets[0].set_scalers(V_[:, None].float(), ab_.float())
+    nets[1].set_scalers(torch.cat([ab_, g_], 1).float(), d_gates(ab_, g_).float())
+    nets[2].set_scalers(torch.cat([g_, V_[:, None], I_[:, None]], 1).float(), d_V(g_, V_, I_)[:, None].float())
+    nets = [n.float() for n in nets]
+    params = [p_ for n in nets for p_ in n.parameters()]
+    opt = torch.optim.Adam(params, lr=a.pre_lr)
+    log = {'args': vars(a), 'eval': []}
+    best = (-1, -1.0, 0)
+    paths = [os.path.join(OUT_DIR, f'{a.tag}_b{k}.pt') for k in (1, 2, 3)]
+
+    def evaluate(it):
+        nonlocal best
+        r = hb.score(lambda I_np: run_m3(nets, I_np), '{} it {} val'.format(a.tag, it), val=True)
+        log['eval'].append((it, r['n100'], r['mean'], r['gamma']))
+        if (r['n100'], r['mean']) > best[:2]:
+            best = (r['n100'], r['mean'], it)
+            for n, pth in zip(nets, paths):
+                save_net(n, pth, {'it': it, 'm3': True})
+
+    total = a.pre_iters + a.dagger * a.dagger_iters
+    sched = [(0, a.pre_iters)] + [(r + 1, a.dagger_iters) for r in range(a.dagger)]
+    pi = 0
+    for rnd, n_it in sched:
+        if rnd > 0:
+            nd = a.dagger_n
+            Nd = int(a.dagger_ms / DT)
+            Id = torch.cat([gen_current(nd // 2, Nd, rng),
+                            torch.from_numpy(np.stack([gen_hard(Nd, rng) for _ in range(nd - nd // 2)])).to(DEV)])
+            Xd = rollout_states_m3(nets, Id, a.dagger_stride)
+            X = torch.cat([X, Xd])
+            print('DAgger {}: 閉ループの状態 {} 個を追加 → 計 {} 個  ({:.0f} s)'.format(
+                rnd, Xd.shape[0], X.shape[0], time.time() - t0), flush=True)
+            evaluate(pi)
+        for _ in range(n_it):
+            for gr in opt.param_groups:
+                gr['lr'] = lr_at(pi, total, a.pre_lr)
+            pi += 1
+            x = X[torch.from_numpy(rng.integers(0, X.shape[0], size=a.pre_batch))].clone()
+            mask = (torch.rand(a.pre_batch, 1, dtype=x.dtype) < 0.5).to(x.dtype)
+            x[:, :1] += mask * a.pre_sv * torch.randn(a.pre_batch, 1, dtype=x.dtype)
+            x[:, 1:4] = (x[:, 1:4] + mask * a.pre_sg * torch.randn(a.pre_batch, 3, dtype=x.dtype)).clamp(0, 1)
+            V_, g_, I_ = x[:, 0], x[:, 1:4], x[:, 4]
+            ab_t = rates(V_)
+            hz = [torch.zeros(a.pre_batch, 1)]
+            y1, _ = nets[0].cell(V_[:, None].float(), hz)
+            y2, _ = nets[1].cell(torch.cat([ab_t, g_], 1).float(), hz)
+            y3, _ = nets[2].cell(torch.cat([g_, V_[:, None], I_[:, None]], 1).float(), hz)
+            l1 = (((y1 - ab_t.float()) / nets[0].os_) ** 2).mean()
+            l2 = (((y2 - d_gates(ab_t, g_).float()) / nets[1].os_) ** 2).mean()
+            t3 = d_V(g_, V_, I_).float()
+            if a.pre_rel > 0:
+                e3 = (y3[:, 0] - t3) / t3.abs().clamp(min=a.pre_rel)
+                l3 = nn.functional.huber_loss(e3, torch.zeros_like(e3), delta=1.0)
+            else:
+                l3 = (((y3[:, 0] - t3) / nets[2].os_[0]) ** 2).mean()
+            loss = l1 + l2 + l3
+            opt.zero_grad()
+            loss.backward()
+            opt.step()
+            if pi % 500 == 0:
+                print('pre {:5d} loss RNN1 {:.2e} RNN2 {:.2e} RNN3 {:.2e}  ({:.0f} s)'.format(
+                    pi, l1.item(), l2.item(), l3.item(), time.time() - t0), flush=True)
+    evaluate(pi)
+    best_nets = [load_net(pth).double() for pth in paths]
+    log['best'] = best
+    log['test'] = hb.score(lambda I_np: run_m3(best_nets, I_np), '{} (val best it {})'.format(a.tag, best[2]))
+    log['sec'] = time.time() - t0
+    json.dump(log, open(os.path.join(OUT_DIR, a.tag + '.json'), 'w', encoding='utf-8'),
+              ensure_ascii=False, indent=0)
+
+
 def main():
     p = argparse.ArgumentParser()
     sub = p.add_subparsers(dest='cmd', required=True)
@@ -885,6 +1148,16 @@ def main():
     pl.add_argument('--pre-sv', type=float, default=2.0, help='事前学習の V の摂動 [mV]')
     pl.add_argument('--pre-sg', type=float, default=0.02, help='事前学習のゲートの摂動')
     pl.add_argument('--pre-rel', type=float, default=0.0, help='>0 なら ΔV を相対誤差で学習（値は下限 [mV]）')
+    pl.add_argument('--hard', type=int, default=0, help='苦手な電流（長い一定・ゆっくりしたランプ・閾値付近）の本数')
+    pl.add_argument('--hard-ms', type=float, default=3000.0, help='苦手な電流 1 本の長さ [ms]')
+    pl.add_argument('--hard-stride', type=int, default=10, help='苦手な電流の状態を何ステップごとに取るか')
+    pl.add_argument('--dagger', type=int, default=0, help='DAgger の回数（閉ループで通った状態を足して学習し直す）')
+    pl.add_argument('--dagger-iters', type=int, default=20000, help='DAgger 1 回ごとの学習回数')
+    pl.add_argument('--dagger-n', type=int, default=256, help='DAgger で回す電流の本数（半分は通常、半分は苦手な電流）')
+    pl.add_argument('--dagger-ms', type=float, default=1000.0, help='DAgger で回す長さ [ms]')
+    pl.add_argument('--dagger-stride', type=int, default=10, help='DAgger の状態を何ステップごとに取るか')
+    pl.add_argument('--dagger-restart-lr', action='store_true', help='DAgger ごとに学習率を lr×0.3 から下げ直す')
+    pl.add_argument('--sfeat', action='store_true', help='状態を戻す型の入力に m^3 h, n^4 とその V 倍を足す')
     pl.add_argument('--onpol', type=float, default=1.0, help='--state のとき、式で計算した 1 ステップの正解との損失の重み')
     pl.add_argument('--cell', default='rnn', choices=['rnn', 'gru', 'mlp'])
     pl.add_argument('--act', default='silu', choices=['silu', 'relu'], help='MLP の活性化関数')
@@ -896,6 +1169,25 @@ def main():
     pl.add_argument('--eval-every', type=int, default=100)
     pl.add_argument('--bank', type=int, default=512, help='教師の軌道の在庫の本数')
     pl.add_argument('--bank-every', type=int, default=200, help='在庫を作り直す間隔（回）')
+    pm = sub.add_parser('mlp3', parents=[common])
+    pm.add_argument('--act', default='silu', choices=['silu', 'relu'])
+    pm.add_argument('--ep-ms', type=float, default=100.0)
+    pm.add_argument('--bank', type=int, default=2048)
+    pm.add_argument('--pre-iters', type=int, default=50000)
+    pm.add_argument('--pre-lr', type=float, default=1e-3)
+    pm.add_argument('--pre-batch', type=int, default=1024)
+    pm.add_argument('--pre-sv', type=float, default=2.0)
+    pm.add_argument('--pre-sg', type=float, default=0.02)
+    pm.add_argument('--pre-rel', type=float, default=0.02)
+    pm.add_argument('--hard', type=int, default=0)
+    pm.add_argument('--hard-ms', type=float, default=3000.0)
+    pm.add_argument('--hard-stride', type=int, default=10)
+    pm.add_argument('--dagger', type=int, default=0)
+    pm.add_argument('--dagger-iters', type=int, default=20000)
+    pm.add_argument('--dagger-n', type=int, default=256)
+    pm.add_argument('--dagger-ms', type=float, default=1000.0)
+    pm.add_argument('--dagger-stride', type=int, default=10)
+    pm.add_argument('--sfeat', action='store_true', help='RNN3 の入力に m^3 h, n^4 とその V 倍を足す')
     pe = sub.add_parser('eval3')
     for k in (1, 2, 3):
         pe.add_argument(f'--b{k}', default=os.path.join(BASE, f'block{k}.npz'))
@@ -914,6 +1206,8 @@ def main():
         train_chain(a)
     elif a.cmd == 'single_cl':
         train_single_cl(a)
+    elif a.cmd == 'mlp3':
+        train_m3(a)
     else:
         eval3(a.b1, a.b2, a.b3, a.label)
 

@@ -82,6 +82,62 @@ MODELS = {
 }
 
 
+def m3(tag):
+    # MLP 3 個（hh_improve.py mlp3）: results/hh_improve/<tag>_b1〜3.pt
+    nets = [hi.load_net(imp(f'{tag}_b{k}.pt')).double() for k in (1, 2, 3)]
+    return lambda I: hi.run_m3(nets, I)
+
+
+def ensemble(tags):
+    """
+    状態を戻す型（Markov MLP）のアンサンブル: 各ステップで、全モデルの出力（ΔV, Δm, Δh, Δn）を平均してから状態を進める。
+    tags: 同じ入出力のモデルのタグのリスト
+    """
+    nets = []
+    for t in tags:
+        d = torch.load(imp(t + '.pt'), weights_only=False, map_location='cpu')
+        n = hi.Net(**d['cfg'])
+        n.load_state_dict(d['state'])
+        nets.append(n.double())
+
+    @torch.no_grad()
+    def run(I_np):
+        B, N = I_np.shape
+        I = torch.from_numpy(I_np).to(hi.DEV)
+        V = torch.full((B,), hi.H_.V_REST, dtype=torch.float64)
+        g = torch.tensor(hi.H_.steady_state_gates(hi.H_.V_REST), dtype=torch.float64).repeat(B, 1)
+        hs = [n.zeros(B, torch.float64) for n in nets]
+        out = torch.empty(B, N - 1, dtype=torch.float64)
+        for k in range(N - 1):
+            x = torch.cat([V[:, None], g, I[:, k, None]], 1)
+            ys = []
+            for j, n in enumerate(nets):
+                y, hs[j], _ = hi.state_step(n, x, hs[j])
+                ys.append(y)
+            y = torch.stack(ys).mean(0)
+            V = (V + y[:, 0]).clamp(-100.0, 60.0)
+            g = (g + y[:, 1:]).clamp(0.0, 1.0)
+            out[:, k] = V
+        return out.cpu().numpy()
+    return run
+
+
+def get_model(tag):
+    """
+    タグから閉ループの関数 run(I) を作る。MODELS にないタグは名前で判断する:
+        ens:<タグ1>+<タグ2>+...   状態を戻す型のアンサンブル
+        m3_...                     MLP 3 個（hh_improve.py mlp3）
+        それ以外                   results/hh_improve/<タグ>.pt の単一ネット（RNN 1 個・Markov MLP・式組込み）
+    """
+    if tag in MODELS:
+        return MODELS[tag]()
+    if tag.startswith('ens:'):
+        return ensemble(tag[4:].split('+'))
+    if tag.startswith('m3_'):
+        return m3(tag)
+    return single(tag)
+
+
 def main():
     args = sys.argv[1:]
     if args == ['--list']:
@@ -90,7 +146,7 @@ def main():
     torch.set_num_threads(2)
     os.makedirs(OUT, exist_ok=True)
     for tag in args or list(MODELS):
-        hb.score(MODELS[tag](), tag, out_json=os.path.join(OUT, tag + '.json'))
+        hb.score(get_model(tag), tag, out_json=os.path.join(OUT, tag.replace(":", "_").replace("+", "_") + ".json"))
 
 
 if __name__ == '__main__':

@@ -18,7 +18,7 @@ ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
 sys.path.insert(0, os.path.join(ROOT, 'results'))
 sys.path.insert(0, os.path.join(ROOT, 'experiments', 'hh_surrogate'))
 import hh_bench_ext as hx                 # noqa: E402
-from rescore_gamma import MODELS          # noqa: E402
+from rescore_gamma import get_model       # noqa: E402
 
 OUT = os.path.join(ROOT, 'results', 'ext')
 # 追加テストにかけるモデル（各分類の上位と基準。seed 違いも 1 本）
@@ -37,9 +37,9 @@ def main():
     torch.set_num_threads(a.threads)
     os.makedirs(OUT, exist_ok=True)
     for tag in a.tags:
-        path = os.path.join(OUT, tag + '.json')
+        path = os.path.join(OUT, tag.replace(":", "_").replace("+", "_") + ".json")
         res = json.load(open(path, encoding='utf-8')) if os.path.exists(path) else {}
-        run = MODELS[tag]()
+        run = get_model(tag)
         for s in a.suites:
             res[s] = hx.score_suite(run, s, label=tag)
             json.dump(res, open(path, 'w', encoding='utf-8'), ensure_ascii=False, indent=0)
