@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="528" viewBox="0 0 860 528" role="img">
+<title>Markov MLP の変種の比較</title>
+<desc>基準 mm_rel から損失・seed・摂動・大きさ・活性化関数・学習の流れ・構造を変えた変種と、テスト 26 本での一致本数と Γ。</desc>
+<style>
+text{font-family:'Hiragino Sans','Yu Gothic','Meiryo','Noto Sans CJK JP',sans-serif}
+.th{font-size:14px;font-weight:500;fill:#2C2C2A}
+.ts{font-size:12px;fill:#5F5E5A}
+.tag{font-family:Consolas,'Courier New',monospace;font-size:13px;fill:#2C2C2A}
+.num{font-size:13px;fill:#2C2C2A}
+</style>
+<rect width="860" height="528" fill="#FFFFFF"/>
+<text class="th" x="20" y="30">Markov MLP の変種（基準 mm_rel から変えた所だけを書く）</text>
+<text class="ts" x="20" y="62" text-anchor="start">変えた所</text>
+<text class="ts" x="110" y="62" text-anchor="start">モデルと変更点</text>
+<text class="ts" x="540" y="62" text-anchor="start">テスト 26 本の Γ（0.6〜1.0）</text>
+<text class="ts" x="770" y="62" text-anchor="end">一致</text>
+<text class="ts" x="835" y="62" text-anchor="end">Γ</text>
+<rect x="104" y="81" width="736" height="26" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="tag" x="116" y="94.0" dominant-baseline="central">mm_rel</text>
+<text class="ts" x="236" y="94.0" dominant-baseline="central">128×2・SiLU・相対誤差・摂動 2 mV/0.02・5 万回</text>
+<rect x="540" y="87.0" width="177.5" height="14" rx="3" fill="#7F77DD"/>
+<text class="num" x="770" y="94.0" text-anchor="end" dominant-baseline="central">25</text>
+<text class="num" x="835" y="94.0" text-anchor="end" dominant-baseline="central">0.955</text>
+<text class="th" x="20" y="94.0" dominant-baseline="central">基準</text>
+<line x1="20" y1="110" x2="840" y2="110" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="tag" x="116" y="126.0" dominant-baseline="central">mm_base</text>
+<text class="ts" x="236" y="126.0" dominant-baseline="central">絶対誤差（MSE）</text>
+<rect x="540" y="119.0" width="151.5" height="14" rx="3" fill="#1D9E75"/>
+<text class="num" x="770" y="126.0" text-anchor="end" dominant-baseline="central">20</text>
+<text class="num" x="835" y="126.0" text-anchor="end" dominant-baseline="central">0.903</text>
+<text class="th" x="20" y="126.0" dominant-baseline="central">損失</text>
+<line x1="20" y1="142" x2="840" y2="142" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="tag" x="116" y="158.0" dominant-baseline="central">mm_rel_s1</text>
+<text class="ts" x="236" y="158.0" dominant-baseline="central">seed 1</text>
+<rect x="540" y="151.0" width="157.5" height="14" rx="3" fill="#1D9E75"/>
+<text class="num" x="770" y="158.0" text-anchor="end" dominant-baseline="central">22</text>
+<text class="num" x="835" y="158.0" text-anchor="end" dominant-baseline="central">0.915</text>
+<text class="th" x="20" y="158.0" dominant-baseline="central">seed</text>
+<line x1="20" y1="174" x2="840" y2="174" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="tag" x="116" y="190.0" dominant-baseline="central">mm_sv05</text>
+<text class="ts" x="236" y="190.0" dominant-baseline="central">摂動 1/4（0.5 mV / 0.005）</text>
+<rect x="540" y="183.0" width="179.0" height="14" rx="3" fill="#1D9E75"/>
+<text class="num" x="770" y="190.0" text-anchor="end" dominant-baseline="central">22</text>
+<text class="num" x="835" y="190.0" text-anchor="end" dominant-baseline="central">0.958</text>
+<text class="tag" x="116" y="222.0" dominant-baseline="central">mm_sv5</text>
+<text class="ts" x="236" y="222.0" dominant-baseline="central">摂動 2.5 倍（5 mV / 0.05）</text>
+<rect x="540" y="215.0" width="157.0" height="14" rx="3" fill="#1D9E75"/>
+<text class="num" x="770" y="222.0" text-anchor="end" dominant-baseline="central">20</text>
+<text class="num" x="835" y="222.0" text-anchor="end" dominant-baseline="central">0.914</text>
+<text class="th" x="20" y="206.0" dominant-baseline="central">摂動</text>
+<line x1="20" y1="238" x2="840" y2="238" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="tag" x="116" y="254.0" dominant-baseline="central">mm_w256</text>
+<text class="ts" x="236" y="254.0" dominant-baseline="central">256×3</text>
+<rect x="540" y="247.0" width="173.5" height="14" rx="3" fill="#1D9E75"/>
+<text class="num" x="770" y="254.0" text-anchor="end" dominant-baseline="central">23</text>
+<text class="num" x="835" y="254.0" text-anchor="end" dominant-baseline="central">0.947</text>
+<text class="tag" x="116" y="286.0" dominant-baseline="central">mm_w256_long</text>
+<text class="ts" x="236" y="286.0" dominant-baseline="central">256×3・15 万回</text>
+<rect x="540" y="279.0" width="171.0" height="14" rx="3" fill="#1D9E75"/>
+<text class="num" x="770" y="286.0" text-anchor="end" dominant-baseline="central">23</text>
+<text class="num" x="835" y="286.0" text-anchor="end" dominant-baseline="central">0.942</text>
+<text class="th" x="20" y="270.0" dominant-baseline="central">大きさ</text>
+<line x1="20" y1="302" x2="840" y2="302" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="tag" x="116" y="318.0" dominant-baseline="central">mm_rel_relu</text>
+<text class="ts" x="236" y="318.0" dominant-baseline="central">ReLU</text>
+<rect x="540" y="311.0" width="133.5" height="14" rx="3" fill="#1D9E75"/>
+<text class="num" x="770" y="318.0" text-anchor="end" dominant-baseline="central">20</text>
+<text class="num" x="835" y="318.0" text-anchor="end" dominant-baseline="central">0.867</text>
+<text class="tag" x="116" y="350.0" dominant-baseline="central">mm_rel_relu_s1</text>
+<text class="ts" x="236" y="350.0" dominant-baseline="central">ReLU・seed 1</text>
+<rect x="540" y="343.0" width="133.5" height="14" rx="3" fill="#1D9E75"/>
+<text class="num" x="770" y="350.0" text-anchor="end" dominant-baseline="central">19</text>
+<text class="num" x="835" y="350.0" text-anchor="end" dominant-baseline="central">0.867</text>
+<text class="tag" x="116" y="382.0" dominant-baseline="central">mm_w256_relu</text>
+<text class="ts" x="236" y="382.0" dominant-baseline="central">ReLU・256×3</text>
+<rect x="540" y="375.0" width="152.5" height="14" rx="3" fill="#1D9E75"/>
+<text class="num" x="770" y="382.0" text-anchor="end" dominant-baseline="central">20</text>
+<text class="num" x="835" y="382.0" text-anchor="end" dominant-baseline="central">0.905</text>
+<text class="th" x="20" y="350.0" dominant-baseline="central">活性化</text>
+<line x1="20" y1="398" x2="840" y2="398" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="tag" x="116" y="414.0" dominant-baseline="central">cl_m_mlp</text>
+<text class="ts" x="236" y="414.0" dominant-baseline="central">2 万回・絶対誤差 → 閉ループ微調整</text>
+<rect x="540" y="407.0" width="56.0" height="14" rx="3" fill="#1D9E75"/>
+<text class="num" x="770" y="414.0" text-anchor="end" dominant-baseline="central">10</text>
+<text class="num" x="835" y="414.0" text-anchor="end" dominant-baseline="central">0.712</text>
+<text class="th" x="20" y="414.0" dominant-baseline="central">学習</text>
+<line x1="20" y1="430" x2="840" y2="430" stroke="#D3D1C7" stroke-width="0.5"/>
+<text class="tag" x="116" y="446.0" dominant-baseline="central">cl_p_mlp</text>
+<text class="ts" x="236" y="446.0" dominant-baseline="central">ハイブリッド：ΔV は HH の式</text>
+<rect x="540" y="439.0" width="176.0" height="14" rx="3" fill="#B4B2A9"/>
+<text class="num" x="770" y="446.0" text-anchor="end" dominant-baseline="central">23</text>
+<text class="num" x="835" y="446.0" text-anchor="end" dominant-baseline="central">0.952</text>
+<text class="th" x="20" y="446.0" dominant-baseline="central">構造</text>
+<line x1="717.5" y1="70" x2="717.5" y2="462" stroke="#D85A30" stroke-width="1" stroke-dasharray="4 3"/>
+<text class="ts" x="20" y="490">赤の破線 = mm_rel の Γ。紫 = 基準、緑 = 純粋な MLP、灰 = HH の式を組み込んだハイブリッド（純粋な代理モデルではない）</text>
+<text class="ts" x="20" y="510">seed を変えるだけで 25 → 22 本になるので、3 本前後の差は誤差の範囲。mm_sv05 は追加テスト（f–I など）で純粋な MLP の中で最良</text>
+</svg>

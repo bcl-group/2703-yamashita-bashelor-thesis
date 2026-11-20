@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="676" viewBox="0 0 680 676" role="img">
+<title>HH 代理モデルの三つの構成</title>
+<desc>RNN 3 個の並列型、直列型、Markov MLP の入出力の違い。並列は RNN3 が時刻 t の m,h,n を使い、直列は RNN2 が出した t+dt の m,h,n を同じ時刻のうちに使う。Markov MLP は隠れ状態なしの 1 本の MLP。</desc>
+<style>
+text{font-family:'Hiragino Sans','Yu Gothic','Meiryo','Noto Sans CJK JP',sans-serif}
+.th{font-size:14px;font-weight:500;fill:#2C2C2A}
+.ts{font-size:12px;fill:#5F5E5A}
+.g rect{fill:#F1EFE8;stroke:#5F5E5A;stroke-width:0.5}
+.g .th{fill:#444441}.g .ts{fill:#5F5E5A}
+.p rect{fill:#EEEDFE;stroke:#534AB7;stroke-width:0.5}
+.p .th{fill:#3C3489}.p .ts{fill:#534AB7}
+.e rect{fill:#E1F5EE;stroke:#0F6E56;stroke-width:0.5}
+.e .th{fill:#085041}.e .ts{fill:#0F6E56}
+.arr{stroke:#5F5E5A;stroke-width:1.5;fill:none}
+.panel{fill:none;stroke:#B4B2A9;stroke-width:0.5}
+</style>
+<defs>
+<marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<marker id="ac" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#D85A30" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+</defs>
+<rect width="680" height="676" fill="#FFFFFF"/>
+
+<rect class="panel" x="24" y="16" width="632" height="194" rx="12"/>
+<text class="th" x="40" y="42">RNN 3 個（並列）</text>
+<text class="ts" x="640" y="42" text-anchor="end">22/26 本・Γ 0.922</text>
+<g class="g"><rect x="40" y="60" width="100" height="136" rx="8"/>
+<text class="th" x="90" y="100" text-anchor="middle" dominant-baseline="central">状態 t</text>
+<text class="ts" x="90" y="126" text-anchor="middle" dominant-baseline="central">V, m, h, n</text>
+<text class="ts" x="90" y="146" text-anchor="middle" dominant-baseline="central">I(t)</text></g>
+<g class="p"><rect x="180" y="60" width="130" height="56" rx="8"/>
+<text class="th" x="245" y="78" text-anchor="middle" dominant-baseline="central">RNN1</text>
+<text class="ts" x="245" y="98" text-anchor="middle" dominant-baseline="central">V → α, β</text></g>
+<g class="p"><rect x="350" y="60" width="170" height="56" rx="8"/>
+<text class="th" x="435" y="78" text-anchor="middle" dominant-baseline="central">RNN2</text>
+<text class="ts" x="435" y="98" text-anchor="middle" dominant-baseline="central">α,β,m,h,n → Δm,Δh,Δn</text></g>
+<g class="p"><rect x="350" y="140" width="170" height="56" rx="8"/>
+<text class="th" x="435" y="158" text-anchor="middle" dominant-baseline="central">RNN3</text>
+<text class="ts" x="435" y="178" text-anchor="middle" dominant-baseline="central">m,h,n(t),V,I → ΔV</text></g>
+<g class="g"><rect x="560" y="60" width="80" height="136" rx="8"/>
+<text class="th" x="600" y="118" text-anchor="middle" dominant-baseline="central">状態</text>
+<text class="th" x="600" y="138" text-anchor="middle" dominant-baseline="central">t+dt</text></g>
+<line x1="140" y1="88" x2="178" y2="88" class="arr" marker-end="url(#ag)"/>
+<line x1="310" y1="88" x2="348" y2="88" class="arr" marker-end="url(#ag)"/>
+<line x1="140" y1="168" x2="348" y2="168" class="arr" marker-end="url(#ag)"/>
+<line x1="520" y1="88" x2="558" y2="88" class="arr" marker-end="url(#ag)"/>
+<line x1="520" y1="168" x2="558" y2="168" class="arr" marker-end="url(#ag)"/>
+
+<rect class="panel" x="24" y="222" width="632" height="194" rx="12"/>
+<text class="th" x="40" y="248">RNN 3 個（直列）</text>
+<text class="ts" x="640" y="248" text-anchor="end">10/26 本以下・Γ ≦ 0.67</text>
+<g class="g"><rect x="40" y="266" width="100" height="136" rx="8"/>
+<text class="th" x="90" y="306" text-anchor="middle" dominant-baseline="central">状態 t</text>
+<text class="ts" x="90" y="332" text-anchor="middle" dominant-baseline="central">V, m, h, n</text>
+<text class="ts" x="90" y="352" text-anchor="middle" dominant-baseline="central">I(t)</text></g>
+<g class="p"><rect x="180" y="266" width="130" height="56" rx="8"/>
+<text class="th" x="245" y="284" text-anchor="middle" dominant-baseline="central">RNN1</text>
+<text class="ts" x="245" y="304" text-anchor="middle" dominant-baseline="central">V → α, β</text></g>
+<g class="p"><rect x="350" y="266" width="170" height="56" rx="8"/>
+<text class="th" x="435" y="284" text-anchor="middle" dominant-baseline="central">RNN2</text>
+<text class="ts" x="435" y="304" text-anchor="middle" dominant-baseline="central">α,β,m,h,n → Δm,Δh,Δn</text></g>
+<g class="p"><rect x="350" y="346" width="170" height="56" rx="8"/>
+<text class="th" x="435" y="364" text-anchor="middle" dominant-baseline="central">RNN3</text>
+<text class="ts" x="435" y="384" text-anchor="middle" dominant-baseline="central">m,h,n(t+dt),V,I → ΔV</text></g>
+<g class="g"><rect x="560" y="266" width="80" height="136" rx="8"/>
+<text class="th" x="600" y="324" text-anchor="middle" dominant-baseline="central">状態</text>
+<text class="th" x="600" y="344" text-anchor="middle" dominant-baseline="central">t+dt</text></g>
+<line x1="140" y1="294" x2="178" y2="294" class="arr" marker-end="url(#ag)"/>
+<line x1="310" y1="294" x2="348" y2="294" class="arr" marker-end="url(#ag)"/>
+<line x1="140" y1="374" x2="348" y2="374" class="arr" marker-end="url(#ag)"/>
+<line x1="520" y1="294" x2="558" y2="294" class="arr" marker-end="url(#ag)"/>
+<line x1="520" y1="374" x2="558" y2="374" class="arr" marker-end="url(#ag)"/>
+<line x1="435" y1="322" x2="435" y2="344" stroke="#D85A30" stroke-width="2.5" stroke-dasharray="4 3" fill="none" marker-end="url(#ac)"/>
+
+<rect class="panel" x="24" y="428" width="632" height="194" rx="12"/>
+<text class="th" x="40" y="454">Markov MLP</text>
+<text class="ts" x="640" y="454" text-anchor="end">25/26 本・Γ 0.955（最良）</text>
+<g class="g"><rect x="40" y="472" width="100" height="136" rx="8"/>
+<text class="th" x="90" y="512" text-anchor="middle" dominant-baseline="central">状態 t</text>
+<text class="ts" x="90" y="538" text-anchor="middle" dominant-baseline="central">V, m, h, n</text>
+<text class="ts" x="90" y="558" text-anchor="middle" dominant-baseline="central">I(t)</text></g>
+<g class="e"><rect x="180" y="512" width="340" height="56" rx="8"/>
+<text class="th" x="350" y="530" text-anchor="middle" dominant-baseline="central">MLP 128×2（1 本）</text>
+<text class="ts" x="350" y="550" text-anchor="middle" dominant-baseline="central">V,m,h,n,I → ΔV,Δm,Δh,Δn・隠れ状態なし</text></g>
+<g class="g"><rect x="560" y="472" width="80" height="136" rx="8"/>
+<text class="th" x="600" y="530" text-anchor="middle" dominant-baseline="central">状態</text>
+<text class="th" x="600" y="550" text-anchor="middle" dominant-baseline="central">t+dt</text></g>
+<line x1="140" y1="540" x2="178" y2="540" class="arr" marker-end="url(#ag)"/>
+<line x1="520" y1="540" x2="558" y2="540" class="arr" marker-end="url(#ag)"/>
+
+<text class="ts" x="40" y="646">紫 = 隠れ状態を持つ RNN、緑 = 再帰なし、赤の破線 = 直列だけにある同時刻の受け渡し</text>
+<text class="ts" x="40" y="666">↻ どの型も t+dt の状態を次の時刻の入力に戻して回す（閉ループ）</text>
+</svg>
