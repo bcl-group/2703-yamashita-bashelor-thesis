@@ -1,0 +1,337 @@
+{
+ "model": "hhfs_20261113_101734_09e6e631db584159a1729ae5045b5bd2",
+ "path": "external/flow-learning-l4dc/outputs/hhfs/hhfs_20261113_101734_09e6e631db584159a1729ae5045b5bd2.pth",
+ "args": {
+  "exp_paths": [
+   "external/flow-learning-l4dc/outputs/hhfs/hhfs_20261112_201006_8b957fe684c3486da75e930f0e948af9.pth",
+   "external/flow-learning-l4dc/outputs/hhfs/hhfs_20261113_024114_68054ad2207c4888a49f2b802353f4fd.pth",
+   "external/flow-learning-l4dc/outputs/hhfs/hhfs_20261113_101734_09e6e631db584159a1729ae5045b5bd2.pth",
+   "external/flow-learning-l4dc/outputs/hhfs/hhfs_20261113_163923_827b55aba40b48ef810816d27e75bb74.pth",
+   "external/flow-learning-l4dc/outputs/hhfs/hhfs_20261114_033446_2b34a8e0a2ce420994d4093f8aeacfef.pth",
+   "external/flow-learning-l4dc/outputs/hhfs/hhfs_20261114_115110_b9b48e1e209941ceb55f27cdc25a06e6.pth",
+   "external/flow-learning-l4dc/outputs/hhfs/hhfs_20261114_173147_df53e817c52741bba5368529541fb425.pth",
+   "external/flow-learning-l4dc/outputs/hhfs/hhfs_20261115_015714_bde99891502e49029207248c7628c601.pth",
+   "external/flow-learning-l4dc/outputs/hhfs/hhfs_20261115_140851_778bcd4e70164a4089d80b8957d83c20.pth",
+   "external/flow-learning-l4dc/outputs/hhfs/hhfs_20261115_201719_9fabfab5cbb546ceb0ffd6051a8f03be.pth"
+  ],
+  "l4dc_root": "/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/external/flow-learning-l4dc",
+  "t_end": 1000.0,
+  "res_ms": 0.05,
+  "n_paper": 20,
+  "seed": 12345,
+  "out_dir": "/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/results/flow_learning"
+ },
+ "rows": [
+  {
+   "kind": "current_py",
+   "name": "step",
+   "spikes": [
+    25,
+    25
+   ],
+   "match": 1.0,
+   "gamma": 1.0,
+   "rmse": 5.503696373571811
+  },
+  {
+   "kind": "current_py",
+   "name": "constant",
+   "spikes": [
+    26,
+    26
+   ],
+   "match": 0.5769230769230769,
+   "gamma": 0.527815934065934,
+   "rmse": 15.925972505090368
+  },
+  {
+   "kind": "current_py",
+   "name": "ramp",
+   "spikes": [
+    24,
+    23
+   ],
+   "match": 0.9583333333333334,
+   "gamma": 0.9744118474083794,
+   "rmse": 10.685259750501144
+  },
+  {
+   "kind": "current_py",
+   "name": "sin",
+   "spikes": [
+    24,
+    24
+   ],
+   "match": 1.0,
+   "gamma": 0.9999999999999999,
+   "rmse": 9.64134450541735
+  },
+  {
+   "kind": "current_py",
+   "name": "pulse train",
+   "spikes": [
+    15,
+    10
+   ],
+   "match": 0.6666666666666666,
+   "gamma": 0.7833333333333333,
+   "rmse": 14.231601777829253
+  },
+  {
+   "kind": "current_py",
+   "name": "random pulse",
+   "spikes": [
+    27,
+    27
+   ],
+   "match": 0.7777777777777778,
+   "gamma": 0.7508719481813653,
+   "rmse": 14.9514478946076
+  },
+  {
+   "kind": "current_py",
+   "name": "random timing pulse",
+   "spikes": [
+    3,
+    3
+   ],
+   "match": 1.0,
+   "gamma": 1.0,
+   "rmse": 2.910865335893887
+  },
+  {
+   "kind": "paper",
+   "name": "paper 0",
+   "spikes": [
+    25,
+    25
+   ],
+   "match": 1.0,
+   "gamma": 1.0,
+   "rmse": 8.896923269811573
+  },
+  {
+   "kind": "paper",
+   "name": "paper 1",
+   "spikes": [
+    25,
+    24
+   ],
+   "match": 0.96,
+   "gamma": 0.9752573595810006,
+   "rmse": 7.684954563233735
+  },
+  {
+   "kind": "paper",
+   "name": "paper 2",
+   "spikes": [
+    20,
+    20
+   ],
+   "match": 1.0,
+   "gamma": 0.9999999999999999,
+   "rmse": 8.801443805334262
+  },
+  {
+   "kind": "paper",
+   "name": "paper 3",
+   "spikes": [
+    31,
+    31
+   ],
+   "match": 0.0,
+   "gamma": -0.1415525114155251,
+   "rmse": 22.025148795950585
+  },
+  {
+   "kind": "paper",
+   "name": "paper 4",
+   "spikes": [
+    12,
+    9
+   ],
+   "match": 0.5,
+   "gamma": 0.5500889152341434,
+   "rmse": 11.761579034479533
+  },
+  {
+   "kind": "paper",
+   "name": "paper 5",
+   "spikes": [
+    14,
+    13
+   ],
+   "match": 0.2857142857142857,
+   "gamma": 0.25566494764807,
+   "rmse": 12.782822018633404
+  },
+  {
+   "kind": "paper",
+   "name": "paper 6",
+   "spikes": [
+    26,
+    23
+   ],
+   "match": 0.7307692307692307,
+   "gamma": 0.7465611795378944,
+   "rmse": 12.297964008539484
+  },
+  {
+   "kind": "paper",
+   "name": "paper 7",
+   "spikes": [
+    22,
+    20
+   ],
+   "match": 0.7272727272727273,
+   "gamma": 0.7370600414078674,
+   "rmse": 12.793423318282413
+  },
+  {
+   "kind": "paper",
+   "name": "paper 8",
+   "spikes": [
+    22,
+    21
+   ],
+   "match": 0.9545454545454546,
+   "gamma": 0.97247892759216,
+   "rmse": 7.796173345229894
+  },
+  {
+   "kind": "paper",
+   "name": "paper 9",
+   "spikes": [
+    17,
+    15
+   ],
+   "match": 0.5294117647058824,
+   "gamma": 0.5305851063829787,
+   "rmse": 12.564072526419132
+  },
+  {
+   "kind": "paper",
+   "name": "paper 10",
+   "spikes": [
+    26,
+    26
+   ],
+   "match": 1.0,
+   "gamma": 1.0,
+   "rmse": 6.669312599644518
+  },
+  {
+   "kind": "paper",
+   "name": "paper 11",
+   "spikes": [
+    22,
+    22
+   ],
+   "match": 1.0,
+   "gamma": 1.0,
+   "rmse": 8.605073969244458
+  },
+  {
+   "kind": "paper",
+   "name": "paper 12",
+   "spikes": [
+    28,
+    26
+   ],
+   "match": 0.10714285714285714,
+   "gamma": 0.003637566137566141,
+   "rmse": 20.18801552805791
+  },
+  {
+   "kind": "paper",
+   "name": "paper 13",
+   "spikes": [
+    25,
+    24
+   ],
+   "match": 0.8,
+   "gamma": 0.7946541448437783,
+   "rmse": 12.877970382951768
+  },
+  {
+   "kind": "paper",
+   "name": "paper 14",
+   "spikes": [
+    28,
+    28
+   ],
+   "match": 1.0,
+   "gamma": 1.0,
+   "rmse": 7.581608271566494
+  },
+  {
+   "kind": "paper",
+   "name": "paper 15",
+   "spikes": [
+    33,
+    33
+   ],
+   "match": 1.0,
+   "gamma": 1.0,
+   "rmse": 11.056356306078703
+  },
+  {
+   "kind": "paper",
+   "name": "paper 16",
+   "spikes": [
+    17,
+    17
+   ],
+   "match": 1.0,
+   "gamma": 1.0,
+   "rmse": 6.331756523436206
+  },
+  {
+   "kind": "paper",
+   "name": "paper 17",
+   "spikes": [
+    22,
+    22
+   ],
+   "match": 0.6818181818181818,
+   "gamma": 0.6511164274322169,
+   "rmse": 12.179071573661844
+  },
+  {
+   "kind": "paper",
+   "name": "paper 18",
+   "spikes": [
+    15,
+    14
+   ],
+   "match": 0.9333333333333333,
+   "gamma": 0.9614260666277032,
+   "rmse": 8.033757102334706
+  },
+  {
+   "kind": "paper",
+   "name": "paper 19",
+   "spikes": [
+    21,
+    18
+   ],
+   "match": 0.47619047619047616,
+   "gamma": 0.46905393457117595,
+   "rmse": 13.589950216987663
+  }
+ ],
+ "current_py": {
+  "n": 7,
+  "n100": 3,
+  "mean": 0.8542429792429792,
+  "gamma": 0.8623475804270017,
+  "rmse": 10.550026877558775
+ },
+ "paper": {
+  "n": 20,
+  "n100": 7,
+  "mean": 0.7343099155746214,
+  "gamma": 0.7253016052790515,
+  "rmse": 11.225868857993914
+ }
+}
