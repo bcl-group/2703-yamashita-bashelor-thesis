@@ -308,5 +308,123 @@ ws.cell(lr + 2, 4, '追加テスト（experiments/hh_surrogate/hh_bench_ext.py�
                    '長時間 = OU と段階 + OU を各 20 s（6 本）の平均 Γ。'
                    '分布の外 = 強い抑制・強い入力・チャープ・とても遅いランプなど 8 本の平均 Γ').font = font
 
+# ---------------- 電流ごとの結果（シートを分ける） ----------------
+from openpyxl.formatting.rule import ColorScaleRule   # noqa: E402
+
+ORDER = [r[1] for r in ROWS]   # 一覧と同じ並び
+
+
+def tags_in(dir_):
+    # dir_ にある <タグ>.json を、一覧の並び（一覧にないものは末尾）で返す
+    have = [f[:-5] for f in os.listdir(dir_) if f.endswith('.json')]
+    return [t for t in ORDER if t in have] + sorted(t for t in have if t not in ORDER)
+
+
+def header(ws_, cols, widths):
+    for j, (h, w) in enumerate(zip(cols, widths), 1):
+        c = ws_.cell(1, j, h)
+        c.font = bold
+        c.fill = PatternFill('solid', fgColor='404040')
+        c.alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
+        ws_.column_dimensions[get_column_letter(j)].width = w
+    ws_.row_dimensions[1].height = 30
+    ws_.freeze_panes = 'C2'
+
+
+def long_sheet(title, records, extra_cols=()):
+    """
+    1 行 = 1 モデル × 1 電流。records: list of (タグ, 電流の行 dict)
+    extra_cols: (見出し, 取り出す関数, 表示形式) のタプル
+    """
+    ws_ = wb.create_sheet(title)
+    cols = ['モデル（タグ）', '電流', '正解の\nスパイク数', '予測の\nスパイク数', '一致率', 'Γ', 'RMSE [mV]', '発散']
+    cols += [c[0] for c in extra_cols]
+    header(ws_, cols, [24, 30, 10, 10, 9, 9, 10, 7] + [12] * len(extra_cols))
+    for i, (tag, r) in enumerate(records, 2):
+        vals = [tag, r['name'], r['spikes'][0], r['spikes'][1], r['match'], r['gamma'], r['rmse'],
+                '発散' if r.get('diverged') else '']
+        vals += [f(r) for _, f, _ in extra_cols]
+        for j, v in enumerate(vals, 1):
+            c = ws_.cell(i, j, v)
+            c.font = font
+            if j in (5, 6):
+                c.number_format = '0.000'
+            elif j == 7:
+                c.number_format = '0.00'
+            elif j > 8:
+                c.number_format = extra_cols[j - 9][2]
+    last_ = len(records) + 1
+    ws_.auto_filter.ref = f'A1:{get_column_letter(len(cols))}{last_}'
+    ws_.conditional_formatting.add(f'F2:F{last_}', ColorScaleRule(start_type='num', start_value=0, start_color='F8696B',
+                                                                  mid_type='num', mid_value=0.8, mid_color='FFEB84',
+                                                                  end_type='num', end_value=1, end_color='63BE7B'))
+    return ws_
+
+
+# テスト 26 本（全モデル）
+G_TAGS = tags_in(GAMMA_DIR)
+recs = [(t, r) for t in G_TAGS for r in json.load(open(os.path.join(GAMMA_DIR, t + '.json'), encoding='utf-8'))['rows']]
+long_sheet('テスト26本_電流ごと', recs)
+
+# テスト 26 本の Γ を モデル × 電流 の表に
+ws_ = wb.create_sheet('テスト26本_Γ表')
+rows_g = {t: json.load(open(os.path.join(GAMMA_DIR, t + '.json'), encoding='utf-8'))['rows'] for t in G_TAGS}
+names = [r['name'] for r in rows_g[G_TAGS[0]]]
+header(ws_, ['モデル（タグ）', '平均 Γ'] + names, [24, 9] + [7] * len(names))
+ws_.row_dimensions[1].height = 110
+for j in range(3, len(names) + 3):
+    ws_.cell(1, j).alignment = Alignment(text_rotation=90, horizontal='center', vertical='bottom', wrap_text=True)
+ws_.cell(2, 1, '正解のスパイク数').font = Font(name='Arial', size=9, italic=True)
+for j, r in enumerate(rows_g[G_TAGS[0]], 3):
+    ws_.cell(2, j, r['spikes'][0]).font = Font(name='Arial', size=9, italic=True)
+for i, t in enumerate(G_TAGS, 3):
+    ws_.cell(i, 1, t).font = font
+    c = ws_.cell(i, 2, float(sum(r['gamma'] for r in rows_g[t]) / len(rows_g[t])))
+    c.font = font
+    c.number_format = '0.000'
+    for j, r in enumerate(rows_g[t], 3):
+        c = ws_.cell(i, j, r['gamma'])
+        c.font = Font(name='Arial', size=9)
+        c.number_format = '0.00'
+lastg = len(G_TAGS) + 2
+ws_.conditional_formatting.add(f'B3:{get_column_letter(len(names) + 2)}{lastg}',
+                               ColorScaleRule(start_type='num', start_value=0, start_color='F8696B',
+                                              mid_type='num', mid_value=0.8, mid_color='FFEB84',
+                                              end_type='num', end_value=1, end_color='63BE7B'))
+
+# 追加テスト（上位 8 モデル）
+E_TAGS = tags_in(EXT_DIR)
+ext_all = {t: json.load(open(os.path.join(EXT_DIR, t + '.json'), encoding='utf-8')) for t in E_TAGS}
+for suite, title, extra in [
+    ('seeds', '追加_seed10本ずつ', ()),
+    ('fi', '追加_f-I', (('正解の発火率\n[Hz]', lambda r: r['rate'][0], '0'), ('予測の発火率\n[Hz]', lambda r: r['rate'][1], '0'))),
+    ('long', '追加_長時間20s', (('Γ 前半 5 s', lambda r: r['gamma_first5s'], '0.000'),
+                                ('Γ 後半 5 s', lambda r: r['gamma_last5s'], '0.000'))),
+    ('ood', '追加_分布の外', ()),
+]:
+    recs = [(t, r) for t in E_TAGS if suite in ext_all[t] for r in ext_all[t][suite]['rows']]
+    long_sheet(title, recs, extra)
+
+# シートの説明
+ws_ = wb.create_sheet('シートの説明')
+notes = [
+    ('モデル一覧', 'モデルごとの要約（構造・学習方法・テスト 26 本の成績・追加テストの平均・備考）'),
+    ('テスト26本_電流ごと', '全モデル × テスト 26 本の電流ごとの結果（スパイク数・一致率・Γ・RMSE）。results/gamma/<タグ>.json'),
+    ('テスト26本_Γ表', '上と同じ Γ を モデル × 電流 の表にしたもの。2 行目は正解のスパイク数'),
+    ('追加_seed10本ずつ', 'OU 3 種・ランダムステップ・ランダムパルスを seed 10 本ずつ（50 本、各 500 ms）。上位 8 モデル'),
+    ('追加_f-I', '定常電流 0〜30 µA/cm² を 0.5 刻み（61 本、各 1 s）。発火率は後半 500 ms のスパイク数から'),
+    ('追加_長時間20s', 'OU 4 本と段階 + OU 2 本を各 20 s。前半 5 s と後半 5 s の Γ も'),
+    ('追加_分布の外', '強い抑制 −20、強い入力 60、チャープ 0.5→200 Hz、とても遅いランプ、下りランプ、速い OU（τ 0.1 ms）'),
+    ('共通', '一致率 = 対応できたスパイク数 / max(正解の数, 予測の数)、Γ = coincidence factor（Kistler et al. 1997; '
+             'Jolivet et al. 2008）、どちらも許容幅 ±2 ms。両方 0 発の電流は 1。検証 17 本の電流ごとの値は保存していない'),
+]
+header(ws_, ['シート', '中身'], [22, 120])
+ws_.freeze_panes = None
+for i, (a_, b_) in enumerate(notes, 2):
+    ws_.cell(i, 1, a_).font = font
+    c = ws_.cell(i, 2, b_)
+    c.font = font
+    c.alignment = Alignment(wrap_text=True, vertical='top')
+
 wb.save(OUT)
 print('saved', OUT)

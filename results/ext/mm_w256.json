@@ -1519,5 +1519,201 @@
 "diverged": false
 }
 ]
+},
+"long": {
+"suite": "long",
+"label": "mm_w256",
+"summary": {
+"n": 6,
+"n100": 0,
+"mean": 0.952747317075053,
+"gamma": 0.9421281668957894,
+"n_diverged": 0,
+"sec": 747.2906637191772,
+"gamma_first5s": 0.9692143292342751,
+"gamma_last5s": 0.9274215802213734
+},
+"rows": [
+{
+"name": "OU 7±5 (tau 5ms) seed 200",
+"spikes": [
+1171,
+1170
+],
+"match": 0.9923142613151152,
+"gamma": 0.9903892788952585,
+"rmse": 4.208141239328848,
+"diverged": false,
+"gamma_first5s": 0.9867202107768145,
+"gamma_last5s": 1.0
+},
+{
+"name": "OU 7±5 (tau 5ms) seed 201",
+"spikes": [
+1171,
+1165
+],
+"match": 0.9931682322801024,
+"gamma": 0.9936384851860961,
+"rmse": 3.68244443007966,
+"diverged": false,
+"gamma_first5s": 0.9854757605622657,
+"gamma_last5s": 0.994570627409744
+},
+{
+"name": "OU 7±5 (tau 5ms) seed 202",
+"spikes": [
+1165,
+1162
+],
+"match": 0.9905579399141631,
+"gamma": 0.9889725977002067,
+"rmse": 4.268483957215319,
+"diverged": false,
+"gamma_first5s": 0.9955526143511798,
+"gamma_last5s": 0.9954882767382766
+},
+{
+"name": "OU 7±5 (tau 5ms) seed 203",
+"spikes": [
+1166,
+1161
+],
+"match": 0.9854202401372213,
+"gamma": 0.9831188775697176,
+"rmse": 4.862349510130045,
+"diverged": false,
+"gamma_first5s": 0.9587862642307199,
+"gamma_last5s": 0.9955630490726772
+},
+{
+"name": "level+OU seed 300",
+"spikes": [
+1230,
+1201
+],
+"match": 0.8943089430894309,
+"gamma": 0.8711660351104086,
+"rmse": 15.54447908796194,
+"diverged": false,
+"gamma_first5s": 0.955439756294873,
+"gamma_last5s": 0.6872574287039641
+},
+{
+"name": "level+OU seed 301",
+"spikes": [
+1120,
+1108
+],
+"match": 0.8607142857142858,
+"gamma": 0.825483726913048,
+"rmse": 14.093146932262835,
+"diverged": false,
+"gamma_first5s": 0.9333113691897977,
+"gamma_last5s": 0.8916500994035784
+}
+]
+},
+"ood": {
+"suite": "ood",
+"label": "mm_w256",
+"summary": {
+"n": 8,
+"n100": 4,
+"mean": 0.6417188075082811,
+"gamma": 0.6464419214410376,
+"n_diverged": 0,
+"sec": 111.97668385505676
+},
+"rows": [
+{
+"name": "step -20 (50-250ms)",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 15.63027733547859,
+"diverged": false
+},
+{
+"name": "const 60",
+"spikes": [
+38,
+2
+],
+"match": 0.05263157894736842,
+"gamma": 0.05068324257680057,
+"rmse": 23.72755948803168,
+"diverged": false
+},
+{
+"name": "step 60 (50-150ms)",
+"spikes": [
+13,
+2
+],
+"match": 0.15384615384615385,
+"gamma": 0.22648264209961527,
+"rmse": 14.165999303899989,
+"diverged": false
+},
+{
+"name": "chirp 0.5-200Hz 10±10",
+"spikes": [
+108,
+110
+],
+"match": 0.9272727272727272,
+"gamma": 0.9202539583440049,
+"rmse": 12.245292650296552,
+"diverged": false
+},
+{
+"name": "slow ramp 0-10 (2 s)",
+"spikes": [
+0,
+0
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.019818614459373173,
+"diverged": false
+},
+{
+"name": "slow ramp 0-15 (3 s)",
+"spikes": [
+20,
+18
+],
+"match": 0.0,
+"gamma": -0.025884471492119344,
+"rmse": 10.873374114490836,
+"diverged": false
+},
+{
+"name": "down ramp 20-0",
+"spikes": [
+25,
+25
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 14.536838336911467,
+"diverged": false
+},
+{
+"name": "fast OU 7±10 (tau 0.1ms)",
+"spikes": [
+31,
+31
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 4.872160275510383,
+"diverged": false
+}
+]
 }
 }

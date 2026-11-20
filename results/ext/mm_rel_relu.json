@@ -1519,5 +1519,201 @@
 "diverged": false
 }
 ]
+},
+"long": {
+"suite": "long",
+"label": "mm_rel_relu",
+"summary": {
+"n": 6,
+"n100": 0,
+"mean": 0.9576482103166236,
+"gamma": 0.9476510244757765,
+"n_diverged": 0,
+"sec": 514.5576415061951,
+"gamma_first5s": 0.967121587992542,
+"gamma_last5s": 0.9726284852791686
+},
+"rows": [
+{
+"name": "OU 7±5 (tau 5ms) seed 200",
+"spikes": [
+1171,
+1174
+],
+"match": 0.9718909710391823,
+"gamma": 0.9652832046889132,
+"rmse": 7.278643673004686,
+"diverged": false,
+"gamma_first5s": 0.9673472782320497,
+"gamma_last5s": 0.9627463355229824
+},
+{
+"name": "OU 7±5 (tau 5ms) seed 201",
+"spikes": [
+1171,
+1172
+],
+"match": 0.9948805460750854,
+"gamma": 0.9939984408910808,
+"rmse": 5.189957184189246,
+"diverged": false,
+"gamma_first5s": 0.9848181643601069,
+"gamma_last5s": 0.9956240000840193
+},
+{
+"name": "OU 7±5 (tau 5ms) seed 202",
+"spikes": [
+1165,
+1165
+],
+"match": 0.9854077253218884,
+"gamma": 0.9809748671518376,
+"rmse": 6.263513653488958,
+"diverged": false,
+"gamma_first5s": 0.9955526143511798,
+"gamma_last5s": 1.0
+},
+{
+"name": "OU 7±5 (tau 5ms) seed 203",
+"spikes": [
+1166,
+1163
+],
+"match": 0.9854202401372213,
+"gamma": 0.9822647257714474,
+"rmse": 5.625095086562756,
+"diverged": false,
+"gamma_first5s": 0.9811054608824832,
+"gamma_last5s": 0.9883782881417336
+},
+{
+"name": "level+OU seed 300",
+"spikes": [
+1230,
+1201
+],
+"match": 0.9065040650406504,
+"gamma": 0.8874079442003651,
+"rmse": 14.105058624269603,
+"diverged": false,
+"gamma_first5s": 0.9853391408641858,
+"gamma_last5s": 0.9217650010753459
+},
+{
+"name": "level+OU seed 301",
+"spikes": [
+1120,
+1114
+],
+"match": 0.9017857142857143,
+"gamma": 0.8759769641510149,
+"rmse": 13.198430270376617,
+"diverged": false,
+"gamma_first5s": 0.8885668692652477,
+"gamma_last5s": 0.9672572868509297
+}
+]
+},
+"ood": {
+"suite": "ood",
+"label": "mm_rel_relu",
+"summary": {
+"n": 8,
+"n100": 2,
+"mean": 0.60717748760994,
+"gamma": 0.6096188824945591,
+"n_diverged": 0,
+"sec": 68.92480564117432
+},
+"rows": [
+{
+"name": "step -20 (50-250ms)",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 16.797230813669355,
+"diverged": false
+},
+{
+"name": "const 60",
+"spikes": [
+38,
+1
+],
+"match": 0.02631578947368421,
+"gamma": 0.025640159360893165,
+"rmse": 20.13197757646834,
+"diverged": false
+},
+{
+"name": "step 60 (50-150ms)",
+"spikes": [
+13,
+1
+],
+"match": 0.07692307692307693,
+"gamma": 0.11969033702876061,
+"rmse": 11.546686875341662,
+"diverged": false
+},
+{
+"name": "chirp 0.5-200Hz 10±10",
+"spikes": [
+108,
+116
+],
+"match": 0.8879310344827587,
+"gamma": 0.9061569062484597,
+"rmse": 10.522010719862518,
+"diverged": false
+},
+{
+"name": "slow ramp 0-10 (2 s)",
+"spikes": [
+0,
+0
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.09595796594729003,
+"diverged": false
+},
+{
+"name": "slow ramp 0-15 (3 s)",
+"spikes": [
+20,
+15
+],
+"match": 0.0,
+"gamma": -0.023323694492644046,
+"rmse": 10.420099620077186,
+"diverged": false
+},
+{
+"name": "down ramp 20-0",
+"spikes": [
+25,
+25
+],
+"match": 0.96,
+"gamma": 0.9499997499937499,
+"rmse": 8.885690909983042,
+"diverged": false
+},
+{
+"name": "fast OU 7±10 (tau 0.1ms)",
+"spikes": [
+31,
+32
+],
+"match": 0.90625,
+"gamma": 0.8987876018172531,
+"rmse": 11.954481603910512,
+"diverged": false
+}
+]
 }
 }
