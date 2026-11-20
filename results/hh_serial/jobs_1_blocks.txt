@@ -1,7 +1,7 @@
 # 第1段階: ブロックごとの教師強制（H=64、3000 回、窓 1000 ステップ。hh_improve の a3_h64 と同じ条件）
-block --block 1 --tag b1
-block --block 1 --i1 --tag b1_i
-block --block 2 --tag b2
-block --block 3 --conn serial --tag b3_s
-block --block 3 --conn serial --gout --tag b3_sg
-block --block 3 --conn parallel --tag b3_p
+block --block 1 --threads 1 --tag b1
+block --block 1 --i1 --threads 1 --tag b1_i
+block --block 2 --threads 1 --tag b2
+block --block 3 --conn serial --threads 1 --tag b3_s
+block --block 3 --conn serial --gout --threads 1 --tag b3_sg
+block --block 3 --conn parallel --threads 1 --tag b3_p
