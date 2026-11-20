@@ -189,8 +189,20 @@ SOURCE = {
 
 HEAD = ['No', '分類', 'モデル（タグ）', '構造', '学習方法', '検証 17 本\n100% 一致', 'テスト 26 本\n100% 一致',
         'テスト\n一致した割合', 'テスト\n平均一致率', 'テスト\n平均 Γ', 'テスト順位\n(100% 一致)',
-        'テスト順位\n(平均 Γ)', 'テストで外れた電流', '備考', 'ソースコード', '結果ファイル']
-WIDTH = [5, 14, 26, 46, 40, 11, 11, 11, 10, 10, 11, 11, 40, 44, 48, 36]
+        'テスト順位\n(平均 Γ)', '追加: seed\n10 本ずつ Γ', '追加: f–I\nΓ', '追加: f–I\n発火率誤差 [Hz]',
+        '追加: 長時間\n20 s Γ', '追加: 分布の\n外 Γ', 'テストで外れた電流', '備考', 'ソースコード', '結果ファイル']
+WIDTH = [5, 14, 26, 46, 40, 11, 11, 11, 10, 10, 11, 11, 11, 10, 12, 11, 11, 40, 44, 48, 36]
+EXT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ext')   # eval_ext.py の結果
+EXT_COLS = [('seeds', 'gamma'), ('fi', 'gamma'), ('fi', 'rate_rmse_hz'), ('long', 'gamma'), ('ood', 'gamma')]
+
+
+def ext_of(tag):
+    # results/ext/<タグ>.json（追加テスト）から EXT_COLS の値を読む。採点していないものは None
+    p = os.path.join(EXT_DIR, tag + '.json')
+    if not os.path.exists(p):
+        return [None] * len(EXT_COLS)
+    d = json.load(open(p, encoding='utf-8'))
+    return [d[s]['summary'][k] if s in d else None for s, k in EXT_COLS]
 FILL = {'RNN 3 個': 'DCE6F1', 'RNN 3 個（直列）': 'FDE9D9', 'RNN 1 個': 'F2DCDB', 'Markov MLP': 'EBF1DE',
         'ハイブリッド': 'EDEDED', 'flow function': 'FFF2CC'}
 
@@ -237,14 +249,22 @@ for i, row in enumerate(ROWS):
     r = first + i
     cat, tag, arch, train, val, test, mean, fails, note, path = row
     gam = gamma_of(tag)
-    vals = [i + 1, cat, tag, arch, train, val, test, None, mean, gam, None, None, fails, note, SOURCE[tag], path]
+    ext = ext_of(tag)
+    vals = [i + 1, cat, tag, arch, train, val, test, None, mean, gam, None, None, *ext, fails, note, SOURCE[tag],
+            path]
     for j, v in enumerate(vals, 1):
         c = ws.cell(r, j, v if v is not None else None)
         c.font = font
         c.border = border
         c.fill = PatternFill('solid', fgColor=FILL[cat])
         c.alignment = Alignment(vertical='top', wrap_text=True,
-                                horizontal='center' if j in (1, 6, 7, 8, 9, 10, 11, 12) else 'left')
+                                horizontal='center' if j <= 12 + len(EXT_COLS) and j not in (2, 3, 4, 5) else 'left')
+    for k, (v, (s, key)) in enumerate(zip(ext, EXT_COLS)):
+        c = ws.cell(r, 13 + k)
+        if v is None:
+            c.value = '—'
+        else:
+            c.number_format = '0.0' if key == 'rate_rmse_hz' else '0.000'
     if val is None:
         ws.cell(r, 6, '—')
     if test is None:
@@ -282,6 +302,11 @@ for k, (cat, col) in enumerate(FILL.items()):
     c.fill = PatternFill('solid', fgColor=col)
     c.border = border
 ws.cell(lr + 1, 4, 'テスト順位は 100% 一致の本数、または平均 Γ の大きい順（同じ値は同順位）。一致した割合 = 100% 一致の本数 / 26').font = font
+ws.cell(lr + 2, 4, '追加テスト（experiments/hh_surrogate/hh_bench_ext.py、上位 8 モデルのみ）: '
+                   'seed 10 本ずつ = OU 3 種・ランダムステップ・ランダムパルスを seed 10 本ずつ（50 本、各 500 ms）の平均 Γ。'
+                   'f–I = 定常電流 0〜30 を 0.5 刻み（61 本、各 1 s）の平均 Γ と、後半 500 ms の発火率の誤差（RMSE）。'
+                   '長時間 = OU と段階 + OU を各 20 s（6 本）の平均 Γ。'
+                   '分布の外 = 強い抑制・強い入力・チャープ・とても遅いランプなど 8 本の平均 Γ').font = font
 
 wb.save(OUT)
 print('saved', OUT)
