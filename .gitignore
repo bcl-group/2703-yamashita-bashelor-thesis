@@ -252,3 +252,6 @@ data/hh/teacher_multi.*
 data/hh/teacher_ou.*
 data/hh/teacher_near.*
 data/traub/teacher_modular.npz
+
+# 追加テストの正解の HH（大きいので入れない。experiments/hh_surrogate/hh_bench_ext.py が作り直す）
+results/hh_bench_ext/
