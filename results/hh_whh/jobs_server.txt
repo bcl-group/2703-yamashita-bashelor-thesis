@@ -1,6 +1,7 @@
 # RNN 1 個（hh_mlp_whh.py、Markov MLP に再帰の重み W_hh を足した型）を学内サーバの GPU で回す。colab/whh/make_colab_whh.py の JOBS と同じ
 ft --tag cft_r_mm --iters 300 --eval-every 50 --ep-ms 50 --log-every 10 --device cuda
 ft --tag cft_m_mm --ctrl --iters 300 --eval-every 50 --ep-ms 50 --log-every 10 --device cuda
+ft --tag cft_r_e01 --src results/hh_improve/sp_r_scr_e01.pt --iters 300 --eval-every 50 --ep-ms 50 --log-every 10 --device cuda
 pre --tag sp_r_scr_e01_s1 --seed 1 --init scratch --cell mlpr --eps0 0.1 --iters 30000 --lr 1e-3 --eval-every 5000 --device cuda
 pre --tag sp_r_scr_e01_s2 --seed 2 --init scratch --cell mlpr --eps0 0.1 --iters 30000 --lr 1e-3 --eval-every 5000 --device cuda
 pre --tag sp_r_init_s1 --seed 1 --init mm_rel --cell mlpr --eps0 0 --iters 20000 --lr 3e-4 --eval-every 5000 --device cuda
