@@ -1,0 +1,583 @@
+{
+"rows": [
+{
+"spikes": [
+30,
+30
+],
+"gamma": 0.9645390070921986,
+"diverged": false,
+"n_burst": [
+2,
+1
+],
+"spk_per_burst": [
+4.0,
+6.0
+],
+"gamma_burst": 0.6633165829145728,
+"ca_err": 0.1416645121387714
+},
+{
+"spikes": [
+40,
+41
+],
+"gamma": -0.06132494149923344,
+"diverged": false,
+"n_burst": [
+0,
+0
+],
+"spk_per_burst": [
+0.0,
+0.0
+],
+"gamma_burst": 1.0,
+"ca_err": 1.4275121027395008
+},
+{
+"spikes": [
+27,
+27
+],
+"gamma": 0.7259415864067027,
+"diverged": false,
+"n_burst": [
+3,
+3
+],
+"spk_per_burst": [
+3.0,
+3.0
+],
+"gamma_burst": 1.0,
+"ca_err": 0.3524529506965441
+},
+{
+"spikes": [
+12,
+12
+],
+"gamma": 1.0,
+"diverged": false,
+"n_burst": [
+1,
+1
+],
+"spk_per_burst": [
+8.0,
+8.0
+],
+"gamma_burst": 1.0,
+"ca_err": 0.02705335417097701
+},
+{
+"spikes": [
+66,
+67
+],
+"gamma": 0.8188369306638421,
+"diverged": false,
+"n_burst": [
+2,
+2
+],
+"spk_per_burst": [
+3.5,
+3.0
+],
+"gamma_burst": 0.494949494949495,
+"ca_err": 0.46862417142484175
+},
+{
+"spikes": [
+24,
+26
+],
+"gamma": 0.8756118143459916,
+"diverged": false,
+"n_burst": [
+3,
+3
+],
+"spk_per_burst": [
+3.3333333333333335,
+4.0
+],
+"gamma_burst": 1.0,
+"ca_err": 0.2170050948730051
+},
+{
+"spikes": [
+43,
+50
+],
+"gamma": 0.16009557945041816,
+"diverged": false,
+"n_burst": [
+4,
+3
+],
+"spk_per_burst": [
+3.5,
+3.6666666666666665
+],
+"gamma_burst": 0.2726613488034808,
+"ca_err": 0.6861937608528255
+},
+{
+"spikes": [
+20,
+19
+],
+"gamma": 0.5991790607175224,
+"diverged": false,
+"n_burst": [
+2,
+2
+],
+"spk_per_burst": [
+7.5,
+7.0
+],
+"gamma_burst": 0.494949494949495,
+"ca_err": 0.42297574526009596
+},
+{
+"spikes": [
+43,
+44
+],
+"gamma": 0.9380923573301069,
+"diverged": false,
+"n_burst": [
+3,
+3
+],
+"spk_per_burst": [
+3.0,
+3.3333333333333335
+],
+"gamma_burst": 1.0,
+"ca_err": 0.10184716939577891
+},
+{
+"spikes": [
+64,
+64
+],
+"gamma": 0.42660550458715596,
+"diverged": false,
+"n_burst": [
+2,
+2
+],
+"spk_per_burst": [
+2.0,
+2.0
+],
+"gamma_burst": 1.0,
+"ca_err": 0.639702584445659
+},
+{
+"spikes": [
+29,
+28
+],
+"gamma": 0.7945286946179008,
+"diverged": false,
+"n_burst": [
+2,
+3
+],
+"spk_per_burst": [
+8.5,
+4.333333333333333
+],
+"gamma_burst": 0.8,
+"ca_err": 0.20910025937931
+},
+{
+"spikes": [
+61,
+61
+],
+"gamma": 0.9626573060980619,
+"diverged": false,
+"n_burst": [
+1,
+1
+],
+"spk_per_burst": [
+3.0,
+3.0
+],
+"gamma_burst": 1.0,
+"ca_err": 0.10962107352796134
+},
+{
+"spikes": [
+31,
+29
+],
+"gamma": 0.8210191082802548,
+"diverged": false,
+"n_burst": [
+2,
+2
+],
+"spk_per_burst": [
+6.0,
+5.0
+],
+"gamma_burst": -0.010101010101010102,
+"ca_err": 0.24562581172411424
+},
+{
+"spikes": [
+10,
+10
+],
+"gamma": 1.0000000000000002,
+"diverged": false,
+"n_burst": [
+1,
+1
+],
+"spk_per_burst": [
+6.0,
+6.0
+],
+"gamma_burst": 1.0,
+"ca_err": 0.04738672662601055
+},
+{
+"spikes": [
+62,
+68
+],
+"gamma": 0.29501424501424495,
+"diverged": false,
+"n_burst": [
+4,
+4
+],
+"spk_per_burst": [
+3.5,
+2.5
+],
+"gamma_burst": 0.7448979591836735,
+"ca_err": 0.5292489416463481
+},
+{
+"spikes": [
+47,
+46
+],
+"gamma": 0.7975936715456396,
+"diverged": false,
+"n_burst": [
+4,
+4
+],
+"spk_per_burst": [
+2.5,
+2.25
+],
+"gamma_burst": 1.0,
+"ca_err": 0.3136262553701481
+},
+{
+"spikes": [
+80,
+77
+],
+"gamma": 0.20598997154085918,
+"diverged": false,
+"n_burst": [
+4,
+4
+],
+"spk_per_burst": [
+3.25,
+2.5
+],
+"gamma_burst": 1.0,
+"ca_err": 0.501967020994859
+},
+{
+"spikes": [
+23,
+21
+],
+"gamma": 0.9031125450749669,
+"diverged": false,
+"n_burst": [
+3,
+3
+],
+"spk_per_burst": [
+3.6666666666666665,
+4.0
+],
+"gamma_burst": 0.661590524534687,
+"ca_err": 0.2640951728326672
+},
+{
+"spikes": [
+31,
+30
+],
+"gamma": 0.8419951168468783,
+"diverged": false,
+"n_burst": [
+2,
+2
+],
+"spk_per_burst": [
+2.5,
+2.0
+],
+"gamma_burst": 1.0,
+"ca_err": 0.295273749864659
+},
+{
+"spikes": [
+10,
+11
+],
+"gamma": 0.9523809523809523,
+"diverged": false,
+"n_burst": [
+1,
+1
+],
+"spk_per_burst": [
+7.0,
+7.0
+],
+"gamma_burst": 1.0,
+"ca_err": 0.32545329283562763
+},
+{
+"spikes": [
+15,
+15
+],
+"gamma": 0.3127147766323024,
+"diverged": false,
+"n_burst": [
+2,
+2
+],
+"spk_per_burst": [
+2.0,
+2.0
+],
+"gamma_burst": 1.0,
+"ca_err": 0.5235039322203004
+},
+{
+"spikes": [
+52,
+54
+],
+"gamma": 0.09273204162788731,
+"diverged": false,
+"n_burst": [
+3,
+4
+],
+"spk_per_burst": [
+3.6666666666666665,
+4.75
+],
+"gamma_burst": 0.565597667638484,
+"ca_err": 0.9393919674157158
+},
+{
+"spikes": [
+37,
+37
+],
+"gamma": 0.2995154982196019,
+"diverged": false,
+"n_burst": [
+3,
+2
+],
+"spk_per_burst": [
+3.3333333333333335,
+4.0
+],
+"gamma_burst": 0.795959595959596,
+"ca_err": 0.37539530787407666
+},
+{
+"spikes": [
+36,
+37
+],
+"gamma": 0.6312612799195241,
+"diverged": false,
+"n_burst": [
+1,
+1
+],
+"spk_per_burst": [
+6.0,
+6.0
+],
+"gamma_burst": 1.0,
+"ca_err": 0.23119912578422985
+},
+{
+"spikes": [
+33,
+34
+],
+"gamma": 0.08827109089744412,
+"diverged": false,
+"n_burst": [
+1,
+1
+],
+"spk_per_burst": [
+3.0,
+3.0
+],
+"gamma_burst": 1.0,
+"ca_err": 0.31175788427365
+},
+{
+"spikes": [
+38,
+38
+],
+"gamma": 0.9715197083618137,
+"diverged": false,
+"n_burst": [
+2,
+2
+],
+"spk_per_burst": [
+3.5,
+3.5
+],
+"gamma_burst": 1.0,
+"ca_err": 0.14168709370189567
+},
+{
+"spikes": [
+87,
+87
+],
+"gamma": 0.9999999999999999,
+"diverged": false,
+"n_burst": [
+0,
+0
+],
+"spk_per_burst": [
+0.0,
+0.0
+],
+"gamma_burst": 1.0,
+"ca_err": 0.4105835400901304
+},
+{
+"spikes": [
+94,
+91
+],
+"gamma": 0.19681490781735278,
+"diverged": false,
+"n_burst": [
+1,
+1
+],
+"spk_per_burst": [
+7.0,
+7.0
+],
+"gamma_burst": -0.005025125628140704,
+"ca_err": 0.7551325160530444
+},
+{
+"spikes": [
+94,
+94
+],
+"gamma": 0.397337805261503,
+"diverged": false,
+"n_burst": [
+2,
+2
+],
+"spk_per_burst": [
+2.5,
+2.5
+],
+"gamma_burst": 1.0,
+"ca_err": 0.36698262255539005
+},
+{
+"spikes": [
+37,
+39
+],
+"gamma": 0.4884690033108802,
+"diverged": false,
+"n_burst": [
+3,
+4
+],
+"spk_per_burst": [
+2.6666666666666665,
+2.5
+],
+"gamma_burst": 0.8571428571428571,
+"ca_err": 0.4134948092421282
+}
+],
+"gamma_mean": 0.6166834874180924,
+"n_gamma1": 3,
+"gamma_burst_mean": 0.8111979796782397,
+"n_div": 0,
+"n_nan": 0,
+"n": 30,
+"ca_err_median": 0.33895312176608583,
+"idx": [
+12,
+13,
+15,
+17,
+25,
+26,
+31,
+42,
+58,
+65,
+70,
+77,
+82,
+91,
+99,
+111,
+115,
+117,
+118,
+120,
+136,
+138,
+139,
+149,
+155,
+164,
+176,
+177,
+189,
+198
+]
+}
