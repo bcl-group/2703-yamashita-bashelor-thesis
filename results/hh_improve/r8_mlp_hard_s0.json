@@ -1,0 +1,340 @@
+{
+"args": {
+"cmd": "single_cl",
+"tag": "r8_mlp_hard_s0",
+"data": "/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/data/hh/teacher_ou.npz",
+"H": 128,
+"layers": 2,
+"iters": 0,
+"batch": 32,
+"L": 1000,
+"lr": 0.001,
+"noise": 0.0,
+"wsub": 1.0,
+"seed": 0,
+"threads": 2,
+"log_every": 200,
+"init": null,
+"device": "cuda",
+"state": true,
+"phys": false,
+"pre_iters": 50000,
+"pre_lr": 0.001,
+"pre_batch": 1024,
+"pre_sv": 2.0,
+"pre_sg": 0.02,
+"pre_rel": 0.02,
+"hard": 256,
+"hard_ms": 3000.0,
+"hard_stride": 10,
+"hard_set": "v1",
+"hard_frac": 0.0,
+"x32": false,
+"dagger": 0,
+"dagger_iters": 20000,
+"dagger_n": 256,
+"dagger_ms": 1000.0,
+"dagger_stride": 10,
+"dagger_restart_lr": false,
+"sfeat": false,
+"onpol": 1.0,
+"cell": "mlp",
+"act": "silu",
+"aux": 0.0,
+"ep_ms": 100.0,
+"seg": 500,
+"rest_ms": 20.0,
+"alpha_iters": 300,
+"eval_every": 100,
+"bank": 2048,
+"bank_every": 200
+},
+"loss": [],
+"eval": [
+[
+0,
+1,
+0.058823529411764705
+],
+[
+50000,
+13,
+0.9009227220299885
+]
+],
+"best": [
+13,
+0.9009227220299885,
+50000
+],
+"test": {
+"label": "r8_mlp_hard_s0 (val best it 50000)",
+"n100": 21,
+"mean": 0.917101751943381,
+"gamma": 0.9116124194649385,
+"rows": [
+{
+"name": "step 10 (50-150ms)",
+"spikes": [
+7,
+7
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 4.222597715122259
+},
+{
+"name": "step 5 (50-250ms)",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.4308861157704003
+},
+{
+"name": "step 30 1ms",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.17283971610459942
+},
+{
+"name": "step -5 (50-150ms)",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.6307619333595302
+},
+{
+"name": "const 2.5",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 3.6409652406502913
+},
+{
+"name": "const 5",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.35306244018023586
+},
+{
+"name": "const 7",
+"spikes": [
+18,
+18
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.5993080033713117
+},
+{
+"name": "const 10",
+"spikes": [
+21,
+21
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 18.092610980294186
+},
+{
+"name": "const 20",
+"spikes": [
+26,
+26
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 8.161195831853142
+},
+{
+"name": "ramp 0-20",
+"spikes": [
+1,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 3.262215571598986
+},
+{
+"name": "ramp 0-30",
+"spikes": [
+17,
+15
+],
+"match": 0.0,
+"gamma": -0.14488965658310418,
+"rmse": 22.4993028938856
+},
+{
+"name": "sin 5Hz 5±5",
+"spikes": [
+6,
+6
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 2.129238200996746
+},
+{
+"name": "sin 10Hz 7.5±7.5",
+"spikes": [
+16,
+16
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 6.417760829867819
+},
+{
+"name": "sin 50Hz 10±10",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.4394151106994306
+},
+{
+"name": "pulse 10/1ms/10ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 1.4354449309209454
+},
+{
+"name": "pulse 20/25ms/50ms",
+"spikes": [
+18,
+18
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 1.1483891236939552
+},
+{
+"name": "pulse 40/0.5ms/20ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.3692190240080006
+},
+{
+"name": "random step -5~20/20ms",
+"spikes": [
+24,
+24
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 1.658057812580961
+},
+{
+"name": "random step 0~20/10ms",
+"spikes": [
+31,
+31
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 2.2435829980252766
+},
+{
+"name": "random pulse 5ms",
+"spikes": [
+15,
+15
+],
+"match": 0.9333333333333333,
+"gamma": 0.9242422176261582,
+"rmse": 8.040961181632206
+},
+{
+"name": "random pulse 1ms 0~40",
+"spikes": [
+6,
+6
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 0.31634688931587496
+},
+{
+"name": "OU 5±3",
+"spikes": [
+25,
+26
+],
+"match": 0.9230769230769231,
+"gamma": 0.9308771413815657,
+"rmse": 9.932666161043503
+},
+{
+"name": "OU 10±3",
+"spikes": [
+34,
+34
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 3.0236765050226198
+},
+{
+"name": "OU 7±5 (tau 5ms)",
+"spikes": [
+27,
+27
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 2.7706401674052747
+},
+{
+"name": "level+OU",
+"spikes": [
+72,
+72
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 8.575024031406501
+},
+{
+"name": "munechika train",
+"spikes": [
+85,
+84
+],
+"match": 0.9882352941176471,
+"gamma": 0.9916932036637823,
+"rmse": 3.361732449560581
+}
+],
+"sec": 91.30844235420227
+},
+"sec": 1008.9259905815125
+}
