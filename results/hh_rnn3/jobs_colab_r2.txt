@@ -1,0 +1,16 @@
+# RNN 3 個 第2ラウンド（Google Colab の GPU）。短い閉ループの展開誤差（--cl-w）と、直列の RNN3 にモデルの g を渡す型（--s-gin model）
+# Codex の助言: 微調整は lr 1e-4・3000 回・cl_k 50・cl_w 0.05 から。cl_w 0 の対照も同じ初期値・seed で回す
+# 0 から学習（閉ループの誤差は学習の 30% から）
+--tag p_h64_cl05 --conn parallel --H 64 --whh0 --cl-w 0.05 --cl-k 50 --cl-start 0.3 --iters 20000 --eval-every 4000 --device cuda
+--tag s_h64_cl05 --conn serial --H 64 --whh0 --cl-w 0.05 --cl-k 50 --cl-start 0.3 --iters 20000 --eval-every 4000 --device cuda
+--tag s_h64_gm --conn serial --s-gin model --H 64 --whh0 --iters 20000 --eval-every 4000 --device cuda
+--tag s_h64_gm_cl05 --conn serial --s-gin model --H 64 --whh0 --cl-w 0.05 --cl-k 50 --cl-start 0.3 --iters 20000 --eval-every 4000 --device cuda
+--tag p_h64_cl1 --conn parallel --H 64 --whh0 --cl-w 1 --cl-k 50 --cl-start 0.3 --iters 20000 --eval-every 4000 --device cuda
+# 第1ラウンドの最良の重みから微調整（3000 回、val を 250 回ごと）
+--tag p_h64_ft0 --conn parallel --init-b1 results/hh_rnn3/p_h64_b1.pt --init-b2 results/hh_rnn3/p_h64_b2.pt --init-b3 results/hh_rnn3/p_h64_b3.pt --lr 1e-4 --iters 3000 --cl-w 0 --cl-k 50 --dagger 1 --eval-every 250 --device cuda
+--tag p_h64_ft05 --conn parallel --init-b1 results/hh_rnn3/p_h64_b1.pt --init-b2 results/hh_rnn3/p_h64_b2.pt --init-b3 results/hh_rnn3/p_h64_b3.pt --lr 1e-4 --iters 3000 --cl-w 0.05 --cl-k 50 --dagger 1 --eval-every 250 --device cuda
+--tag s_h64_ft0 --conn serial --init-b1 results/hh_rnn3/s_h64_b1.pt --init-b2 results/hh_rnn3/s_h64_b2.pt --init-b3 results/hh_rnn3/s_h64_b3.pt --lr 1e-4 --iters 3000 --cl-w 0 --cl-k 50 --dagger 1 --eval-every 250 --device cuda
+--tag s_h64_ft05 --conn serial --init-b1 results/hh_rnn3/s_h64_b1.pt --init-b2 results/hh_rnn3/s_h64_b2.pt --init-b3 results/hh_rnn3/s_h64_b3.pt --lr 1e-4 --iters 3000 --cl-w 0.05 --cl-k 50 --dagger 1 --eval-every 250 --device cuda
+--tag s_h64_ftgm05 --conn serial --init-b1 results/hh_rnn3/s_h64_b1.pt --init-b2 results/hh_rnn3/s_h64_b2.pt --init-b3 results/hh_rnn3/s_h64_b3.pt --lr 1e-4 --iters 3000 --cl-w 0.05 --cl-k 50 --dagger 1 --eval-every 250 --s-gin model --device cuda
+--tag p_h128_ft05 --conn parallel --init-b1 results/hh_rnn3/p_h128_b1.pt --init-b2 results/hh_rnn3/p_h128_b2.pt --init-b3 results/hh_rnn3/p_h128_b3.pt --lr 1e-4 --iters 3000 --cl-w 0.05 --cl-k 50 --dagger 1 --eval-every 250 --device cuda
+--tag s_h128_ft05 --conn serial --init-b1 results/hh_rnn3/s_h128_b1.pt --init-b2 results/hh_rnn3/s_h128_b2.pt --init-b3 results/hh_rnn3/s_h128_b3.pt --lr 1e-4 --iters 3000 --cl-w 0.05 --cl-k 50 --dagger 1 --eval-every 250 --device cuda

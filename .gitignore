@@ -255,3 +255,6 @@ data/traub/teacher_modular.npz
 
 # 追加テストの正解の HH（大きいので入れない。experiments/hh_surrogate/hh_bench_ext.py が作り直す）
 results/hh_bench_ext/
+
+# RNN 3 個（hh_rnn3.py）の在庫（HH の軌道のキャッシュ。大きいので入れない）
+results/hh_rnn3/pools/
