@@ -1,0 +1,10 @@
+# RNN 3 個 第3ラウンド（学内サーバ）。第2ラウンドで並列 + 閉ループ誤差 0.05（p_h64_cl05）が 22/26・Γ 0.957 だったので、その周りを振る
+--tag p_h64_cl05_s1 --conn parallel --H 64 --whh0 --cl-w 0.05 --cl-k 50 --cl-start 0.3 --seed 1 --iters 20000 --eval-every 4000 --device cuda
+--tag p_h64_cl05_s2 --conn parallel --H 64 --whh0 --cl-w 0.05 --cl-k 50 --cl-start 0.3 --seed 2 --iters 20000 --eval-every 4000 --device cuda
+--tag p_h64_cl02 --conn parallel --H 64 --whh0 --cl-w 0.02 --cl-k 50 --cl-start 0.3 --iters 20000 --eval-every 4000 --device cuda
+--tag p_h64_cl10 --conn parallel --H 64 --whh0 --cl-w 0.1 --cl-k 50 --cl-start 0.3 --iters 20000 --eval-every 4000 --device cuda
+--tag p_h64_cl05_k100 --conn parallel --H 64 --whh0 --cl-w 0.05 --cl-k 100 --cl-start 0.3 --iters 20000 --eval-every 4000 --device cuda
+--tag p_h64_nowhh0_cl05 --conn parallel --H 64 --cl-w 0.05 --cl-k 50 --cl-start 0.3 --iters 20000 --eval-every 4000 --device cuda
+--tag p_gru64_cl05 --conn parallel --cell gru --H 64 --cl-w 0.05 --cl-k 50 --cl-start 0.3 --iters 20000 --eval-every 4000 --device cuda
+--tag s_gru64_cl05 --conn serial --cell gru --H 64 --cl-w 0.05 --cl-k 50 --cl-start 0.3 --iters 20000 --eval-every 4000 --device cuda
+--tag s_h64_nowhh0_cl05 --conn serial --H 64 --cl-w 0.05 --cl-k 50 --cl-start 0.3 --iters 20000 --eval-every 4000 --device cuda
