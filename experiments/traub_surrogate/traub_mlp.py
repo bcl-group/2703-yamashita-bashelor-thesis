@@ -151,13 +151,15 @@ def train(a):
     Xtr = data['X'][tr][:, :J - 1].reshape(-1, NC * 11)
     Itr = data['I_nA'][tr][:, ::st][:, :J - 1].reshape(-1)
     assert len(Xtr) == len(Itr)
-    pool_X = torch.as_tensor(Xtr, device=dev, dtype=torch.float64)
-    pool_I = torch.as_tensor(Itr, device=dev, dtype=torch.float64)
+    # 状態のプールは CPU に float32 で置く（DAgger で増えると GPU のメモリが足りなくなるため）。使う分だけ GPU に送って fp64 にする
+    pool_X = torch.as_tensor(Xtr, dtype=torch.float32)
+    pool_I = torch.as_tensor(Itr, dtype=torch.float32)
+    to64 = lambda x: x.to(dev, torch.float64)   # noqa: E731
     P64 = tt.Params(dev, torch.float64)
     model = Model(a.W, a.L).to(dev)
     with torch.no_grad():
-        j = torch.as_tensor(rng.integers(0, len(pool_X), 20000), device=dev)
-        d = exact_delta(unflat(pool_X[j]), pool_I[j], P64).reshape(-1, D_OUT)
+        j = torch.as_tensor(rng.integers(0, len(pool_X), 20000))
+        d = exact_delta(unflat(to64(pool_X[j])), to64(pool_I[j]), P64).reshape(-1, D_OUT)
         model.scale.copy_(d.std(0).clamp(min=1e-8).float())
     print('状態の数', len(pool_X), '増分の標準偏差', model.scale.cpu().numpy().round(6), flush=True)
     opt = torch.optim.Adam(model.parameters(), lr=a.lr)
@@ -181,14 +183,15 @@ def train(a):
                                 device=dev, dtype=dtype)
             _, _, Xd, Id = rollout(model, s, I, stride=a.dagger_stride)
             ok = torch.isfinite(Xd).all(1)
-            pool_X = torch.cat([pool_X, Xd[ok].double()])
-            pool_I = torch.cat([pool_I, Id[ok].double()])
+            pool_X = torch.cat([pool_X, Xd[ok].float().cpu()])
+            pool_I = torch.cat([pool_I, Id[ok].float().cpu()])
             print(f'DAgger {rnd}: 閉ループの状態 {int(ok.sum())} 個を追加 → 計 {len(pool_X)} 個', flush=True)
+            del Xd, Id, ok
         n_it = a.iters if rnd == 0 else a.dagger_iters
         for _ in range(n_it):
-            j = torch.as_tensor(rng.integers(0, len(pool_X), a.batch), device=dev)
-            s64 = unflat(pool_X[j])
-            I64 = pool_I[j]
+            j = torch.as_tensor(rng.integers(0, len(pool_X), a.batch))
+            s64 = unflat(to64(pool_X[j]))
+            I64 = to64(pool_I[j])
             if a.noise_v > 0 or a.noise_g > 0:
                 # 状態をずらし、ずらした状態で正解を作り直す（閉ループで少し外れた状態からも戻れるように）
                 V, xi, G = s64
