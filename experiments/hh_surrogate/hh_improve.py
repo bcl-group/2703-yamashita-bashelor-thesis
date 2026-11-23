@@ -36,6 +36,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import hh_bench as hb
 import hh_modular as hm
 import test_currents as tc
+import clamp_track as ct
 from neuron import hh as H_
 
 OUT_DIR = os.path.join(hb.ROOT, 'results', 'hh_improve')
@@ -379,7 +380,7 @@ def run3(nets, I_np):
             dg, h2 = n2.cell(torch.cat([ab, g], 1), h2)
             dv, h3 = n3.cell(torch.cat([g, V[:, None], I[:, k, None]], 1), h3)
             V = V + dv[:, 0]
-            g = (g + dg).clamp(0.0, 1.0)
+            g = ct.clamp(g + dg, 0.0, 1.0, "gate")
             out[:, k] = V
     return out.cpu().numpy()
 
@@ -553,6 +554,144 @@ def gen_hard(N, rng):
     return I + ou
 
 
+# v2 の苦手な電流の種類と割合。評価で崩れやすい「静止から始まる一定（閾値付近）」「0 から始まるゆっくりしたランプ」
+# 「ゆっくりした正弦波」を重点的に入れる（評価の電流そのものではなく、水準・傾き・周波数は乱数）
+# const（閾値付近の定常電流）を最も多くする
+HARD_V2 = {'const': 0.4, 'ramp0': 0.2, 'sin': 0.15, 'hold': 0.1, 'ramp': 0.05, 'nearou': 0.1}
+
+
+def const_level(rng):
+    # v2 の const の水準。閾値付近を重点的に取る
+    u = rng.random()
+    if u < 0.7:
+        return rng.uniform(5.5, 10)
+    if u < 0.8:
+        return rng.uniform(2, 5.5)
+    return rng.uniform(-5, 30)
+
+
+def gen_hard_v2(B, N, rng):
+    """
+    苦手な電流を B 本まとめて作る (B, N)。種類は HARD_V2 の割合で選ぶ。
+      const : [休み I≈0 を 30〜150 ms] + [一定 150〜700 ms] をくり返す（半分は休みなしで t=0 から一定）。
+              水準は const_level: 70% が反復発火の閾値付近 U[5.5, 10]（HH は約 6.3 から反復発火、〜9.8 まで静止と共存）、
+              10% が 1 発だけ出る付近 U[2, 5.5]、20% が U[-5, 30]。静止から一定電流に入る場面を何度も作る
+      ramp0 : [休み 30〜150 ms] + [U[-1, 1] から U[8, 40] へ 200〜1000 ms かけて直線] + [終点で 0〜200 ms 保持] をくり返す。
+              傾きは 0.008〜0.2 µA/cm²/ms。20% は下りのランプ（高い水準から 0 付近へ）
+      sin   : 200〜800 ms ごとに offset U[2, 12]、振幅（半分は offset と同じで 0 に触れる、残りは U[2, 10]）、
+              周波数 2〜40 Hz（対数一様）、位相（半分は 0）を選び直す正弦波
+      hold, ramp, nearou : v1（gen_hard）と同じ
+    nearou 以外は半分の本数に弱い OU（τ 1〜5 ms、σ U[0, 1]）を重ねる
+    """
+    kinds = list(HARD_V2)
+    p = np.array([HARD_V2[k] for k in kinds])
+    I = np.zeros((B, N))
+    for b in range(B):
+        kind = kinds[rng.choice(len(kinds), p=p / p.sum())]
+        if kind in ('hold', 'ramp', 'nearou'):
+            # v1 の作り方をそのまま使うため、OU を付けない水準だけを作り直す
+            I[b] = _hard_v1_levels(kind, N, rng)
+            continue
+        t = 0
+        first = True
+        while t < N:
+            if kind == 'const':
+                if not (first and rng.random() < 0.5):
+                    t += max(1, int(rng.uniform(30, 150) / DT))
+                L = max(1, int(rng.uniform(150, 700) / DT))
+                I[b, t:t + L] = const_level(rng)
+                t += L
+            elif kind == 'ramp0':
+                t += max(1, int(rng.uniform(30, 150) / DT))
+                L = max(1, int(rng.uniform(200, 1000) / DT))
+                lo, hi = rng.uniform(-1, 1), rng.uniform(8, 40)
+                a0, a1 = (hi, lo) if rng.random() < 0.2 else (lo, hi)
+                n = len(I[b, t:t + L])
+                I[b, t:t + L] = np.linspace(a0, a1, L)[:n]
+                t += L
+                Lh = int(rng.uniform(0, 200) / DT)
+                I[b, t:t + Lh] = a1
+                t += Lh
+            else:
+                L = max(1, int(rng.uniform(200, 800) / DT))
+                off = rng.uniform(2, 12)
+                amp = off if rng.random() < 0.5 else rng.uniform(2, 10)
+                f = math.exp(rng.uniform(math.log(2), math.log(40))) / 1000.0      # [1/ms]
+                ph = 0.0 if rng.random() < 0.5 else rng.uniform(0, 2 * math.pi)
+                tt = np.arange(L) * DT
+                n = len(I[b, t:t + L])
+                I[b, t:t + L] = (off + amp * np.sin(2 * math.pi * f * tt + ph))[:n]
+                t += L
+            first = False
+        if rng.random() < 0.5:
+            I[b] += _ou(N, rng.uniform(1, 5), rng.uniform(0, 1), rng)
+    return I
+
+
+def _ou(N, tau, sig, rng):
+    # 平均 0 の OU 過程 (N,)。漸化式 x_k = a x_{k-1} + e_k を numpy の累積で計算する（Python のループを避ける）
+    a = math.exp(-DT / tau)
+    e = rng.standard_normal(N) * sig * math.sqrt(1 - a * a)
+    # x_k = Σ_{j<=k} a^{k-j} e_j = a^k Σ_{j<=k} a^{-j} e_j。a^{-j} があふれないよう 2000 ステップごとに区切る
+    S = 2000
+    k = np.arange(S)
+    pk, pk1, pinv = a ** k, a ** (k + 1), a ** (-k)
+    n_pad = -N % S
+    E = np.concatenate([e, np.zeros(n_pad)]).reshape(-1, S)        # (区切りの数, S)
+    Z = pk * np.cumsum(E * pinv, axis=1)                            # 区切りの頭を 0 とした解
+    x = np.empty_like(Z)
+    prev = 0.0
+    for r in range(Z.shape[0]):                                      # 前の区切りの最後の値を引き継ぐ
+        x[r] = pk1 * prev + Z[r]
+        prev = x[r, -1]
+    return x.reshape(-1)[:N]
+
+
+def _hard_v1_levels(kind, N, rng):
+    # gen_hard の水準の作り方（hold / ramp / nearou）に OU を足したもの
+    lvl_draw = lambda: rng.uniform(4, 12) if rng.random() < 0.5 else rng.uniform(-5, 30)
+    I = np.zeros(N)
+    t, lvl = 0, lvl_draw()
+    while t < N:
+        if kind == 'hold':
+            L = max(1, int(rng.uniform(50, 500) / DT))
+            I[t:t + L] = lvl
+            lvl = lvl_draw()
+        elif kind == 'ramp':
+            L = max(1, int(rng.uniform(100, 3000) / DT))
+            nxt = lvl_draw()
+            I[t:t + L] = np.linspace(lvl, nxt, L)[:N - t]
+            lvl = nxt
+        else:
+            L = max(1, int(rng.uniform(100, 1000) / DT))
+            I[t:t + L] = rng.uniform(4, 10)
+        t += L
+    tau = rng.uniform(1, 10) if kind == 'nearou' else rng.uniform(1, 5)
+    sig = rng.uniform(0, 3) if kind == 'nearou' else rng.uniform(0, 1)
+    return I + _ou(N, tau, sig, rng)
+
+
+def gen_hard_set(B, N, rng, hard_set='v1'):
+    # 苦手な電流 B 本 (B, N) の torch テンソル。v1 は従来の gen_hard（第8ラウンドまで）、v2 は gen_hard_v2
+    if hard_set == 'v2':
+        I = gen_hard_v2(B, N, rng)
+    else:
+        I = np.stack([gen_hard(N, rng) for _ in range(B)])
+    return torch.from_numpy(I).to(DEV)
+
+
+def sample_idx(n_all, B, rng, hard_rng=None, frac=0.0):
+    """
+    事前学習のミニバッチの添字 (B,)。frac > 0 なら B×frac 個を苦手な電流の状態 [hard_rng[0], hard_rng[1]) から、
+    残りを全体（通常 + 苦手 + DAgger）から一様に取る。frac = 0 なら全体から一様（従来どおり）
+    """
+    if hard_rng is None or frac <= 0:
+        return torch.from_numpy(rng.integers(0, n_all, size=B))
+    nh = int(round(B * frac))
+    return torch.from_numpy(np.concatenate([rng.integers(hard_rng[0], hard_rng[1], size=nh),
+                                            rng.integers(0, n_all, size=B - nh)]))
+
+
 @torch.no_grad()
 def hh_states(I, stride=1):
     """
@@ -570,13 +709,13 @@ def hh_states(I, stride=1):
     return torch.stack(out, 1).reshape(-1, 5)
 
 
-def hard_states(n, T_ms, rng, stride, chunk=256):
-    # 苦手な電流 n 本（各 T_ms）で HH を回し、stride ごとの状態を集める
+def hard_states(n, T_ms, rng, stride, chunk=256, hard_set='v1', dtype=torch.float64):
+    # 苦手な電流 n 本（各 T_ms）で HH を回し、stride ごとの状態を集める（dtype で保持。計算は float64）
     N = int(T_ms / DT)
     out = []
     for c0 in range(0, n, chunk):
-        Ic = torch.from_numpy(np.stack([gen_hard(N, rng) for _ in range(min(chunk, n - c0))])).to(DEV)
-        out.append(hh_states(Ic, stride))
+        Ic = gen_hard_set(min(chunk, n - c0), N, rng, hard_set)
+        out.append(hh_states(Ic, stride).to(dtype))
     return torch.cat(out)
 
 
@@ -663,8 +802,8 @@ def run_state(net, I_np, rest_ms=20.0):
             _, hs, _ = state_step(net, torch.cat([V[:, None], g, torch.zeros(B, 1, dtype=torch.float64)], 1), hs)
         for k in range(N - 1):
             y, hs, _ = state_step(net, torch.cat([V[:, None], g, I[:, k, None]], 1), hs)
-            V = (V + y[:, 0]).clamp(-100.0, 60.0)
-            g = (g + y[:, 1:]).clamp(0.0, 1.0)
+            V = ct.clamp(V + y[:, 0], -100.0, 60.0, "V")
+            g = ct.clamp(g + y[:, 1:], 0.0, 1.0, "gate")
             out[:, k] = V
     return out.cpu().numpy()
 
@@ -677,7 +816,7 @@ def train_single_cl(a):
                     出力の正解は入力の厳密な関数なので、ずれた状態でも式から計算できる（--onpol の損失）
     戻す状態は「予測 + α (正解 - 予測)」。α は 1（教師強制）から 0（完全な閉ループ）へ下げる。
     長い系列は seg ステップごとに区切って更新する（truncated BPTT。隠れ状態と状態は切り離して引き継ぐ）。
-    V は [-100, 60] mV、ゲートは [0, 1] に制限する（評価でも同じ）。
+    V は [-100, 60] mV、ゲートは [0, 1] に制限する（採点中だけ V の下限を -150 mV に広げる。clamp_track.EVAL_V_LO）。
     """
     torch.manual_seed(a.seed)
     rng = np.random.default_rng(a.seed)
@@ -725,14 +864,16 @@ def train_single_cl(a):
         # 事前学習（Markov 型向け）: 教師の状態に摂動を足し、式で計算した 1 ステップの正解に合わせる
         bI = gen_current(a.bank, N, rng)
         bV, bG = hh_sim(bI)
-        X = torch.cat([bV[:, :-1, None], bG[:, :-1], bI[..., None]], -1).reshape(-1, 5)
+        xdt = torch.float32 if a.x32 else torch.float64     # 状態を持つ型（--x32 でメモリ半分。正解は float64 で計算）
+        X = torch.cat([bV[:, :-1, None], bG[:, :-1], bI[..., None]], -1).reshape(-1, 5).to(xdt)
         del bV, bG
         if a.hard > 0:
             # 苦手な電流の状態を足す（長いので間引く）
-            Xh = hard_states(a.hard, a.hard_ms, rng, a.hard_stride)
+            Xh = hard_states(a.hard, a.hard_ms, rng, a.hard_stride, hard_set=a.hard_set, dtype=xdt)
             print('苦手な電流の状態: {} 本 × {:.0f} ms → {} 個（通常 {} 個）  ({:.0f} s)'.format(
                 a.hard, a.hard_ms, Xh.shape[0], X.shape[0], time.time() - t0), flush=True)
             X = torch.cat([X, Xh])
+        hard_rng = (X.shape[0] - Xh.shape[0], X.shape[0]) if a.hard > 0 else None
         popt = torch.optim.Adam(net.parameters(), lr=a.pre_lr)
         total = a.pre_iters + a.dagger * a.dagger_iters
         sched = [(0, a.pre_iters)] + [(r + 1, a.dagger_iters) for r in range(a.dagger)]
@@ -743,9 +884,9 @@ def train_single_cl(a):
                 nd = a.dagger_n
                 Nd = int(a.dagger_ms / DT)
                 Id = torch.cat([gen_current(nd // 2, Nd, rng),
-                                torch.from_numpy(np.stack([gen_hard(Nd, rng) for _ in range(nd - nd // 2)])).to(DEV)])
+                                gen_hard_set(nd - nd // 2, Nd, rng, a.hard_set)])
                 Xd = rollout_states(net, Id, a.dagger_stride)
-                X = torch.cat([X, Xd])
+                X = torch.cat([X, Xd.to(xdt)])
                 print('DAgger {}: 閉ループの状態 {} 個を追加 → 計 {} 個  ({:.0f} s)'.format(
                     rnd, Xd.shape[0], X.shape[0], time.time() - t0), flush=True)
                 evaluate(pi)
@@ -756,7 +897,7 @@ def train_single_cl(a):
                     else:
                         gr['lr'] = lr_at(pi, total, a.pre_lr)
                 pi += 1
-                x = X[torch.from_numpy(rng.integers(0, X.shape[0], size=a.pre_batch))].clone()
+                x = X[sample_idx(X.shape[0], a.pre_batch, rng, hard_rng, a.hard_frac)].double()
                 mask = (torch.rand(a.pre_batch, 1, dtype=x.dtype) < 0.5).to(x.dtype)
                 x[:, :1] += mask * a.pre_sv * torch.randn(a.pre_batch, 1, dtype=x.dtype)
                 x[:, 1:4] = (x[:, 1:4] + mask * a.pre_sg * torch.randn(a.pre_batch, 3, dtype=x.dtype)).clamp(0, 1)
@@ -899,7 +1040,7 @@ def run_single(net, I_np, rest_ms=20.0):
             _, hs = net.cell(torch.stack([V, torch.zeros_like(V)], 1), hs)
         for k in range(N - 1):
             y, hs = net.cell(torch.stack([V, I[:, k]], 1), hs)
-            V = (V + y[:, 0]).clamp(-100.0, 60.0)
+            V = ct.clamp(V + y[:, 0], -100.0, 60.0, "V")
             out[:, k] = V
     return out.cpu().numpy()
 
@@ -962,8 +1103,8 @@ def m3_step(nets, V, g, I_k):
     ab = ab.clamp(min=0.0)
     dg, _ = n2.cell(torch.cat([ab, g], 1), hz)
     dv, _ = n3.cell(torch.cat([g, V[:, None], I_k[:, None]], 1), hz)
-    V_next = (V + dv[:, 0]).clamp(-100.0, 60.0)
-    g_next = (g + dg).clamp(0.0, 1.0)
+    V_next = ct.clamp(V + dv[:, 0], -100.0, 60.0, "V")
+    g_next = ct.clamp(g + dg, 0.0, 1.0, "gate")
     return V_next, g_next, (ab, dg, dv)
 
 
@@ -1010,17 +1151,19 @@ def train_m3(a):
     t0 = time.time()
     bI = gen_current(a.bank, N, rng)
     bV, bG = hh_sim(bI)
-    X = torch.cat([bV[:, :-1, None], bG[:, :-1], bI[..., None]], -1).reshape(-1, 5)
+    xdt = torch.float32 if a.x32 else torch.float64
+    X = torch.cat([bV[:, :-1, None], bG[:, :-1], bI[..., None]], -1).reshape(-1, 5).to(xdt)
     del bV, bG
     if a.hard > 0:
-        Xh = hard_states(a.hard, a.hard_ms, rng, a.hard_stride)
+        Xh = hard_states(a.hard, a.hard_ms, rng, a.hard_stride, hard_set=a.hard_set, dtype=xdt)
         print('苦手な電流の状態: {} 本 × {:.0f} ms → {} 個（通常 {} 個）  ({:.0f} s)'.format(
             a.hard, a.hard_ms, Xh.shape[0], X.shape[0], time.time() - t0), flush=True)
         X = torch.cat([X, Xh])
+    hard_rng = (X.shape[0] - Xh.shape[0], X.shape[0]) if a.hard > 0 else None
     act = a.act
     nets = [Net(1, a.H, a.layers, 6, cell='mlp', act=act), Net(9, a.H, a.layers, 3, cell='mlp', act=act),
             Net(5, a.H, a.layers, 1, cell='mlp', act=act, feat=3 if a.sfeat else 0)]
-    sub = X[torch.from_numpy(rng.integers(0, X.shape[0], size=200000))]
+    sub = X[torch.from_numpy(rng.integers(0, X.shape[0], size=200000))].double()
     V_, g_, I_ = sub[:, 0], sub[:, 1:4], sub[:, 4]
     ab_ = rates(V_)
     nets[0].set_scalers(V_[:, None].float(), ab_.float())
@@ -1050,9 +1193,9 @@ def train_m3(a):
             nd = a.dagger_n
             Nd = int(a.dagger_ms / DT)
             Id = torch.cat([gen_current(nd // 2, Nd, rng),
-                            torch.from_numpy(np.stack([gen_hard(Nd, rng) for _ in range(nd - nd // 2)])).to(DEV)])
+                            gen_hard_set(nd - nd // 2, Nd, rng, a.hard_set)])
             Xd = rollout_states_m3(nets, Id, a.dagger_stride)
-            X = torch.cat([X, Xd])
+            X = torch.cat([X, Xd.to(xdt)])
             print('DAgger {}: 閉ループの状態 {} 個を追加 → 計 {} 個  ({:.0f} s)'.format(
                 rnd, Xd.shape[0], X.shape[0], time.time() - t0), flush=True)
             evaluate(pi)
@@ -1060,7 +1203,7 @@ def train_m3(a):
             for gr in opt.param_groups:
                 gr['lr'] = lr_at(pi, total, a.pre_lr)
             pi += 1
-            x = X[torch.from_numpy(rng.integers(0, X.shape[0], size=a.pre_batch))].clone()
+            x = X[sample_idx(X.shape[0], a.pre_batch, rng, hard_rng, a.hard_frac)].double()
             mask = (torch.rand(a.pre_batch, 1, dtype=x.dtype) < 0.5).to(x.dtype)
             x[:, :1] += mask * a.pre_sv * torch.randn(a.pre_batch, 1, dtype=x.dtype)
             x[:, 1:4] = (x[:, 1:4] + mask * a.pre_sg * torch.randn(a.pre_batch, 3, dtype=x.dtype)).clamp(0, 1)
@@ -1151,6 +1294,10 @@ def main():
     pl.add_argument('--hard', type=int, default=0, help='苦手な電流（長い一定・ゆっくりしたランプ・閾値付近）の本数')
     pl.add_argument('--hard-ms', type=float, default=3000.0, help='苦手な電流 1 本の長さ [ms]')
     pl.add_argument('--hard-stride', type=int, default=10, help='苦手な電流の状態を何ステップごとに取るか')
+    pl.add_argument('--hard-set', default='v1', choices=['v1', 'v2'],
+                    help='苦手な電流の作り方。v1: 一定・ランプ・閾値付近の OU（第8ラウンドまで）、v2: 静止からの一定・0 からのランプ・正弦波を重点的に')
+    pl.add_argument('--hard-frac', type=float, default=0.0, help='事前学習のバッチのうち苦手な電流の状態から取る割合（0 なら全体から一様）')
+    pl.add_argument('--x32', action='store_true', help='事前学習の状態を float32 で持つ（メモリ半分。正解はミニバッチごとに float64 で式から計算）')
     pl.add_argument('--dagger', type=int, default=0, help='DAgger の回数（閉ループで通った状態を足して学習し直す）')
     pl.add_argument('--dagger-iters', type=int, default=20000, help='DAgger 1 回ごとの学習回数')
     pl.add_argument('--dagger-n', type=int, default=256, help='DAgger で回す電流の本数（半分は通常、半分は苦手な電流）')
@@ -1182,6 +1329,10 @@ def main():
     pm.add_argument('--hard', type=int, default=0)
     pm.add_argument('--hard-ms', type=float, default=3000.0)
     pm.add_argument('--hard-stride', type=int, default=10)
+    pm.add_argument('--hard-set', default='v1', choices=['v1', 'v2'],
+                    help='苦手な電流の作り方。v1: 一定・ランプ・閾値付近の OU（第8ラウンドまで）、v2: 静止からの一定・0 からのランプ・正弦波を重点的に')
+    pm.add_argument('--hard-frac', type=float, default=0.0, help='事前学習のバッチのうち苦手な電流の状態から取る割合（0 なら全体から一様）')
+    pm.add_argument('--x32', action='store_true', help='事前学習の状態を float32 で持つ（メモリ半分。正解はミニバッチごとに float64 で式から計算）')
     pm.add_argument('--dagger', type=int, default=0)
     pm.add_argument('--dagger-iters', type=int, default=20000)
     pm.add_argument('--dagger-n', type=int, default=256)

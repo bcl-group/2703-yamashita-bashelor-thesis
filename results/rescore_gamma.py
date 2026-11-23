@@ -18,6 +18,7 @@ sys.path.insert(0, os.path.join(ROOT, 'experiments', 'hh_surrogate'))
 import hh_bench as hb        # noqa: E402
 import hh_improve as hi      # noqa: E402
 import hh_serial as hs       # noqa: E402
+import clamp_track as ct     # noqa: E402
 
 OUT = os.path.join(ROOT, 'results', 'gamma')
 IMP = os.path.join(ROOT, 'results', 'hh_improve')
@@ -115,8 +116,8 @@ def ensemble(tags):
                 y, hs[j], _ = hi.state_step(n, x, hs[j])
                 ys.append(y)
             y = torch.stack(ys).mean(0)
-            V = (V + y[:, 0]).clamp(-100.0, 60.0)
-            g = (g + y[:, 1:]).clamp(0.0, 1.0)
+            V = ct.clamp(V + y[:, 0], -100.0, 60.0, "V")
+            g = ct.clamp(g + y[:, 1:], 0.0, 1.0, "gate")
             out[:, k] = V
         return out.cpu().numpy()
     return run
