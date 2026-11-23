@@ -12,6 +12,7 @@ Traub（19 区画）の代理モデル: HH で効いた作り方（Markov MLP �
 
 学習:
     1. 事前学習: 教師データ（学習用の軌道）の状態から一様に取って学習する
+    （--noise-v / --noise-g: 学習の状態にノイズを足し、その状態で正解を作り直す）
     2. DAgger を --dagger 回: 今のモデルを学習用の軌道の電流で閉ループで回し、通った状態を 10 ステップごとに集めて足す
     検証: 検証用の軌道の先頭の状態から --val-ms 回し、細胞体の V の Γ（Δ = 2 ms）で比べる。最良の重みを残す
     テスト用の軌道は、ここでは使わない（`eval --split test` で最後に 1 回だけ）
@@ -188,6 +189,11 @@ def train(a):
             j = torch.as_tensor(rng.integers(0, len(pool_X), a.batch), device=dev)
             s64 = unflat(pool_X[j])
             I64 = pool_I[j]
+            if a.noise_v > 0 or a.noise_g > 0:
+                # 状態をずらし、ずらした状態で正解を作り直す（閉ループで少し外れた状態からも戻れるように）
+                V, xi, G = s64
+                s64 = ((V + a.noise_v * torch.randn_like(V)).clamp(-100.0, 60.0), xi,
+                       (G + a.noise_g * torch.randn_like(G)).clamp(0.0, 1.0))
             with torch.no_grad():
                 y = (exact_delta(s64, I64, P64) / model.scale.double()).float()
             s32 = tuple(x.float() for x in s64)
@@ -253,6 +259,8 @@ def main():
     ap.add_argument('--dagger-n', type=int, default=64)
     ap.add_argument('--dagger-ms', type=float, default=500.0)
     ap.add_argument('--dagger-stride', type=int, default=10)
+    ap.add_argument('--noise-v', type=float, default=0.0, help='学習時に V に足すノイズの標準偏差 [mV]')
+    ap.add_argument('--noise-g', type=float, default=0.0, help='学習時にゲートに足すノイズの標準偏差')
     ap.add_argument('--soma-w', type=float, default=5.0, help='細胞体の区画の損失の重み')
     ap.add_argument('--eval-every', type=int, default=2000)
     ap.add_argument('--val-ms', type=float, default=500.0)
