@@ -45,6 +45,13 @@ def serial(b1, b2, b3):
 def single(tag):
     # RNN 1 個型・Markov MLP・式組込み MLP（入力が状態を含むかで閉ループの回し方を選ぶ）
     d = torch.load(imp(tag + '.pt'), weights_only=False, map_location='cpu')
+    if d['cfg'].get('cell') == 'mlpr':
+        # RNN 1 個（W_hh）: Markov MLP の 1 段目に z1(t-1) を戻す型（hh_mlp_whh.NetR）。回し方は Markov MLP と同じ
+        import hh_mlp_whh as hw
+        net = hw.NetR(**d['cfg'])
+        net.load_state_dict(d['state'])
+        net = net.double()
+        return lambda I: hi.run_state(net, I)
     net = hi.Net(**d['cfg'])
     net.load_state_dict(d['state'])
     net = net.double()
@@ -136,6 +143,14 @@ def get_model(tag):
         return ensemble(tag[4:].split('+'))
     if tag.startswith('m3_'):
         return m3(tag)
+    if tag.startswith('rnn3:'):
+        # RNN 3 個（hh_rnn3.py）: results/hh_rnn3/<tag>_b1〜3.pt。並列・直列は保存した info['conn'] で決める
+        import hh_rnn3 as h3
+        t = tag[5:]
+        conn = torch.load(os.path.join(ROOT, 'results', 'hh_rnn3', f'{t}_b1.pt'), weights_only=False,
+                          map_location='cpu')['info']['conn']
+        nets = h3.load_nets(t)
+        return lambda I: h3.run(nets, conn, I)
     return single(tag)
 
 

@@ -1,0 +1,48 @@
+{
+ "A": {
+  "config": "r8_mlp_hd_w256",
+  "src": "hh_improve",
+  "tags": [
+   "r8_mlp_hd_w256"
+  ],
+  "arch": "Markov MLP 256×3",
+  "val_n100_mean": 17.0,
+  "val_mean": 1.0,
+  "n_seed": 1
+ },
+ "B": {
+  "config": "sp_r_init",
+  "src": "hh_improve",
+  "tags": [
+   "sp_r_init",
+   "sp_r_init_s1",
+   "sp_r_init_s2"
+  ],
+  "arch": "RNN 1 個（W_hh）128×2",
+  "val_n100_mean": 15.333333333333334,
+  "val_mean": 0.9643349231584525,
+  "n_seed": 3
+ },
+ "C": {
+  "config": "m3_hdf",
+  "src": "hh_improve",
+  "tags": [
+   "m3_hdf_s0"
+  ],
+  "arch": "MLP 3 個 128×2",
+  "val_n100_mean": 16.0,
+  "val_mean": 0.9901960784313727,
+  "n_seed": 1
+ },
+ "D": {
+  "config": "p_h64_cl1",
+  "src": "hh_rnn3",
+  "tags": [
+   "p_h64_cl1"
+  ],
+  "arch": "RNN 3 個 H64（並列・直列）",
+  "val_n100_mean": 15.0,
+  "val_mean": 0.9356120826709062,
+  "n_seed": 1
+ }
+}

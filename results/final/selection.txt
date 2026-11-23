@@ -1,0 +1,72 @@
+== A 上位 6 ==
+  r8_mlp_hd_w256           Markov MLP 256×3                     検証 100% 17.00/17  平均 Γ 1.0000  seed 1
+  mm_w256_long             Markov MLP 256×3                     検証 100% 16.00/17  平均 Γ 0.9412  seed 1
+  r8_mlp_hdf               Markov MLP 128×2 + コンダクタンスの項         検証 100% 15.00/17  平均 Γ 0.9522  seed 3
+  cft_m_mm                 Markov MLP 128×2                     検証 100% 15.00/17  平均 Γ 0.9485  seed 1
+  sp_m_init                Markov MLP 128×2                     検証 100% 15.00/17  平均 Γ 0.9485  seed 1
+  r8_mlp_hd_sv05           Markov MLP 128×2                     検証 100% 14.67/17  平均 Γ 0.9387  seed 3
+== B 上位 6 ==
+  sp_r_init                RNN 1 個（W_hh）128×2                   検証 100% 15.33/17  平均 Γ 0.9643  seed 3
+  cft_r_mm                 RNN 1 個（W_hh）128×2                   検証 100% 15.00/17  平均 Γ 0.9485  seed 1
+  sp_r_scr_e01             RNN 1 個（W_hh）128×2                   検証 100% 12.00/17  平均 Γ 0.8844  seed 3
+  sp_r_scr                 RNN 1 個（W_hh）128×2                   検証 100%  9.00/17  平均 Γ 0.8757  seed 1
+== C 上位 6 ==
+  m3_hdf                   MLP 3 個 128×2                        検証 100% 16.00/17  平均 Γ 0.9902  seed 1
+  m3_v2f05d                MLP 3 個 128×2                        検証 100% 15.67/17  平均 Γ 0.9765  seed 3
+  m3_hd                    MLP 3 個 128×2                        検証 100% 15.33/17  平均 Γ 0.9523  seed 3
+  m3_base                  MLP 3 個 128×2                        検証 100% 12.33/17  平均 Γ 0.9033  seed 3
+== D 上位 6 ==
+  p_h64_cl1                RNN 3 個 H64（並列・直列）                   検証 100% 15.00/17  平均 Γ 0.9356  seed 1
+  p_gru64                  RNN 3 個 GRU64                        検証 100% 14.00/17  平均 Γ 0.9688  seed 1
+  p_h64_nowhh0             RNN 3 個 H64（並列・直列）                   検証 100% 14.00/17  平均 Γ 0.9562  seed 1
+  s_h64_ft05               RNN 3 個 H64（並列・直列）                   検証 100% 14.00/17  平均 Γ 0.9377  seed 1
+  s_gru64                  RNN 3 個 GRU64                        検証 100% 14.00/17  平均 Γ 0.9194  seed 1
+  p_h128_ft05              RNN 3 個 H128（並列・直列）                  検証 100% 14.00/17  平均 Γ 0.8808  seed 1
+{
+ "A": {
+  "config": "r8_mlp_hd_w256",
+  "src": "hh_improve",
+  "tags": [
+   "r8_mlp_hd_w256"
+  ],
+  "arch": "Markov MLP 256×3",
+  "val_n100_mean": 17.0,
+  "val_mean": 1.0,
+  "n_seed": 1
+ },
+ "B": {
+  "config": "sp_r_init",
+  "src": "hh_improve",
+  "tags": [
+   "sp_r_init",
+   "sp_r_init_s1",
+   "sp_r_init_s2"
+  ],
+  "arch": "RNN 1 個（W_hh）128×2",
+  "val_n100_mean": 15.333333333333334,
+  "val_mean": 0.9643349231584525,
+  "n_seed": 3
+ },
+ "C": {
+  "config": "m3_hdf",
+  "src": "hh_improve",
+  "tags": [
+   "m3_hdf_s0"
+  ],
+  "arch": "MLP 3 個 128×2",
+  "val_n100_mean": 16.0,
+  "val_mean": 0.9901960784313727,
+  "n_seed": 1
+ },
+ "D": {
+  "config": "p_h64_cl1",
+  "src": "hh_rnn3",
+  "tags": [
+   "p_h64_cl1"
+  ],
+  "arch": "RNN 3 個 H64（並列・直列）",
+  "val_n100_mean": 15.0,
+  "val_mean": 0.9356120826709062,
+  "n_seed": 1
+ }
+}
