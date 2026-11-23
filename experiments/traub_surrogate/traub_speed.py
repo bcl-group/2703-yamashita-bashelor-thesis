@@ -128,8 +128,8 @@ def main():
     ap.add_argument('--repeats', type=int, default=5)
     ap.add_argument('--threads', type=int, default=0)
     ap.add_argument('--tag', default='smoke')
+    ap.add_argument('--compile', action='store_true', help='step を torch.compile する（カーネルの融合。Linux + Triton）')
     a = ap.parse_args()
-    a.compile = False
     dev = torch.device(a.device)
     dtype = torch.float32
     if a.threads:
@@ -144,6 +144,8 @@ def main():
             si = make(name, mm, dev, dtype)
             if mm == 'fp32':
                 res['flops'][name] = hs.flops_per_neuron_step(si, dev, dtype)
+            if a.compile:
+                si = (si[0], torch.compile(si[1]))
             for runner in a.runner:
                 if runner == 'cudagraph' and dev.type != 'cuda':
                     continue

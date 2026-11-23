@@ -126,8 +126,11 @@ def validate(model, data, meta, split, ms, dev, dtype, n_max=30):
     s = unflat(torch.as_tensor(data['X'][idx, 0], device=dev, dtype=dtype))
     I = torch.as_tensor(data['I_nA'][idx, :N], device=dev, dtype=dtype)
     Vp, Xp = rollout(model, s, I)
-    Vt = data['V_soma'][idx, 1:N + 1]
-    Xt = data['xi_soma'][idx, 1:N + 1]
+    # 時刻 0 の値を先頭に足す（0 → dt で閾値を越えたスパイクも数えるため）。列 k は時刻 k dt
+    Vp = torch.cat([s[0][:, SOMA:SOMA + 1], Vp], 1)
+    Xp = torch.cat([s[1][:, SOMA:SOMA + 1], Xp], 1)
+    Vt = data['V_soma'][idx, :N + 1]
+    Xt = data['xi_soma'][idx, :N + 1]
     r = te.score_traces(Vt, Vp.float().cpu().numpy(), Xt, Xp.float().cpu().numpy(), meta['dt'])
     r['idx'] = idx.tolist()
     return r
@@ -142,9 +145,11 @@ def train(a):
     st = meta['stride']
     tr = np.nonzero(data['split'] == 0)[0]
     # 学習用の状態と、その時刻の電流
-    Xtr = data['X'][tr].reshape(-1, NC * 11)
+    # X[:, j] は時刻 j·st·dt の状態で、その 1 ステップには I_nA[:, j·st] を使う。最後の状態には対応する電流がないので除く
     J = data['X'].shape[1]
-    Itr = np.concatenate([data['I_nA'][tr][:, ::st], data['I_nA'][tr][:, -1:]], 1)[:, :J].reshape(-1)
+    Xtr = data['X'][tr][:, :J - 1].reshape(-1, NC * 11)
+    Itr = data['I_nA'][tr][:, ::st][:, :J - 1].reshape(-1)
+    assert len(Xtr) == len(Itr)
     pool_X = torch.as_tensor(Xtr, device=dev, dtype=torch.float64)
     pool_I = torch.as_tensor(Itr, device=dev, dtype=torch.float64)
     P64 = tt.Params(dev, torch.float64)
@@ -158,7 +163,7 @@ def train(a):
     total = a.iters + a.dagger * a.dagger_iters
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, total, eta_min=a.lr * 0.01)
     log = {'args': vars(a), 'meta': meta, 'val': []}
-    best = (-1, -1e9, -1)
+    best = (-10 ** 9, -1, -1e9, -1)
     os.makedirs(OUT, exist_ok=True)
     t0 = time.time()
     it = 0
@@ -167,9 +172,10 @@ def train(a):
             # DAgger: 学習用の軌道の電流で閉ループで回し、通った状態を足す
             nd = min(a.dagger_n, len(tr))
             pick = rng.choice(tr, nd, replace=False)
-            j0 = rng.integers(0, J - 1 - int(a.dagger_ms / meta['dt'] / st), nd)
+            Nd = int(round(a.dagger_ms / meta['dt']))
+            N_rec = data['I_nA'].shape[1]
+            j0 = rng.integers(0, (N_rec - Nd) // st + 1, nd)      # 上限は含まないので +1（末尾までちょうど取れる位置も選ぶ）
             s = unflat(torch.as_tensor(data['X'][pick, j0], device=dev, dtype=dtype))
-            Nd = int(a.dagger_ms / meta['dt'])
             I = torch.as_tensor(np.stack([data['I_nA'][p, j * st:j * st + Nd] for p, j in zip(pick, j0)]),
                                 device=dev, dtype=dtype)
             _, _, Xd, Id = rollout(model, s, I, stride=a.dagger_stride)
@@ -196,14 +202,15 @@ def train(a):
             it += 1
             if it % a.eval_every == 0 or it == total:
                 r = validate(model, data, meta, 1, a.val_ms, dev, dtype)
-                key = (r['n_gamma1'], r['gamma_mean'], it)
+                # 発散・Γ が定義できない軌道が少ないものを優先し、次に Γ = 1 の本数、平均 Γ で比べる
+                key = (-(r['n_div'] + r['n_nan']), r['n_gamma1'], r['gamma_mean'], it)
                 log['val'].append({'it': it, 'loss': float(loss.detach()), 'gamma_mean': r['gamma_mean'], 'n_gamma1': r['n_gamma1'],
                                    'gamma_burst_mean': r['gamma_burst_mean'], 'ca_err_median': r['ca_err_median'],
                                    'n_div': r['n_div'], 'sec': time.time() - t0})
                 print('it {:6d} loss {:.3e}  検証 Γ = 1: {:2d}/{}  平均 Γ {:.3f}  バースト Γ {:.3f}  χ 誤差 {:.3f}  発散 {}  ({:.0f} s)'.format(
                     it, float(loss.detach()), r['n_gamma1'], r['n'], r['gamma_mean'], r['gamma_burst_mean'],
                     r['ca_err_median'], r['n_div'], time.time() - t0), flush=True)
-                if key[:2] > best[:2]:
+                if key[:3] > best[:3]:
                     best = key
                     torch.save({'cfg': model.cfg, 'state': model.state_dict(), 'it': it},
                                os.path.join(OUT, a.tag + '.pt'))

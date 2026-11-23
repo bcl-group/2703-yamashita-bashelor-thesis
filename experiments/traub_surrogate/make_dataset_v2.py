@@ -123,7 +123,7 @@ def main():
 
     # 1. 助走（軌道ごとに長さを変える。終わった軌道は止める）
     n_warm = (rng.uniform(a.warm_min, a.warm_max, B) / DT).astype(int)
-    Iw = torch.as_tensor(np.stack([make_current(KINDS[k], n_warm.max(), rng) for k in kind]), device=dev, dtype=dtype)
+    Iw = torch.as_tensor(np.stack([make_current(KINDS[k], max(int(n_warm.max()), 1), rng) for k in kind]), device=dev, dtype=dtype)
     nw = torch.as_tensor(n_warm, device=dev)
     s = tt.init_state(B, P)
     for k in range(int(n_warm.max())):

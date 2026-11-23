@@ -70,10 +70,11 @@ def score_traces(V_true, V_pred, xi_true=None, xi_pred=None, dt=DT):
     """
     rows = []
     for b in range(V_true.shape[0]):
-        T = V_true.shape[1] * dt
+        T = (V_true.shape[1] - 1) * dt
         div = not np.all(np.isfinite(V_pred[b]))
         tt_, tp = spike_times(V_true[b], dt), spike_times(np.nan_to_num(V_pred[b], nan=-100.0), dt)
-        r = {'spikes': [len(tt_), len(tp)], 'gamma': gamma(tt_, tp, T), 'diverged': bool(div)}
+        # 発散した軌道は Γ = 0 とする（NaN を -100 mV に置き換えて「無発火どうしで Γ = 1」と数えないため）
+        r = {'spikes': [len(tt_), len(tp)], 'gamma': 0.0 if div else gamma(tt_, tp, T), 'diverged': bool(div)}
         r.update(burst_scores(tt_, tp, T))
         if xi_true is not None:
             r['ca_err'] = ca_error(xi_true[b], xi_pred[b])
@@ -81,7 +82,8 @@ def score_traces(V_true, V_pred, xi_true=None, xi_pred=None, dt=DT):
     g = np.array([r['gamma'] for r in rows], float)
     gb = np.array([r['gamma_burst'] for r in rows], float)
     out = {'rows': rows, 'gamma_mean': float(np.nanmean(g)), 'n_gamma1': int(np.sum(g > 0.999)),
-           'gamma_burst_mean': float(np.nanmean(gb)), 'n_div': int(sum(r['diverged'] for r in rows)), 'n': len(rows)}
+           'gamma_burst_mean': float(np.nanmean(gb)), 'n_div': int(sum(r['diverged'] for r in rows)),
+           'n_nan': int(np.sum(np.isnan(g))), 'n': len(rows)}   # n_nan: 予測の発火が多すぎて Γ が定義できない本数（平均から除かれる）
     if xi_true is not None:
         out['ca_err_median'] = float(np.nanmedian([r['ca_err'] for r in rows]))
     return out
