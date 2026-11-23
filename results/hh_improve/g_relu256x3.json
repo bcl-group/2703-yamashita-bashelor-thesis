@@ -1,0 +1,327 @@
+{
+"args": {
+"cmd": "single_cl",
+"tag": "g_relu256x3",
+"data": "/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/data/hh/teacher_ou.npz",
+"H": 256,
+"layers": 3,
+"iters": 0,
+"batch": 32,
+"L": 1000,
+"lr": 0.001,
+"noise": 0.0,
+"wsub": 1.0,
+"seed": 0,
+"threads": 2,
+"log_every": 200,
+"init": null,
+"device": "cuda",
+"state": true,
+"phys": false,
+"pre_iters": 50000,
+"pre_lr": 0.001,
+"pre_batch": 1024,
+"pre_sv": 2.0,
+"pre_sg": 0.02,
+"pre_rel": 0.02,
+"onpol": 1.0,
+"cell": "mlp",
+"act": "relu",
+"aux": 0.0,
+"ep_ms": 100.0,
+"seg": 500,
+"rest_ms": 20.0,
+"alpha_iters": 300,
+"eval_every": 100,
+"bank": 2048,
+"bank_every": 200
+},
+"loss": [],
+"eval": [
+[
+0,
+0,
+0.010185442965329115
+],
+[
+0,
+11,
+0.8164674653645242
+]
+],
+"best": [
+11,
+0.8164674653645242,
+0
+],
+"test": {
+"label": "g_relu256x3 (val best it 0)",
+"n100": 21,
+"mean": 0.8908197006613296,
+"gamma": 0.8787923135318364,
+"rows": [
+{
+"name": "step 10 (50-150ms)",
+"spikes": [
+7,
+7
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.9558169647375573
+},
+{
+"name": "step 5 (50-250ms)",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.09732224185328713
+},
+{
+"name": "step 30 1ms",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.03664951803902895
+},
+{
+"name": "step -5 (50-150ms)",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.3006161512483176
+},
+{
+"name": "const 2.5",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.10390137106515222
+},
+{
+"name": "const 5",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.1326873262052176
+},
+{
+"name": "const 7",
+"spikes": [
+18,
+18
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 8.240119064899474
+},
+{
+"name": "const 10",
+"spikes": [
+21,
+21
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 6.0253296697003975
+},
+{
+"name": "const 20",
+"spikes": [
+26,
+26
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 9.616632519299536
+},
+{
+"name": "ramp 0-20",
+"spikes": [
+1,
+14
+],
+"match": 0.0,
+"gamma": -0.016817195582483086,
+"rmse": 14.937875695064378
+},
+{
+"name": "ramp 0-30",
+"spikes": [
+17,
+24
+],
+"match": 0.0,
+"gamma": -0.19705872941795835,
+"rmse": 24.476026137660554
+},
+{
+"name": "sin 5Hz 5±5",
+"spikes": [
+6,
+6
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 1.973637580858969
+},
+{
+"name": "sin 10Hz 7.5±7.5",
+"spikes": [
+16,
+16
+],
+"match": 0.25,
+"gamma": 0.13990573178283905,
+"rmse": 20.96260191932065
+},
+{
+"name": "sin 50Hz 10±10",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.3558114935404407
+},
+{
+"name": "pulse 10/1ms/10ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.0604132020841523
+},
+{
+"name": "pulse 20/25ms/50ms",
+"spikes": [
+18,
+18
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.5831512430431364
+},
+{
+"name": "pulse 40/0.5ms/20ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.1471502169987986
+},
+{
+"name": "random step -5~20/20ms",
+"spikes": [
+24,
+24
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 1.5916656384363803
+},
+{
+"name": "random step 0~20/10ms",
+"spikes": [
+31,
+31
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 2.6653394381217868
+},
+{
+"name": "random pulse 5ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.955744073954798
+},
+{
+"name": "random pulse 1ms 0~40",
+"spikes": [
+6,
+6
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 0.05836396711098316
+},
+{
+"name": "OU 5±3",
+"spikes": [
+25,
+26
+],
+"match": 0.9230769230769231,
+"gamma": 0.9308771413815657,
+"rmse": 8.38497223058007
+},
+{
+"name": "OU 10±3",
+"spikes": [
+34,
+34
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.7703907427778103
+},
+{
+"name": "OU 7±5 (tau 5ms)",
+"spikes": [
+27,
+27
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.9692062620594676
+},
+{
+"name": "level+OU",
+"spikes": [
+72,
+72
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 3.561760487105554
+},
+{
+"name": "munechika train",
+"spikes": [
+85,
+84
+],
+"match": 0.9882352941176471,
+"gamma": 0.9916932036637823,
+"rmse": 2.3810667065423816
+}
+],
+"sec": 105.99335646629333
+},
+"sec": 518.43505859375
+}

@@ -1,0 +1,327 @@
+{
+"args": {
+"cmd": "single_cl",
+"tag": "g_silu128_s2",
+"data": "/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/data/hh/teacher_ou.npz",
+"H": 128,
+"layers": 2,
+"iters": 0,
+"batch": 32,
+"L": 1000,
+"lr": 0.001,
+"noise": 0.0,
+"wsub": 1.0,
+"seed": 2,
+"threads": 2,
+"log_every": 200,
+"init": null,
+"device": "cuda",
+"state": true,
+"phys": false,
+"pre_iters": 50000,
+"pre_lr": 0.001,
+"pre_batch": 1024,
+"pre_sv": 2.0,
+"pre_sg": 0.02,
+"pre_rel": 0.02,
+"onpol": 1.0,
+"cell": "mlp",
+"act": "silu",
+"aux": 0.0,
+"ep_ms": 100.0,
+"seg": 500,
+"rest_ms": 20.0,
+"alpha_iters": 300,
+"eval_every": 100,
+"bank": 2048,
+"bank_every": 200
+},
+"loss": [],
+"eval": [
+[
+0,
+0,
+0.012812796636326049
+],
+[
+0,
+12,
+0.9123998566040088
+]
+],
+"best": [
+12,
+0.9123998566040088,
+0
+],
+"test": {
+"label": "g_silu128_s2 (val best it 0)",
+"n100": 23,
+"mean": 0.9596066829098503,
+"gamma": 0.9604648215587126,
+"rows": [
+{
+"name": "step 10 (50-150ms)",
+"spikes": [
+7,
+7
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.9503097552991164
+},
+{
+"name": "step 5 (50-250ms)",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.08624742895796726
+},
+{
+"name": "step 30 1ms",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.15749711594942933
+},
+{
+"name": "step -5 (50-150ms)",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 1.6929937878596317
+},
+{
+"name": "const 2.5",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.4229687896570763
+},
+{
+"name": "const 5",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.14575069834561433
+},
+{
+"name": "const 7",
+"spikes": [
+18,
+18
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 14.00300668906056
+},
+{
+"name": "const 10",
+"spikes": [
+21,
+21
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 3.5173294573948204
+},
+{
+"name": "const 20",
+"spikes": [
+26,
+26
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 1.6420147025543839
+},
+{
+"name": "ramp 0-20",
+"spikes": [
+1,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 3.148732495180931
+},
+{
+"name": "ramp 0-30",
+"spikes": [
+17,
+17
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 16.535386867259085
+},
+{
+"name": "sin 5Hz 5±5",
+"spikes": [
+6,
+6
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 0.655543034543191
+},
+{
+"name": "sin 10Hz 7.5±7.5",
+"spikes": [
+16,
+16
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 9.940215756858109
+},
+{
+"name": "sin 50Hz 10±10",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.3203735299822377
+},
+{
+"name": "pulse 10/1ms/10ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 1.3446401579883371
+},
+{
+"name": "pulse 20/25ms/50ms",
+"spikes": [
+18,
+18
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.31902477122691886
+},
+{
+"name": "pulse 40/0.5ms/20ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.280115254866765
+},
+{
+"name": "random step -5~20/20ms",
+"spikes": [
+24,
+24
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.6627220729597411
+},
+{
+"name": "random step 0~20/10ms",
+"spikes": [
+31,
+31
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 1.9254590883897345
+},
+{
+"name": "random pulse 5ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 6.253877014541704
+},
+{
+"name": "random pulse 1ms 0~40",
+"spikes": [
+6,
+6
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 0.4502847140187561
+},
+{
+"name": "OU 5±3",
+"spikes": [
+25,
+26
+],
+"match": 0.9615384615384616,
+"gamma": 0.9803921568627451,
+"rmse": 5.093168336783069
+},
+{
+"name": "OU 10±3",
+"spikes": [
+34,
+34
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 2.3845926236361246
+},
+{
+"name": "OU 7±5 (tau 5ms)",
+"spikes": [
+27,
+27
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 2.1365619439475987
+},
+{
+"name": "level+OU",
+"spikes": [
+72,
+72
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 3.2000616021557047
+},
+{
+"name": "munechika train",
+"spikes": [
+85,
+84
+],
+"match": 0.9882352941176471,
+"gamma": 0.9916932036637823,
+"rmse": 3.0055592697669438
+}
+],
+"sec": 86.85866236686707
+},
+"sec": 453.46127581596375
+}

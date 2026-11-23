@@ -1,0 +1,327 @@
+{
+"args": {
+"cmd": "single_cl",
+"tag": "g_silu128_s1",
+"data": "/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/data/hh/teacher_ou.npz",
+"H": 128,
+"layers": 2,
+"iters": 0,
+"batch": 32,
+"L": 1000,
+"lr": 0.001,
+"noise": 0.0,
+"wsub": 1.0,
+"seed": 1,
+"threads": 2,
+"log_every": 200,
+"init": null,
+"device": "cuda",
+"state": true,
+"phys": false,
+"pre_iters": 50000,
+"pre_lr": 0.001,
+"pre_batch": 1024,
+"pre_sv": 2.0,
+"pre_sg": 0.02,
+"pre_rel": 0.02,
+"onpol": 1.0,
+"cell": "mlp",
+"act": "silu",
+"aux": 0.0,
+"ep_ms": 100.0,
+"seg": 500,
+"rest_ms": 20.0,
+"alpha_iters": 300,
+"eval_every": 100,
+"bank": 2048,
+"bank_every": 200
+},
+"loss": [],
+"eval": [
+[
+0,
+1,
+0.058823529411764705
+],
+[
+0,
+15,
+0.9117647058823529
+]
+],
+"best": [
+15,
+0.9117647058823529,
+0
+],
+"test": {
+"label": "g_silu128_s1 (val best it 0)",
+"n100": 23,
+"mean": 0.9215976331360947,
+"gamma": 0.9153386776340324,
+"rows": [
+{
+"name": "step 10 (50-150ms)",
+"spikes": [
+7,
+7
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 3.1216528303617337
+},
+{
+"name": "step 5 (50-250ms)",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.14301301318185994
+},
+{
+"name": "step 30 1ms",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.14466523236493675
+},
+{
+"name": "step -5 (50-150ms)",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 1.638664156464959
+},
+{
+"name": "const 2.5",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.37806812135484114
+},
+{
+"name": "const 5",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.13989112529083292
+},
+{
+"name": "const 7",
+"spikes": [
+18,
+18
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 14.323844793589505
+},
+{
+"name": "const 10",
+"spikes": [
+21,
+21
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 14.423147227848432
+},
+{
+"name": "const 20",
+"spikes": [
+26,
+26
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 9.58668996265711
+},
+{
+"name": "ramp 0-20",
+"spikes": [
+1,
+3
+],
+"match": 0.0,
+"gamma": -0.012295333920777066,
+"rmse": 7.34270418073646
+},
+{
+"name": "ramp 0-30",
+"spikes": [
+17,
+19
+],
+"match": 0.0,
+"gamma": -0.16929120445712817,
+"rmse": 23.58852078842415
+},
+{
+"name": "sin 5Hz 5±5",
+"spikes": [
+6,
+6
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 1.7162626551631097
+},
+{
+"name": "sin 10Hz 7.5±7.5",
+"spikes": [
+16,
+16
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 16.67852301757512
+},
+{
+"name": "sin 50Hz 10±10",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.2156081267018576
+},
+{
+"name": "pulse 10/1ms/10ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.5630271275999339
+},
+{
+"name": "pulse 20/25ms/50ms",
+"spikes": [
+18,
+18
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.8576974781771821
+},
+{
+"name": "pulse 40/0.5ms/20ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.2519326514541478
+},
+{
+"name": "random step -5~20/20ms",
+"spikes": [
+24,
+24
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 1.4378004739464687
+},
+{
+"name": "random step 0~20/10ms",
+"spikes": [
+31,
+31
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 1.1839888658265676
+},
+{
+"name": "random pulse 5ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 4.2347619185162335
+},
+{
+"name": "random pulse 1ms 0~40",
+"spikes": [
+6,
+6
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 0.2092507265377357
+},
+{
+"name": "OU 5±3",
+"spikes": [
+25,
+26
+],
+"match": 0.9615384615384616,
+"gamma": 0.9803921568627451,
+"rmse": 5.106498064587454
+},
+{
+"name": "OU 10±3",
+"spikes": [
+34,
+34
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 1.820866229712743
+},
+{
+"name": "OU 7±5 (tau 5ms)",
+"spikes": [
+27,
+27
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 1.4979799061558416
+},
+{
+"name": "level+OU",
+"spikes": [
+72,
+72
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 4.947259310662269
+},
+{
+"name": "munechika train",
+"spikes": [
+85,
+85
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 2.5277186782540753
+}
+],
+"sec": 84.63713598251343
+},
+"sec": 450.700181722641
+}

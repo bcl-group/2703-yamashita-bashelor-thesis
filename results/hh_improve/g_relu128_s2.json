@@ -1,0 +1,327 @@
+{
+"args": {
+"cmd": "single_cl",
+"tag": "g_relu128_s2",
+"data": "/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/data/hh/teacher_ou.npz",
+"H": 128,
+"layers": 2,
+"iters": 0,
+"batch": 32,
+"L": 1000,
+"lr": 0.001,
+"noise": 0.0,
+"wsub": 1.0,
+"seed": 2,
+"threads": 2,
+"log_every": 200,
+"init": null,
+"device": "cuda",
+"state": true,
+"phys": false,
+"pre_iters": 50000,
+"pre_lr": 0.001,
+"pre_batch": 1024,
+"pre_sv": 2.0,
+"pre_sg": 0.02,
+"pre_rel": 0.02,
+"onpol": 1.0,
+"cell": "mlp",
+"act": "relu",
+"aux": 0.0,
+"ep_ms": 100.0,
+"seg": 500,
+"rest_ms": 20.0,
+"alpha_iters": 300,
+"eval_every": 100,
+"bank": 2048,
+"bank_every": 200
+},
+"loss": [],
+"eval": [
+[
+0,
+0,
+0.010711956300191594
+],
+[
+0,
+7,
+0.667678633247291
+]
+],
+"best": [
+7,
+0.667678633247291,
+0
+],
+"test": {
+"label": "g_relu128_s2 (val best it 0)",
+"n100": 19,
+"mean": 0.8861149785357931,
+"gamma": 0.8687633092740523,
+"rows": [
+{
+"name": "step 10 (50-150ms)",
+"spikes": [
+7,
+7
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 4.811926468539356
+},
+{
+"name": "step 5 (50-250ms)",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.33881547092749187
+},
+{
+"name": "step 30 1ms",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.04657523158873815
+},
+{
+"name": "step -5 (50-150ms)",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.30305368855046105
+},
+{
+"name": "const 2.5",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.2308133451757484
+},
+{
+"name": "const 5",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.23786283053030188
+},
+{
+"name": "const 7",
+"spikes": [
+18,
+17
+],
+"match": 0.2777777777777778,
+"gamma": 0.06797091007617326,
+"rmse": 30.19712547545675
+},
+{
+"name": "const 10",
+"spikes": [
+21,
+21
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 19.727638622375448
+},
+{
+"name": "const 20",
+"spikes": [
+26,
+26
+],
+"match": 0.9615384615384616,
+"gamma": 0.941129256987209,
+"rmse": 24.69936806274441
+},
+{
+"name": "ramp 0-20",
+"spikes": [
+1,
+16
+],
+"match": 0.0,
+"gamma": -0.017269689132103676,
+"rmse": 15.996015591567067
+},
+{
+"name": "ramp 0-30",
+"spikes": [
+17,
+25
+],
+"match": 0.0,
+"gamma": -0.20238601203125317,
+"rmse": 25.91460585260956
+},
+{
+"name": "sin 5Hz 5±5",
+"spikes": [
+6,
+6
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 6.431950153618387
+},
+{
+"name": "sin 10Hz 7.5±7.5",
+"spikes": [
+16,
+16
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 18.810306313550427
+},
+{
+"name": "sin 50Hz 10±10",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.15234093208330093
+},
+{
+"name": "pulse 10/1ms/10ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.5731841263859492
+},
+{
+"name": "pulse 20/25ms/50ms",
+"spikes": [
+18,
+18
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 2.313230613161148
+},
+{
+"name": "pulse 40/0.5ms/20ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.5284930239917982
+},
+{
+"name": "random step -5~20/20ms",
+"spikes": [
+24,
+24
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 7.922325484583593
+},
+{
+"name": "random step 0~20/10ms",
+"spikes": [
+31,
+31
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 6.504944117722321
+},
+{
+"name": "random pulse 5ms",
+"spikes": [
+15,
+15
+],
+"match": 0.9333333333333333,
+"gamma": 0.9242422176261582,
+"rmse": 7.0172156585370615
+},
+{
+"name": "random pulse 1ms 0~40",
+"spikes": [
+6,
+6
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 0.18554519271673245
+},
+{
+"name": "OU 5±3",
+"spikes": [
+25,
+25
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 5.17005890268351
+},
+{
+"name": "OU 10±3",
+"spikes": [
+34,
+34
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 5.0750034101495425
+},
+{
+"name": "OU 7±5 (tau 5ms)",
+"spikes": [
+27,
+27
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 2.9673766034167963
+},
+{
+"name": "level+OU",
+"spikes": [
+72,
+71
+],
+"match": 0.9722222222222222,
+"gamma": 0.9679257738588177,
+"rmse": 10.775847571952578
+},
+{
+"name": "munechika train",
+"spikes": [
+85,
+79
+],
+"match": 0.8941176470588236,
+"gamma": 0.9062335837403587,
+"rmse": 10.414003480845196
+}
+],
+"sec": 86.65685606002808
+},
+"sec": 454.478924036026
+}

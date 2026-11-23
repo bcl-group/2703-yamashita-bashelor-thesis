@@ -1,0 +1,327 @@
+{
+"args": {
+"cmd": "single_cl",
+"tag": "g_silu128_200k",
+"data": "/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/data/hh/teacher_ou.npz",
+"H": 128,
+"layers": 2,
+"iters": 0,
+"batch": 32,
+"L": 1000,
+"lr": 0.001,
+"noise": 0.0,
+"wsub": 1.0,
+"seed": 0,
+"threads": 2,
+"log_every": 200,
+"init": null,
+"device": "cuda",
+"state": true,
+"phys": false,
+"pre_iters": 200000,
+"pre_lr": 0.001,
+"pre_batch": 1024,
+"pre_sv": 2.0,
+"pre_sg": 0.02,
+"pre_rel": 0.02,
+"onpol": 1.0,
+"cell": "mlp",
+"act": "silu",
+"aux": 0.0,
+"ep_ms": 100.0,
+"seg": 500,
+"rest_ms": 20.0,
+"alpha_iters": 300,
+"eval_every": 100,
+"bank": 2048,
+"bank_every": 200
+},
+"loss": [],
+"eval": [
+[
+0,
+1,
+0.058823529411764705
+],
+[
+0,
+10,
+0.8456188516742149
+]
+],
+"best": [
+10,
+0.8456188516742149,
+0
+],
+"test": {
+"label": "g_silu128_200k (val best it 0)",
+"n100": 19,
+"mean": 0.8732983331399621,
+"gamma": 0.8586067842549411,
+"rows": [
+{
+"name": "step 10 (50-150ms)",
+"spikes": [
+7,
+7
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 3.4314874057686664
+},
+{
+"name": "step 5 (50-250ms)",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.07142233232642992
+},
+{
+"name": "step 30 1ms",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.02181980149235813
+},
+{
+"name": "step -5 (50-150ms)",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.41928119081883897
+},
+{
+"name": "const 2.5",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.39924352565840987
+},
+{
+"name": "const 5",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.07555081174343936
+},
+{
+"name": "const 7",
+"spikes": [
+18,
+18
+],
+"match": 0.6111111111111112,
+"gamma": 0.4882987070583018,
+"rmse": 27.07514654963554
+},
+{
+"name": "const 10",
+"spikes": [
+21,
+21
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 15.400068258815951
+},
+{
+"name": "const 20",
+"spikes": [
+26,
+26
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 7.367686560509206
+},
+{
+"name": "ramp 0-20",
+"spikes": [
+1,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 3.279914972760435
+},
+{
+"name": "ramp 0-30",
+"spikes": [
+17,
+16
+],
+"match": 0.0,
+"gamma": -0.1512406108841807,
+"rmse": 22.838620875342095
+},
+{
+"name": "sin 5Hz 5±5",
+"spikes": [
+6,
+6
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 2.976864583659134
+},
+{
+"name": "sin 10Hz 7.5±7.5",
+"spikes": [
+16,
+16
+],
+"match": 0.25,
+"gamma": 0.13990573178283905,
+"rmse": 20.46330222329482
+},
+{
+"name": "sin 50Hz 10±10",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.18563547993261392
+},
+{
+"name": "pulse 10/1ms/10ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.309834676764973
+},
+{
+"name": "pulse 20/25ms/50ms",
+"spikes": [
+18,
+18
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.605573908796234
+},
+{
+"name": "pulse 40/0.5ms/20ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.16246966031454763
+},
+{
+"name": "random step -5~20/20ms",
+"spikes": [
+24,
+24
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 2.454513397674606
+},
+{
+"name": "random step 0~20/10ms",
+"spikes": [
+31,
+31
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 2.1233316024345883
+},
+{
+"name": "random pulse 5ms",
+"spikes": [
+15,
+15
+],
+"match": 0.9333333333333333,
+"gamma": 0.9242422176261582,
+"rmse": 6.705138098251501
+},
+{
+"name": "random pulse 1ms 0~40",
+"spikes": [
+6,
+6
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 0.07910674287767448
+},
+{
+"name": "OU 5±3",
+"spikes": [
+25,
+26
+],
+"match": 0.9230769230769231,
+"gamma": 0.9308771413815657,
+"rmse": 8.47112761288023
+},
+{
+"name": "OU 10±3",
+"spikes": [
+34,
+34
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 2.309418744427259
+},
+{
+"name": "OU 7±5 (tau 5ms)",
+"spikes": [
+27,
+27
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 1.5115901783931076
+},
+{
+"name": "level+OU",
+"spikes": [
+72,
+72
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 3.9312597087834265
+},
+{
+"name": "munechika train",
+"spikes": [
+85,
+84
+],
+"match": 0.9882352941176471,
+"gamma": 0.9916932036637823,
+"rmse": 4.530028916439618
+}
+],
+"sec": 82.24660801887512
+},
+"sec": 1211.3873643875122
+}
