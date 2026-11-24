@@ -1,0 +1,29 @@
+nohup: ignoring input
+start 2026-11-23 14:17:10
+在庫を作成: /mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/results/hh_rnn3/pools/norm_1024x300ms_s0.pt (96 s)
+在庫を作成: /mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/results/hh_rnn3/pools/hard_256x1000ms_s0.pt (233 s)
+在庫を作成済み 2026-11-23 14:22:38
+=== jobs_colab_r1.txt: 2026-11-23 14:22:38 ===
+done p_h64_nowhh0: [p_h64_nowhh0 (val best it 12000)] 100%: 19/26  平均 0.908  Γ 0.897  (210 s)  不一致: const 20 54%, ramp 0-20 33%,
+done p_h64: [p_h64 (val best it 20000)] 100%: 17/26  平均 0.891  Γ 0.878  (209 s)  不一致: const 7 33%, const 10 67%, ramp 0-2
+done p_h128: [p_h128 (val best it 12000)] 100%: 18/26  平均 0.901  Γ 0.883  (218 s)  不一致: const 7 44%, const 20 62%, ramp 0-
+done p_init: [p_init (val best it 20000)] 100%: 19/26  平均 0.909  Γ 0.897  (202 s)  不一致: const 20 65%, ramp 0-20 0%, ramp 0
+done s_h64: [s_h64 (val best it 12000)] 100%: 22/26  平均 0.915  Γ 0.907  (189 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, OU 5±3
+done s_h128: [s_h128 (val best it 16000)] 100%: 16/26  平均 0.833  Γ 0.812  (198 s)  不一致: const 2.5 0%, const 7 22%, const 1
+done s_h64_nowhh0: [s_h64_nowhh0 (val best it 16000)] 100%: 21/26  平均 0.917  Γ 0.910  (188 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, 
+done p_gru64: [p_gru64 (val best it 16000)] 100%: 21/26  平均 0.916  Γ 0.909  (312 s)  不一致: ramp 0-20 0%, ramp 0-30 6%, rando
+done s_gru64: [s_gru64 (val best it 20000)] 100%: 21/26  平均 0.921  Γ 0.915  (322 s)  不一致: ramp 0-20 0%, ramp 0-30 18%, rand
+=== jobs_colab_r2.txt: 2026-11-23 16:09:08 ===
+done s_h64_gm: [s_h64_gm (val best it 20000)] 100%: 18/26  平均 0.924  Γ 0.918  (195 s)  不一致: const 7 33%, const 10 71%, ramp 
+done s_h64_gm_cl05: [s_h64_gm_cl05 (val best it 16000)] 100%: 20/26  平均 0.909  Γ 0.900  (204 s)  不一致: const 7 89%, ramp 0-20 0%, 
+done p_h64_cl05: [p_h64_cl05 (val best it 12000)] 100%: 22/26  平均 0.956  Γ 0.957  (208 s)  不一致: ramp 0-20 0%, ramp 0-30 94%, O
+done s_h64_cl05: [s_h64_cl05 (val best it 12000)] 100%: 18/26  平均 0.900  Γ 0.886  (204 s)  不一致: const 20 54%, ramp 0-20 0%, ra
+done p_h64_ft0: [p_h64_ft0 (val best it 1000)] 100%: 20/26  平均 0.929  Γ 0.924  (191 s)  不一致: const 7 67%, ramp 0-20 0%, ramp 
+done s_h64_ft0: [s_h64_ft0 (val best it 0)] 100%: 22/26  平均 0.915  Γ 0.907  (194 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, OU 5±3
+done p_h64_cl1: [p_h64_cl1 (val best it 16000)] 100%: 18/26  平均 0.907  Γ 0.904  (192 s)  不一致: ramp 0-20 0%, ramp 0-30 76%, si
+done p_h64_ft05: [p_h64_ft05 (val best it 2250)] 100%: 21/26  平均 0.891  Γ 0.879  (198 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, sin
+done s_h64_ft05: [s_h64_ft05 (val best it 750)] 100%: 23/26  平均 0.922  Γ 0.916  (188 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, OU 5
+done s_h64_ftgm05: [s_h64_ftgm05 (val best it 250)] 100%: 21/26  平均 0.936  Γ 0.940  (190 s)  不一致: ramp 0-20 33%, ramp 0-30 89%, 
+done p_h128_ft05: [p_h128_ft05 (val best it 1500)] 100%: 22/26  平均 0.950  Γ 0.952  (202 s)  不一致: ramp 0-20 0%, ramp 0-30 85%, r
+done s_h128_ft05: [s_h128_ft05 (val best it 1250)] 100%: 22/26  平均 0.952  Γ 0.953  (198 s)  不一致: ramp 0-20 0%, ramp 0-30 85%, r
+all done 2026-11-23 18:37:07

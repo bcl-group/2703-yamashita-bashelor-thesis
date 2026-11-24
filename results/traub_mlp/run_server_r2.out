@@ -1,0 +1,22 @@
+nohup: ignoring input
+t_mlp256x3_dag [val]: Γ = 1 0/30  平均 Γ 0.485  バースト Γ 0.647  χ 誤差 0.453  発散 0
+r2_256x3_d8 [val]: Γ = 1 0/30  平均 Γ 0.356  バースト Γ 0.525  χ 誤差 0.521  発散 0
+r2_256x3_d8_nz [val]: Γ = 1 1/30  平均 Γ 0.702  バースト Γ 0.834  χ 誤差 0.280  発散 0
+r2_512x3_d8 [val]: Γ = 1 1/30  平均 Γ 0.425  バースト Γ 0.612  χ 誤差 0.481  発散 0
+[hh-serial 045990d] Traub の学習 2 回目: DAgger 8 回・ノイズ・幅 512（学内サーバ、自動で commit）
+ 10 files changed, 3488 insertions(+)
+ create mode 100644 results/traub_mlp/r2_256x3_d8.json
+ create mode 100644 results/traub_mlp/r2_256x3_d8.pt
+ create mode 100644 results/traub_mlp/r2_256x3_d8_nz.json
+ create mode 100644 results/traub_mlp/r2_256x3_d8_nz.pt
+ create mode 100644 results/traub_mlp/r2_256x3_d8_nz_val.json
+ create mode 100644 results/traub_mlp/r2_256x3_d8_val.json
+ create mode 100644 results/traub_mlp/r2_512x3_d8.json
+ create mode 100644 results/traub_mlp/r2_512x3_d8.pt
+ create mode 100644 results/traub_mlp/r2_512x3_d8_val.json
+ create mode 100644 results/traub_mlp/t_mlp256x3_dag_val.json
+From github.com:bcl-group/2703-yamashita-bashelor-thesis
+ * branch            hh-serial  -> FETCH_HEAD
+Current branch hh-serial is up to date.
+To github.com:bcl-group/2703-yamashita-bashelor-thesis.git
+   1b8dac7..045990d  hh-serial -> hh-serial

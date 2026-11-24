@@ -1,0 +1,22 @@
+nohup: ignoring input
+start 2026-11-24 09:32:51  GPU 0  並列 4
+index, name, memory.used [MiB], memory.total [MiB], utilization.gpu [%]
+0, Tesla V100-PCIE-32GB, 634 MiB, 32768 MiB, 93 %
+1, Tesla V100-PCIE-32GB, 29448 MiB, 32768 MiB, 0 %
+在庫を作成: /mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/results/hh_rnn3/pools/hard_128x3000ms_s0.pt (416 s)
+在庫を作成: /mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/results/hh_rnn3/pools/hard_128x3000ms_s1.pt (409 s)
+在庫を作成: /mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/results/hh_rnn3/pools/hard_128x3000ms_s2.pt (429 s)
+done eq_d_h64_s0 14:21:43: [eq_d_h64_s0 (val best it 54000)] 100%: 22/26  平均 0.918  Γ 0.911  (268 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, level+OU 88%, munechika train 9
+done eq_d_h64_s2 14:23:12: [eq_d_h64_s2 (val best it 54000)] 100%: 20/26  平均 0.876  Γ 0.862  (262 s)  不一致: const 7 61%, ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 
+done eq_d_h128_s0 14:28:43: [eq_d_h128_s0 (val best it 60000)] 100%: 20/26  平均 0.924  Γ 0.921  (271 s)  不一致: ramp 0-20 0%, ramp 0-30 88%, sin 10Hz 7.5±7.5 25%, random
+done eq_d_h64_s1 14:29:52: [eq_d_h64_s1 (val best it 60000)] 100%: 23/26  平均 0.921  Γ 0.914  (268 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, random pulse 5ms 93%
+done eq_b_s1 16:05:55: [eq_b_s1 (val best it 15000)] 100%: 23/26  平均 0.957  Γ 0.956  (105 s)  不一致: ramp 0-20 0%, random pulse 5ms 93%, level+OU 94%
+done eq_b_s0 16:06:48: [eq_b_s0 (val best it 0)] 100%: 25/26  平均 0.962  Γ 0.955  (105 s)  不一致: ramp 0-30 0%
+done eq_d_h128_s1 17:21:43: [eq_d_h128_s1 (val best it 60000)] 100%: 21/26  平均 0.875  Γ 0.859  (196 s)  不一致: const 7 50%, ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5
+done eq_d_h128_s2 17:22:32: [eq_d_h128_s2 (val best it 60000)] 100%: 22/26  平均 0.920  Γ 0.914  (199 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, random pulse 5ms 93%, munechik
+done eq_b0_s0 17:36:53: [eq_b0_s0 (val best it 0)] 100%: 25/26  平均 0.962  Γ 0.955  (90 s)  不一致: ramp 0-30 0%
+done eq_b_s2 17:40:36: [eq_b_s2 (val best it 15000)] 100%: 23/26  平均 0.961  Γ 0.955  (103 s)  不一致: ramp 0-30 24%, random pulse 5ms 93%, OU 5±3 81%
+done eq_b0_s1 18:52:39: [eq_b0_s1 (val best it 15000)] 100%: 23/26  平均 0.921  Γ 0.914  (93 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, random pulse 5ms 93%
+done eq_b0_s2 18:53:26: [eq_b0_s2 (val best it 15000)] 100%: 22/26  平均 0.913  Γ 0.906  (86 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, random pulse 5ms 93%, OU 5±3 81%
+commit するファイル: 52 個
+all done 2026-11-24 18:53:36

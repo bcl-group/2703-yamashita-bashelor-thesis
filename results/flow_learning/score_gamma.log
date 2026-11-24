@@ -1,0 +1,292 @@
+nohup: ignoring input
+=== hhfs_20261112_201006_8b957fe684c3486da75e930f0e948af9 ===
+                  step: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 7.6 mV
+              constant: spikes  26/ 26  一致率 1.000  Γ 1.000  RMSE 15.0 mV
+                  ramp: spikes  24/ 24  一致率 1.000  Γ 1.000  RMSE 16.7 mV
+                   sin: spikes  24/ 24  一致率 1.000  Γ 1.000  RMSE 7.4 mV
+           pulse train: spikes  15/ 15  一致率 0.667  Γ 0.645  RMSE 14.5 mV
+          random pulse: spikes  27/ 26  一致率 0.852  Γ 0.850  RMSE 14.5 mV
+   random timing pulse: spikes   3/  3  一致率 1.000  Γ 1.000  RMSE 4.2 mV
+               paper 0: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 11.6 mV
+               paper 1: spikes  25/ 24  一致率 0.960  Γ 0.975  RMSE 7.8 mV
+               paper 2: spikes  20/ 20  一致率 1.000  Γ 1.000  RMSE 7.4 mV
+               paper 3: spikes  31/ 31  一致率 0.000  Γ -0.142  RMSE 22.9 mV
+               paper 4: spikes  12/ 12  一致率 0.583  Γ 0.562  RMSE 12.5 mV
+               paper 5: spikes  14/ 13  一致率 0.786  Γ 0.803  RMSE 11.4 mV
+               paper 6: spikes  26/ 22  一致率 0.846  Γ 0.901  RMSE 9.6 mV
+               paper 7: spikes  22/ 19  一致率 0.727  Γ 0.756  RMSE 15.0 mV
+               paper 8: spikes  22/ 22  一致率 1.000  Γ 1.000  RMSE 7.3 mV
+               paper 9: spikes  17/ 17  一致率 1.000  Γ 1.000  RMSE 8.1 mV
+              paper 10: spikes  26/ 26  一致率 1.000  Γ 1.000  RMSE 5.1 mV
+              paper 11: spikes  22/ 22  一致率 1.000  Γ 1.000  RMSE 7.3 mV
+              paper 12: spikes  28/ 27  一致率 0.679  Γ 0.651  RMSE 19.3 mV
+              paper 13: spikes  25/ 24  一致率 0.800  Γ 0.795  RMSE 13.5 mV
+              paper 14: spikes  28/ 28  一致率 1.000  Γ 1.000  RMSE 9.7 mV
+              paper 15: spikes  33/ 33  一致率 1.000  Γ 1.000  RMSE 7.4 mV
+              paper 16: spikes  17/ 17  一致率 1.000  Γ 1.000  RMSE 8.3 mV
+              paper 17: spikes  22/ 23  一致率 0.652  Γ 0.635  RMSE 12.6 mV
+              paper 18: spikes  15/ 14  一致率 0.933  Γ 0.961  RMSE 9.2 mV
+              paper 19: spikes  21/ 19  一致率 0.857  Γ 0.888  RMSE 15.8 mV
+[hhfs_20261112_201006_8b957fe684c3486da75e930f0e948af9] current_py: 100% 5/7  平均 0.931  Γ 0.928  |  paper: 100% 9/20  平均 0.841  Γ 0.839
+=== hhfs_20261113_024114_68054ad2207c4888a49f2b802353f4fd ===
+                  step: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 6.7 mV
+              constant: spikes  26/ 26  一致率 1.000  Γ 1.000  RMSE 8.8 mV
+                  ramp: spikes  24/ 24  一致率 1.000  Γ 1.000  RMSE 11.9 mV
+                   sin: spikes  24/ 24  一致率 1.000  Γ 1.000  RMSE 10.5 mV
+           pulse train: spikes  15/ 10  一致率 0.667  Γ 0.783  RMSE 11.7 mV
+          random pulse: spikes  27/ 26  一致率 0.852  Γ 0.850  RMSE 14.8 mV
+   random timing pulse: spikes   3/  3  一致率 1.000  Γ 1.000  RMSE 4.4 mV
+               paper 0: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 8.8 mV
+               paper 1: spikes  25/ 24  一致率 0.960  Γ 0.975  RMSE 8.6 mV
+               paper 2: spikes  20/ 20  一致率 1.000  Γ 1.000  RMSE 5.2 mV
+               paper 3: spikes  31/ 32  一致率 0.000  Γ -0.144  RMSE 22.4 mV
+               paper 4: spikes  12/ 12  一致率 0.583  Γ 0.562  RMSE 10.5 mV
+               paper 5: spikes  14/ 13  一致率 0.571  Γ 0.568  RMSE 15.1 mV
+               paper 6: spikes  26/ 24  一致率 0.731  Γ 0.730  RMSE 10.9 mV
+               paper 7: spikes  22/ 21  一致率 0.909  Γ 0.922  RMSE 11.2 mV
+               paper 8: spikes  22/ 21  一致率 0.955  Γ 0.972  RMSE 5.8 mV
+               paper 9: spikes  17/ 17  一致率 0.882  Γ 0.874  RMSE 9.8 mV
+              paper 10: spikes  26/ 26  一致率 1.000  Γ 1.000  RMSE 6.8 mV
+              paper 11: spikes  22/ 22  一致率 1.000  Γ 1.000  RMSE 5.3 mV
+              paper 12: spikes  28/ 28  一致率 0.679  Γ 0.638  RMSE 18.6 mV
+              paper 13: spikes  25/ 24  一致率 0.800  Γ 0.795  RMSE 12.0 mV
+              paper 14: spikes  28/ 29  一致率 0.931  Γ 0.943  RMSE 10.5 mV
+              paper 15: spikes  33/ 36  一致率 0.917  Γ 0.957  RMSE 12.3 mV
+              paper 16: spikes  17/ 18  一致率 0.944  Γ 0.971  RMSE 7.9 mV
+              paper 17: spikes  22/ 22  一致率 1.000  Γ 1.000  RMSE 7.8 mV
+              paper 18: spikes  15/ 14  一致率 0.933  Γ 0.961  RMSE 9.3 mV
+              paper 19: spikes  21/ 18  一致率 0.857  Γ 0.911  RMSE 14.7 mV
+[hhfs_20261113_024114_68054ad2207c4888a49f2b802353f4fd] current_py: 100% 5/7  平均 0.931  Γ 0.948  |  paper: 100% 5/20  平均 0.833  Γ 0.832
+=== hhfs_20261113_101734_09e6e631db584159a1729ae5045b5bd2 ===
+                  step: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 5.5 mV
+              constant: spikes  26/ 26  一致率 0.577  Γ 0.528  RMSE 15.9 mV
+                  ramp: spikes  24/ 23  一致率 0.958  Γ 0.974  RMSE 10.7 mV
+                   sin: spikes  24/ 24  一致率 1.000  Γ 1.000  RMSE 9.6 mV
+           pulse train: spikes  15/ 10  一致率 0.667  Γ 0.783  RMSE 14.2 mV
+          random pulse: spikes  27/ 27  一致率 0.778  Γ 0.751  RMSE 15.0 mV
+   random timing pulse: spikes   3/  3  一致率 1.000  Γ 1.000  RMSE 2.9 mV
+               paper 0: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 8.9 mV
+               paper 1: spikes  25/ 24  一致率 0.960  Γ 0.975  RMSE 7.7 mV
+               paper 2: spikes  20/ 20  一致率 1.000  Γ 1.000  RMSE 8.8 mV
+               paper 3: spikes  31/ 31  一致率 0.000  Γ -0.142  RMSE 22.0 mV
+               paper 4: spikes  12/  9  一致率 0.500  Γ 0.550  RMSE 11.8 mV
+               paper 5: spikes  14/ 13  一致率 0.286  Γ 0.256  RMSE 12.8 mV
+               paper 6: spikes  26/ 23  一致率 0.731  Γ 0.747  RMSE 12.3 mV
+               paper 7: spikes  22/ 20  一致率 0.727  Γ 0.737  RMSE 12.8 mV
+               paper 8: spikes  22/ 21  一致率 0.955  Γ 0.972  RMSE 7.8 mV
+               paper 9: spikes  17/ 15  一致率 0.529  Γ 0.531  RMSE 12.6 mV
+              paper 10: spikes  26/ 26  一致率 1.000  Γ 1.000  RMSE 6.7 mV
+              paper 11: spikes  22/ 22  一致率 1.000  Γ 1.000  RMSE 8.6 mV
+              paper 12: spikes  28/ 26  一致率 0.107  Γ 0.004  RMSE 20.2 mV
+              paper 13: spikes  25/ 24  一致率 0.800  Γ 0.795  RMSE 12.9 mV
+              paper 14: spikes  28/ 28  一致率 1.000  Γ 1.000  RMSE 7.6 mV
+              paper 15: spikes  33/ 33  一致率 1.000  Γ 1.000  RMSE 11.1 mV
+              paper 16: spikes  17/ 17  一致率 1.000  Γ 1.000  RMSE 6.3 mV
+              paper 17: spikes  22/ 22  一致率 0.682  Γ 0.651  RMSE 12.2 mV
+              paper 18: spikes  15/ 14  一致率 0.933  Γ 0.961  RMSE 8.0 mV
+              paper 19: spikes  21/ 18  一致率 0.476  Γ 0.469  RMSE 13.6 mV
+[hhfs_20261113_101734_09e6e631db584159a1729ae5045b5bd2] current_py: 100% 3/7  平均 0.854  Γ 0.862  |  paper: 100% 7/20  平均 0.734  Γ 0.725
+=== hhfs_20261113_163923_827b55aba40b48ef810816d27e75bb74 ===
+                  step: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 4.9 mV
+              constant: spikes  26/ 26  一致率 1.000  Γ 1.000  RMSE 13.0 mV
+                  ramp: spikes  24/ 24  一致率 1.000  Γ 1.000  RMSE 6.9 mV
+                   sin: spikes  24/ 24  一致率 1.000  Γ 1.000  RMSE 5.9 mV
+           pulse train: spikes  15/ 10  一致率 0.667  Γ 0.783  RMSE 11.4 mV
+          random pulse: spikes  27/ 26  一致率 0.926  Γ 0.935  RMSE 10.7 mV
+   random timing pulse: spikes   3/  3  一致率 1.000  Γ 1.000  RMSE 3.7 mV
+               paper 0: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 6.5 mV
+               paper 1: spikes  25/ 24  一致率 0.920  Γ 0.930  RMSE 10.5 mV
+               paper 2: spikes  20/ 20  一致率 1.000  Γ 1.000  RMSE 5.0 mV
+               paper 3: spikes  31/ 31  一致率 0.000  Γ -0.142  RMSE 22.4 mV
+               paper 4: spikes  12/ 12  一致率 0.583  Γ 0.562  RMSE 10.5 mV
+               paper 5: spikes  14/ 14  一致率 0.857  Γ 0.849  RMSE 9.6 mV
+               paper 6: spikes  26/ 24  一致率 0.731  Γ 0.730  RMSE 11.3 mV
+               paper 7: spikes  22/ 21  一致率 0.909  Γ 0.922  RMSE 11.1 mV
+               paper 8: spikes  22/ 21  一致率 0.955  Γ 0.972  RMSE 6.3 mV
+               paper 9: spikes  17/ 17  一致率 0.882  Γ 0.874  RMSE 10.5 mV
+              paper 10: spikes  26/ 26  一致率 1.000  Γ 1.000  RMSE 4.6 mV
+              paper 11: spikes  22/ 22  一致率 1.000  Γ 1.000  RMSE 5.8 mV
+              paper 12: spikes  28/ 28  一致率 0.821  Γ 0.799  RMSE 17.2 mV
+              paper 13: spikes  25/ 24  一致率 0.800  Γ 0.795  RMSE 12.5 mV
+              paper 14: spikes  28/ 28  一致率 0.964  Γ 0.960  RMSE 9.5 mV
+              paper 15: spikes  33/ 33  一致率 1.000  Γ 1.000  RMSE 8.4 mV
+              paper 16: spikes  17/ 17  一致率 1.000  Γ 1.000  RMSE 5.4 mV
+              paper 17: spikes  22/ 22  一致率 0.591  Γ 0.551  RMSE 15.0 mV
+              paper 18: spikes  15/ 14  一致率 0.933  Γ 0.961  RMSE 9.0 mV
+              paper 19: spikes  21/ 18  一致率 0.810  Γ 0.856  RMSE 12.8 mV
+[hhfs_20261113_163923_827b55aba40b48ef810816d27e75bb74] current_py: 100% 5/7  平均 0.942  Γ 0.960  |  paper: 100% 6/20  平均 0.838  Γ 0.831
+=== hhfs_20261114_033446_2b34a8e0a2ce420994d4093f8aeacfef ===
+                  step: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 5.6 mV
+              constant: spikes  26/ 26  一致率 1.000  Γ 1.000  RMSE 13.9 mV
+                  ramp: spikes  24/ 24  一致率 1.000  Γ 1.000  RMSE 10.5 mV
+                   sin: spikes  24/ 24  一致率 1.000  Γ 1.000  RMSE 5.3 mV
+           pulse train: spikes  15/ 15  一致率 1.000  Γ 1.000  RMSE 18.1 mV
+          random pulse: spikes  27/ 26  一致率 0.889  Γ 0.893  RMSE 13.8 mV
+   random timing pulse: spikes   3/  3  一致率 1.000  Γ 1.000  RMSE 4.0 mV
+               paper 0: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 6.8 mV
+               paper 1: spikes  25/ 24  一致率 0.960  Γ 0.975  RMSE 6.1 mV
+               paper 2: spikes  20/ 20  一致率 1.000  Γ 1.000  RMSE 7.4 mV
+               paper 3: spikes  31/ 31  一致率 0.000  Γ -0.142  RMSE 22.9 mV
+               paper 4: spikes  12/ 12  一致率 0.583  Γ 0.562  RMSE 11.4 mV
+               paper 5: spikes  14/ 13  一致率 0.714  Γ 0.724  RMSE 12.2 mV
+               paper 6: spikes  26/ 24  一致率 0.923  Γ 0.952  RMSE 9.3 mV
+               paper 7: spikes  22/ 20  一致率 0.727  Γ 0.737  RMSE 11.9 mV
+               paper 8: spikes  22/ 21  一致率 0.909  Γ 0.922  RMSE 7.3 mV
+               paper 9: spikes  17/ 17  一致率 0.882  Γ 0.874  RMSE 10.5 mV
+              paper 10: spikes  26/ 26  一致率 1.000  Γ 1.000  RMSE 3.7 mV
+              paper 11: spikes  22/ 22  一致率 1.000  Γ 1.000  RMSE 4.7 mV
+              paper 12: spikes  28/ 28  一致率 0.821  Γ 0.799  RMSE 16.8 mV
+              paper 13: spikes  25/ 24  一致率 0.800  Γ 0.795  RMSE 13.5 mV
+              paper 14: spikes  28/ 28  一致率 0.964  Γ 0.960  RMSE 10.8 mV
+              paper 15: spikes  33/ 33  一致率 1.000  Γ 1.000  RMSE 8.5 mV
+              paper 16: spikes  17/ 17  一致率 1.000  Γ 1.000  RMSE 5.9 mV
+              paper 17: spikes  22/ 23  一致率 0.652  Γ 0.635  RMSE 12.4 mV
+              paper 18: spikes  15/ 14  一致率 0.933  Γ 0.961  RMSE 8.9 mV
+              paper 19: spikes  21/ 18  一致率 0.714  Γ 0.745  RMSE 14.1 mV
+[hhfs_20261114_033446_2b34a8e0a2ce420994d4093f8aeacfef] current_py: 100% 6/7  平均 0.984  Γ 0.985  |  paper: 100% 6/20  平均 0.829  Γ 0.825
+=== hhfs_20261114_115110_b9b48e1e209941ceb55f27cdc25a06e6 ===
+                  step: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 6.1 mV
+              constant: spikes  26/ 26  一致率 1.000  Γ 1.000  RMSE 12.7 mV
+                  ramp: spikes  24/ 23  一致率 0.958  Γ 0.974  RMSE 15.0 mV
+                   sin: spikes  24/ 24  一致率 1.000  Γ 1.000  RMSE 9.1 mV
+           pulse train: spikes  15/ 10  一致率 0.667  Γ 0.783  RMSE 12.0 mV
+          random pulse: spikes  27/ 27  一致率 0.926  Γ 0.917  RMSE 15.0 mV
+   random timing pulse: spikes   3/  3  一致率 1.000  Γ 1.000  RMSE 3.8 mV
+               paper 0: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 11.4 mV
+               paper 1: spikes  25/ 24  一致率 0.960  Γ 0.975  RMSE 6.9 mV
+               paper 2: spikes  20/ 20  一致率 1.000  Γ 1.000  RMSE 8.4 mV
+               paper 3: spikes  31/ 29  一致率 0.000  Γ -0.136  RMSE 25.7 mV
+               paper 4: spikes  12/ 10  一致率 0.500  Γ 0.523  RMSE 11.8 mV
+               paper 5: spikes  14/ 10  一致率 0.357  Γ 0.385  RMSE 15.9 mV
+               paper 6: spikes  26/ 23  一致率 0.731  Γ 0.747  RMSE 12.4 mV
+               paper 7: spikes  22/ 20  一致率 0.727  Γ 0.737  RMSE 12.0 mV
+               paper 8: spikes  22/ 21  一致率 0.955  Γ 0.972  RMSE 6.8 mV
+               paper 9: spikes  17/ 16  一致率 0.882  Γ 0.901  RMSE 10.3 mV
+              paper 10: spikes  26/ 26  一致率 1.000  Γ 1.000  RMSE 6.0 mV
+              paper 11: spikes  22/ 22  一致率 1.000  Γ 1.000  RMSE 7.0 mV
+              paper 12: spikes  28/ 27  一致率 0.821  Γ 0.814  RMSE 16.7 mV
+              paper 13: spikes  25/ 24  一致率 0.800  Γ 0.795  RMSE 13.1 mV
+              paper 14: spikes  28/ 28  一致率 0.964  Γ 0.960  RMSE 12.7 mV
+              paper 15: spikes  33/ 33  一致率 1.000  Γ 1.000  RMSE 13.7 mV
+              paper 16: spikes  17/ 17  一致率 1.000  Γ 1.000  RMSE 6.2 mV
+              paper 17: spikes  22/ 22  一致率 0.682  Γ 0.651  RMSE 11.7 mV
+              paper 18: spikes  15/ 14  一致率 0.933  Γ 0.961  RMSE 6.2 mV
+              paper 19: spikes  21/ 19  一致率 0.905  Γ 0.942  RMSE 11.1 mV
+[hhfs_20261114_115110_b9b48e1e209941ceb55f27cdc25a06e6] current_py: 100% 4/7  平均 0.936  Γ 0.954  |  paper: 100% 6/20  平均 0.811  Γ 0.811
+=== hhfs_20261114_173147_df53e817c52741bba5368529541fb425 ===
+                  step: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 4.4 mV
+              constant: spikes  26/ 26  一致率 1.000  Γ 1.000  RMSE 4.0 mV
+                  ramp: spikes  24/ 24  一致率 1.000  Γ 1.000  RMSE 10.3 mV
+                   sin: spikes  24/ 24  一致率 1.000  Γ 1.000  RMSE 6.8 mV
+           pulse train: spikes  15/ 20  一致率 0.750  Γ 0.857  RMSE 12.9 mV
+          random pulse: spikes  27/ 26  一致率 0.815  Γ 0.808  RMSE 14.9 mV
+   random timing pulse: spikes   3/  3  一致率 1.000  Γ 1.000  RMSE 2.1 mV
+               paper 0: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 7.7 mV
+               paper 1: spikes  25/ 24  一致率 0.960  Γ 0.975  RMSE 6.1 mV
+               paper 2: spikes  20/ 20  一致率 1.000  Γ 1.000  RMSE 7.1 mV
+               paper 3: spikes  31/ 31  一致率 0.000  Γ -0.142  RMSE 22.7 mV
+               paper 4: spikes  12/ 12  一致率 0.583  Γ 0.562  RMSE 10.4 mV
+               paper 5: spikes  14/ 14  一致率 0.857  Γ 0.849  RMSE 8.7 mV
+               paper 6: spikes  26/ 24  一致率 0.885  Γ 0.907  RMSE 10.6 mV
+               paper 7: spikes  22/ 21  一致率 0.909  Γ 0.922  RMSE 8.0 mV
+               paper 8: spikes  22/ 21  一致率 0.955  Γ 0.972  RMSE 6.1 mV
+               paper 9: spikes  17/ 17  一致率 1.000  Γ 1.000  RMSE 6.0 mV
+              paper 10: spikes  26/ 26  一致率 1.000  Γ 1.000  RMSE 4.3 mV
+              paper 11: spikes  22/ 22  一致率 1.000  Γ 1.000  RMSE 4.6 mV
+              paper 12: spikes  28/ 28  一致率 0.679  Γ 0.638  RMSE 19.8 mV
+              paper 13: spikes  25/ 24  一致率 0.800  Γ 0.795  RMSE 14.9 mV
+              paper 14: spikes  28/ 29  一致率 0.966  Γ 0.982  RMSE 12.1 mV
+              paper 15: spikes  33/ 33  一致率 1.000  Γ 1.000  RMSE 6.1 mV
+              paper 16: spikes  17/ 17  一致率 1.000  Γ 1.000  RMSE 6.8 mV
+              paper 17: spikes  22/ 22  一致率 1.000  Γ 1.000  RMSE 6.5 mV
+              paper 18: spikes  15/ 15  一致率 0.933  Γ 0.929  RMSE 8.8 mV
+              paper 19: spikes  21/ 20  一致率 0.952  Γ 0.971  RMSE 10.9 mV
+[hhfs_20261114_173147_df53e817c52741bba5368529541fb425] current_py: 100% 5/7  平均 0.938  Γ 0.952  |  paper: 100% 8/20  平均 0.874  Γ 0.868
+=== hhfs_20261115_015714_bde99891502e49029207248c7628c601 ===
+                  step: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 3.3 mV
+              constant: spikes  26/ 26  一致率 1.000  Γ 1.000  RMSE 6.0 mV
+                  ramp: spikes  24/ 24  一致率 1.000  Γ 1.000  RMSE 6.0 mV
+                   sin: spikes  24/ 24  一致率 1.000  Γ 1.000  RMSE 5.2 mV
+           pulse train: spikes  15/ 19  一致率 0.789  Γ 0.882  RMSE 14.0 mV
+          random pulse: spikes  27/ 26  一致率 0.852  Γ 0.850  RMSE 14.3 mV
+   random timing pulse: spikes   3/  3  一致率 1.000  Γ 1.000  RMSE 1.9 mV
+               paper 0: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 3.1 mV
+               paper 1: spikes  25/ 24  一致率 0.960  Γ 0.975  RMSE 9.9 mV
+               paper 2: spikes  20/ 20  一致率 1.000  Γ 1.000  RMSE 4.1 mV
+               paper 3: spikes  31/ 31  一致率 0.000  Γ -0.142  RMSE 22.6 mV
+               paper 4: spikes  12/ 12  一致率 0.583  Γ 0.562  RMSE 10.3 mV
+               paper 5: spikes  14/ 14  一致率 1.000  Γ 1.000  RMSE 10.1 mV
+               paper 6: spikes  26/ 24  一致率 0.808  Γ 0.819  RMSE 13.1 mV
+               paper 7: spikes  22/ 21  一致率 0.727  Γ 0.719  RMSE 12.3 mV
+               paper 8: spikes  22/ 22  一致率 1.000  Γ 1.000  RMSE 5.5 mV
+               paper 9: spikes  17/ 17  一致率 0.882  Γ 0.874  RMSE 7.1 mV
+              paper 10: spikes  26/ 27  一致率 0.963  Γ 0.981  RMSE 4.2 mV
+              paper 11: spikes  22/ 22  一致率 1.000  Γ 1.000  RMSE 3.0 mV
+              paper 12: spikes  28/ 28  一致率 0.821  Γ 0.799  RMSE 18.0 mV
+              paper 13: spikes  25/ 24  一致率 0.800  Γ 0.795  RMSE 12.2 mV
+              paper 14: spikes  28/ 28  一致率 1.000  Γ 1.000  RMSE 7.6 mV
+              paper 15: spikes  33/ 33  一致率 1.000  Γ 1.000  RMSE 10.1 mV
+              paper 16: spikes  17/ 17  一致率 1.000  Γ 1.000  RMSE 6.7 mV
+              paper 17: spikes  22/ 23  一致率 0.957  Γ 0.978  RMSE 10.8 mV
+              paper 18: spikes  15/ 14  一致率 0.933  Γ 0.961  RMSE 6.4 mV
+              paper 19: spikes  21/ 19  一致率 0.714  Γ 0.725  RMSE 14.5 mV
+[hhfs_20261115_015714_bde99891502e49029207248c7628c601] current_py: 100% 5/7  平均 0.949  Γ 0.962  |  paper: 100% 8/20  平均 0.857  Γ 0.852
+=== hhfs_20261115_140851_778bcd4e70164a4089d80b8957d83c20 ===
+                  step: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 6.8 mV
+              constant: spikes  26/ 26  一致率 0.962  Γ 0.957  RMSE 16.7 mV
+                  ramp: spikes  24/ 24  一致率 1.000  Γ 1.000  RMSE 16.6 mV
+                   sin: spikes  24/ 24  一致率 1.000  Γ 1.000  RMSE 5.4 mV
+           pulse train: spikes  15/ 15  一致率 1.000  Γ 1.000  RMSE 12.9 mV
+          random pulse: spikes  27/ 26  一致率 0.778  Γ 0.766  RMSE 15.2 mV
+   random timing pulse: spikes   3/  3  一致率 1.000  Γ 1.000  RMSE 2.9 mV
+               paper 0: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 11.7 mV
+               paper 1: spikes  25/ 24  一致率 0.960  Γ 0.975  RMSE 7.7 mV
+               paper 2: spikes  20/ 20  一致率 1.000  Γ 1.000  RMSE 6.6 mV
+               paper 3: spikes  31/ 31  一致率 0.000  Γ -0.142  RMSE 22.6 mV
+               paper 4: spikes  12/ 11  一致率 0.500  Γ 0.498  RMSE 12.1 mV
+               paper 5: spikes  14/ 13  一致率 0.571  Γ 0.568  RMSE 14.9 mV
+               paper 6: spikes  26/ 24  一致率 0.769  Γ 0.775  RMSE 11.4 mV
+               paper 7: spikes  22/ 21  一致率 0.727  Γ 0.719  RMSE 11.9 mV
+               paper 8: spikes  22/ 21  一致率 0.955  Γ 0.972  RMSE 6.8 mV
+               paper 9: spikes  17/ 17  一致率 1.000  Γ 1.000  RMSE 9.7 mV
+              paper 10: spikes  26/ 26  一致率 1.000  Γ 1.000  RMSE 6.5 mV
+              paper 11: spikes  22/ 22  一致率 1.000  Γ 1.000  RMSE 8.7 mV
+              paper 12: spikes  28/ 27  一致率 0.679  Γ 0.651  RMSE 19.0 mV
+              paper 13: spikes  25/ 24  一致率 0.800  Γ 0.795  RMSE 13.0 mV
+              paper 14: spikes  28/ 28  一致率 0.964  Γ 0.960  RMSE 11.1 mV
+              paper 15: spikes  33/ 33  一致率 1.000  Γ 1.000  RMSE 11.4 mV
+              paper 16: spikes  17/ 17  一致率 1.000  Γ 1.000  RMSE 6.8 mV
+              paper 17: spikes  22/ 22  一致率 1.000  Γ 1.000  RMSE 9.4 mV
+              paper 18: spikes  15/ 15  一致率 0.933  Γ 0.929  RMSE 7.5 mV
+              paper 19: spikes  21/ 18  一致率 0.857  Γ 0.911  RMSE 11.6 mV
+[hhfs_20261115_140851_778bcd4e70164a4089d80b8957d83c20] current_py: 100% 5/7  平均 0.963  Γ 0.960  |  paper: 100% 8/20  平均 0.836  Γ 0.831
+=== hhfs_20261115_201719_9fabfab5cbb546ceb0ffd6051a8f03be ===
+                  step: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 6.5 mV
+              constant: spikes  26/ 26  一致率 1.000  Γ 1.000  RMSE 7.6 mV
+                  ramp: spikes  24/ 24  一致率 1.000  Γ 1.000  RMSE 11.7 mV
+                   sin: spikes  24/ 24  一致率 1.000  Γ 1.000  RMSE 7.4 mV
+           pulse train: spikes  15/ 10  一致率 0.667  Γ 0.783  RMSE 12.6 mV
+          random pulse: spikes  27/ 26  一致率 0.889  Γ 0.893  RMSE 13.2 mV
+   random timing pulse: spikes   3/  3  一致率 1.000  Γ 1.000  RMSE 3.2 mV
+               paper 0: spikes  25/ 25  一致率 1.000  Γ 1.000  RMSE 8.4 mV
+               paper 1: spikes  25/ 24  一致率 0.960  Γ 0.975  RMSE 8.2 mV
+               paper 2: spikes  20/ 20  一致率 1.000  Γ 1.000  RMSE 6.3 mV
+               paper 3: spikes  31/ 31  一致率 0.000  Γ -0.142  RMSE 22.8 mV
+               paper 4: spikes  12/ 12  一致率 0.583  Γ 0.562  RMSE 12.3 mV
+               paper 5: spikes  14/ 13  一致率 0.786  Γ 0.803  RMSE 12.9 mV
+               paper 6: spikes  26/ 23  一致率 0.731  Γ 0.747  RMSE 11.1 mV
+               paper 7: spikes  22/ 21  一致率 0.727  Γ 0.719  RMSE 11.4 mV
+               paper 8: spikes  22/ 21  一致率 0.955  Γ 0.972  RMSE 7.5 mV
+               paper 9: spikes  17/ 17  一致率 0.941  Γ 0.937  RMSE 10.0 mV
+              paper 10: spikes  26/ 26  一致率 1.000  Γ 1.000  RMSE 4.7 mV
+              paper 11: spikes  22/ 22  一致率 1.000  Γ 1.000  RMSE 5.5 mV
+              paper 12: spikes  28/ 28  一致率 0.821  Γ 0.799  RMSE 14.6 mV
+              paper 13: spikes  25/ 24  一致率 0.800  Γ 0.795  RMSE 13.1 mV
+              paper 14: spikes  28/ 28  一致率 1.000  Γ 1.000  RMSE 11.7 mV
+              paper 15: spikes  33/ 34  一致率 0.971  Γ 0.985  RMSE 9.9 mV
+              paper 16: spikes  17/ 17  一致率 1.000  Γ 1.000  RMSE 5.7 mV
+              paper 17: spikes  22/ 22  一致率 0.682  Γ 0.651  RMSE 12.9 mV
+              paper 18: spikes  15/ 14  一致率 0.933  Γ 0.961  RMSE 8.3 mV
+              paper 19: spikes  21/ 18  一致率 0.857  Γ 0.911  RMSE 13.0 mV
+[hhfs_20261115_201719_9fabfab5cbb546ceb0ffd6051a8f03be] current_py: 100% 5/7  平均 0.937  Γ 0.954  |  paper: 100% 6/20  平均 0.837  Γ 0.834
+保存: /mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/results/flow_learning/hhfs_gamma.csv

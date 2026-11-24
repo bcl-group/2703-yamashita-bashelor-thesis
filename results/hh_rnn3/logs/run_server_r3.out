@@ -1,0 +1,12 @@
+nohup: ignoring input
+start 2026-11-24 10:06:11
+done p_h64_cl02: [p_h64_cl02 (val best it 16000)] 100%: 23/26  平均 0.959  Γ 0.959  (272 s)  不一致: ramp 0-20 0%, ramp 0-30 94%, l
+done p_h64_cl05_s1: [p_h64_cl05_s1 (val best it 20000)] 100%: 23/26  平均 0.957  Γ 0.957  (269 s)  不一致: ramp 0-20 0%, ramp 0-30 94%
+done p_h64_cl10: [p_h64_cl10 (val best it 16000)] 100%: 22/26  平均 0.952  Γ 0.951  (272 s)  不一致: ramp 0-20 0%, ramp 0-30 94%, O
+done p_h64_cl05_s2: [p_h64_cl05_s2 (val best it 20000)] 100%: 22/26  平均 0.921  Γ 0.916  (271 s)  不一致: ramp 0-20 0%, ramp 0-30 0%,
+done p_h64_nowhh0_cl05: [p_h64_nowhh0_cl05 (val best it 20000)] 100%: 19/26  平均 0.945  Γ 0.946  (266 s)  不一致: const 7 67%, ramp 0-20 
+done p_gru64_cl05: [p_gru64_cl05 (val best it 20000)] 100%: 24/26  平均 0.933  Γ 0.923  (454 s)  不一致: ramp 0-30 0%, sin 10Hz 7.5±
+done s_gru64_cl05: [s_gru64_cl05 (val best it 20000)] 100%: 24/26  平均 0.933  Γ 0.929  (440 s)  不一致: ramp 0-20 0%, sin 10Hz 7.5±
+done p_h64_cl05_k100: [p_h64_cl05_k100 (val best it 20000)] 100%: 19/26  平均 0.900  Γ 0.886  (195 s)  不一致: const 7 78%, const 10 76%
+done s_h64_nowhh0_cl05: [s_h64_nowhh0_cl05 (val best it 20000)] 100%: 21/26  平均 0.924  Γ 0.918  (192 s)  不一致: const 7 83%, ramp 0-20 
+all done 2026-11-24 15:24:00

@@ -1,0 +1,10 @@
+nohup: ignoring input
+done g_relu128_s0: [g_relu128_s0 (val best it 0)] 100%: 18/26  平均 0.878  Γ 0.863  (87 s)  不一致: const 7 78%, ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 20%, random pulse 5ms 93%, OU 5±3 96%, OU 7±5 (tau 5ms) 96%, munechika train 99%
+done g_silu128_s1: [g_silu128_s1 (val best it 0)] 100%: 23/26  平均 0.922  Γ 0.915  (85 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, OU 5±3 96%
+done g_silu128_s0: [g_silu128_s0 (val best it 0)] 100%: 20/26  平均 0.926  Γ 0.922  (83 s)  不一致: ramp 0-20 0%, ramp 0-30 94%, sin 10Hz 7.5±7.5 44%, OU 5±3 92%, level+OU 78%, munechika train 99%
+done g_silu128_s2: [g_silu128_s2 (val best it 0)] 100%: 23/26  平均 0.960  Γ 0.960  (87 s)  不一致: ramp 0-20 0%, OU 5±3 96%, munechika train 99%
+done g_relu128_s1: [g_relu128_s1 (val best it 0)] 100%: 19/26  平均 0.877  Γ 0.859  (88 s)  不一致: const 7 78%, const 10 90%, ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 25%, OU 5±3 88%, munechika train 99%
+done g_relu128_s2: [g_relu128_s2 (val best it 0)] 100%: 19/26  平均 0.886  Γ 0.869  (87 s)  不一致: const 7 28%, const 20 96%, ramp 0-20 0%, ramp 0-30 0%, random pulse 5ms 93%, level+OU 97%, munechika train 89%
+done g_relu256x3: [g_relu256x3 (val best it 0)] 100%: 21/26  平均 0.891  Γ 0.879  (106 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 25%, OU 5±3 92%, munechika train 99%
+done g_silu128_200k: [g_silu128_200k (val best it 0)] 100%: 19/26  平均 0.873  Γ 0.859  (82 s)  不一致: const 7 61%, ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%, OU 5±3 92%, munechika train 99%
+done g_relu128_200k: [g_relu128_200k (val best it 0)] 100%: 20/26  平均 0.868  Γ 0.847  (85 s)  不一致: const 7 33%, ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 25%, level+OU 99%, munechika train 99%

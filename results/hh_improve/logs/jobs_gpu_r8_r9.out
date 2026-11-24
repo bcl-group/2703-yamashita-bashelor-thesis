@@ -1,0 +1,41 @@
+nohup: ignoring input
+done r8_mlp_base_s0: [r8_mlp_base_s0 (val best it 50000)] 100%: 20/26  平均 0.926  Γ 0.922  (90 s)  不一致: ramp 0-20 0%, ramp 0-30 94%, sin 10Hz 7.5±7.5 44%, OU 5±3 92%, level+OU 78%, munechika train 99%
+done r8_mlp_hard_s0: [r8_mlp_hard_s0 (val best it 50000)] 100%: 21/26  平均 0.917  Γ 0.912  (91 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, random pulse 5ms 93%, OU 5±3 92%, munechika train 99%
+done r8_mlp_dag_s0: [r8_mlp_dag_s0 (val best it 90000)] 100%: 19/26  平均 0.875  Γ 0.861  (98 s)  不一致: const 7 67%, ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%, OU 5±3 92%, munechika train 99%
+done m3_base_s0: [m3_base_s0 (val best it 50000)] 100%: 24/26  平均 0.998  Γ 0.999  (244 s)  不一致: OU 5±3 96%, munechika train 99%
+done r8_mlp_hard_s1: [W1123 11:42:30.856211144 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 492830720 bytes (free: 319029248, total: 34072559616).
+done r8_mlp_hd_sv05_s0: [r8_mlp_hd_sv05_s0 (val best it 110000)] 100%: 24/26  平均 0.923  Γ 0.917  (97 s)  不一致: ramp 0-20 0%, ramp 0-30 0%
+done r8_mlp_base_s1: [r8_mlp_base_s1 (val best it 50000)] 100%: 23/26  平均 0.922  Γ 0.915  (99 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, OU 5±3 96%
+done r8_mlp_hd_s0: [r8_mlp_hd_s0 (val best it 70000)] 100%: 24/26  平均 0.959  Γ 0.959  (97 s)  不一致: ramp 0-20 0%, random pulse 5ms 93%
+done r8_mlp_hdf_s0: [r8_mlp_hdf_s0 (val best it 90000)] 100%: 22/26  平均 0.957  Γ 0.951  (129 s)  不一致: ramp 0-30 0%, random pulse 5ms 93%, OU 5±3 96%, munechika train 99%
+done r8_mlp_dag_s1: [r8_mlp_dag_s1 (val best it 90000)] 100%: 23/26  平均 0.957  Γ 0.957  (86 s)  不一致: ramp 0-20 0%, ramp 0-30 94%, random pulse 5ms 93%
+done m3_base_s1: [m3_base_s1 (val best it 50000)] 100%: 22/26  平均 0.920  Γ 0.913  (217 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, OU 5±3 92%, munechika train 99%
+done r8_mlp_base_s2: [r8_mlp_base_s2 (val best it 50000)] 100%: 23/26  平均 0.960  Γ 0.960  (88 s)  不一致: ramp 0-20 0%, OU 5±3 96%, munechika train 99%
+done r8_mlp_hd_s1: [r8_mlp_hd_s1 (val best it 110000)] 100%: 23/26  平均 0.952  Γ 0.952  (89 s)  不一致: ramp 0-20 0%, ramp 0-30 82%, random pulse 5ms 93%
+done m3_hd_s0: [m3_hd_s0 (val best it 90000)] 100%: 23/26  平均 0.894  Γ 0.885  (218 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 25%
+done r8_mlp_hd_sv05_s1: [r8_mlp_hd_sv05_s1 (val best it 90000)] 100%: 23/26  平均 0.934  Γ 0.935  (89 s)  不一致: ramp 0-20 33%, ramp 0-30 0%, OU 5±3 96%
+done r8_mlp_hdf_s1: [r8_mlp_hdf_s1 (val best it 110000)] 100%: 24/26  平均 0.960  Γ 0.954  (126 s)  不一致: ramp 0-30 0%, OU 5±3 96%
+done r8_mlp_hard_s2: [r8_mlp_hard_s2 (val best it 50000)] 100%: 21/26  平均 0.917  Γ 0.911  (86 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, random pulse 5ms 93%, OU 5±3 92%, munechika train 99%
+done r8_mlp_dag_s2: [r8_mlp_dag_s2 (val best it 110000)] 100%: 23/26  平均 0.921  Γ 0.913  (88 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, random pulse 5ms 93%
+done r8_mlp_hd_s2: [r8_mlp_hd_s2 (val best it 110000)] 100%: 24/26  平均 0.933  Γ 0.931  (85 s)  不一致: ramp 0-20 0%, sin 10Hz 7.5±7.5 25%
+done m3_base_s2: [m3_base_s2 (val best it 50000)] 100%: 22/26  平均 0.889  Γ 0.877  (222 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 25%, level+OU 88%
+done m3_hd_s1: [m3_hd_s1 (val best it 50000)] 100%: 22/26  平均 0.929  Γ 0.924  (214 s)  不一致: ramp 0-20 0%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%, OU 5±3 96%
+done r8_mlp_hdf_s2: [r8_mlp_hdf_s2 (val best it 110000)] 100%: 23/26  平均 0.996  Γ 0.996  (125 s)  不一致: random pulse 5ms 93%, OU 5±3 96%, munechika train 99%
+done r8_mlp_hd_sv05_s2: [r8_mlp_hd_sv05_s2 (val best it 70000)] 100%: 23/26  平均 0.961  Γ 0.969  (87 s)  不一致: ramp 0-20 20%, ramp 0-30 85%, OU 5±3 92%
+done r8_mlp_hd_w256: [r8_mlp_hd_w256 (val best it 90000)] 100%: 23/26  平均 0.957  Γ 0.958  (111 s)  不一致: ramp 0-20 0%, random pulse 5ms 93%, OU 5±3 96%
+done m3_hd_s2: [m3_hd_s2 (val best it 110000)] 100%: 22/26  平均 0.893  Γ 0.883  (212 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 25%, OU 5±3 96%
+done r8_mlp_hd_200k: [r8_mlp_hd_200k (val best it 220000)] 100%: 23/26  平均 0.959  Γ 0.958  (86 s)  不一致: ramp 0-20 0%, random pulse 5ms 93%, munechika train 99%
+done m3_hdf_s0: [m3_hdf_s0 (val best it 110000)] 100%: 23/26  平均 0.930  Γ 0.927  (262 s)  不一致: ramp 0-20 0%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%
+done m3_v2f05d_s0: [W1123 13:58:49.158230440 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 2457862144 bytes (free: 1868824576, total: 34072559616).
+done r9_mlp_v2f05d_s1: [W1123 14:00:35.891786949 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 492830720 bytes (free: 33816576, total: 34072559616).
+done m3_v2f05d_s1: 
+done r9_mlp_v2_s2: 
+done r9_mlp_v2f05_s2: 
+done r9_mlp_v2f05d_s2: 
+done m3_v2f05d_s2: 
+done r9_mlp_v2_s1: [W1123 14:01:23.278865026 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 2457862144 bytes (free: 774111232, total: 34072559616).
+done r9_mlp_v2f05_s0: [r9_mlp_v2f05_s0 (val best it 50000)] 100%: 23/26  平均 0.976  Γ 0.983  (91 s)  不一致: ramp 0-20 50%, ramp 0-30 94%, OU 5±3 92%
+done r9_mlp_v2_s0: [r9_mlp_v2_s0 (val best it 50000)] 100%: 21/26  平均 0.899  Γ 0.887  (84 s)  不一致: const 7 61%, ramp 0-20 0%, ramp 0-30 0%, OU 5±3 78%, munechika train 98%
+done r9_mlp_v2f05_s1: [r9_mlp_v2f05_s1 (val best it 50000)] 100%: 22/26  平均 0.950  Γ 0.955  (82 s)  不一致: ramp 0-20 33%, ramp 0-30 42%, OU 5±3 96%, munechika train 99%
+done r9_mlp_v2f05d_s0: [r9_mlp_v2f05d_s0 (val best it 110000)] 100%: 25/26  平均 0.962  Γ 0.955  (85 s)  不一致: ramp 0-30 0%
+all done 2026年 11月 23日 月曜日 14:16:25 JST

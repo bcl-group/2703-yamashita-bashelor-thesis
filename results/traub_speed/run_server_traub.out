@@ -1,0 +1,184 @@
+nohup: ignoring input
+traub_euler  eager     fp32   B=     1  1 ステップ    2224.35 µs          0.00 cell-s/s
+traub_euler  eager     fp32   B=    32  1 ステップ    2275.15 µs          0.14 cell-s/s
+traub_euler  eager     fp32   B=  1024  1 ステップ    2284.95 µs          4.48 cell-s/s
+traub_euler  eager     fp32   B=  8192  1 ステップ    2318.65 µs         35.33 cell-s/s
+traub_euler  eager     fp32   B= 32768  1 ステップ    5637.37 µs         58.13 cell-s/s
+traub_euler  cudagraph fp32   B=     1  1 ステップ     481.08 µs          0.02 cell-s/s
+traub_euler  cudagraph fp32   B=    32  1 ステップ     537.61 µs          0.60 cell-s/s
+traub_euler  cudagraph fp32   B=  1024  1 ステップ     591.62 µs         17.31 cell-s/s
+traub_euler  cudagraph fp32   B=  8192  1 ステップ    1197.49 µs         68.41 cell-s/s
+traub_euler  cudagraph fp32   B= 32768  1 ステップ    5702.82 µs         57.46 cell-s/s
+comp_64x2    eager     fp32   B=     1  1 ステップ     355.66 µs          0.03 cell-s/s
+comp_64x2    eager     fp32   B=    32  1 ステップ     381.71 µs          0.84 cell-s/s
+comp_64x2    eager     fp32   B=  1024  1 ステップ     465.85 µs         21.98 cell-s/s
+comp_64x2    eager     fp32   B=  8192  1 ステップ    3536.37 µs         23.16 cell-s/s
+comp_64x2    eager     fp32   B= 32768  1 ステップ   14148.15 µs         23.16 cell-s/s
+comp_64x2    cudagraph fp32   B=     1  1 ステップ      57.02 µs          0.18 cell-s/s
+comp_64x2    cudagraph fp32   B=    32  1 ステップ      74.39 µs          4.30 cell-s/s
+comp_64x2    cudagraph fp32   B=  1024  1 ステップ     475.31 µs         21.54 cell-s/s
+comp_64x2    cudagraph fp32   B=  8192  1 ステップ    3552.09 µs         23.06 cell-s/s
+comp_64x2    cudagraph fp32   B= 32768  1 ステップ   14149.59 µs         23.16 cell-s/s
+comp_64x2    eager     fp16   B=     1  1 ステップ     499.34 µs          0.02 cell-s/s
+comp_64x2    eager     fp16   B=    32  1 ステップ     539.69 µs          0.59 cell-s/s
+comp_64x2    eager     fp16   B=  1024  1 ステップ     538.13 µs         19.03 cell-s/s
+comp_64x2    eager     fp16   B=  8192  1 ステップ    1396.90 µs         58.64 cell-s/s
+comp_64x2    eager     fp16   B= 32768  1 ステップ    5522.71 µs         59.33 cell-s/s
+comp_64x2    cudagraph fp16   B=     1  1 ステップ      71.27 µs          0.14 cell-s/s
+comp_64x2    cudagraph fp16   B=    32  1 ステップ      84.26 µs          3.80 cell-s/s
+comp_64x2    cudagraph fp16   B=  1024  1 ステップ     192.23 µs         53.27 cell-s/s
+comp_64x2    cudagraph fp16   B=  8192  1 ステップ    1407.29 µs         58.21 cell-s/s
+comp_64x2    cudagraph fp16   B= 32768  1 ステップ    5521.95 µs         59.34 cell-s/s
+comp_64x2    eager     fp16x3 B=     1  1 ステップ     861.15 µs          0.01 cell-s/s
+comp_64x2    eager     fp16x3 B=    32  1 ステップ     914.58 µs          0.35 cell-s/s
+comp_64x2    eager     fp16x3 B=  1024  1 ステップ     857.51 µs         11.94 cell-s/s
+comp_64x2    eager     fp16x3 B=  8192  1 ステップ    4132.49 µs         19.82 cell-s/s
+comp_64x2    eager     fp16x3 B= 32768  1 ステップ   16168.02 µs         20.27 cell-s/s
+comp_64x2    cudagraph fp16x3 B=     1  1 ステップ     160.50 µs          0.06 cell-s/s
+comp_64x2    cudagraph fp16x3 B=    32  1 ステップ     174.08 µs          1.84 cell-s/s
+comp_64x2    cudagraph fp16x3 B=  1024  1 ステップ     524.02 µs         19.54 cell-s/s
+comp_64x2    cudagraph fp16x3 B=  8192  1 ステップ    4169.42 µs         19.65 cell-s/s
+comp_64x2    cudagraph fp16x3 B= 32768  1 ステップ   16154.03 µs         20.28 cell-s/s
+comp_128x2   eager     fp32   B=     1  1 ステップ     357.51 µs          0.03 cell-s/s
+comp_128x2   eager     fp32   B=    32  1 ステップ     387.74 µs          0.83 cell-s/s
+comp_128x2   eager     fp32   B=  1024  1 ステップ     552.04 µs         18.55 cell-s/s
+comp_128x2   eager     fp32   B=  8192  1 ステップ    3927.32 µs         20.86 cell-s/s
+comp_128x2   eager     fp32   B= 32768  1 ステップ   15523.74 µs         21.11 cell-s/s
+comp_128x2   cudagraph fp32   B=     1  1 ステップ      60.56 µs          0.17 cell-s/s
+comp_128x2   cudagraph fp32   B=    32  1 ステップ      80.21 µs          3.99 cell-s/s
+comp_128x2   cudagraph fp32   B=  1024  1 ステップ     559.28 µs         18.31 cell-s/s
+comp_128x2   cudagraph fp32   B=  8192  1 ステップ    3949.49 µs         20.74 cell-s/s
+comp_128x2   cudagraph fp32   B= 32768  1 ステップ   15508.60 µs         21.13 cell-s/s
+comp_128x2   eager     fp16   B=     1  1 ステップ     517.73 µs          0.02 cell-s/s
+comp_128x2   eager     fp16   B=    32  1 ステップ     555.32 µs          0.58 cell-s/s
+comp_128x2   eager     fp16   B=  1024  1 ステップ     508.13 µs         20.15 cell-s/s
+comp_128x2   eager     fp16   B=  8192  1 ステップ    2384.65 µs         34.35 cell-s/s
+comp_128x2   eager     fp16   B= 32768  1 ステップ    9378.44 µs         34.94 cell-s/s
+comp_128x2   cudagraph fp16   B=     1  1 ステップ      73.13 µs          0.14 cell-s/s
+comp_128x2   cudagraph fp16   B=    32  1 ステップ      88.25 µs          3.63 cell-s/s
+comp_128x2   cudagraph fp16   B=  1024  1 ステップ     354.19 µs         28.91 cell-s/s
+comp_128x2   cudagraph fp16   B=  8192  1 ステップ    2398.94 µs         34.15 cell-s/s
+comp_128x2   cudagraph fp16   B= 32768  1 ステップ    9378.74 µs         34.94 cell-s/s
+comp_128x2   eager     fp16x3 B=     1  1 ステップ     873.93 µs          0.01 cell-s/s
+comp_128x2   eager     fp16x3 B=    32  1 ステップ     937.09 µs          0.34 cell-s/s
+comp_128x2   eager     fp16x3 B=  1024  1 ステップ    1061.08 µs          9.65 cell-s/s
+comp_128x2   eager     fp16x3 B=  8192  1 ステップ    7480.44 µs         10.95 cell-s/s
+comp_128x2   eager     fp16x3 B= 32768  1 ステップ   29356.36 µs         11.16 cell-s/s
+comp_128x2   cudagraph fp16x3 B=     1  1 ステップ     164.33 µs          0.06 cell-s/s
+comp_128x2   cudagraph fp16x3 B=    32  1 ステップ     183.75 µs          1.74 cell-s/s
+comp_128x2   cudagraph fp16x3 B=  1024  1 ステップ    1092.05 µs          9.38 cell-s/s
+comp_128x2   cudagraph fp16x3 B=  8192  1 ステップ    7504.90 µs         10.92 cell-s/s
+comp_128x2   cudagraph fp16x3 B= 32768  1 ステップ   29352.01 µs         11.16 cell-s/s
+cell_256x2   eager     fp32   B=     1  1 ステップ     267.36 µs          0.04 cell-s/s
+cell_256x2   eager     fp32   B=    32  1 ステップ     312.19 µs          1.03 cell-s/s
+cell_256x2   eager     fp32   B=  1024  1 ステップ     280.88 µs         36.46 cell-s/s
+cell_256x2   eager     fp32   B=  8192  1 ステップ     854.06 µs         95.92 cell-s/s
+cell_256x2   eager     fp32   B= 32768  1 ステップ    2973.20 µs        110.21 cell-s/s
+cell_256x2   cudagraph fp32   B=     1  1 ステップ      38.20 µs          0.26 cell-s/s
+cell_256x2   cudagraph fp32   B=    32  1 ステップ      69.83 µs          4.58 cell-s/s
+cell_256x2   cudagraph fp32   B=  1024  1 ステップ     149.48 µs         68.51 cell-s/s
+cell_256x2   cudagraph fp32   B=  8192  1 ステップ     858.14 µs         95.46 cell-s/s
+cell_256x2   cudagraph fp32   B= 32768  1 ステップ    2991.52 µs        109.54 cell-s/s
+cell_256x2   eager     fp16   B=     1  1 ステップ     415.65 µs          0.02 cell-s/s
+cell_256x2   eager     fp16   B=    32  1 ステップ     466.42 µs          0.69 cell-s/s
+cell_256x2   eager     fp16   B=  1024  1 ステップ     433.94 µs         23.60 cell-s/s
+cell_256x2   eager     fp16   B=  8192  1 ステップ     478.02 µs        171.37 cell-s/s
+cell_256x2   eager     fp16   B= 32768  1 ステップ    1883.83 µs        173.94 cell-s/s
+cell_256x2   cudagraph fp16   B=     1  1 ステップ      52.58 µs          0.19 cell-s/s
+cell_256x2   cudagraph fp16   B=    32  1 ステップ      76.37 µs          4.19 cell-s/s
+cell_256x2   cudagraph fp16   B=  1024  1 ステップ     120.52 µs         84.96 cell-s/s
+cell_256x2   cudagraph fp16   B=  8192  1 ステップ     504.51 µs        162.38 cell-s/s
+cell_256x2   cudagraph fp16   B= 32768  1 ステップ    1899.17 µs        172.54 cell-s/s
+cell_256x2   eager     fp16x3 B=     1  1 ステップ     771.67 µs          0.01 cell-s/s
+cell_256x2   eager     fp16x3 B=    32  1 ステップ     807.24 µs          0.40 cell-s/s
+cell_256x2   eager     fp16x3 B=  1024  1 ステップ     812.13 µs         12.61 cell-s/s
+cell_256x2   eager     fp16x3 B=  8192  1 ステップ    1344.34 µs         60.94 cell-s/s
+cell_256x2   eager     fp16x3 B= 32768  1 ステップ    5136.74 µs         63.79 cell-s/s
+cell_256x2   cudagraph fp16x3 B=     1  1 ステップ     128.40 µs          0.08 cell-s/s
+cell_256x2   cudagraph fp16x3 B=    32  1 ステップ     176.33 µs          1.81 cell-s/s
+cell_256x2   cudagraph fp16x3 B=  1024  1 ステップ     285.90 µs         35.82 cell-s/s
+cell_256x2   cudagraph fp16x3 B=  8192  1 ステップ    1378.16 µs         59.44 cell-s/s
+cell_256x2   cudagraph fp16x3 B= 32768  1 ステップ    5167.14 µs         63.42 cell-s/s
+cell_512x2   eager     fp32   B=     1  1 ステップ     271.40 µs          0.04 cell-s/s
+cell_512x2   eager     fp32   B=    32  1 ステップ     295.40 µs          1.08 cell-s/s
+cell_512x2   eager     fp32   B=  1024  1 ステップ     296.33 µs         34.56 cell-s/s
+cell_512x2   eager     fp32   B=  8192  1 ステップ    1330.45 µs         61.57 cell-s/s
+cell_512x2   eager     fp32   B= 32768  1 ステップ    4816.43 µs         68.03 cell-s/s
+cell_512x2   cudagraph fp32   B=     1  1 ステップ      44.18 µs          0.23 cell-s/s
+cell_512x2   cudagraph fp32   B=    32  1 ステップ      74.97 µs          4.27 cell-s/s
+cell_512x2   cudagraph fp32   B=  1024  1 ステップ     241.24 µs         42.45 cell-s/s
+cell_512x2   cudagraph fp32   B=  8192  1 ステップ    1360.36 µs         60.22 cell-s/s
+cell_512x2   cudagraph fp32   B= 32768  1 ステップ    4831.20 µs         67.83 cell-s/s
+cell_512x2   eager     fp16   B=     1  1 ステップ     434.31 µs          0.02 cell-s/s
+cell_512x2   eager     fp16   B=    32  1 ステップ     448.14 µs          0.71 cell-s/s
+cell_512x2   eager     fp16   B=  1024  1 ステップ     452.24 µs         22.64 cell-s/s
+cell_512x2   eager     fp16   B=  8192  1 ステップ     776.88 µs        105.45 cell-s/s
+cell_512x2   eager     fp16   B= 32768  1 ステップ    2926.51 µs        111.97 cell-s/s
+cell_512x2   cudagraph fp16   B=     1  1 ステップ      58.90 µs          0.17 cell-s/s
+cell_512x2   cudagraph fp16   B=    32  1 ステップ      83.36 µs          3.84 cell-s/s
+cell_512x2   cudagraph fp16   B=  1024  1 ステップ     155.18 µs         65.99 cell-s/s
+cell_512x2   cudagraph fp16   B=  8192  1 ステップ     800.19 µs        102.38 cell-s/s
+cell_512x2   cudagraph fp16   B= 32768  1 ステップ    2968.34 µs        110.39 cell-s/s
+cell_512x2   eager     fp16x3 B=     1  1 ステップ     795.14 µs          0.01 cell-s/s
+cell_512x2   eager     fp16x3 B=    32  1 ステップ     818.12 µs          0.39 cell-s/s
+cell_512x2   eager     fp16x3 B=  1024  1 ステップ     889.02 µs         11.52 cell-s/s
+cell_512x2   eager     fp16x3 B=  8192  1 ステップ    2347.54 µs         34.90 cell-s/s
+cell_512x2   eager     fp16x3 B= 32768  1 ステップ    8767.28 µs         37.38 cell-s/s
+cell_512x2   cudagraph fp16x3 B=     1  1 ステップ     140.95 µs          0.07 cell-s/s
+cell_512x2   cudagraph fp16x3 B=    32  1 ステップ     189.90 µs          1.69 cell-s/s
+cell_512x2   cudagraph fp16x3 B=  1024  1 ステップ     407.20 µs         25.15 cell-s/s
+cell_512x2   cudagraph fp16x3 B=  8192  1 ステップ    2362.87 µs         34.67 cell-s/s
+cell_512x2   cudagraph fp16x3 B= 32768  1 ステップ    8808.74 µs         37.20 cell-s/s
+cell_1024x3  eager     fp32   B=     1  1 ステップ     311.05 µs          0.03 cell-s/s
+cell_1024x3  eager     fp32   B=    32  1 ステップ     336.88 µs          0.95 cell-s/s
+cell_1024x3  eager     fp32   B=  1024  1 ステップ     833.53 µs         12.29 cell-s/s
+cell_1024x3  eager     fp32   B=  8192  1 ステップ    5211.06 µs         15.72 cell-s/s
+cell_1024x3  eager     fp32   B= 32768  1 ステップ   18770.67 µs         17.46 cell-s/s
+cell_1024x3  cudagraph fp32   B=     1  1 ステップ      72.01 µs          0.14 cell-s/s
+cell_1024x3  cudagraph fp32   B=    32  1 ステップ     119.78 µs          2.67 cell-s/s
+cell_1024x3  cudagraph fp32   B=  1024  1 ステップ     832.88 µs         12.29 cell-s/s
+cell_1024x3  cudagraph fp32   B=  8192  1 ステップ    5214.93 µs         15.71 cell-s/s
+cell_1024x3  cudagraph fp32   B= 32768  1 ステップ   18784.66 µs         17.44 cell-s/s
+cell_1024x3  eager     fp16   B=     1  1 ステップ     534.61 µs          0.02 cell-s/s
+cell_1024x3  eager     fp16   B=    32  1 ステップ     538.99 µs          0.59 cell-s/s
+cell_1024x3  eager     fp16   B=  1024  1 ステップ     532.01 µs         19.25 cell-s/s
+cell_1024x3  eager     fp16   B=  8192  1 ステップ    2062.92 µs         39.71 cell-s/s
+cell_1024x3  eager     fp16   B= 32768  1 ステップ    7712.68 µs         42.49 cell-s/s
+cell_1024x3  cudagraph fp16   B=     1  1 ステップ      80.17 µs          0.12 cell-s/s
+cell_1024x3  cudagraph fp16   B=    32  1 ステップ     119.87 µs          2.67 cell-s/s
+cell_1024x3  cudagraph fp16   B=  1024  1 ステップ     321.65 µs         31.84 cell-s/s
+cell_1024x3  cudagraph fp16   B=  8192  1 ステップ    2083.40 µs         39.32 cell-s/s
+cell_1024x3  cudagraph fp16   B= 32768  1 ステップ    7729.74 µs         42.39 cell-s/s
+cell_1024x3  eager     fp16x3 B=     1  1 ステップ    1100.33 µs          0.01 cell-s/s
+cell_1024x3  eager     fp16x3 B=    32  1 ステップ    1035.87 µs          0.31 cell-s/s
+cell_1024x3  eager     fp16x3 B=  1024  1 ステップ    1123.13 µs          9.12 cell-s/s
+cell_1024x3  eager     fp16x3 B=  8192  1 ステップ    6473.53 µs         12.65 cell-s/s
+cell_1024x3  eager     fp16x3 B= 32768  1 ステップ   24521.39 µs         13.36 cell-s/s
+cell_1024x3  cudagraph fp16x3 B=     1  1 ステップ     236.84 µs          0.04 cell-s/s
+cell_1024x3  cudagraph fp16x3 B=    32  1 ステップ     295.29 µs          1.08 cell-s/s
+cell_1024x3  cudagraph fp16x3 B=  1024  1 ステップ     967.87 µs         10.58 cell-s/s
+cell_1024x3  cudagraph fp16x3 B=  8192  1 ステップ    6495.09 µs         12.61 cell-s/s
+cell_1024x3  cudagraph fp16x3 B= 32768  1 ステップ   24547.36 µs         13.35 cell-s/s
+保存: /mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/results/traub_speed/gpu.json
+助走: 497 s
+記録: 994 s（200 軌道 × 2000 ms、助走込み）
+保存: /mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/data/traub/teacher_v2.npz (929 MB)
+  const:  50 本、スパイク数 中央値 22、0 本の軌道 9
+  step :  50 本、スパイク数 中央値 47、0 本の軌道 0
+  pulse:  50 本、スパイク数 中央値 15、0 本の軌道 0
+  ou   :  50 本、スパイク数 中央値 36、0 本の軌道 0
+[hh-serial 853df2a] Traub の土台: GPU での速度（ODE と代理モデルの形）と、区画ごとの Markov MLP の学習 3 本（学内サーバ、自動で commit）
+ 8 files changed, 4261 insertions(+)
+ create mode 100644 results/traub_mlp/t_mlp128.json
+ create mode 100644 results/traub_mlp/t_mlp128.pt
+ create mode 100644 results/traub_mlp/t_mlp128_dag.json
+ create mode 100644 results/traub_mlp/t_mlp128_dag.pt
+ create mode 100644 results/traub_mlp/t_mlp256x3_dag.json
+ create mode 100644 results/traub_mlp/t_mlp256x3_dag.pt
+ create mode 100644 results/traub_speed/gpu.json
+ create mode 100644 results/traub_speed/gpu.md
+From github.com:bcl-group/2703-yamashita-bashelor-thesis
+ * branch            hh-serial  -> FETCH_HEAD
+Current branch hh-serial is up to date.
+To github.com:bcl-group/2703-yamashita-bashelor-thesis.git
+   a1679d7..853df2a  hh-serial -> hh-serial

@@ -1,0 +1,10 @@
+nohup: ignoring input
+done r8_mlp_hard_s1: [r8_mlp_hard_s1 (val best it 50000)] 100%: 24/26  平均 0.957  Γ 0.959  (88 s)  不一致: ramp 0-20 0%, ramp 0-30 89%
+done r9_mlp_v2_s1: [r9_mlp_v2_s1 (val best it 50000)] 100%: 21/26  平均 0.945  Γ 0.944  (84 s)  不一致: const 7 72%, ramp 0-20 0%, ramp 0-30 89%, OU 5±3 96%, munechika train 99%
+done m3_v2f05d_s0: [m3_v2f05d_s0 (val best it 110000)] 100%: 24/26  平均 0.933  Γ 0.922  (211 s)  不一致: ramp 0-30 0%, sin 10Hz 7.5±7.5 25%
+done r9_mlp_v2f05d_s1: [r9_mlp_v2f05d_s1 (val best it 110000)] 100%: 22/26  平均 0.936  Γ 0.933  (83 s)  不一致: ramp 0-20 0%, ramp 0-30 47%, random pulse 5ms 93%, OU 5±3 92%
+done m3_v2f05d_s1: [m3_v2f05d_s1 (val best it 110000)] 100%: 26/26  平均 1.000  Γ 1.000  (214 s)  不一致: 
+done r9_mlp_v2_s2: [r9_mlp_v2_s2 (val best it 50000)] 100%: 20/26  平均 0.870  Γ 0.852  (86 s)  不一致: const 7 39%, ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 25%, level+OU 99%, munechika train 99%
+done r9_mlp_v2f05_s2: [r9_mlp_v2f05_s2 (val best it 50000)] 100%: 20/26  平均 0.907  Γ 0.898  (86 s)  不一致: const 7 44%, ramp 0-20 0%, ramp 0-30 94%, sin 10Hz 7.5±7.5 25%, OU 5±3 96%, munechika train 99%
+done r9_mlp_v2f05d_s2: [r9_mlp_v2f05d_s2 (val best it 90000)] 100%: 23/26  平均 0.957  Γ 0.957  (84 s)  不一致: ramp 0-20 0%, ramp 0-30 94%, random pulse 5ms 93%
+done m3_v2f05d_s2: [m3_v2f05d_s2 (val best it 90000)] 100%: 25/26  平均 0.999  Γ 0.999  (216 s)  不一致: OU 5±3 96%

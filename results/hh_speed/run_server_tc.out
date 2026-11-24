@@ -1,0 +1,656 @@
+nohup: ignoring input
+hh_euler  eager            fp32   rec=0 B=     1  1 ステップ    913.47 µs           0.0 neuron-s/s
+hh_euler  eager            fp32   rec=0 B=    32  1 ステップ    915.13 µs           0.3 neuron-s/s
+hh_euler  eager            fp32   rec=0 B=  1024  1 ステップ    929.57 µs          11.0 neuron-s/s
+hh_euler  eager            fp32   rec=0 B=  8192  1 ステップ    924.28 µs          88.6 neuron-s/s
+hh_euler  eager            fp32   rec=0 B= 65536  1 ステップ    917.80 µs         714.1 neuron-s/s
+hh_euler  cudagraph        fp32   rec=0 B=     1  1 ステップ    191.47 µs           0.1 neuron-s/s
+hh_euler  cudagraph        fp32   rec=0 B=    32  1 ステップ    194.17 µs           1.6 neuron-s/s
+hh_euler  cudagraph        fp32   rec=0 B=  1024  1 ステップ    200.09 µs          51.2 neuron-s/s
+hh_euler  cudagraph        fp32   rec=0 B=  8192  1 ステップ    217.75 µs         376.2 neuron-s/s
+hh_euler  cudagraph        fp32   rec=0 B= 65536  1 ステップ    271.97 µs        2409.7 neuron-s/s
+mm_rel    eager            fp32   rec=0 B=     1  1 ステップ    269.60 µs           0.0 neuron-s/s
+mm_rel    eager            fp32   rec=0 B=    32  1 ステップ    283.51 µs           1.1 neuron-s/s
+mm_rel    eager            fp32   rec=0 B=  1024  1 ステップ    256.42 µs          39.9 neuron-s/s
+mm_rel    eager            fp32   rec=0 B=  8192  1 ステップ    256.48 µs         319.4 neuron-s/s
+mm_rel    eager            fp32   rec=0 B= 65536  1 ステップ   1570.40 µs         417.3 neuron-s/s
+mm_rel    cudagraph        fp32   rec=0 B=     1  1 ステップ     33.37 µs           0.3 neuron-s/s
+mm_rel    cudagraph        fp32   rec=0 B=    32  1 ステップ     49.25 µs           6.5 neuron-s/s
+mm_rel    cudagraph        fp32   rec=0 B=  1024  1 ステップ     76.38 µs         134.1 neuron-s/s
+mm_rel    cudagraph        fp32   rec=0 B=  8192  1 ステップ    253.72 µs         322.9 neuron-s/s
+mm_rel    cudagraph        fp32   rec=0 B= 65536  1 ステップ   1574.03 µs         416.4 neuron-s/s
+mm_rel    eager            fp16   rec=0 B=     1  1 ステップ    387.75 µs           0.0 neuron-s/s
+mm_rel    eager            fp16   rec=0 B=    32  1 ステップ    432.11 µs           0.7 neuron-s/s
+mm_rel    eager            fp16   rec=0 B=  1024  1 ステップ    415.03 µs          24.7 neuron-s/s
+mm_rel    eager            fp16   rec=0 B=  8192  1 ステップ    411.56 µs         199.0 neuron-s/s
+mm_rel    eager            fp16   rec=0 B= 65536  1 ステップ    923.72 µs         709.5 neuron-s/s
+mm_rel    cudagraph        fp16   rec=0 B=     1  1 ステップ     42.98 µs           0.2 neuron-s/s
+mm_rel    cudagraph        fp16   rec=0 B=    32  1 ステップ     59.86 µs           5.3 neuron-s/s
+mm_rel    cudagraph        fp16   rec=0 B=  1024  1 ステップ     79.38 µs         129.0 neuron-s/s
+mm_rel    cudagraph        fp16   rec=0 B=  8192  1 ステップ    147.28 µs         556.2 neuron-s/s
+mm_rel    cudagraph        fp16   rec=0 B= 65536  1 ステップ    929.53 µs         705.0 neuron-s/s
+mm_rel    eager            fp16x3 rec=0 B=     1  1 ステップ    731.53 µs           0.0 neuron-s/s
+mm_rel    eager            fp16x3 rec=0 B=    32  1 ステップ    813.59 µs           0.4 neuron-s/s
+mm_rel    eager            fp16x3 rec=0 B=  1024  1 ステップ    764.24 µs          13.4 neuron-s/s
+mm_rel    eager            fp16x3 rec=0 B=  8192  1 ステップ    765.74 µs         107.0 neuron-s/s
+mm_rel    eager            fp16x3 rec=0 B= 65536  1 ステップ   3020.78 µs         217.0 neuron-s/s
+mm_rel    cudagraph        fp16x3 rec=0 B=     1  1 ステップ    112.58 µs           0.1 neuron-s/s
+mm_rel    cudagraph        fp16x3 rec=0 B=    32  1 ステップ    146.39 µs           2.2 neuron-s/s
+mm_rel    cudagraph        fp16x3 rec=0 B=  1024  1 ステップ    175.75 µs          58.3 neuron-s/s
+mm_rel    cudagraph        fp16x3 rec=0 B=  8192  1 ステップ    412.59 µs         198.6 neuron-s/s
+mm_rel    cudagraph        fp16x3 rec=0 B= 65536  1 ステップ   3040.56 µs         215.5 neuron-s/s
+mm_w256   eager            fp32   rec=0 B=     1  1 ステップ    307.61 µs           0.0 neuron-s/s
+mm_w256   eager            fp32   rec=0 B=    32  1 ステップ    296.19 µs           1.1 neuron-s/s
+mm_w256   eager            fp32   rec=0 B=  1024  1 ステップ    288.55 µs          35.5 neuron-s/s
+mm_w256   eager            fp32   rec=0 B=  8192  1 ステップ    659.04 µs         124.3 neuron-s/s
+mm_w256   eager            fp32   rec=0 B= 65536  1 ステップ   4190.94 µs         156.4 neuron-s/s
+mm_w256   cudagraph        fp32   rec=0 B=     1  1 ステップ     42.21 µs           0.2 neuron-s/s
+mm_w256   cudagraph        fp32   rec=0 B=    32  1 ステップ     73.63 µs           4.3 neuron-s/s
+mm_w256   cudagraph        fp32   rec=0 B=  1024  1 ステップ    135.64 µs          75.5 neuron-s/s
+mm_w256   cudagraph        fp32   rec=0 B=  8192  1 ステップ    667.92 µs         122.6 neuron-s/s
+mm_w256   cudagraph        fp32   rec=0 B= 65536  1 ステップ   4195.46 µs         156.2 neuron-s/s
+mm_w256   eager            fp16   rec=0 B=     1  1 ステップ    523.21 µs           0.0 neuron-s/s
+mm_w256   eager            fp16   rec=0 B=    32  1 ステップ    489.85 µs           0.7 neuron-s/s
+mm_w256   eager            fp16   rec=0 B=  1024  1 ステップ    490.48 µs          20.9 neuron-s/s
+mm_w256   eager            fp16   rec=0 B=  8192  1 ステップ    493.78 µs         165.9 neuron-s/s
+mm_w256   eager            fp16   rec=0 B= 65536  1 ステップ   2565.00 µs         255.5 neuron-s/s
+mm_w256   cudagraph        fp16   rec=0 B=     1  1 ステップ     65.75 µs           0.2 neuron-s/s
+mm_w256   cudagraph        fp16   rec=0 B=    32  1 ステップ     82.60 µs           3.9 neuron-s/s
+mm_w256   cudagraph        fp16   rec=0 B=  1024  1 ステップ    115.90 µs          88.4 neuron-s/s
+mm_w256   cudagraph        fp16   rec=0 B=  8192  1 ステップ    398.41 µs         205.6 neuron-s/s
+mm_w256   cudagraph        fp16   rec=0 B= 65536  1 ステップ   2600.47 µs         252.0 neuron-s/s
+mm_w256   eager            fp16x3 rec=0 B=     1  1 ステップ   1012.99 µs           0.0 neuron-s/s
+mm_w256   eager            fp16x3 rec=0 B=    32  1 ステップ    959.97 µs           0.3 neuron-s/s
+mm_w256   eager            fp16x3 rec=0 B=  1024  1 ステップ   1033.74 µs           9.9 neuron-s/s
+mm_w256   eager            fp16x3 rec=0 B=  8192  1 ステップ   1256.03 µs          65.2 neuron-s/s
+mm_w256   eager            fp16x3 rec=0 B= 65536  1 ステップ   8976.34 µs          73.0 neuron-s/s
+mm_w256   cudagraph        fp16x3 rec=0 B=     1  1 ステップ    163.17 µs           0.1 neuron-s/s
+mm_w256   cudagraph        fp16x3 rec=0 B=    32  1 ステップ    202.44 µs           1.6 neuron-s/s
+mm_w256   cudagraph        fp16x3 rec=0 B=  1024  1 ステップ    289.75 µs          35.3 neuron-s/s
+mm_w256   cudagraph        fp16x3 rec=0 B=  8192  1 ステップ   1278.35 µs          64.1 neuron-s/s
+mm_w256   cudagraph        fp16x3 rec=0 B= 65536  1 ステップ   8977.08 µs          73.0 neuron-s/s
+k_3_w3    eager            fp32   rec=0 B=     1  1 ステップ    702.23 µs           0.0 neuron-s/s
+k_3_w3    eager            fp32   rec=0 B=    32  1 ステップ    711.74 µs           0.4 neuron-s/s
+k_3_w3    eager            fp32   rec=0 B=  1024  1 ステップ    671.10 µs          15.3 neuron-s/s
+k_3_w3    eager            fp32   rec=0 B=  8192  1 ステップ    670.38 µs         122.2 neuron-s/s
+k_3_w3    eager            fp32   rec=0 B= 65536  1 ステップ   1271.22 µs         515.5 neuron-s/s
+k_3_w3    cudagraph        fp32   rec=0 B=     1  1 ステップ    104.00 µs           0.1 neuron-s/s
+k_3_w3    cudagraph        fp32   rec=0 B=    32  1 ステップ    142.92 µs           2.2 neuron-s/s
+k_3_w3    cudagraph        fp32   rec=0 B=  1024  1 ステップ    161.56 µs          63.4 neuron-s/s
+k_3_w3    cudagraph        fp32   rec=0 B=  8192  1 ステップ    255.75 µs         320.3 neuron-s/s
+k_3_w3    cudagraph        fp32   rec=0 B= 65536  1 ステップ   1282.55 µs         511.0 neuron-s/s
+k_3_w3    eager            fp16   rec=0 B=     1  1 ステップ   1023.92 µs           0.0 neuron-s/s
+k_3_w3    eager            fp16   rec=0 B=    32  1 ステップ   1089.50 µs           0.3 neuron-s/s
+k_3_w3    eager            fp16   rec=0 B=  1024  1 ステップ   1021.98 µs          10.0 neuron-s/s
+k_3_w3    eager            fp16   rec=0 B=  8192  1 ステップ   1015.07 µs          80.7 neuron-s/s
+k_3_w3    eager            fp16   rec=0 B= 65536  1 ステップ   1235.19 µs         530.6 neuron-s/s
+k_3_w3    cudagraph        fp16   rec=0 B=     1  1 ステップ    114.62 µs           0.1 neuron-s/s
+k_3_w3    cudagraph        fp16   rec=0 B=    32  1 ステップ    161.57 µs           2.0 neuron-s/s
+k_3_w3    cudagraph        fp16   rec=0 B=  1024  1 ステップ    177.68 µs          57.6 neuron-s/s
+k_3_w3    cudagraph        fp16   rec=0 B=  8192  1 ステップ    263.40 µs         311.0 neuron-s/s
+k_3_w3    cudagraph        fp16   rec=0 B= 65536  1 ステップ   1276.99 µs         513.2 neuron-s/s
+k_3_w3    eager            fp16x3 rec=0 B=     1  1 ステップ   2074.03 µs           0.0 neuron-s/s
+k_3_w3    eager            fp16x3 rec=0 B=    32  1 ステップ   2228.62 µs           0.1 neuron-s/s
+k_3_w3    eager            fp16x3 rec=0 B=  1024  1 ステップ   2066.14 µs           5.0 neuron-s/s
+k_3_w3    eager            fp16x3 rec=0 B=  8192  1 ステップ   2079.93 µs          39.4 neuron-s/s
+k_3_w3    eager            fp16x3 rec=0 B= 65536  1 ステップ   4287.82 µs         152.8 neuron-s/s
+k_3_w3    cudagraph        fp16x3 rec=0 B=     1  1 ステップ    296.26 µs           0.0 neuron-s/s
+k_3_w3    cudagraph        fp16x3 rec=0 B=    32  1 ステップ    395.68 µs           0.8 neuron-s/s
+k_3_w3    cudagraph        fp16x3 rec=0 B=  1024  1 ステップ    436.92 µs          23.4 neuron-s/s
+k_3_w3    cudagraph        fp16x3 rec=0 B=  8192  1 ステップ    712.86 µs         114.9 neuron-s/s
+k_3_w3    cudagraph        fp16x3 rec=0 B= 65536  1 ステップ   4347.05 µs         150.8 neuron-s/s
+r8_mlp_hdf_s2 eager            fp32   rec=0 B=     1  1 ステップ    381.22 µs           0.0 neuron-s/s
+r8_mlp_hdf_s2 eager            fp32   rec=0 B=    32  1 ステップ    391.11 µs           0.8 neuron-s/s
+r8_mlp_hdf_s2 eager            fp32   rec=0 B=  1024  1 ステップ    392.41 µs          26.1 neuron-s/s
+r8_mlp_hdf_s2 eager            fp32   rec=0 B=  8192  1 ステップ    371.49 µs         220.5 neuron-s/s
+r8_mlp_hdf_s2 eager            fp32   rec=0 B= 65536  1 ステップ   1664.87 µs         393.6 neuron-s/s
+r8_mlp_hdf_s2 cudagraph        fp32   rec=0 B=     1  1 ステップ     50.53 µs           0.2 neuron-s/s
+r8_mlp_hdf_s2 cudagraph        fp32   rec=0 B=    32  1 ステップ     72.68 µs           4.4 neuron-s/s
+r8_mlp_hdf_s2 cudagraph        fp32   rec=0 B=  1024  1 ステップ    103.33 µs          99.1 neuron-s/s
+r8_mlp_hdf_s2 cudagraph        fp32   rec=0 B=  8192  1 ステップ    282.51 µs         290.0 neuron-s/s
+r8_mlp_hdf_s2 cudagraph        fp32   rec=0 B= 65536  1 ステップ   1669.65 µs         392.5 neuron-s/s
+r8_mlp_hdf_s2 eager            fp16   rec=0 B=     1  1 ステップ    534.42 µs           0.0 neuron-s/s
+r8_mlp_hdf_s2 eager            fp16   rec=0 B=    32  1 ステップ    564.74 µs           0.6 neuron-s/s
+r8_mlp_hdf_s2 eager            fp16   rec=0 B=  1024  1 ステップ    568.73 µs          18.0 neuron-s/s
+r8_mlp_hdf_s2 eager            fp16   rec=0 B=  8192  1 ステップ    528.59 µs         155.0 neuron-s/s
+r8_mlp_hdf_s2 eager            fp16   rec=0 B= 65536  1 ステップ    999.34 µs         655.8 neuron-s/s
+r8_mlp_hdf_s2 cudagraph        fp16   rec=0 B=     1  1 ステップ     61.80 µs           0.2 neuron-s/s
+r8_mlp_hdf_s2 cudagraph        fp16   rec=0 B=    32  1 ステップ     85.13 µs           3.8 neuron-s/s
+r8_mlp_hdf_s2 cudagraph        fp16   rec=0 B=  1024  1 ステップ    106.21 µs          96.4 neuron-s/s
+r8_mlp_hdf_s2 cudagraph        fp16   rec=0 B=  8192  1 ステップ    180.71 µs         453.3 neuron-s/s
+r8_mlp_hdf_s2 cudagraph        fp16   rec=0 B= 65536  1 ステップ   1007.02 µs         650.8 neuron-s/s
+r8_mlp_hdf_s2 eager            fp16x3 rec=0 B=     1  1 ステップ    899.48 µs           0.0 neuron-s/s
+r8_mlp_hdf_s2 eager            fp16x3 rec=0 B=    32  1 ステップ    954.94 µs           0.3 neuron-s/s
+r8_mlp_hdf_s2 eager            fp16x3 rec=0 B=  1024  1 ステップ    959.55 µs          10.7 neuron-s/s
+r8_mlp_hdf_s2 eager            fp16x3 rec=0 B=  8192  1 ステップ    890.91 µs          92.0 neuron-s/s
+r8_mlp_hdf_s2 eager            fp16x3 rec=0 B= 65536  1 ステップ   3104.50 µs         211.1 neuron-s/s
+r8_mlp_hdf_s2 cudagraph        fp16x3 rec=0 B=     1  1 ステップ    132.80 µs           0.1 neuron-s/s
+r8_mlp_hdf_s2 cudagraph        fp16x3 rec=0 B=    32  1 ステップ    171.50 µs           1.9 neuron-s/s
+r8_mlp_hdf_s2 cudagraph        fp16x3 rec=0 B=  1024  1 ステップ    205.33 µs          49.9 neuron-s/s
+r8_mlp_hdf_s2 cudagraph        fp16x3 rec=0 B=  8192  1 ステップ    452.16 µs         181.2 neuron-s/s
+r8_mlp_hdf_s2 cudagraph        fp16x3 rec=0 B= 65536  1 ステップ   3140.80 µs         208.7 neuron-s/s
+m3_v2f05d_s1 eager            fp32   rec=0 B=     1  1 ステップ    699.41 µs           0.0 neuron-s/s
+m3_v2f05d_s1 eager            fp32   rec=0 B=    32  1 ステップ    717.87 µs           0.4 neuron-s/s
+m3_v2f05d_s1 eager            fp32   rec=0 B=  1024  1 ステップ    724.74 µs          14.1 neuron-s/s
+m3_v2f05d_s1 eager            fp32   rec=0 B=  8192  1 ステップ    669.62 µs         122.3 neuron-s/s
+m3_v2f05d_s1 eager            fp32   rec=0 B= 65536  1 ステップ   4292.53 µs         152.7 neuron-s/s
+m3_v2f05d_s1 cudagraph        fp32   rec=0 B=     1  1 ステップ     98.98 µs           0.1 neuron-s/s
+m3_v2f05d_s1 cudagraph        fp32   rec=0 B=    32  1 ステップ    145.25 µs           2.2 neuron-s/s
+m3_v2f05d_s1 cudagraph        fp32   rec=0 B=  1024  1 ステップ    197.43 µs          51.9 neuron-s/s
+m3_v2f05d_s1 cudagraph        fp32   rec=0 B=  8192  1 ステップ    652.02 µs         125.6 neuron-s/s
+m3_v2f05d_s1 cudagraph        fp32   rec=0 B= 65536  1 ステップ   4304.80 µs         152.2 neuron-s/s
+m3_v2f05d_s1 eager            fp16   rec=0 B=     1  1 ステップ   1088.09 µs           0.0 neuron-s/s
+m3_v2f05d_s1 eager            fp16   rec=0 B=    32  1 ステップ   1153.40 µs           0.3 neuron-s/s
+m3_v2f05d_s1 eager            fp16   rec=0 B=  1024  1 ステップ   1170.95 µs           8.7 neuron-s/s
+m3_v2f05d_s1 eager            fp16   rec=0 B=  8192  1 ステップ   1068.75 µs          76.7 neuron-s/s
+m3_v2f05d_s1 eager            fp16   rec=0 B= 65536  1 ステップ   2662.14 µs         246.2 neuron-s/s
+m3_v2f05d_s1 cudagraph        fp16   rec=0 B=     1  1 ステップ    126.88 µs           0.1 neuron-s/s
+m3_v2f05d_s1 cudagraph        fp16   rec=0 B=    32  1 ステップ    177.46 µs           1.8 neuron-s/s
+m3_v2f05d_s1 cudagraph        fp16   rec=0 B=  1024  1 ステップ    207.05 µs          49.5 neuron-s/s
+m3_v2f05d_s1 cudagraph        fp16   rec=0 B=  8192  1 ステップ    402.36 µs         203.6 neuron-s/s
+m3_v2f05d_s1 cudagraph        fp16   rec=0 B= 65536  1 ステップ   2737.36 µs         239.4 neuron-s/s
+m3_v2f05d_s1 eager            fp16x3 rec=0 B=     1  1 ステップ   2214.11 µs           0.0 neuron-s/s
+m3_v2f05d_s1 eager            fp16x3 rec=0 B=    32  1 ステップ   2289.00 µs           0.1 neuron-s/s
+m3_v2f05d_s1 eager            fp16x3 rec=0 B=  1024  1 ステップ   2304.47 µs           4.4 neuron-s/s
+m3_v2f05d_s1 eager            fp16x3 rec=0 B=  8192  1 ステップ   2152.66 µs          38.1 neuron-s/s
+m3_v2f05d_s1 eager            fp16x3 rec=0 B= 65536  1 ステップ   8996.57 µs          72.8 neuron-s/s
+m3_v2f05d_s1 cudagraph        fp16x3 rec=0 B=     1  1 ステップ    320.30 µs           0.0 neuron-s/s
+m3_v2f05d_s1 cudagraph        fp16x3 rec=0 B=    32  1 ステップ    419.13 µs           0.8 neuron-s/s
+m3_v2f05d_s1 cudagraph        fp16x3 rec=0 B=  1024  1 ステップ    493.15 µs          20.8 neuron-s/s
+m3_v2f05d_s1 cudagraph        fp16x3 rec=0 B=  8192  1 ステップ   1184.06 µs          69.2 neuron-s/s
+m3_v2f05d_s1 cudagraph        fp16x3 rec=0 B= 65536  1 ステップ   9064.40 µs          72.3 neuron-s/s
+rnn3:p_h64_cl05 eager            fp32   rec=0 B=     1  1 ステップ    741.19 µs           0.0 neuron-s/s
+rnn3:p_h64_cl05 eager            fp32   rec=0 B=    32  1 ステップ    750.79 µs           0.4 neuron-s/s
+rnn3:p_h64_cl05 eager            fp32   rec=0 B=  1024  1 ステップ    708.21 µs          14.5 neuron-s/s
+rnn3:p_h64_cl05 eager            fp32   rec=0 B=  8192  1 ステップ    710.70 µs         115.3 neuron-s/s
+rnn3:p_h64_cl05 eager            fp32   rec=0 B= 65536  1 ステップ   1361.46 µs         481.4 neuron-s/s
+rnn3:p_h64_cl05 cudagraph        fp32   rec=0 B=     1  1 ステップ    104.66 µs           0.1 neuron-s/s
+rnn3:p_h64_cl05 cudagraph        fp32   rec=0 B=    32  1 ステップ    145.42 µs           2.2 neuron-s/s
+rnn3:p_h64_cl05 cudagraph        fp32   rec=0 B=  1024  1 ステップ    164.65 µs          62.2 neuron-s/s
+rnn3:p_h64_cl05 cudagraph        fp32   rec=0 B=  8192  1 ステップ    278.03 µs         294.6 neuron-s/s
+rnn3:p_h64_cl05 cudagraph        fp32   rec=0 B= 65536  1 ステップ   1370.97 µs         478.0 neuron-s/s
+rnn3:p_h64_cl05 eager            fp16   rec=0 B=     1  1 ステップ   1075.67 µs           0.0 neuron-s/s
+rnn3:p_h64_cl05 eager            fp16   rec=0 B=    32  1 ステップ   1117.25 µs           0.3 neuron-s/s
+rnn3:p_h64_cl05 eager            fp16   rec=0 B=  1024  1 ステップ   1051.71 µs           9.7 neuron-s/s
+rnn3:p_h64_cl05 eager            fp16   rec=0 B=  8192  1 ステップ   1044.47 µs          78.4 neuron-s/s
+rnn3:p_h64_cl05 eager            fp16   rec=0 B= 65536  1 ステップ   1397.29 µs         469.0 neuron-s/s
+rnn3:p_h64_cl05 cudagraph        fp16   rec=0 B=     1  1 ステップ    125.81 µs           0.1 neuron-s/s
+rnn3:p_h64_cl05 cudagraph        fp16   rec=0 B=    32  1 ステップ    162.92 µs           2.0 neuron-s/s
+rnn3:p_h64_cl05 cudagraph        fp16   rec=0 B=  1024  1 ステップ    178.34 µs          57.4 neuron-s/s
+rnn3:p_h64_cl05 cudagraph        fp16   rec=0 B=  8192  1 ステップ    286.31 µs         286.1 neuron-s/s
+rnn3:p_h64_cl05 cudagraph        fp16   rec=0 B= 65536  1 ステップ   1435.45 µs         456.6 neuron-s/s
+rnn3:p_h64_cl05 eager            fp16x3 rec=0 B=     1  1 ステップ   2142.25 µs           0.0 neuron-s/s
+rnn3:p_h64_cl05 eager            fp16x3 rec=0 B=    32  1 ステップ   2220.05 µs           0.1 neuron-s/s
+rnn3:p_h64_cl05 eager            fp16x3 rec=0 B=  1024  1 ステップ   2085.77 µs           4.9 neuron-s/s
+rnn3:p_h64_cl05 eager            fp16x3 rec=0 B=  8192  1 ステップ   2101.05 µs          39.0 neuron-s/s
+rnn3:p_h64_cl05 eager            fp16x3 rec=0 B= 65536  1 ステップ   4697.11 µs         139.5 neuron-s/s
+rnn3:p_h64_cl05 cudagraph        fp16x3 rec=0 B=     1  1 ステップ    317.54 µs           0.0 neuron-s/s
+rnn3:p_h64_cl05 cudagraph        fp16x3 rec=0 B=    32  1 ステップ    398.77 µs           0.8 neuron-s/s
+rnn3:p_h64_cl05 cudagraph        fp16x3 rec=0 B=  1024  1 ステップ    433.19 µs          23.6 neuron-s/s
+rnn3:p_h64_cl05 cudagraph        fp16x3 rec=0 B=  8192  1 ステップ    720.90 µs         113.6 neuron-s/s
+rnn3:p_h64_cl05 cudagraph        fp16x3 rec=0 B= 65536  1 ステップ   4737.19 µs         138.3 neuron-s/s
+rnn3:s_h128_ft05 eager            fp32   rec=0 B=     1  1 ステップ    744.00 µs           0.0 neuron-s/s
+rnn3:s_h128_ft05 eager            fp32   rec=0 B=    32  1 ステップ    751.66 µs           0.4 neuron-s/s
+rnn3:s_h128_ft05 eager            fp32   rec=0 B=  1024  1 ステップ    698.71 µs          14.7 neuron-s/s
+rnn3:s_h128_ft05 eager            fp32   rec=0 B=  8192  1 ステップ    705.62 µs         116.1 neuron-s/s
+rnn3:s_h128_ft05 eager            fp32   rec=0 B= 65536  1 ステップ   2565.10 µs         255.5 neuron-s/s
+rnn3:s_h128_ft05 cudagraph        fp32   rec=0 B=     1  1 ステップ    109.41 µs           0.1 neuron-s/s
+rnn3:s_h128_ft05 cudagraph        fp32   rec=0 B=    32  1 ステップ    161.98 µs           2.0 neuron-s/s
+rnn3:s_h128_ft05 cudagraph        fp32   rec=0 B=  1024  1 ステップ    183.92 µs          55.7 neuron-s/s
+rnn3:s_h128_ft05 cudagraph        fp32   rec=0 B=  8192  1 ステップ    442.83 µs         185.0 neuron-s/s
+rnn3:s_h128_ft05 cudagraph        fp32   rec=0 B= 65536  1 ステップ   2587.74 µs         253.3 neuron-s/s
+rnn3:s_h128_ft05 eager            fp16   rec=0 B=     1  1 ステップ   1048.21 µs           0.0 neuron-s/s
+rnn3:s_h128_ft05 eager            fp16   rec=0 B=    32  1 ステップ   1124.31 µs           0.3 neuron-s/s
+rnn3:s_h128_ft05 eager            fp16   rec=0 B=  1024  1 ステップ   1129.21 µs           9.1 neuron-s/s
+rnn3:s_h128_ft05 eager            fp16   rec=0 B=  8192  1 ステップ   1121.07 µs          73.1 neuron-s/s
+rnn3:s_h128_ft05 eager            fp16   rec=0 B= 65536  1 ステップ   2529.14 µs         259.1 neuron-s/s
+rnn3:s_h128_ft05 cudagraph        fp16   rec=0 B=     1  1 ステップ    117.81 µs           0.1 neuron-s/s
+rnn3:s_h128_ft05 cudagraph        fp16   rec=0 B=    32  1 ステップ    166.24 µs           1.9 neuron-s/s
+rnn3:s_h128_ft05 cudagraph        fp16   rec=0 B=  1024  1 ステップ    195.86 µs          52.3 neuron-s/s
+rnn3:s_h128_ft05 cudagraph        fp16   rec=0 B=  8192  1 ステップ    410.06 µs         199.8 neuron-s/s
+rnn3:s_h128_ft05 cudagraph        fp16   rec=0 B= 65536  1 ステップ   2594.64 µs         252.6 neuron-s/s
+rnn3:s_h128_ft05 eager            fp16x3 rec=0 B=     1  1 ステップ   2140.29 µs           0.0 neuron-s/s
+rnn3:s_h128_ft05 eager            fp16x3 rec=0 B=    32  1 ステップ   2264.04 µs           0.1 neuron-s/s
+rnn3:s_h128_ft05 eager            fp16x3 rec=0 B=  1024  1 ステップ   2266.26 µs           4.5 neuron-s/s
+rnn3:s_h128_ft05 eager            fp16x3 rec=0 B=  8192  1 ステップ   2273.16 µs          36.0 neuron-s/s
+rnn3:s_h128_ft05 eager            fp16x3 rec=0 B= 65536  1 ステップ   8839.25 µs          74.1 neuron-s/s
+rnn3:s_h128_ft05 cudagraph        fp16x3 rec=0 B=     1  1 ステップ    311.40 µs           0.0 neuron-s/s
+rnn3:s_h128_ft05 cudagraph        fp16x3 rec=0 B=    32  1 ステップ    407.28 µs           0.8 neuron-s/s
+rnn3:s_h128_ft05 cudagraph        fp16x3 rec=0 B=  1024  1 ステップ    496.09 µs          20.6 neuron-s/s
+rnn3:s_h128_ft05 cudagraph        fp16x3 rec=0 B=  8192  1 ステップ   1190.55 µs          68.8 neuron-s/s
+rnn3:s_h128_ft05 cudagraph        fp16x3 rec=0 B= 65536  1 ステップ   8872.68 µs          73.9 neuron-s/s
+rnn3:s_gru64 eager            fp32   rec=0 B=     1  1 ステップ   1131.85 µs           0.0 neuron-s/s
+rnn3:s_gru64 eager            fp32   rec=0 B=    32  1 ステップ   1172.64 µs           0.3 neuron-s/s
+rnn3:s_gru64 eager            fp32   rec=0 B=  1024  1 ステップ   1111.08 µs           9.2 neuron-s/s
+rnn3:s_gru64 eager            fp32   rec=0 B=  8192  1 ステップ   1107.86 µs          73.9 neuron-s/s
+rnn3:s_gru64 eager            fp32   rec=0 B= 65536  1 ステップ   4878.80 µs         134.3 neuron-s/s
+rnn3:s_gru64 cudagraph        fp32   rec=0 B=     1  1 ステップ    172.66 µs           0.1 neuron-s/s
+rnn3:s_gru64 cudagraph        fp32   rec=0 B=    32  1 ステップ    240.42 µs           1.3 neuron-s/s
+rnn3:s_gru64 cudagraph        fp32   rec=0 B=  1024  1 ステップ    294.01 µs          34.8 neuron-s/s
+rnn3:s_gru64 cudagraph        fp32   rec=0 B=  8192  1 ステップ    750.29 µs         109.2 neuron-s/s
+rnn3:s_gru64 cudagraph        fp32   rec=0 B= 65536  1 ステップ   4896.33 µs         133.8 neuron-s/s
+rnn3:s_gru64 eager            fp16   rec=0 B=     1  1 ステップ   1557.38 µs           0.0 neuron-s/s
+rnn3:s_gru64 eager            fp16   rec=0 B=    32  1 ステップ   1611.30 µs           0.2 neuron-s/s
+rnn3:s_gru64 eager            fp16   rec=0 B=  1024  1 ステップ   1505.27 µs           6.8 neuron-s/s
+rnn3:s_gru64 eager            fp16   rec=0 B=  8192  1 ステップ   1510.38 µs          54.2 neuron-s/s
+rnn3:s_gru64 eager            fp16   rec=0 B= 65536  1 ステップ   4743.45 µs         138.2 neuron-s/s
+rnn3:s_gru64 cudagraph        fp16   rec=0 B=     1  1 ステップ    187.25 µs           0.1 neuron-s/s
+rnn3:s_gru64 cudagraph        fp16   rec=0 B=    32  1 ステップ    256.10 µs           1.2 neuron-s/s
+rnn3:s_gru64 cudagraph        fp16   rec=0 B=  1024  1 ステップ    307.22 µs          33.3 neuron-s/s
+rnn3:s_gru64 cudagraph        fp16   rec=0 B=  8192  1 ステップ    738.35 µs         110.9 neuron-s/s
+rnn3:s_gru64 cudagraph        fp16   rec=0 B= 65536  1 ステップ   4775.87 µs         137.2 neuron-s/s
+rnn3:s_gru64 eager            fp16x3 rec=0 B=     1  1 ステップ   2675.74 µs           0.0 neuron-s/s
+rnn3:s_gru64 eager            fp16x3 rec=0 B=    32  1 ステップ   2744.45 µs           0.1 neuron-s/s
+rnn3:s_gru64 eager            fp16x3 rec=0 B=  1024  1 ステップ   2744.71 µs           3.7 neuron-s/s
+rnn3:s_gru64 eager            fp16x3 rec=0 B=  8192  1 ステップ   2609.00 µs          31.4 neuron-s/s
+rnn3:s_gru64 eager            fp16x3 rec=0 B= 65536  1 ステップ  10098.47 µs          64.9 neuron-s/s
+rnn3:s_gru64 cudagraph        fp16x3 rec=0 B=     1  1 ステップ    374.62 µs           0.0 neuron-s/s
+rnn3:s_gru64 cudagraph        fp16x3 rec=0 B=    32  1 ステップ    493.60 µs           0.6 neuron-s/s
+rnn3:s_gru64 cudagraph        fp16x3 rec=0 B=  1024  1 ステップ    611.91 µs          16.7 neuron-s/s
+rnn3:s_gru64 cudagraph        fp16x3 rec=0 B=  8192  1 ステップ   1496.62 µs          54.7 neuron-s/s
+rnn3:s_gru64 cudagraph        fp16x3 rec=0 B= 65536  1 ステップ  10164.35 µs          64.5 neuron-s/s
+rnn1:sp_r_scr_e01_s1 eager            fp32   rec=0 B=     1  1 ステップ    340.50 µs           0.0 neuron-s/s
+rnn1:sp_r_scr_e01_s1 eager            fp32   rec=0 B=    32  1 ステップ    347.97 µs           0.9 neuron-s/s
+rnn1:sp_r_scr_e01_s1 eager            fp32   rec=0 B=  1024  1 ステップ    326.90 µs          31.3 neuron-s/s
+rnn1:sp_r_scr_e01_s1 eager            fp32   rec=0 B=  8192  1 ステップ    330.02 µs         248.2 neuron-s/s
+rnn1:sp_r_scr_e01_s1 eager            fp32   rec=0 B= 65536  1 ステップ   1950.77 µs         335.9 neuron-s/s
+rnn1:sp_r_scr_e01_s1 cudagraph        fp32   rec=0 B=     1  1 ステップ     37.29 µs           0.3 neuron-s/s
+rnn1:sp_r_scr_e01_s1 cudagraph        fp32   rec=0 B=    32  1 ステップ     57.85 µs           5.5 neuron-s/s
+rnn1:sp_r_scr_e01_s1 cudagraph        fp32   rec=0 B=  1024  1 ステップ     90.82 µs         112.8 neuron-s/s
+rnn1:sp_r_scr_e01_s1 cudagraph        fp32   rec=0 B=  8192  1 ステップ    300.59 µs         272.5 neuron-s/s
+rnn1:sp_r_scr_e01_s1 cudagraph        fp32   rec=0 B= 65536  1 ステップ   1973.58 µs         332.1 neuron-s/s
+rnn1:sp_r_scr_e01_s1 eager            fp16   rec=0 B=     1  1 ステップ    488.87 µs           0.0 neuron-s/s
+rnn1:sp_r_scr_e01_s1 eager            fp16   rec=0 B=    32  1 ステップ    517.37 µs           0.6 neuron-s/s
+rnn1:sp_r_scr_e01_s1 eager            fp16   rec=0 B=  1024  1 ステップ    490.37 µs          20.9 neuron-s/s
+rnn1:sp_r_scr_e01_s1 eager            fp16   rec=0 B=  8192  1 ステップ    499.07 µs         164.1 neuron-s/s
+rnn1:sp_r_scr_e01_s1 eager            fp16   rec=0 B= 65536  1 ステップ   1415.47 µs         463.0 neuron-s/s
+rnn1:sp_r_scr_e01_s1 cudagraph        fp16   rec=0 B=     1  1 ステップ     46.98 µs           0.2 neuron-s/s
+rnn1:sp_r_scr_e01_s1 cudagraph        fp16   rec=0 B=    32  1 ステップ     67.88 µs           4.7 neuron-s/s
+rnn1:sp_r_scr_e01_s1 cudagraph        fp16   rec=0 B=  1024  1 ステップ     93.36 µs         109.7 neuron-s/s
+rnn1:sp_r_scr_e01_s1 cudagraph        fp16   rec=0 B=  8192  1 ステップ    194.21 µs         421.8 neuron-s/s
+rnn1:sp_r_scr_e01_s1 cudagraph        fp16   rec=0 B= 65536  1 ステップ   1430.99 µs         458.0 neuron-s/s
+rnn1:sp_r_scr_e01_s1 eager            fp16x3 rec=0 B=     1  1 ステップ    874.57 µs           0.0 neuron-s/s
+rnn1:sp_r_scr_e01_s1 eager            fp16x3 rec=0 B=    32  1 ステップ    924.00 µs           0.3 neuron-s/s
+rnn1:sp_r_scr_e01_s1 eager            fp16x3 rec=0 B=  1024  1 ステップ    857.50 µs          11.9 neuron-s/s
+rnn1:sp_r_scr_e01_s1 eager            fp16x3 rec=0 B=  8192  1 ステップ    873.98 µs          93.7 neuron-s/s
+rnn1:sp_r_scr_e01_s1 eager            fp16x3 rec=0 B= 65536  1 ステップ   4356.84 µs         150.4 neuron-s/s
+rnn1:sp_r_scr_e01_s1 cudagraph        fp16x3 rec=0 B=     1  1 ステップ    119.68 µs           0.1 neuron-s/s
+rnn1:sp_r_scr_e01_s1 cudagraph        fp16x3 rec=0 B=    32  1 ステップ    161.64 µs           2.0 neuron-s/s
+rnn1:sp_r_scr_e01_s1 cudagraph        fp16x3 rec=0 B=  1024  1 ステップ    203.41 µs          50.3 neuron-s/s
+rnn1:sp_r_scr_e01_s1 cudagraph        fp16x3 rec=0 B=  8192  1 ステップ    551.84 µs         148.4 neuron-s/s
+rnn1:sp_r_scr_e01_s1 cudagraph        fp16x3 rec=0 B= 65536  1 ステップ   4348.66 µs         150.7 neuron-s/s
+ens:mm_rel+mm_rel_s1 eager            fp32   rec=0 B=     1  1 ステップ    481.92 µs           0.0 neuron-s/s
+ens:mm_rel+mm_rel_s1 eager            fp32   rec=0 B=    32  1 ステップ    491.95 µs           0.7 neuron-s/s
+ens:mm_rel+mm_rel_s1 eager            fp32   rec=0 B=  1024  1 ステップ    504.07 µs          20.3 neuron-s/s
+ens:mm_rel+mm_rel_s1 eager            fp32   rec=0 B=  8192  1 ステップ    506.09 µs         161.9 neuron-s/s
+ens:mm_rel+mm_rel_s1 eager            fp32   rec=0 B= 65536  1 ステップ   3111.63 µs         210.6 neuron-s/s
+ens:mm_rel+mm_rel_s1 cudagraph        fp32   rec=0 B=     1  1 ステップ     69.21 µs           0.1 neuron-s/s
+ens:mm_rel+mm_rel_s1 cudagraph        fp32   rec=0 B=    32  1 ステップ    102.53 µs           3.1 neuron-s/s
+ens:mm_rel+mm_rel_s1 cudagraph        fp32   rec=0 B=  1024  1 ステップ    146.41 µs          69.9 neuron-s/s
+ens:mm_rel+mm_rel_s1 cudagraph        fp32   rec=0 B=  8192  1 ステップ    493.05 µs         166.2 neuron-s/s
+ens:mm_rel+mm_rel_s1 cudagraph        fp32   rec=0 B= 65536  1 ステップ   3140.31 µs         208.7 neuron-s/s
+ens:mm_rel+mm_rel_s1 eager            fp16   rec=0 B=     1  1 ステップ    774.33 µs           0.0 neuron-s/s
+ens:mm_rel+mm_rel_s1 eager            fp16   rec=0 B=    32  1 ステップ    812.37 µs           0.4 neuron-s/s
+ens:mm_rel+mm_rel_s1 eager            fp16   rec=0 B=  1024  1 ステップ    839.85 µs          12.2 neuron-s/s
+ens:mm_rel+mm_rel_s1 eager            fp16   rec=0 B=  8192  1 ステップ    829.40 µs          98.8 neuron-s/s
+ens:mm_rel+mm_rel_s1 eager            fp16   rec=0 B= 65536  1 ステップ   1826.78 µs         358.8 neuron-s/s
+ens:mm_rel+mm_rel_s1 cudagraph        fp16   rec=0 B=     1  1 ステップ     90.48 µs           0.1 neuron-s/s
+ens:mm_rel+mm_rel_s1 cudagraph        fp16   rec=0 B=    32  1 ステップ    126.46 µs           2.5 neuron-s/s
+ens:mm_rel+mm_rel_s1 cudagraph        fp16   rec=0 B=  1024  1 ステップ    151.37 µs          67.6 neuron-s/s
+ens:mm_rel+mm_rel_s1 cudagraph        fp16   rec=0 B=  8192  1 ステップ    287.91 µs         284.5 neuron-s/s
+ens:mm_rel+mm_rel_s1 cudagraph        fp16   rec=0 B= 65536  1 ステップ   1847.05 µs         354.8 neuron-s/s
+ens:mm_rel+mm_rel_s1 eager            fp16x3 rec=0 B=     1  1 ステップ   1536.59 µs           0.0 neuron-s/s
+ens:mm_rel+mm_rel_s1 eager            fp16x3 rec=0 B=    32  1 ステップ   1600.34 µs           0.2 neuron-s/s
+ens:mm_rel+mm_rel_s1 eager            fp16x3 rec=0 B=  1024  1 ステップ   1618.21 µs           6.3 neuron-s/s
+ens:mm_rel+mm_rel_s1 eager            fp16x3 rec=0 B=  8192  1 ステップ   1529.05 µs          53.6 neuron-s/s
+ens:mm_rel+mm_rel_s1 eager            fp16x3 rec=0 B= 65536  1 ステップ   6029.84 µs         108.7 neuron-s/s
+ens:mm_rel+mm_rel_s1 cudagraph        fp16x3 rec=0 B=     1  1 ステップ    225.40 µs           0.0 neuron-s/s
+ens:mm_rel+mm_rel_s1 cudagraph        fp16x3 rec=0 B=    32  1 ステップ    287.74 µs           1.1 neuron-s/s
+ens:mm_rel+mm_rel_s1 cudagraph        fp16x3 rec=0 B=  1024  1 ステップ    348.46 µs          29.4 neuron-s/s
+ens:mm_rel+mm_rel_s1 cudagraph        fp16x3 rec=0 B=  8192  1 ステップ    820.68 µs          99.8 neuron-s/s
+ens:mm_rel+mm_rel_s1 cudagraph        fp16x3 rec=0 B= 65536  1 ステップ   6048.99 µs         108.3 neuron-s/s
+保存: /mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/results/hh_speed/gpu_all.json
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12496 (\N{KATAKANA LETTER BA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12483 (\N{KATAKANA LETTER SMALL TU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12481 (\N{KATAKANA LETTER TI}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 25968 (\N{CJK UNIFIED IDEOGRAPH-6570}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 65288 (\N{FULLWIDTH LEFT PARENTHESIS}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 21516 (\N{CJK UNIFIED IDEOGRAPH-540C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 26178 (\N{CJK UNIFIED IDEOGRAPH-6642}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12395 (\N{HIRAGANA LETTER NI}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 22238 (\N{CJK UNIFIED IDEOGRAPH-56DE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12377 (\N{HIRAGANA LETTER SU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12491 (\N{KATAKANA LETTER NI}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12517 (\N{KATAKANA LETTER SMALL YU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12540 (\N{KATAKANA-HIRAGANA PROLONGED SOUND MARK}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12525 (\N{KATAKANA LETTER RO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12531 (\N{KATAKANA LETTER N}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 65289 (\N{FULLWIDTH RIGHT PARENTHESIS}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 23455 (\N{CJK UNIFIED IDEOGRAPH-5B9F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 34892 (\N{CJK UNIFIED IDEOGRAPH-884C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 38291 (\N{CJK UNIFIED IDEOGRAPH-9593}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12473 (\N{KATAKANA LETTER SU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12486 (\N{KATAKANA LETTER TE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12503 (\N{KATAKANA LETTER PU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12289 (\N{IDEOGRAPHIC COMMA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 22830 (\N{CJK UNIFIED IDEOGRAPH-592E}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 20516 (\N{CJK UNIFIED IDEOGRAPH-5024}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12392 (\N{HIRAGANA LETTER TO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 38525 (\N{CJK UNIFIED IDEOGRAPH-967D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 30340 (\N{CJK UNIFIED IDEOGRAPH-7684}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 22522 (\N{CJK UNIFIED IDEOGRAPH-57FA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 28310 (\N{CJK UNIFIED IDEOGRAPH-6E96}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 20491 (\N{CJK UNIFIED IDEOGRAPH-500B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12539 (\N{KATAKANA MIDDLE DOT}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 20006 (\N{CJK UNIFIED IDEOGRAPH-4E26}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 21015 (\N{CJK UNIFIED IDEOGRAPH-5217}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 22823 (\N{CJK UNIFIED IDEOGRAPH-5927}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12365 (\N{HIRAGANA LETTER KI}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12356 (\N{HIRAGANA LETTER I}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12411 (\N{HIRAGANA LETTER HO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12393 (\N{HIRAGANA LETTER DO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 36895 (\N{CJK UNIFIED IDEOGRAPH-901F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12523 (\N{KATAKANA LETTER RU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12488 (\N{KATAKANA LETTER TO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 25613 (\N{CJK UNIFIED IDEOGRAPH-640D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 30410 (\N{CJK UNIFIED IDEOGRAPH-76CA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 23696 (\N{CJK UNIFIED IDEOGRAPH-5C90}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12398 (\N{HIRAGANA LETTER NO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 21051 (\N{CJK UNIFIED IDEOGRAPH-523B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12415 (\N{HIRAGANA LETTER MI}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 24133 (\N{CJK UNIFIED IDEOGRAPH-5E45}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 36861 (\N{CJK UNIFIED IDEOGRAPH-8FFD}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12388 (\N{HIRAGANA LETTER TU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12367 (\N{HIRAGANA LETTER KU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 24517 (\N{CJK UNIFIED IDEOGRAPH-5FC5}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 35201 (\N{CJK UNIFIED IDEOGRAPH-8981}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12394 (\N{HIRAGANA LETTER NA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 20195 (\N{CJK UNIFIED IDEOGRAPH-4EE3}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 29702 (\N{CJK UNIFIED IDEOGRAPH-7406}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12514 (\N{KATAKANA LETTER MO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 12487 (\N{KATAKANA LETTER DE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:431: UserWarning: Glyph 24230 (\N{CJK UNIFIED IDEOGRAPH-5EA6}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 23455 (\N{CJK UNIFIED IDEOGRAPH-5B9F}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 34892 (\N{CJK UNIFIED IDEOGRAPH-884C}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 26178 (\N{CJK UNIFIED IDEOGRAPH-6642}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 38291 (\N{CJK UNIFIED IDEOGRAPH-9593}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 65288 (\N{FULLWIDTH LEFT PARENTHESIS}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12473 (\N{KATAKANA LETTER SU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12486 (\N{KATAKANA LETTER TE}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12483 (\N{KATAKANA LETTER SMALL TU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12503 (\N{KATAKANA LETTER PU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12289 (\N{IDEOGRAPHIC COMMA}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 22830 (\N{CJK UNIFIED IDEOGRAPH-592E}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 20516 (\N{CJK UNIFIED IDEOGRAPH-5024}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 65289 (\N{FULLWIDTH RIGHT PARENTHESIS}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12392 (\N{HIRAGANA LETTER TO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12496 (\N{KATAKANA LETTER BA}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12481 (\N{KATAKANA LETTER TI}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 25968 (\N{CJK UNIFIED IDEOGRAPH-6570}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 21516 (\N{CJK UNIFIED IDEOGRAPH-540C}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12395 (\N{HIRAGANA LETTER NI}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 22238 (\N{CJK UNIFIED IDEOGRAPH-56DE}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12377 (\N{HIRAGANA LETTER SU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12491 (\N{KATAKANA LETTER NI}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12517 (\N{KATAKANA LETTER SMALL YU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12540 (\N{KATAKANA-HIRAGANA PROLONGED SOUND MARK}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12525 (\N{KATAKANA LETTER RO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12531 (\N{KATAKANA LETTER N}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 38525 (\N{CJK UNIFIED IDEOGRAPH-967D}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 30340 (\N{CJK UNIFIED IDEOGRAPH-7684}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 22522 (\N{CJK UNIFIED IDEOGRAPH-57FA}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 28310 (\N{CJK UNIFIED IDEOGRAPH-6E96}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 20491 (\N{CJK UNIFIED IDEOGRAPH-500B}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12539 (\N{KATAKANA MIDDLE DOT}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 20006 (\N{CJK UNIFIED IDEOGRAPH-4E26}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 21015 (\N{CJK UNIFIED IDEOGRAPH-5217}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 22823 (\N{CJK UNIFIED IDEOGRAPH-5927}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12365 (\N{HIRAGANA LETTER KI}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12356 (\N{HIRAGANA LETTER I}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12411 (\N{HIRAGANA LETTER HO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12393 (\N{HIRAGANA LETTER DO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 36895 (\N{CJK UNIFIED IDEOGRAPH-901F}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12523 (\N{KATAKANA LETTER RU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12488 (\N{KATAKANA LETTER TO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 25613 (\N{CJK UNIFIED IDEOGRAPH-640D}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 30410 (\N{CJK UNIFIED IDEOGRAPH-76CA}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 23696 (\N{CJK UNIFIED IDEOGRAPH-5C90}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12398 (\N{HIRAGANA LETTER NO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 21051 (\N{CJK UNIFIED IDEOGRAPH-523B}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12415 (\N{HIRAGANA LETTER MI}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 24133 (\N{CJK UNIFIED IDEOGRAPH-5E45}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 36861 (\N{CJK UNIFIED IDEOGRAPH-8FFD}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12388 (\N{HIRAGANA LETTER TU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12367 (\N{HIRAGANA LETTER KU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 24517 (\N{CJK UNIFIED IDEOGRAPH-5FC5}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 35201 (\N{CJK UNIFIED IDEOGRAPH-8981}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12394 (\N{HIRAGANA LETTER NA}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 20195 (\N{CJK UNIFIED IDEOGRAPH-4EE3}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 29702 (\N{CJK UNIFIED IDEOGRAPH-7406}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12514 (\N{KATAKANA LETTER MO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 12487 (\N{KATAKANA LETTER DE}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:432: UserWarning: Glyph 24230 (\N{CJK UNIFIED IDEOGRAPH-5EA6}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+図: /mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/results/hh_speed/gpu_all.png
+[mm_rel [fp64]] 100%: 25/26  平均 0.962  Γ 0.955  (58 s)  不一致: ramp 0-30 0%
+[mm_w256 [fp64]] 100%: 23/26  平均 0.950  Γ 0.947  (72 s)  不一致: const 7 72%, ramp 0-20 0%, munechika train 99%
+[k_3_w3 [fp64]] 100%: 22/26  平均 0.924  Γ 0.922  (145 s)  不一致: ramp 0-20 0%, ramp 0-30 85%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%
+[r8_mlp_hdf_s2 [fp64]] 100%: 23/26  平均 0.996  Γ 0.996  (86 s)  不一致: random pulse 5ms 93%, OU 5±3 96%, munechika train 99%
+[m3_v2f05d_s1 [fp64]] 100%: 26/26  平均 1.000  Γ 1.000  (150 s)  不一致: 
+[rnn3:p_h64_cl05 [fp64]] 100%: 22/26  平均 0.956  Γ 0.957  (151 s)  不一致: ramp 0-20 0%, ramp 0-30 94%, OU 5±3 92%, munechika train 99%
+[rnn3:s_h128_ft05 [fp64]] 100%: 22/26  平均 0.952  Γ 0.953  (160 s)  不一致: ramp 0-20 0%, ramp 0-30 85%, random pulse 5ms 93%, level+OU 96%
+[rnn3:s_gru64 [fp64]] 100%: 21/26  平均 0.921  Γ 0.915  (236 s)  不一致: ramp 0-20 0%, ramp 0-30 18%, random pulse 5ms 93%, OU 5±3 96%, level+OU 88%
+[rnn1:sp_r_scr_e01_s1 [fp64]] 100%: 21/26  平均 0.915  Γ 0.909  (77 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, random pulse 5ms 93%, OU 5±3 88%, munechika train 98%
+[ens:mm_rel+mm_rel_s1 [fp64]] 100%: 24/26  平均 0.957  Γ 0.959  (108 s)  不一致: ramp 0-20 0%, ramp 0-30 89%
+[mm_rel [fp32]] 100%: 24/26  平均 0.954  Γ 0.957  (60 s)  不一致: ramp 0-20 0%, ramp 0-30 81%
+[mm_w256 [fp32]] 100%: 22/26  平均 0.947  Γ 0.951  (68 s)  不一致: const 7 72%, ramp 0-20 11%, ramp 0-30 81%, munechika train 99%
+[k_3_w3 [fp32]] 100%: 22/26  平均 0.892  Γ 0.879  (148 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%
+[r8_mlp_hdf_s2 [fp32]] 100%: 21/26  平均 0.950  Γ 0.953  (84 s)  不一致: ramp 0-20 0%, ramp 0-30 81%, random pulse 5ms 93%, OU 5±3 96%, munechika train 99%
+[m3_v2f05d_s1 [fp32]] 100%: 24/26  平均 0.954  Γ 0.957  (141 s)  不一致: ramp 0-20 0%, ramp 0-30 81%
+[rnn3:p_h64_cl05 [fp32]] 100%: 22/26  平均 0.951  Γ 0.954  (142 s)  不一致: ramp 0-20 0%, ramp 0-30 81%, OU 5±3 92%, munechika train 99%
+[rnn3:s_h128_ft05 [fp32]] 100%: 22/26  平均 0.922  Γ 0.916  (153 s)  不一致: ramp 0-20 7%, ramp 0-30 0%, random pulse 5ms 93%, level+OU 96%
+[rnn3:s_gru64 [fp32]] 100%: 21/26  平均 0.918  Γ 0.914  (236 s)  不一致: ramp 0-20 11%, ramp 0-30 0%, random pulse 5ms 93%, OU 5±3 96%, level+OU 88%
+[rnn1:sp_r_scr_e01_s1 [fp32]] 100%: 21/26  平均 0.921  Γ 0.918  (72 s)  不一致: ramp 0-20 14%, ramp 0-30 0%, random pulse 5ms 93%, OU 5±3 88%, munechika train 98%
+[ens:mm_rel+mm_rel_s1 [fp32]] 100%: 24/26  平均 0.923  Γ 0.915  (103 s)  不一致: ramp 0-20 0%, ramp 0-30 0%
+[mm_rel [fp16]] 100%: 24/26  平均 0.950  Γ 0.954  (85 s)  不一致: ramp 0-20 0%, ramp 0-30 71%
+[mm_w256 [fp16]] 100%: 21/26  平均 0.912  Γ 0.901  (105 s)  不一致: const 7 78%, ramp 0-20 0%, ramp 0-30 0%, random pulse 5ms 93%, munechika train 99%
+[k_3_w3 [fp16]] 100%: 22/26  平均 0.918  Γ 0.909  (217 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, random pulse 5ms 93%, OU 5±3 92%
+[r8_mlp_hdf_s2 [fp16]] 100%: 22/26  平均 0.922  Γ 0.917  (115 s)  不一致: ramp 0-20 8%, ramp 0-30 0%, random pulse 5ms 93%, OU 5±3 96%
+[m3_v2f05d_s1 [fp16]] 100%: 24/26  平均 0.923  Γ 0.915  (230 s)  不一致: ramp 0-20 0%, ramp 0-30 0%
+[rnn3:p_h64_cl05 [fp16]] 100%: 22/26  平均 0.947  Γ 0.951  (214 s)  不一致: ramp 0-20 0%, ramp 0-30 71%, OU 5±3 92%, munechika train 99%
+[rnn3:s_h128_ft05 [fp16]] 100%: 22/26  平均 0.939  Γ 0.939  (228 s)  不一致: ramp 0-20 0%, ramp 0-30 52%, random pulse 5ms 93%, level+OU 96%
+[rnn3:s_gru64 [fp16]] 100%: 20/26  平均 0.911  Γ 0.903  (323 s)  不一致: const 7 83%, ramp 0-20 8%, ramp 0-30 0%, random pulse 5ms 93%, OU 5±3 96%, level+OU 88%
+[rnn1:sp_r_scr_e01_s1 [fp16]] 100%: 21/26  平均 0.949  Γ 0.952  (106 s)  不一致: ramp 0-20 0%, ramp 0-30 85%, random pulse 5ms 93%, OU 5±3 92%, munechika train 98%
+[ens:mm_rel+mm_rel_s1 [fp16]] 100%: 24/26  平均 0.923  Γ 0.915  (166 s)  不一致: ramp 0-20 0%, ramp 0-30 0%
+[mm_rel [fp16x3]] 100%: 24/26  平均 0.956  Γ 0.958  (170 s)  不一致: ramp 0-20 0%, ramp 0-30 85%
+[mm_w256 [fp16x3]] 100%: 22/26  平均 0.912  Γ 0.901  (211 s)  不一致: const 7 72%, ramp 0-20 0%, ramp 0-30 0%, munechika train 99%
+[k_3_w3 [fp16x3]] 100%: 22/26  平均 0.892  Γ 0.879  (438 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%
+[r8_mlp_hdf_s2 [fp16x3]] 100%: 21/26  平均 0.925  Γ 0.923  (194 s)  不一致: ramp 0-20 17%, ramp 0-30 0%, random pulse 5ms 93%, OU 5±3 96%, munechika train 99%
+[m3_v2f05d_s1 [fp16x3]] 100%: 24/26  平均 0.954  Γ 0.957  (464 s)  不一致: ramp 0-20 0%, ramp 0-30 81%
+[rnn3:p_h64_cl05 [fp16x3]] 100%: 22/26  平均 0.923  Γ 0.918  (436 s)  不一致: ramp 0-20 0%, ramp 0-30 10%, OU 5±3 92%, munechika train 99%
+[rnn3:s_h128_ft05 [fp16x3]] 100%: 22/26  平均 0.919  Γ 0.910  (463 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, random pulse 5ms 93%, level+OU 96%
+[rnn3:s_gru64 [fp16x3]] 100%: 21/26  平均 0.953  Γ 0.957  (554 s)  不一致: ramp 0-20 11%, ramp 0-30 89%, random pulse 5ms 93%, OU 5±3 96%, level+OU 88%
+[rnn1:sp_r_scr_e01_s1 [fp16x3]] 100%: 21/26  平均 0.953  Γ 0.960  (186 s)  不一致: ramp 0-20 14%, ramp 0-30 85%, random pulse 5ms 93%, OU 5±3 88%, munechika train 98%
+[ens:mm_rel+mm_rel_s1 [fp16x3]] 100%: 24/26  平均 0.928  Γ 0.924  (306 s)  不一致: ramp 0-20 12%, ramp 0-30 0%
+保存: /mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/results/hh_speed/gamma_gpu.json
+[hh-serial baf3d0f] GPU（V100）での速度と精度: 行列積を fp32 / fp16 / fp16x3（Tensor Core）で比べた結果（学内サーバ、自動で commit）
+ 47 files changed, 18294 insertions(+)
+ create mode 100644 experiments/hh_surrogate/hh_speed.py
+ create mode 100644 experiments/hh_surrogate/tc_matmul.py
+ create mode 100644 results/hh_speed/gamma_gpu.json
+ create mode 100644 results/hh_speed/gamma_gpu/ens_mm_rel_mm_rel_s1_fp16.json
+ create mode 100644 results/hh_speed/gamma_gpu/ens_mm_rel_mm_rel_s1_fp16x3.json
+ create mode 100644 results/hh_speed/gamma_gpu/ens_mm_rel_mm_rel_s1_fp32.json
+ create mode 100644 results/hh_speed/gamma_gpu/ens_mm_rel_mm_rel_s1_fp64.json
+ create mode 100644 results/hh_speed/gamma_gpu/k_3_w3_fp16.json
+ create mode 100644 results/hh_speed/gamma_gpu/k_3_w3_fp16x3.json
+ create mode 100644 results/hh_speed/gamma_gpu/k_3_w3_fp32.json
+ create mode 100644 results/hh_speed/gamma_gpu/k_3_w3_fp64.json
+ create mode 100644 results/hh_speed/gamma_gpu/m3_v2f05d_s1_fp16.json
+ create mode 100644 results/hh_speed/gamma_gpu/m3_v2f05d_s1_fp16x3.json
+ create mode 100644 results/hh_speed/gamma_gpu/m3_v2f05d_s1_fp32.json
+ create mode 100644 results/hh_speed/gamma_gpu/m3_v2f05d_s1_fp64.json
+ create mode 100644 results/hh_speed/gamma_gpu/mm_rel_fp16.json
+ create mode 100644 results/hh_speed/gamma_gpu/mm_rel_fp16x3.json
+ create mode 100644 results/hh_speed/gamma_gpu/mm_rel_fp32.json
+ create mode 100644 results/hh_speed/gamma_gpu/mm_rel_fp64.json
+ create mode 100644 results/hh_speed/gamma_gpu/mm_w256_fp16.json
+ create mode 100644 results/hh_speed/gamma_gpu/mm_w256_fp16x3.json
+ create mode 100644 results/hh_speed/gamma_gpu/mm_w256_fp32.json
+ create mode 100644 results/hh_speed/gamma_gpu/mm_w256_fp64.json
+ create mode 100644 results/hh_speed/gamma_gpu/r8_mlp_hdf_s2_fp16.json
+ create mode 100644 results/hh_speed/gamma_gpu/r8_mlp_hdf_s2_fp16x3.json
+ create mode 100644 results/hh_speed/gamma_gpu/r8_mlp_hdf_s2_fp32.json
+ create mode 100644 results/hh_speed/gamma_gpu/r8_mlp_hdf_s2_fp64.json
+ create mode 100644 results/hh_speed/gamma_gpu/rnn1_sp_r_scr_e01_s1_fp16.json
+ create mode 100644 results/hh_speed/gamma_gpu/rnn1_sp_r_scr_e01_s1_fp16x3.json
+ create mode 100644 results/hh_speed/gamma_gpu/rnn1_sp_r_scr_e01_s1_fp32.json
+ create mode 100644 results/hh_speed/gamma_gpu/rnn1_sp_r_scr_e01_s1_fp64.json
+ create mode 100644 results/hh_speed/gamma_gpu/rnn3_p_h64_cl05_fp16.json
+ create mode 100644 results/hh_speed/gamma_gpu/rnn3_p_h64_cl05_fp16x3.json
+ create mode 100644 results/hh_speed/gamma_gpu/rnn3_p_h64_cl05_fp32.json
+ create mode 100644 results/hh_speed/gamma_gpu/rnn3_p_h64_cl05_fp64.json
+ create mode 100644 results/hh_speed/gamma_gpu/rnn3_s_gru64_fp16.json
+ create mode 100644 results/hh_speed/gamma_gpu/rnn3_s_gru64_fp16x3.json
+ create mode 100644 results/hh_speed/gamma_gpu/rnn3_s_gru64_fp32.json
+ create mode 100644 results/hh_speed/gamma_gpu/rnn3_s_gru64_fp64.json
+ create mode 100644 results/hh_speed/gamma_gpu/rnn3_s_h128_ft05_fp16.json
+ create mode 100644 results/hh_speed/gamma_gpu/rnn3_s_h128_ft05_fp16x3.json
+ create mode 100644 results/hh_speed/gamma_gpu/rnn3_s_h128_ft05_fp32.json
+ create mode 100644 results/hh_speed/gamma_gpu/rnn3_s_h128_ft05_fp64.json
+ create mode 100644 results/hh_speed/gpu_all.json
+ create mode 100644 results/hh_speed/gpu_all.png
+ create mode 100644 results/hh_speed/gpu_env.txt
+ create mode 100755 results/hh_speed/run_server_tc.sh
+From github.com:bcl-group/2703-yamashita-bashelor-thesis
+ * branch            hh-serial  -> FETCH_HEAD
+Rebasing (1/1)[KSuccessfully rebased and updated refs/heads/hh-serial.
+To github.com:bcl-group/2703-yamashita-bashelor-thesis.git
+   2413010..18663d2  hh-serial -> hh-serial
