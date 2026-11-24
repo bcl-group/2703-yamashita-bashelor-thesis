@@ -180,7 +180,9 @@ def pre(a):
     torch.manual_seed(a.seed)
     rng = np.random.default_rng(a.seed)
     if a.init == 'mm_rel':
-        net = from_mlp(eps=a.eps0, seed=a.seed) if a.cell == 'mlpr' else hi.load_net(SRC)
+        # --src を付けると、mm_rel の代わりにその Markov MLP（例: r9_mlp_v2f05d_s0.pt）から始める
+        src = a.src or SRC
+        net = from_mlp(src=src, eps=a.eps0, seed=a.seed) if a.cell == 'mlpr' else hi.load_net(src)
         net = net.float()
     else:
         net = new_net(a.cell, a.H, a.layers)
@@ -211,6 +213,16 @@ def pre(a):
             hi.save_net(net, path, {'it': it})
 
     N = int(a.ep_ms / hi.DT)
+    Nh = int(a.hard_ms / hi.DT)
+    nb_h = int(round(a.batch * a.hard_frac)) if a.hard > 0 else 0   # 1 バッチのうち苦手な電流から取る窓の本数
+    ar = torch.arange(a.L, device=hi.DEV)[None, :]
+
+    def windows(X_, n_, N_):
+        # 在庫 X_ (本数, N_, 5) から長さ L の窓を n_ 本、ランダムな位置で切り出す -> (n_, L, 5)
+        b_ = torch.from_numpy(rng.integers(0, X_.shape[0], size=n_)).to(hi.DEV)
+        s_ = torch.from_numpy(rng.integers(0, N_ - a.L, size=n_)).to(hi.DEV)
+        return X_[b_[:, None], s_[:, None] + ar].clone()
+
     evaluate(0)
     for it in range(a.iters):
         if it % a.bank_every == 0:
@@ -218,12 +230,17 @@ def pre(a):
             bV, bG = hi.hh_sim(bI)
             X = torch.cat([bV[:, :-1, None], bG[:, :-1], bI[..., None]], -1)   # (bank, N, 5) float64
             del bV, bG
+            if nb_h > 0:
+                # 苦手な電流（A・C の第 9 ラウンドと同じ gen_hard_v2 など）の軌道の在庫 (hard, Nh, 5)
+                hI = hi.gen_hard_set(a.hard, Nh, rng, a.hard_set)
+                hV, hG = hi.hh_sim(hI)
+                Xh = torch.cat([hV[:, :-1, None], hG[:, :-1], hI[..., None]], -1)
+                del hV, hG
         for gr in opt.param_groups:
             gr['lr'] = hi.lr_at(it, a.iters, a.lr)
-        b = torch.from_numpy(rng.integers(0, a.bank, size=a.batch)).to(hi.DEV)
-        s = torch.from_numpy(rng.integers(0, N - a.L, size=a.batch)).to(hi.DEV)
-        idx = s[:, None] + torch.arange(a.L, device=hi.DEV)[None, :]
-        x = X[b[:, None], idx].clone()                                          # (batch, L, 5)
+        x = windows(X, a.batch - nb_h, N)                                       # (batch, L, 5)
+        if nb_h > 0:
+            x = torch.cat([x, windows(Xh, nb_h, Nh)])
         mask = (torch.rand(a.batch, 1, 1, dtype=x.dtype) < 0.5).to(x.dtype)
         off_v = a.sv * torch.randn(a.batch, 1, 1, dtype=x.dtype)
         off_g = a.sg * torch.randn(a.batch, 1, 3, dtype=x.dtype)
@@ -284,11 +301,16 @@ def main():
     ap.add_argument('--bank', type=int, default=512)
     ap.add_argument('--bank-every', type=int, default=2000)
     ap.add_argument('--ep-ms', type=float, default=100.0)
+    ap.add_argument('--hard', type=int, default=0, help='苦手な電流の在庫の本数（0 なら使わない）')
+    ap.add_argument('--hard-ms', type=float, default=1000.0, help='苦手な電流 1 本の長さ [ms]')
+    ap.add_argument('--hard-set', default='v2', choices=['v1', 'v2'])
+    ap.add_argument('--hard-frac', type=float, default=0.5, help='1 バッチのうち苦手な電流から取る窓の割合')
     ap.add_argument('--seed', type=int, default=0)
     # 共通
     ap.add_argument('--device', default='cpu', help='cpu か cuda')
     ap.add_argument('--out', default=None, help='出力先（既定: results/hh_improve と results/hh_whh）。Colab では Drive のフォルダ')
-    ap.add_argument('--src', default=None, help='ft の出発点の .pt（既定: mm_rel。cell=mlpr のモデルも可）')
+    ap.add_argument('--src', default=None,
+                    help='ft・pre（--init mm_rel）の出発点の .pt（既定: mm_rel。ft では cell=mlpr のモデルも可）')
     ap.add_argument('--eps', type=float, nargs='+', default=[0, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1.0])
     ap.add_argument('--seeds', type=int, nargs='+', default=[0])
     ap.add_argument('--tag', default='whh_ft')
