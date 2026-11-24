@@ -1,0 +1,6 @@
+[eq_b0_s1 it 0 val] 100%: 13/17  平均 0.937  Γ 0.941  (42 s)  不一致: v const 6 50%, v const 6.5 59%, v ramp 0-25 90%, v level+OU 95%
+[eq_b0_s1 it 5000 val] 100%: 11/17  平均 0.854  Γ 0.846  (46 s)  不一致: v step 7 (50-250ms) 92%, v const 6 50%, v const 6.5 29%, v ramp 0-25 0%, v random step -5~20 92%, v level+OU 89%
+[eq_b0_s1 it 10000 val] 100%: 10/17  平均 0.829  Γ 0.813  (43 s)  不一致: v step 7 (50-250ms) 83%, v const 6 50%, v const 6.5 24%, v ramp 0-25 0%, v random step -5~20 92%, v OU 7±5 (tau 5ms) 96%, v level+OU 64%
+[eq_b0_s1 it 15000 val] 100%: 15/17  平均 0.912  Γ 0.916  (45 s)  不一致: v const 6 50%, v ramp 0-25 0%
+[eq_b0_s1 it 20000 val] 100%: 12/17  平均 0.858  Γ 0.846  (45 s)  不一致: v const 6 50%, v const 6.5 47%, v ramp 0-25 0%, v random step -5~20 96%, v level+OU 66%
+[eq_b0_s1 (val best it 15000)] 100%: 23/26  平均 0.921  Γ 0.914  (93 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, random pulse 5ms 93%
