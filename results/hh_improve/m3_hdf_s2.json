@@ -1,0 +1,342 @@
+{
+"args": {
+"cmd": "mlp3",
+"tag": "m3_hdf_s2",
+"data": "/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/data/hh/teacher_ou.npz",
+"H": 128,
+"layers": 2,
+"iters": 3000,
+"batch": 32,
+"L": 1000,
+"lr": 0.001,
+"noise": 0.0,
+"wsub": 1.0,
+"seed": 2,
+"threads": 2,
+"log_every": 200,
+"init": null,
+"device": "cuda",
+"act": "silu",
+"ep_ms": 100.0,
+"bank": 2048,
+"pre_iters": 50000,
+"pre_lr": 0.001,
+"pre_batch": 1024,
+"pre_sv": 2.0,
+"pre_sg": 0.02,
+"pre_rel": 0.02,
+"hard": 256,
+"hard_ms": 3000.0,
+"hard_stride": 10,
+"hard_set": "v1",
+"hard_frac": 0.0,
+"x32": false,
+"dagger": 3,
+"dagger_iters": 20000,
+"dagger_n": 256,
+"dagger_ms": 1000.0,
+"dagger_stride": 10,
+"sfeat": true
+},
+"eval": [
+[
+50000,
+13,
+0.915818400247466,
+0.9179600369586236
+],
+[
+70000,
+16,
+0.980392156862745,
+0.9882352941176471
+],
+[
+90000,
+16,
+0.9411764705882353,
+0.9349936780946753
+],
+[
+110000,
+16,
+0.980392156862745,
+0.9882352941176471
+]
+],
+"best": [
+16,
+0.980392156862745,
+70000
+],
+"test": {
+"label": "m3_hdf_s2 (val best it 70000)",
+"n100": 25,
+"mean": 0.9615384615384616,
+"gamma": 0.961228281587563,
+"rows": [
+{
+"name": "step 10 (50-150ms)",
+"spikes": [
+7,
+7
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 1.308314460044348
+},
+{
+"name": "step 5 (50-250ms)",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.05912351209429667
+},
+{
+"name": "step 30 1ms",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.07128861399148732
+},
+{
+"name": "step -5 (50-150ms)",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.054693528922280486
+},
+{
+"name": "const 2.5",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.3964350945114931
+},
+{
+"name": "const 5",
+"spikes": [
+1,
+1
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.08123981349891143
+},
+{
+"name": "const 7",
+"spikes": [
+18,
+18
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 4.076704103068219
+},
+{
+"name": "const 10",
+"spikes": [
+21,
+21
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 6.915083491991918
+},
+{
+"name": "const 20",
+"spikes": [
+26,
+26
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 8.300825591289463
+},
+{
+"name": "ramp 0-20",
+"spikes": [
+1,
+1
+],
+"match": 0.0,
+"gamma": -0.008064678723361357,
+"rmse": 4.020356160387279
+},
+{
+"name": "ramp 0-30",
+"spikes": [
+17,
+17
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 3.8914702712749634
+},
+{
+"name": "sin 5Hz 5±5",
+"spikes": [
+6,
+6
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 0.6690903111396449
+},
+{
+"name": "sin 10Hz 7.5±7.5",
+"spikes": [
+16,
+16
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 14.559080206783486
+},
+{
+"name": "sin 50Hz 10±10",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.1331787617172215
+},
+{
+"name": "pulse 10/1ms/10ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.10975735575849636
+},
+{
+"name": "pulse 20/25ms/50ms",
+"spikes": [
+18,
+18
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.8351268242516656
+},
+{
+"name": "pulse 40/0.5ms/20ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.43353527971666306
+},
+{
+"name": "random step -5~20/20ms",
+"spikes": [
+24,
+24
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.7033367963350489
+},
+{
+"name": "random step 0~20/10ms",
+"spikes": [
+31,
+31
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.6964672885897749
+},
+{
+"name": "random pulse 5ms",
+"spikes": [
+15,
+15
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 3.3317498486933386
+},
+{
+"name": "random pulse 1ms 0~40",
+"spikes": [
+6,
+6
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 0.07098650891195861
+},
+{
+"name": "OU 5±3",
+"spikes": [
+25,
+25
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 0.7250059465986882
+},
+{
+"name": "OU 10±3",
+"spikes": [
+34,
+34
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 1.0713164513997226
+},
+{
+"name": "OU 7±5 (tau 5ms)",
+"spikes": [
+27,
+27
+],
+"match": 1.0,
+"gamma": 1.0,
+"rmse": 0.45024067274992086
+},
+{
+"name": "level+OU",
+"spikes": [
+72,
+72
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 2.73511571675609
+},
+{
+"name": "munechika train",
+"spikes": [
+85,
+85
+],
+"match": 1.0,
+"gamma": 1.0000000000000002,
+"rmse": 1.1773277584523143
+}
+],
+"sec": 255.13069105148315
+},
+"sec": 2652.6972761154175
+}
