@@ -88,7 +88,19 @@ def parse_log(path):
     return phases, dag, val
 
 
-def plot_loss(tag, phases, dag, val, out):
+def loss_extent(phases):
+    """損失の正の値の (最小, 最大) と、段階をつないだ iter の最大。図どうしの軸をそろえるのに使う"""
+    ys, xmax = [], 0
+    for P in phases.values():
+        xmax += max(P['it']) if P['it'] else 0
+        for y in P['series'].values():
+            y = np.array(y, dtype=float)
+            ys.append(y[np.isfinite(y) & (y > 0)])
+    ys = np.concatenate(ys) if ys else np.array([])
+    return (ys.min(), ys.max(), xmax) if len(ys) else (np.nan, np.nan, xmax)
+
+
+def plot_loss(tag, phases, dag, val, out, ylim=None, xmax=None):
     # 段階（pre → it）は続けて並べる: 後の段階の iter に前の段階の最後の iter を足す
     offs, o = {}, 0
     for ph, P in phases.items():
@@ -114,6 +126,10 @@ def plot_loss(tag, phases, dag, val, out):
             else:
                 a1.plot(x, y, color=col, lw=1.8, label=lab)
     a1.set_yscale('log')
+    if ylim:
+        a1.set_ylim(*ylim)
+    if xmax:
+        a1.set_xlim(-0.02 * xmax, 1.02 * xmax)
     a1.set_ylabel('損失（学習データ）')
     a1.legend(frameon=False, fontsize=9)
     a1.set_title(tag, loc='left', fontsize=12)
@@ -178,6 +194,10 @@ def plot_iv(tag, names, I, Vt, Vp, lens, out):
     fig = plt.figure(figsize=(17, 46))
     gs = fig.add_gridspec(nrow * 2, ncol, height_ratios=[3, 1] * nrow, hspace=0.5, wspace=0.12)
     gams = []
+    lo = min(I[k, :lens[k] - 1].min() for k in range(len(names)))
+    hi = max(I[k, :lens[k] - 1].max() for k in range(len(names)))
+    ilim = (10 * np.floor(lo / 10), 10 * np.ceil(hi / 10))
+    iticks = np.arange(ilim[0], ilim[1] + 1, 20 if ilim[1] - ilim[0] > 40 else 10)
     for i, name in enumerate(names):
         r, c = i % nrow, i // nrow
         av = fig.add_subplot(gs[2 * r, c])
@@ -191,11 +211,15 @@ def plot_iv(tag, names, I, Vt, Vp, lens, out):
         av.plot(t, Vt[i], color='#222222', lw=0.8, label='HH（正解）')
         av.plot(t, np.clip(vp, -120, 80), color=COLS[0], lw=0.8, alpha=0.85, label='代理モデル')
         av.set_ylim(-90, 60)
+        av.set_yticks([-80, -40, 0, 40])
         av.set_title(f'{name}   スパイク HH {len(st)} / 代理 {len(sp)}   Γ {g:.2f}', loc='left', fontsize=10,
                      color='#222222' if g >= 0.999 else '#c0392b')
         av.tick_params(labelbottom=False, labelsize=8)
         av.set_ylabel('v [mV]', fontsize=8)
         ai.plot(t, I[i, :n - 1], color='#e8673a', lw=0.8)
+        # 電流の縦軸は 26 本で共通（パネルごとに自動で拡大すると、一定電流 2.5 と 20 が同じ高さに見える）
+        ai.set_ylim(ilim)
+        ai.set_yticks(iticks)
         ai.set_ylabel('i [µA/cm²]', fontsize=8)
         ai.tick_params(labelsize=8)
         if r == nrow - 1:
@@ -215,7 +239,16 @@ def main():
     ap.add_argument('logs', nargs='+')
     ap.add_argument('--loss-only', action='store_true')
     ap.add_argument('--tag', help='ログ 1 本のときだけ: 重みのタグを直接指定（例 rnn3:eq_d_h64_s0）')
+    ap.add_argument('--own-axes', action='store_true', help='損失の図の軸を 1 本ずつ自動で決める（既定は渡したログ全体で共通）')
     a = ap.parse_args()
+    # 損失の図の軸は、渡したログ全体でそろえる（縦: 損失の最小〜最大を 10 の累乗に丸める、横: 0〜最長の iter）
+    ylim = xmax = None
+    if not a.own_axes:
+        ext = [loss_extent(parse_log(os.path.abspath(lp))[0]) for lp in a.logs]
+        lo, hi = np.nanmin([e[0] for e in ext]), np.nanmax([e[1] for e in ext])
+        if np.isfinite(lo) and np.isfinite(hi):
+            ylim = (10 ** np.floor(np.log10(lo)), 10 ** np.ceil(np.log10(hi)))
+        xmax = max(e[2] for e in ext) or None
     for lp in a.logs:
         lp = os.path.abspath(lp)
         stem = os.path.splitext(os.path.basename(lp))[0]
@@ -227,7 +260,7 @@ def main():
         tag = a.tag or ('rnn3:' + stem if is_rnn3 else stem)
         phases, dag, val = parse_log(lp)
         if phases:
-            plot_loss(tag, phases, dag, val, os.path.join(outdir, f'fig_{stem}_loss.png'))
+            plot_loss(tag, phases, dag, val, os.path.join(outdir, f'fig_{stem}_loss.png'), ylim, xmax)
         else:
             print(f'{stem}: 損失の行が無い（スキップ）')
         if a.loss_only:
