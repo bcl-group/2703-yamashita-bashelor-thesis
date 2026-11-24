@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" font-family="Yu Gothic, Meiryo, sans-serif">
+  <!-- スライド用のポンチ絵：候補 4 モデルの 2×2（列 = 何を次の時刻に戻すか（Jordan 型／Jordan＋Elman 型）、行 = 1 個でまとめるか、HH の式に沿って 3 個に分けるか）。
+       色は使わない。破線 = 出力を戻す（4 つとも共通）、小さなループ = 隠れ層を戻す（B と D だけ）。
+       変数は数式の書体（セリフ体の斜体、Δ は立体）。生成: docs/images/make_slide_architectures.py -->
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#52514e"/>
+    </marker>
+    <style>
+      .t  { font-size: 20px; fill: #0b0b0b; }
+      .s  { font-size: 16px; fill: #52514e; }
+      .u  { font-size: 17px; fill: #0b0b0b; }
+      .h  { font-size: 22px; font-weight: bold; fill: #0b0b0b; }
+      .m  { font-family: 'Cambria Math', 'Times New Roman', serif; font-size: 112%; }
+      .ln { stroke: #52514e; stroke-width: 2; fill: none; }
+      .lp { stroke: #52514e; stroke-width: 2; fill: none; stroke-dasharray: 6 4; }
+    </style>
+  </defs>
+  <rect width="1280" height="640" fill="#ffffff"/>
+
+  <text x="413" y="30" class="h" text-anchor="middle">出力を戻す（Jordan 型）</text>
+  <text x="985" y="30" class="h" text-anchor="middle">出力＋隠れ層を戻す（Jordan＋Elman 型）</text>
+  <text x="20" y="178" class="t">1 個で</text>
+  <text x="20" y="204" class="t">まとめて</text>
+  <text x="20" y="434" class="t">3 個に</text>
+  <text x="20" y="460" class="t">式に沿って</text>
+  <text x="20" y="486" class="t">分ける</text>
+  <line x1="20" y1="298" x2="1260" y2="298" stroke="#e4e3df" stroke-width="2"/>
+  <line x1="698" y1="12" x2="698" y2="556" stroke="#e4e3df" stroke-width="2"/>
+
+  <!-- A: Markov MLP -->
+  <g transform="translate(140,48)">
+    <text x="0" y="36" class="h">A　MLP</text>
+    <path d="M76,135 L100,135" class="ln" marker-end="url(#ar)"/>
+    <rect x="104" y="60" width="352" height="150" rx="10" fill="#efeeea" stroke="#52514e" stroke-width="2"/>
+    <text x="286" y="118" class="t" text-anchor="middle">MLP</text>
+    <text x="282" y="182" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">V</tspan>, <tspan font-style="italic">m</tspan>, <tspan font-style="italic">h</tspan>, <tspan font-style="italic">n</tspan>, <tspan font-style="italic">I</tspan></tspan> → <tspan class="m">Δ<tspan font-style="italic">V</tspan>, Δ<tspan font-style="italic">m</tspan>, Δ<tspan font-style="italic">h</tspan>, Δ<tspan font-style="italic">n</tspan></tspan></text>
+    <path d="M458,135 L472,135" class="ln" marker-end="url(#ar)"/>
+    <rect x="0" y="60" width="74" height="150" rx="8" fill="#f6f5f2" stroke="#52514e"/>
+    <text x="37" y="96" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">V</tspan></tspan></text>
+    <text x="37" y="126" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">m</tspan> <tspan font-style="italic">h</tspan> <tspan font-style="italic">n</tspan></tspan></text>
+    <text x="37" y="150" class="t" text-anchor="middle">(<tspan class="m"><tspan font-style="italic">t</tspan></tspan> )</text>
+    <text x="37" y="190" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">I</tspan></tspan>(<tspan class="m"><tspan font-style="italic">t</tspan></tspan> )</text>
+    <rect x="476" y="60" width="70" height="150" rx="8" fill="#f6f5f2" stroke="#52514e"/>
+    <text x="511" y="96" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">V</tspan></tspan></text>
+    <text x="511" y="126" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">m</tspan> <tspan font-style="italic">h</tspan> <tspan font-style="italic">n</tspan></tspan></text>
+    <text x="511" y="152" class="t" text-anchor="middle" font-size="17">(<tspan class="m"><tspan font-style="italic">t</tspan>+<tspan font-style="italic">dt</tspan></tspan> )</text>
+    <path d="M511,212 L511,230 L37,230 L37,214" class="lp" marker-end="url(#ar)"/>
+  </g>
+  <!-- B: MLP を RNN に置き換えたもの -->
+  <g transform="translate(712,48)">
+    <text x="0" y="36" class="h">B　RNN</text>
+    <path d="M76,135 L100,135" class="ln" marker-end="url(#ar)"/>
+    <rect x="104" y="60" width="352" height="150" rx="10" fill="#efeeea" stroke="#52514e" stroke-width="2"/>
+    <path d="M420,92 A9,9 0 1 1 436,92" class="ln" marker-end="url(#ar)"/>
+    <text x="286" y="118" class="t" text-anchor="middle">RNN</text>
+    <text x="282" y="182" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">V</tspan>, <tspan font-style="italic">m</tspan>, <tspan font-style="italic">h</tspan>, <tspan font-style="italic">n</tspan>, <tspan font-style="italic">I</tspan></tspan> → <tspan class="m">Δ<tspan font-style="italic">V</tspan>, Δ<tspan font-style="italic">m</tspan>, Δ<tspan font-style="italic">h</tspan>, Δ<tspan font-style="italic">n</tspan></tspan></text>
+    <path d="M458,135 L472,135" class="ln" marker-end="url(#ar)"/>
+    <rect x="0" y="60" width="74" height="150" rx="8" fill="#f6f5f2" stroke="#52514e"/>
+    <text x="37" y="96" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">V</tspan></tspan></text>
+    <text x="37" y="126" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">m</tspan> <tspan font-style="italic">h</tspan> <tspan font-style="italic">n</tspan></tspan></text>
+    <text x="37" y="150" class="t" text-anchor="middle">(<tspan class="m"><tspan font-style="italic">t</tspan></tspan> )</text>
+    <text x="37" y="190" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">I</tspan></tspan>(<tspan class="m"><tspan font-style="italic">t</tspan></tspan> )</text>
+    <rect x="476" y="60" width="70" height="150" rx="8" fill="#f6f5f2" stroke="#52514e"/>
+    <text x="511" y="96" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">V</tspan></tspan></text>
+    <text x="511" y="126" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">m</tspan> <tspan font-style="italic">h</tspan> <tspan font-style="italic">n</tspan></tspan></text>
+    <text x="511" y="152" class="t" text-anchor="middle" font-size="17">(<tspan class="m"><tspan font-style="italic">t</tspan>+<tspan font-style="italic">dt</tspan></tspan> )</text>
+    <path d="M511,212 L511,230 L37,230 L37,214" class="lp" marker-end="url(#ar)"/>
+  </g>
+  <!-- C: MLP 3 個 -->
+  <g transform="translate(140,316)">
+    <text x="0" y="36" class="h">C　MLP 3 個</text>
+    <path d="M76,82 L100,82" class="ln" marker-end="url(#ar)"/>
+    <rect x="104" y="60" width="352" height="44" rx="8" fill="#efeeea" stroke="#52514e" stroke-width="2"/>
+    <text x="122" y="88" class="u">MLP1</text>
+    <text x="196" y="88" class="u"><tspan class="m"><tspan font-style="italic">V</tspan></tspan> → <tspan class="m"><tspan font-style="italic">α</tspan>, <tspan font-style="italic">β</tspan></tspan></text>
+    <path d="M76,135 L100,135" class="ln" marker-end="url(#ar)"/>
+    <rect x="104" y="113" width="352" height="44" rx="8" fill="#efeeea" stroke="#52514e" stroke-width="2"/>
+    <text x="122" y="141" class="u">MLP2</text>
+    <text x="196" y="141" class="u"><tspan class="m"><tspan font-style="italic">α</tspan>, <tspan font-style="italic">β</tspan>, <tspan font-style="italic">m</tspan>, <tspan font-style="italic">h</tspan>, <tspan font-style="italic">n</tspan></tspan> → <tspan class="m">Δ<tspan font-style="italic">m</tspan>, Δ<tspan font-style="italic">h</tspan>, Δ<tspan font-style="italic">n</tspan></tspan></text>
+    <path d="M458,135 L472,135" class="ln" marker-end="url(#ar)"/>
+    <path d="M76,188 L100,188" class="ln" marker-end="url(#ar)"/>
+    <rect x="104" y="166" width="352" height="44" rx="8" fill="#efeeea" stroke="#52514e" stroke-width="2"/>
+    <text x="122" y="194" class="u">MLP3</text>
+    <text x="196" y="194" class="u"><tspan class="m"><tspan font-style="italic">m</tspan>, <tspan font-style="italic">h</tspan>, <tspan font-style="italic">n</tspan>, <tspan font-style="italic">V</tspan>, <tspan font-style="italic">I</tspan></tspan> → <tspan class="m">Δ<tspan font-style="italic">V</tspan></tspan></text>
+    <path d="M458,188 L472,188" class="ln" marker-end="url(#ar)"/>
+    <path d="M176,104 L176,111" class="ln" marker-end="url(#ar)"/>
+    <rect x="0" y="60" width="74" height="150" rx="8" fill="#f6f5f2" stroke="#52514e"/>
+    <text x="37" y="96" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">V</tspan></tspan></text>
+    <text x="37" y="126" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">m</tspan> <tspan font-style="italic">h</tspan> <tspan font-style="italic">n</tspan></tspan></text>
+    <text x="37" y="150" class="t" text-anchor="middle">(<tspan class="m"><tspan font-style="italic">t</tspan></tspan> )</text>
+    <text x="37" y="190" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">I</tspan></tspan>(<tspan class="m"><tspan font-style="italic">t</tspan></tspan> )</text>
+    <rect x="476" y="60" width="70" height="150" rx="8" fill="#f6f5f2" stroke="#52514e"/>
+    <text x="511" y="96" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">V</tspan></tspan></text>
+    <text x="511" y="126" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">m</tspan> <tspan font-style="italic">h</tspan> <tspan font-style="italic">n</tspan></tspan></text>
+    <text x="511" y="152" class="t" text-anchor="middle" font-size="17">(<tspan class="m"><tspan font-style="italic">t</tspan>+<tspan font-style="italic">dt</tspan></tspan> )</text>
+    <path d="M511,212 L511,230 L37,230 L37,214" class="lp" marker-end="url(#ar)"/>
+  </g>
+  <!-- D: RNN 3 個（並列） -->
+  <g transform="translate(712,316)">
+    <text x="0" y="36" class="h">D　RNN 3 個</text>
+    <path d="M76,82 L100,82" class="ln" marker-end="url(#ar)"/>
+    <rect x="104" y="60" width="352" height="44" rx="8" fill="#efeeea" stroke="#52514e" stroke-width="2"/>
+    <text x="122" y="88" class="u">RNN1</text>
+    <text x="196" y="88" class="u"><tspan class="m"><tspan font-style="italic">V</tspan></tspan> → <tspan class="m"><tspan font-style="italic">α</tspan>, <tspan font-style="italic">β</tspan></tspan></text>
+    <path d="M426,92 A9,9 0 1 1 442,92" class="ln" marker-end="url(#ar)"/>
+    <path d="M76,135 L100,135" class="ln" marker-end="url(#ar)"/>
+    <rect x="104" y="113" width="352" height="44" rx="8" fill="#efeeea" stroke="#52514e" stroke-width="2"/>
+    <text x="122" y="141" class="u">RNN2</text>
+    <text x="196" y="141" class="u"><tspan class="m"><tspan font-style="italic">α</tspan>, <tspan font-style="italic">β</tspan>, <tspan font-style="italic">m</tspan>, <tspan font-style="italic">h</tspan>, <tspan font-style="italic">n</tspan></tspan> → <tspan class="m">Δ<tspan font-style="italic">m</tspan>, Δ<tspan font-style="italic">h</tspan>, Δ<tspan font-style="italic">n</tspan></tspan></text>
+    <path d="M426,145 A9,9 0 1 1 442,145" class="ln" marker-end="url(#ar)"/>
+    <path d="M458,135 L472,135" class="ln" marker-end="url(#ar)"/>
+    <path d="M76,188 L100,188" class="ln" marker-end="url(#ar)"/>
+    <rect x="104" y="166" width="352" height="44" rx="8" fill="#efeeea" stroke="#52514e" stroke-width="2"/>
+    <text x="122" y="194" class="u">RNN3</text>
+    <text x="196" y="194" class="u"><tspan class="m"><tspan font-style="italic">m</tspan>, <tspan font-style="italic">h</tspan>, <tspan font-style="italic">n</tspan>, <tspan font-style="italic">V</tspan>, <tspan font-style="italic">I</tspan></tspan> → <tspan class="m">Δ<tspan font-style="italic">V</tspan></tspan></text>
+    <path d="M426,198 A9,9 0 1 1 442,198" class="ln" marker-end="url(#ar)"/>
+    <path d="M458,188 L472,188" class="ln" marker-end="url(#ar)"/>
+    <path d="M176,104 L176,111" class="ln" marker-end="url(#ar)"/>
+    <rect x="0" y="60" width="74" height="150" rx="8" fill="#f6f5f2" stroke="#52514e"/>
+    <text x="37" y="96" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">V</tspan></tspan></text>
+    <text x="37" y="126" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">m</tspan> <tspan font-style="italic">h</tspan> <tspan font-style="italic">n</tspan></tspan></text>
+    <text x="37" y="150" class="t" text-anchor="middle">(<tspan class="m"><tspan font-style="italic">t</tspan></tspan> )</text>
+    <text x="37" y="190" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">I</tspan></tspan>(<tspan class="m"><tspan font-style="italic">t</tspan></tspan> )</text>
+    <rect x="476" y="60" width="70" height="150" rx="8" fill="#f6f5f2" stroke="#52514e"/>
+    <text x="511" y="96" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">V</tspan></tspan></text>
+    <text x="511" y="126" class="t" text-anchor="middle"><tspan class="m"><tspan font-style="italic">m</tspan> <tspan font-style="italic">h</tspan> <tspan font-style="italic">n</tspan></tspan></text>
+    <text x="511" y="152" class="t" text-anchor="middle" font-size="17">(<tspan class="m"><tspan font-style="italic">t</tspan>+<tspan font-style="italic">dt</tspan></tspan> )</text>
+    <path d="M511,212 L511,230 L37,230 L37,214" class="lp" marker-end="url(#ar)"/>
+  </g>
+
+  <!-- 凡例（最小限） -->
+  <g transform="translate(20,578)">
+    <path d="M0,9 L36,9" class="lp"/>
+    <text x="44" y="15" class="s">出力を次の時刻の入力に戻す（Jordan 型、4 つとも）</text>
+    <path d="M470,13 A9,9 0 1 1 486,13" class="ln" marker-end="url(#ar)"/>
+    <text x="508" y="15" class="s">隠れ層を次の時刻の自分に戻す（Elman 型、<tspan class="m"><tspan font-style="italic">W</tspan><tspan font-size="70%" font-style="italic" dy="5">hh</tspan></tspan><tspan dy="-5"> </tspan>）</text>
+    <text x="0" y="45" class="s">ネットは変化量 Δ を出し、今の値に足して次の時刻の値にする（<tspan class="m"><tspan font-style="italic">V</tspan></tspan>(<tspan class="m"><tspan font-style="italic">t</tspan>+<tspan font-style="italic">dt</tspan></tspan> ) = <tspan class="m"><tspan font-style="italic">V</tspan></tspan>(<tspan class="m"><tspan font-style="italic">t</tspan></tspan> ) + <tspan class="m">Δ<tspan font-style="italic">V</tspan></tspan> など）</text>
+  </g>
+</svg>

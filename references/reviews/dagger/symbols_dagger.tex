@@ -1,0 +1,120 @@
+\documentclass[a4paper,10pt]{ltjsarticle}
+\usepackage[margin=18mm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{longtable,booktabs,array}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newcolumntype{S}{>{\centering\arraybackslash}p{30mm}}
+\newcolumntype{M}{p{60mm}}
+\newcolumntype{T}{p{40mm}}
+\newcolumntype{P}{p{24mm}}
+\newcommand{\note}[1]{\textcolor{red!70!black}{#1}}
+\newcommand{\E}{\mathbb{E}}
+
+\newenvironment{symtab}{%
+  \par\noindent\begin{tabular}{SMTP}
+  \toprule
+  記号 & 意味 & 型・値域・値 & 初出 \\
+  \midrule
+}{\bottomrule\end{tabular}\par\medskip}
+
+\title{記号表：A Reduction of Imitation Learning and Structured Prediction to No-Regret Online Learning}
+\author{Ross, Gordon, Bagnell (AISTATS 2011, PMLR 15:627--635)}
+\date{作成：2026年11月24日}
+
+\begin{document}
+\maketitle
+
+\noindent
+「初出」は論文集のページ・段（左／右）・式・定理の番号．
+\note{赤字}は誤植の可能性や，同じ文字が別の意味で使われている箇所への注意．
+
+%======================================================
+\section{§2 準備：方策・状態分布・コスト}
+\begin{symtab}
+$s$ & 状態（観測） & 状態空間の要素 & p.628 左 §2 \\
+$a$ & 行動 & 行動空間の要素 & p.628 左 §2 \\
+$\Pi$ & 学習器が考える方策のクラス & 方策の集合 & p.628 左 §2 \\
+$\pi$ & 方策（状態 $\to$ 行動） & $\pi\in\Pi$ & p.628 左 §2 \\
+$\pi^*$ & エキスパートの方策 & 方策 & p.628 右 ¶1 \\
+$T$ & タスクのホライズン（ステップ数） & 自然数 & p.628 左 §2 \\
+$t$ & 時刻（ステップ番号） & $1,\dots,T$ & p.628 左 §2 \\
+$d_\pi^t$ & $\pi$ を時刻 $1$〜$t-1$ まで実行したときの時刻 $t$ の状態分布 & 確率分布 & p.628 左 §2 \\
+$d_\pi$ & 状態の平均の分布 $\frac{1}{T}\sum_{t=1}^T d_\pi^t$ & 確率分布 & p.628 左 §2 \\
+$C(s,a)$ & 即時コストの期待値 & $[0,1]$ & p.628 左 §2 \\
+$C_\pi(s)$ & $\E_{a\sim\pi(s)}[C(s,a)]$ & $[0,1]$ & p.628 左 §2 \\
+$J(\pi)$ & 総コスト $\sum_t \E_{s\sim d_\pi^t}[C_\pi(s)] = T\,\E_{s\sim d_\pi}[C_\pi(s)]$ & $[0,T]$ & p.628 左 §2 \\
+$\ell(s,\pi)$ & 代理損失（状態 $s$ での $\pi$ と $\pi^*$ のずれ） & $\ge 0$ & p.628 右 ¶1 \\
+$\hat\pi$ & 自分の状態分布で代理損失を最小にする方策 & 式(1) & p.628 右 式(1) \\
+$\hat\pi_{sup}$ & $d_{\pi^*}$ で代理損失を最小にする方策（教師あり） & 式(2) & p.628 右 式(2) \\
+$\epsilon$ & 代理損失の期待値（定理 2.1 では $d_{\pi^*}$，定理 2.2 では $d_\pi$ で測る）\note{（同じ文字で分布が違う）} & $\ge 0$ & p.628 右 定理 2.1 \\
+$\Theta(\cdot),\ O(\cdot)$ & オーダー（同程度，以下） & --- & p.628 脚注1 \\
+\end{symtab}
+
+%======================================================
+\section{§2.2--2.3 前向き学習・SMILe}
+\begin{symtab}
+$\pi_t$ & 前向き学習の時刻 $t$ 用の方策\note{（§3 以降の $\pi_i$ とは別物）} & 方策 & p.629 左 §2.2 \\
+$Q_t^{\pi'}(s,\pi)$ & $s$ で $\pi$ を実行し，そのあと $\pi'$ に従ったときの $t$ ステップのコスト & $[0,t]$ & p.629 左 ¶4 \\
+$\pi_{1:t}$ & 最初の $t$ ステップは $\pi$，そのあと $\pi^*$ を実行する方策\note{（§3 以降の $\pi_{1:N}$ は方策の列で意味が違う）} & 方策 & p.629 左 定理 2.2 の証明 \\
+$u$ & 1 回ずれたときの残りコストの増加の上界 & $u\ge 0$，最悪 $O(T)$ & p.629 左 定理 2.2 \\
+$\delta$（脚注2） & $\alpha$-混合の指数減衰率\note{（§3 以降の確率 $\delta$ とは別物）} & $\delta>0$ & p.629 脚注2 \\
+$\pi_0$ & 常にエキスパートの行動を実行する方策 & 方策 & p.629 右 §2.3 \\
+$\hat\pi_n$ & SMILe の反復 $n$ で学習した方策 & 方策 & p.629 右 §2.3 \\
+$\pi_n$ & SMILe の反復 $n$ の混合方策 & 確率的方策 & p.629 右 §2.3 \\
+$\alpha$ & SMILe・SEARN の混合の学習率\note{（§3 では $\beta_i$ の減衰の定数としても使う）} & $(0,1]$ & p.629 右 §2.3 \\
+$\tilde\pi_N$ & エキスパートを除いて正規化し直した方策 & 確率的方策 & p.629 右 §2.3 \\
+\end{symtab}
+
+%======================================================
+\section{§3 DAgger}
+\begin{symtab}
+$\mathcal{D}$ & 集約したデータセット & 状態とエキスパートの行動の組の集合 & p.629 右 ¶4 \\
+$\mathcal{D}_i$ & 反復 $i$ で集めたデータセット $\{(s,\pi^*(s))\}$ & 集合 & p.630 アルゴリズム 3.1 \\
+$N$ & 反復回数 & 自然数 & p.630 アルゴリズム 3.1 \\
+$i$ & 反復の番号 & $1,\dots,N$ & p.630 アルゴリズム 3.1 \\
+$\hat\pi_i$ & 反復 $i$ の学習済み方策（$\hat\pi_{i+1}$ は $\mathcal{D}$ で学習） & 方策 & p.630 アルゴリズム 3.1 \\
+$\pi_i$ & データ収集用の混合方策 $\beta_i\pi^*+(1-\beta_i)\hat\pi_i$ & 方策 & p.630 アルゴリズム 3.1 \\
+$\beta_i$ & 反復 $i$ でエキスパートを使う確率 & $[0,1]$ & p.630 アルゴリズム 3.1 \\
+$\bar\beta_N$ & $\frac1N\sum_{i=1}^N\beta_i$ & $\to 0$ が条件 & p.630 左 ¶3 \\
+$p$ & $\beta_i = p^{i-1}$ の底 & $(0,1)$ & p.630 左 ¶3 \\
+$I(\cdot)$ & 指示関数 & $\{0,1\}$ & p.630 左 ¶3 \\
+$\pi_{1:N},\ \hat\pi_{1:N}$ & 方策の列 & 列 & p.630 左 ¶3 \\
+$\epsilon_N$ & 後から見て最良の方策の真の損失 $\min_{\pi}\frac1N\sum_i\E_{s\sim d_{\pi_i}}[\ell(s,\pi)]$ & $\ge 0$ & p.630 左 ¶3 \\
+$m$ & 各反復でサンプルする軌道の本数 & 自然数 & p.630 右 ¶2 \\
+$D_i$ & 反復 $i$ の $m$ 本の軌道のデータセット\note{（$\mathcal{D}_i$ と同じものを書体を変えて書いている）} & 集合 & p.630 右 ¶2 \\
+$\hat\epsilon_N$ & 後から見て最良の方策の学習損失 $\min_{\pi}\frac1N\sum_i\E_{s\sim D_i}[\ell(s,\pi)]$ & $\ge 0$ & p.630 右 ¶2 \\
+$\delta$ & 上界が成り立たない確率（信頼度は $1-\delta$） & $(0,1)$ & p.630 右 定理 3.3 \\
+$\tilde O(\cdot)$ & 対数の因子を無視したオーダー & --- & p.630 左 定理 3.1 \\
+\end{symtab}
+
+%======================================================
+\section{§4 理論解析}
+\begin{symtab}
+$\ell_n(\pi)$ & オンライン学習の反復 $n$ の損失関数 & $\ge 0$ & p.630 右 §4.1 \\
+$\ell_i(\pi)$ & DAgger での選び方 $\E_{s\sim d_{\pi_i}}[\ell(s,\pi)]$（有限サンプルでは $\E_{s\sim D_i}$） & $\ge 0$ & p.631 左 §4.2 ¶1 \\
+$\gamma_N$ & 平均の後悔の上界 & $\gamma_N\to 0$，強凸なら $\tilde O(1/N)$ & p.631 左 式(3) \\
+$\|p-q\|_1$ & L1 ノルム（全変動距離） & $[0,2]$ & p.631 左 補題 4.1 \\
+$d$（補題 4.1） & $\pi_i$ が少なくとも 1 回 $\pi^*$ を選んだという条件のもとでの状態分布 & 確率分布 & p.631 左 補題 4.1 の証明 \\
+$n_\beta$ & $\beta_n>1/T$ となる最大の $n\le N$ & $0,\dots,N$ & p.631 左 ¶4 \\
+$\ell_{\max}$ & 損失の上界 & $\ell_{\max}>0$ & p.631 左 ¶4 \\
+$Y_{ij}$ & 反復 $i$・軌道 $j$ の「真の期待損失 $-$ 標本の平均損失」 & $[-\ell_{\max},\ell_{\max}]$ & p.631 右 定理 4.2 の証明 \\
+$j$ & 反復内の軌道の番号 & $1,\dots,m$ & p.631 右 定理 4.2 の証明 \\
+\end{symtab}
+
+\noindent\note{誤植の可能性}：p.631 右段 定理 4.1 の証明の4行目 $\min_{\pi\in\Pi}\sum_{i=1}^N\ell_i(\pi)$ には $\frac1N$ が抜けている．
+p.631 右段 第3段落の後悔の保証の第1項 $\ell(s,\pi_i)$ は，文脈からは $\ell(s,\hat\pi_i)$．
+
+%======================================================
+\section{§5 実験（脚注）}
+\begin{symtab}
+$x$ & 画像の特徴量ベクトル & 実数（Kart）／2 値 27152 次元（Mario） & p.632 脚注4，p.633 脚注5 \\
+$\hat y$ & 出力（Kart は操縦，Mario は $k$ 番目のボタン $\hat y_k$） & $[-1,1]$／$\{0,1\}$ & p.632 脚注4，p.633 脚注5 \\
+$w,\ b$ & 線形モデルの重みとバイアス & 実数 & p.632 脚注4 \\
+$\lambda$ & 正則化の係数 & $10^{-3}$（Kart），$10^{-4}$（Mario） & p.632 脚注4，p.633 脚注5 \\
+$L(w,b)$ & リッジ回帰の目的関数 & $\ge 0$ & p.632 脚注4 \\
+$n$（脚注4） & 学習データの個数\note{（§2.3 の反復番号 $n$ とは別物）} & 自然数 & p.632 脚注4 \\
+\end{symtab}
+
+\end{document}

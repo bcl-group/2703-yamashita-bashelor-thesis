@@ -1,0 +1,13 @@
+# RNN 3 個 第1ラウンド（Google Colab の GPU）。hh_rnn3.py train の引数。1 行 = 1 ジョブ
+# 共通: 生成電流 1024 本 × 300 ms + 苦手な電流 v2 256 本 × 1000 ms、摂動 2 mV / 0.02、ΔV は相対誤差 Huber（下限 0.02 mV）、DAgger 3 回
+# 並列（RNN3 は g(t)）
+--tag p_h64 --conn parallel --H 64 --whh0 --iters 20000 --eval-every 4000 --device cuda
+--tag p_h128 --conn parallel --H 128 --whh0 --iters 20000 --eval-every 4000 --device cuda
+--tag p_h64_nowhh0 --conn parallel --H 64 --iters 20000 --eval-every 4000 --device cuda
+--tag p_init --conn parallel --init-b1 results/hh_modular_ou/block1.npz --init-b2 results/hh_modular_ou/block2.npz --init-b3 results/hh_improve/k_3_w3_b3.pt --lr 3e-4 --iters 20000 --eval-every 4000 --device cuda
+--tag p_gru64 --conn parallel --cell gru --H 64 --iters 20000 --eval-every 4000 --device cuda
+# 直列（RNN3 は RNN2 が出した g(t+dt)。正解は g(t) を逆算したオイラー法の ΔV）
+--tag s_h64 --conn serial --H 64 --whh0 --iters 20000 --eval-every 4000 --device cuda
+--tag s_h128 --conn serial --H 128 --whh0 --iters 20000 --eval-every 4000 --device cuda
+--tag s_h64_nowhh0 --conn serial --H 64 --iters 20000 --eval-every 4000 --device cuda
+--tag s_gru64 --conn serial --cell gru --H 64 --iters 20000 --eval-every 4000 --device cuda

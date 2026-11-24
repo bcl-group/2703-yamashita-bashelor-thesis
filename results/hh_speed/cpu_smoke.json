@@ -1,0 +1,621 @@
+{
+ "env": {
+  "python": "3.10.20",
+  "torch": "2.14.1+cpu",
+  "os": "Windows-10-10.0.26300-SP0",
+  "cpu": "Intel64 Family 6 Model 154 Stepping 4, GenuineIntel",
+  "threads": 4
+ },
+ "args": {
+  "cmd": "bench",
+  "models": [
+   "hh_euler",
+   "mm_rel",
+   "mm_w256",
+   "k_3_w3",
+   "r8_mlp_hdf_s2",
+   "m3_v2f05d_s1",
+   "rnn3:p_h64_cl05",
+   "rnn3:s_h128_ft05",
+   "rnn3:s_gru64",
+   "rnn1:sp_r_init",
+   "ens:mm_rel+mm_rel_s1"
+  ],
+  "device": "cpu",
+  "dtype": "fp32",
+  "tf32": false,
+  "B": [
+   1,
+   64,
+   1024
+  ],
+  "steps": 200,
+  "warmup": 100,
+  "repeats": 2,
+  "chunk": 100,
+  "runner": [
+   "eager"
+  ],
+  "compile": false,
+  "record": false,
+  "threads": 4,
+  "tag": "cpu_smoke"
+ },
+ "dt_ms": 0.01,
+ "flops": {
+  "hh_euler": 0.0,
+  "mm_rel": 35072.0,
+  "mm_w256": 266752.0,
+  "k_3_w3": 17500.0,
+  "r8_mlp_hdf_s2": 36096.0,
+  "m3_v2f05d_s1": 104704.0,
+  "rnn3:p_h64_cl05": 27776.0,
+  "rnn3:s_h128_ft05": 104704.0,
+  "rnn3:s_gru64": 80768.0,
+  "rnn1:sp_r_init": 67840.0,
+  "ens:mm_rel+mm_rel_s1": 70144.0
+ },
+ "rows": [
+  {
+   "model": "hh_euler",
+   "B": 1,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.06384329999855254,
+    0.0630449000018416
+   ],
+   "median_s": 0.06344410000019707,
+   "per_step_s": 0.00031722050000098533,
+   "neuron_s_per_s": 0.03152381387700019,
+   "mem_MB": null,
+   "ratio_vs_hh": 1.0,
+   "breakeven_dt_ms": 0.01
+  },
+  {
+   "model": "hh_euler",
+   "B": 64,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.11576339999737684,
+    0.08074150000174996
+   ],
+   "median_s": 0.0982524499995634,
+   "per_step_s": 0.000491262249997817,
+   "neuron_s_per_s": 1.3027664959048735,
+   "mem_MB": null,
+   "ratio_vs_hh": 1.0,
+   "breakeven_dt_ms": 0.01
+  },
+  {
+   "model": "hh_euler",
+   "B": 1024,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.09693469999911031,
+    0.10834350000368431
+   ],
+   "median_s": 0.10263910000139731,
+   "per_step_s": 0.0005131955000069866,
+   "neuron_s_per_s": 19.953409567816934,
+   "mem_MB": null,
+   "ratio_vs_hh": 1.0,
+   "breakeven_dt_ms": 0.01
+  },
+  {
+   "model": "mm_rel",
+   "B": 1,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.03945860000385437,
+    0.017486500000813976
+   ],
+   "median_s": 0.028472550002334174,
+   "per_step_s": 0.00014236275001167087,
+   "neuron_s_per_s": 0.07024309378106423,
+   "mem_MB": null,
+   "ratio_vs_hh": 0.4487816834385819,
+   "breakeven_dt_ms": 0.004487816834385819
+  },
+  {
+   "model": "mm_rel",
+   "B": 64,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.06674999999813735,
+    0.03191559999686433
+   ],
+   "median_s": 0.04933279999750084,
+   "per_step_s": 0.0002466639999875042,
+   "neuron_s_per_s": 2.594622644700572,
+   "mem_MB": null,
+   "ratio_vs_hh": 0.502102492077501,
+   "breakeven_dt_ms": 0.00502102492077501
+  },
+  {
+   "model": "mm_rel",
+   "B": 1024,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.18158050000056392,
+    0.16252100000565406
+   ],
+   "median_s": 0.172050750003109,
+   "per_step_s": 0.000860253750015545,
+   "neuron_s_per_s": 11.903464529872682,
+   "mem_MB": null,
+   "ratio_vs_hh": 1.6762690826475164,
+   "breakeven_dt_ms": 0.016762690826475163
+  },
+  {
+   "model": "mm_w256",
+   "B": 1,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.054700400003639515,
+    0.043041199998697266
+   ],
+   "median_s": 0.04887080000116839,
+   "per_step_s": 0.00024435400000584196,
+   "neuron_s_per_s": 0.04092423287427635,
+   "mem_MB": null,
+   "ratio_vs_hh": 0.7702970016284665,
+   "breakeven_dt_ms": 0.007702970016284665
+  },
+  {
+   "model": "mm_w256",
+   "B": 64,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.12634289999550674,
+    0.09048799999436596
+   ],
+   "median_s": 0.10841544999493635,
+   "per_step_s": 0.0005420772499746818,
+   "neuron_s_per_s": 1.1806435337950298,
+   "mem_MB": null,
+   "ratio_vs_hh": 1.1034376241551038,
+   "breakeven_dt_ms": 0.011034376241551038
+  },
+  {
+   "model": "mm_w256",
+   "B": 1024,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.6170563999985461,
+    0.6024139000001014
+   ],
+   "median_s": 0.6097351499993238,
+   "per_step_s": 0.003048675749996619,
+   "neuron_s_per_s": 3.358835389434694,
+   "mem_MB": null,
+   "ratio_vs_hh": 5.940573816323632,
+   "breakeven_dt_ms": 0.05940573816323633
+  },
+  {
+   "model": "k_3_w3",
+   "B": 1,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.04149199999665143,
+    0.08367330000328366
+   ],
+   "median_s": 0.06258264999996754,
+   "per_step_s": 0.00031291324999983773,
+   "neuron_s_per_s": 0.03195773908584947,
+   "mem_MB": null,
+   "ratio_vs_hh": 0.9864219052642114,
+   "breakeven_dt_ms": 0.009864219052642113
+  },
+  {
+   "model": "k_3_w3",
+   "B": 64,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.06461150000541238,
+    0.0884379999988596
+   ],
+   "median_s": 0.07652475000213599,
+   "per_step_s": 0.00038262375001067993,
+   "neuron_s_per_s": 1.6726614591544202,
+   "mem_MB": null,
+   "ratio_vs_hh": 0.778858440705306,
+   "breakeven_dt_ms": 0.00778858440705306
+  },
+  {
+   "model": "k_3_w3",
+   "B": 1024,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.2412294000023394,
+    0.24159700000018347
+   ],
+   "median_s": 0.24141320000126143,
+   "per_step_s": 0.0012070660000063071,
+   "neuron_s_per_s": 8.483380361924281,
+   "mem_MB": null,
+   "ratio_vs_hh": 2.3520588157726916,
+   "breakeven_dt_ms": 0.023520588157726917
+  },
+  {
+   "model": "r8_mlp_hdf_s2",
+   "B": 1,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.02681280000251718,
+    0.024311699999088887
+   ],
+   "median_s": 0.025562250000803033,
+   "per_step_s": 0.00012781125000401516,
+   "neuron_s_per_s": 0.07824037398652976,
+   "mem_MB": null,
+   "ratio_vs_hh": 0.40290980565133133,
+   "breakeven_dt_ms": 0.004029098056513313
+  },
+  {
+   "model": "r8_mlp_hdf_s2",
+   "B": 64,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.036762899995665066,
+    0.08049880000180565
+   ],
+   "median_s": 0.05863084999873536,
+   "per_step_s": 0.0002931542499936768,
+   "neuron_s_per_s": 2.183151020371714,
+   "mem_MB": null,
+   "ratio_vs_hh": 0.5967367734748182,
+   "breakeven_dt_ms": 0.005967367734748183
+  },
+  {
+   "model": "r8_mlp_hdf_s2",
+   "B": 1024,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.19771419999597128,
+    0.20353229999454925
+   ],
+   "median_s": 0.20062324999526027,
+   "per_step_s": 0.0010031162499763012,
+   "neuron_s_per_s": 10.208188732105496,
+   "mem_MB": null,
+   "ratio_vs_hh": 1.9546474003818135,
+   "breakeven_dt_ms": 0.019546474003818134
+  },
+  {
+   "model": "m3_v2f05d_s1",
+   "B": 1,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.08433769999828655,
+    0.05577910000283737
+   ],
+   "median_s": 0.07005840000056196,
+   "per_step_s": 0.0003502920000028098,
+   "neuron_s_per_s": 0.02854761170657562,
+   "mem_MB": null,
+   "ratio_vs_hh": 1.1042539810690726,
+   "breakeven_dt_ms": 0.011042539810690725
+  },
+  {
+   "model": "m3_v2f05d_s1",
+   "B": 64,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.09062429999903543,
+    0.13786249999975553
+   ],
+   "median_s": 0.11424339999939548,
+   "per_step_s": 0.0005712169999969774,
+   "neuron_s_per_s": 1.1204148335980662,
+   "mem_MB": null,
+   "ratio_vs_hh": 1.1627537023239944,
+   "breakeven_dt_ms": 0.011627537023239945
+  },
+  {
+   "model": "m3_v2f05d_s1",
+   "B": 1024,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.43022790000395617,
+    0.4419100000013714
+   ],
+   "median_s": 0.43606895000266377,
+   "per_step_s": 0.0021803447500133187,
+   "neuron_s_per_s": 4.696504990753159,
+   "mem_MB": null,
+   "ratio_vs_hh": 4.248565605083512,
+   "breakeven_dt_ms": 0.042485656050835124
+  },
+  {
+   "model": "rnn3:p_h64_cl05",
+   "B": 1,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.09416690000216477,
+    0.03854130000399891
+   ],
+   "median_s": 0.06635410000308184,
+   "per_step_s": 0.0003317705000154092,
+   "neuron_s_per_s": 0.030141317566014902,
+   "mem_MB": null,
+   "ratio_vs_hh": 1.0458671492365048,
+   "breakeven_dt_ms": 0.010458671492365049
+  },
+  {
+   "model": "rnn3:p_h64_cl05",
+   "B": 64,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.07089339999947697,
+    0.0820603000029223
+   ],
+   "median_s": 0.07647685000119964,
+   "per_step_s": 0.0003823842500059982,
+   "neuron_s_per_s": 1.6737091027937494,
+   "mem_MB": null,
+   "ratio_vs_hh": 0.7783709210461366,
+   "breakeven_dt_ms": 0.007783709210461366
+  },
+  {
+   "model": "rnn3:p_h64_cl05",
+   "B": 1024,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.21561339999607299,
+    0.2527364999987185
+   ],
+   "median_s": 0.23417494999739574,
+   "per_step_s": 0.0011708747499869787,
+   "neuron_s_per_s": 8.745598109544918,
+   "mem_MB": null,
+   "ratio_vs_hh": 2.2815374452251405,
+   "breakeven_dt_ms": 0.022815374452251406
+  },
+  {
+   "model": "rnn3:s_h128_ft05",
+   "B": 1,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.05484910000086529,
+    0.05010790000233101
+   ],
+   "median_s": 0.05247850000159815,
+   "per_step_s": 0.00026239250000799076,
+   "neuron_s_per_s": 0.03811084539266735,
+   "mem_MB": null,
+   "ratio_vs_hh": 0.8271612332972671,
+   "breakeven_dt_ms": 0.008271612332972671
+  },
+  {
+   "model": "rnn3:s_h128_ft05",
+   "B": 64,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.07862749999912921,
+    0.11711860000650631
+   ],
+   "median_s": 0.09787305000281776,
+   "per_step_s": 0.0004893652500140888,
+   "neuron_s_per_s": 1.3078166052484814,
+   "mem_MB": null,
+   "ratio_vs_hh": 0.9961385187163545,
+   "breakeven_dt_ms": 0.009961385187163545
+  },
+  {
+   "model": "rnn3:s_h128_ft05",
+   "B": 1024,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.44530659999873023,
+    0.4408499999990454
+   ],
+   "median_s": 0.4430782999988878,
+   "per_step_s": 0.0022153914999944392,
+   "neuron_s_per_s": 4.622207858080932,
+   "mem_MB": null,
+   "ratio_vs_hh": 4.316856831293881,
+   "breakeven_dt_ms": 0.04316856831293881
+  },
+  {
+   "model": "rnn3:s_gru64",
+   "B": 1,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.09326190000138013,
+    0.073548699998355
+   ],
+   "median_s": 0.08340529999986757,
+   "per_step_s": 0.0004170264999993378,
+   "neuron_s_per_s": 0.0239792914839126,
+   "mem_MB": null,
+   "ratio_vs_hh": 1.3146265767755945,
+   "breakeven_dt_ms": 0.013146265767755945
+  },
+  {
+   "model": "rnn3:s_gru64",
+   "B": 64,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.12681040000461508,
+    0.16704439999739407
+   ],
+   "median_s": 0.14692740000100457,
+   "per_step_s": 0.0007346370000050229,
+   "neuron_s_per_s": 0.8711785548449428,
+   "mem_MB": null,
+   "ratio_vs_hh": 1.4954069847790818,
+   "breakeven_dt_ms": 0.014954069847790819
+  },
+  {
+   "model": "rnn3:s_gru64",
+   "B": 1024,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.5848274000018137,
+    0.6154585000040242
+   ],
+   "median_s": 0.600142950002919,
+   "per_step_s": 0.003000714750014595,
+   "neuron_s_per_s": 3.412520300355172,
+   "mem_MB": null,
+   "ratio_vs_hh": 5.847118203440489,
+   "breakeven_dt_ms": 0.05847118203440489
+  },
+  {
+   "model": "rnn1:sp_r_init",
+   "B": 1,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.021563700000115205,
+    0.0261469000033685
+   ],
+   "median_s": 0.023855300001741853,
+   "per_step_s": 0.00011927650000870927,
+   "neuron_s_per_s": 0.08383881149488646,
+   "mem_MB": null,
+   "ratio_vs_hh": 0.3760050186174562,
+   "breakeven_dt_ms": 0.0037600501861745623
+  },
+  {
+   "model": "rnn1:sp_r_init",
+   "B": 64,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.04366679999657208,
+    0.0825053999942611
+   ],
+   "median_s": 0.06308609999541659,
+   "per_step_s": 0.00031543049997708296,
+   "neuron_s_per_s": 2.028973101987595,
+   "mem_MB": null,
+   "ratio_vs_hh": 0.6420816986822917,
+   "breakeven_dt_ms": 0.006420816986822917
+  },
+  {
+   "model": "rnn1:sp_r_init",
+   "B": 1024,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.2619708000056562,
+    0.2527306999982102
+   ],
+   "median_s": 0.2573507500019332,
+   "per_step_s": 0.001286753750009666,
+   "neuron_s_per_s": 7.9580106138591615,
+   "mem_MB": null,
+   "ratio_vs_hh": 2.5073363854362487,
+   "breakeven_dt_ms": 0.02507336385436249
+  },
+  {
+   "model": "ens:mm_rel+mm_rel_s1",
+   "B": 1,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.042385900000226684,
+    0.03599630000098841
+   ],
+   "median_s": 0.03919110000060755,
+   "per_step_s": 0.00019595550000303774,
+   "neuron_s_per_s": 0.051031994508166284,
+   "mem_MB": null,
+   "ratio_vs_hh": 0.6177264710270272,
+   "breakeven_dt_ms": 0.0061772647102702714
+  },
+  {
+   "model": "ens:mm_rel+mm_rel_s1",
+   "B": 64,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.07112750000669621,
+    0.0839641999991727
+   ],
+   "median_s": 0.07754585000293446,
+   "per_step_s": 0.0003877292500146723,
+   "neuron_s_per_s": 1.6506363653910077,
+   "mem_MB": null,
+   "ratio_vs_hh": 0.7892510568772488,
+   "breakeven_dt_ms": 0.00789251056877249
+  },
+  {
+   "model": "ens:mm_rel+mm_rel_s1",
+   "B": 1024,
+   "runner": "eager",
+   "record": false,
+   "steps": 200,
+   "times": [
+    0.32715140000073006,
+    0.3341389999986859
+   ],
+   "median_s": 0.330645199999708,
+   "per_step_s": 0.0016532259999985398,
+   "neuron_s_per_s": 6.193950494372242,
+   "mem_MB": null,
+   "ratio_vs_hh": 3.22143510606783,
+   "breakeven_dt_ms": 0.032214351060678305
+  }
+ ]
+}

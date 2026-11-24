@@ -1,0 +1,781 @@
+{
+"suite": "final",
+"label": "_rest",
+"summary": {
+"n": 54,
+"n100": 0,
+"mean": 0.0,
+"gamma": 0.0,
+"n_diverged": 0,
+"sec": 0.6197531223297119,
+"shape": {
+"n": 0
+},
+"range": {},
+"gamma_by_group": {
+"threshold": [
+0.0,
+0,
+10
+],
+"transient": [
+0.0,
+0,
+10
+],
+"tracking": [
+0.0,
+0,
+10
+],
+"fluct": [
+0.0,
+0,
+10
+],
+"ood": [
+0.0,
+0,
+10
+],
+"long": [
+0.0,
+0,
+4
+]
+},
+"shape_by_group": {
+"threshold": {
+"n": 0
+},
+"transient": {
+"n": 0
+},
+"tracking": {
+"n": 0
+},
+"fluct": {
+"n": 0
+},
+"ood": {
+"n": 0
+},
+"long": {
+"n": 0
+}
+},
+"range_by_group": {
+"threshold": {},
+"transient": {},
+"tracking": {},
+"fluct": {},
+"ood": {},
+"long": {}
+},
+"fingerprint": "549adc15bd9aaddf"
+},
+"rows": [
+{
+"name": "threshold: const 3.41",
+"spikes": [
+1,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 4.132146825378637,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "threshold: const 3.95",
+"spikes": [
+1,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 4.322663497397833,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "threshold: const 5.02",
+"spikes": [
+1,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 4.696500348766948,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "threshold: const 5.47",
+"spikes": [
+1,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 4.853282696635471,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "threshold: const 7.69",
+"spikes": [
+59,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 24.057574030525302,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "threshold: const 8.08",
+"spikes": [
+60,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 24.245437949094264,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "threshold: const 9.92",
+"spikes": [
+65,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 25.01959377118733,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "threshold: const 13.40",
+"spikes": [
+72,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 25.76514791091921,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "threshold: const 18.03",
+"spikes": [
+80,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 26.33614962199952,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "threshold: const 22.87",
+"spikes": [
+86,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 26.468555930410126,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "transient: step 8.0 for 147ms",
+"spikes": [
+10,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 15.837398782236564,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "transient: step 23.6 for 53ms",
+"spikes": [
+5,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 10.603289097305103,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "transient: step 3.8 for 37ms",
+"spikes": [
+1,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 5.469796793762502,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "transient: step 19.9 for 191ms",
+"spikes": [
+17,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 19.211412570761073,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "transient: pulse 19.5 0.57ms",
+"spikes": [
+1,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 7.863917701073678,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "transient: pulse 23.2 0.56ms",
+"spikes": [
+1,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 7.906245046621142,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "transient: pulse 29.7 1.44ms",
+"spikes": [
+1,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 8.03135330292651,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "transient: step -3.8 for 82ms",
+"spikes": [
+1,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 6.132796159338455,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "transient: step -3.3 for 179ms",
+"spikes": [
+1,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 6.162707477295498,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "transient: step -4.3 for 46ms",
+"spikes": [
+1,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 6.1518648523132065,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "tracking: sin 2.6Hz 9.2±6.4",
+"spikes": [
+16,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 13.051385100638823,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "tracking: sin 2.4Hz 7.5±5.8",
+"spikes": [
+16,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 12.93073586770619,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "tracking: sin 2.1Hz 11.8±4.4",
+"spikes": [
+68,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 25.221763536880058,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "tracking: sin 17.7Hz 11.8±3.1",
+"spikes": [
+68,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 25.19427434476343,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "tracking: pulse 9.2/1.8ms/52ms",
+"spikes": [
+19,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 15.360258474406974,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "tracking: pulse 24.9/1.1ms/13ms",
+"spikes": [
+75,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 30.501313767566923,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "tracking: pulse 7.4/4.2ms/40ms",
+"spikes": [
+24,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 17.252354065334277,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "tracking: ramp 0-21.3 in 577ms",
+"spikes": [
+37,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 17.911101462036147,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "tracking: ramp 0-16.0 in 551ms",
+"spikes": [
+29,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 16.45910588665646,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "tracking: ramp 0-26.4 in 882ms",
+"spikes": [
+27,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 15.342603325879393,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "fluct: OU 11.1±3.3 tau 3.5ms",
+"spikes": [
+67,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 25.446916045322535,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "fluct: OU 5.8±2.9 tau 3.4ms",
+"spikes": [
+49,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 23.171866495700417,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "fluct: OU 10.2±2.4 tau 1.5ms",
+"spikes": [
+64,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 25.041546086689177,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "fluct: OU 10.2±4.0 tau 3.9ms",
+"spikes": [
+60,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 24.70333759908461,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "fluct: OU 10.9±3.8 tau 8.2ms",
+"spikes": [
+63,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 24.809101543617064,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "fluct: OU 5.4±4.9 tau 3.5ms",
+"spikes": [
+55,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 24.872248400735927,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "fluct: random step -5~20/46ms",
+"spikes": [
+55,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 22.63663649412938,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "fluct: random step -5~20/35ms",
+"spikes": [
+42,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 20.32590547078044,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "fluct: random step -5~20/27ms",
+"spikes": [
+41,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 20.2783746366878,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "fluct: random step -5~20/45ms",
+"spikes": [
+39,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 20.037360438337725,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "ood: const 60.0",
+"spikes": [
+56,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 24.65547546806804,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "ood: const 66.7",
+"spikes": [
+2,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 24.2835261370452,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "ood: step -19.3 for 131ms",
+"spikes": [
+1,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 31.000789876389792,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "ood: step -11.4 for 167ms",
+"spikes": [
+1,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 18.556165572005703,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "ood: sin 100Hz 11.4±14.1",
+"spikes": [
+95,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 31.584017482883116,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "ood: sin 139Hz 13.8±10.2",
+"spikes": [
+66,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 26.311203147749456,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "ood: slow OU 7.6±2.1 tau 45ms",
+"spikes": [
+72,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 18.876105101992657,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "ood: slow OU 6.3±4.5 tau 27ms",
+"spikes": [
+89,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 21.673316494101147,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "ood: fast OU 6.7±8.6 tau 0.42ms",
+"spikes": [
+66,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 27.015103233178408,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "ood: very slow ramp 0-17.5 in 4318ms",
+"spikes": [
+84,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 13.596534662100172,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "long: OU 8.0±3.2 tau 3.0ms 20s",
+"spikes": [
+1191,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 24.792714494895158,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "long: OU 7.3±2.6 tau 4.9ms 20s",
+"spikes": [
+1087,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 23.63568535994905,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "long: OU 8.9±4.8 tau 1.5ms 20s",
+"spikes": [
+1326,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 26.272971899327317,
+"diverged": false,
+"shape": null,
+"range": {}
+},
+{
+"name": "long: OU 9.5±3.1 tau 5.7ms 20s",
+"spikes": [
+1226,
+0
+],
+"match": 0.0,
+"gamma": 0.0,
+"rmse": 24.640952324961056,
+"diverged": false,
+"shape": null,
+"range": {}
+}
+]
+}

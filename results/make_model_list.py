@@ -7,6 +7,7 @@ from openpyxl import Workbook
 from openpyxl.comments import Comment
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
+from openpyxl.worksheet.hyperlink import Hyperlink
 
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'HHモデル一覧.xlsx')
 GAMMA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'gamma')   # rescore_gamma.py の結果
@@ -125,6 +126,48 @@ ROWS = [
     ('Markov MLP', 'mm_w256_relu', 'MLP 256×3、ReLU', 'mm_w256 と同じ（活性化関数だけ ReLU）', 11, 20, 0.910,
      'const 7, ramp 0-20, ramp 0-30, sin 10Hz, random pulse 5ms, munechika train', 'mm_w256 を ReLU にしたやつ',
      'results/hh_improve/mm_w256_relu.pt'),
+    ('Markov MLP', 'ens:mm_rel+mm_rel_s1', 'mm_rel と mm_rel_s1 の出力（ΔV, Δm, Δh, Δn）を毎ステップ平均',
+     '学習なし（2 本の重みをそのまま使う）', None, 24, 0.957, 'ramp 0-20, ramp 0-30',
+     'seed 違い 2 本のアンサンブル（Γ は単独より上。計算は 2 倍）', 'results/gamma/ens_mm_rel_mm_rel_s1.json'),
+    ('Markov MLP', 'ens:mm_rel+mm_rel_s1+mm_sv05', '上に mm_sv05 を足した 3 本の平均', '学習なし', None, 23, 0.923,
+     'ramp 0-20, ramp 0-30, munechika train', '設定の違うモデルを混ぜたアンサンブル（下がった）',
+     'results/gamma/ens_mm_rel_mm_rel_s1_mm_sv05.json'),
+    ('Markov MLP', 'r9_mlp_v2_s0', 'MLP 128×2、SiLU',
+     'mm_rel + 苦手な電流 v2（閾値付近の定常 → 0 からのランプ → 正弦波）1024 本 × 3 s。この PC（CPU）',
+     9, 19, 0.878, 'const 7, const 10, ramp 0-20, ramp 0-30, random pulse 5ms, OU 5±3, munechika train',
+     '苦手な電流 v2 を足したやつ（mm_rel より下がった。別セッションが用意）', 'results/hh_improve/r9_mlp_v2_s0.pt'),
+    ('Markov MLP', 'r9_mlp_v2_s1〜s2', '同上', '同上、seed 1・2', None, None, None, '【この PC で実行中（1 本ずつ順に）】（学内サーバ用の jobs_gpu_round9.txt にもある）',
+     '苦手な電流 v2 の seed 違い', 'results/hh_improve/'),
+    ('Markov MLP', 'r9_mlp_v2f05_s0〜s2', '同上', '苦手な電流 v2 を、バッチの半分は苦手な電流の状態から取る（--hard-frac 0.5）',
+     None, None, None, '【この PC で実行中（1 本ずつ順に）】（s0 が実行中）', '苦手な電流の重みを上げたやつ', 'results/hh_improve/'),
+    ('Markov MLP', 'r9_mlp_v2f05d_s0〜s2', '同上', '上 + DAgger 3 回', None, None, None, '【この PC で実行中（1 本ずつ順に）】',
+     '苦手な電流 v2 + DAgger', 'results/hh_improve/'),
+    ('Markov MLP', 'r8_mlp_base_s0〜s2', 'MLP 128×2、SiLU', 'mm_rel と同じ設定を GPU で、seed 3 本', None, None, None, '【学内サーバの結果待ち】',
+     'mm_rel の再現（seed のばらつき）', 'results/hh_improve/'),
+    ('Markov MLP', 'r8_mlp_hard_s0〜s2', '同上', '+ 苦手な電流 v1（長い一定・ゆっくりしたランプ・閾値付近）256 本 × 3 s',
+     None, None, None, '【学内サーバの結果待ち】', '苦手な電流を足したやつ', 'results/hh_improve/'),
+    ('Markov MLP', 'r8_mlp_dag_s0〜s2', '同上', '+ DAgger 3 回（閉ループで通った状態に式で正解をつけて足す）', None, None, None, '【学内サーバの結果待ち】',
+     'DAgger を足したやつ', 'results/hh_improve/'),
+    ('Markov MLP', 'r8_mlp_hd_s0〜s2', '同上', '+ 苦手な電流 v1 + DAgger 3 回', None, None, None, '【学内サーバの結果待ち】',
+     '苦手な電流と DAgger の両方', 'results/hh_improve/'),
+    ('Markov MLP', 'r8_mlp_hdf_s0〜s2', '同上 + 入力に m³h, n⁴ とその V 倍', '+ 苦手な電流 v1 + DAgger', None, None, None, '【学内サーバの結果待ち】',
+     'コンダクタンスの項を入力に足したやつ', 'results/hh_improve/'),
+    ('Markov MLP', 'r8_mlp_hd_sv05_s0〜s2', '同上', '+ 苦手な電流 v1 + DAgger、摂動 1/4（mm_sv05 と同じ）', None, None, None, '【学内サーバの結果待ち】',
+     'mm_sv05 に苦手な電流と DAgger を足したやつ', 'results/hh_improve/'),
+    ('Markov MLP', 'r8_mlp_hd_w256 / r8_mlp_hd_200k', 'MLP 256×3 / 128×2', '+ 苦手な電流 v1 + DAgger、幅を広げる / 学習 20 万回',
+     None, None, None, '【学内サーバの結果待ち】', '大きく・長くしたやつ', 'results/hh_improve/'),
+    ('Markov MLP', 'g_silu128 / g_relu128（seed 0〜2）ほか', 'MLP 128×2 / 256×3、SiLU・ReLU', 'mm_rel と同じ設定を GPU で（jobs_gpu_mlp.txt）',
+     None, None, None, '【学内サーバの結果待ち】（まだ回していない）', 'SiLU と ReLU の seed 違い', 'results/hh_improve/'),
+    # ---- MLP 3 個（分割の構造、各ブロックを再帰のない MLP に） ----
+    ('MLP 3 個', 'm3_base_s0〜s2', 'RNN1(V→α,β) / RNN2(α,β,g→Δg) / RNN3(g,V,I→ΔV) を各 MLP 128×2（再帰なし）',
+     '摂動した状態で 1 ステップ事前学習（正解は HH の式）。RNN3 は相対誤差', None, None, None, '【学内サーバの結果待ち】',
+     'RNN 3 個型の各ブロックを Markov MLP にしたやつ', 'results/hh_improve/m3_*_b1〜3.pt'),
+    ('MLP 3 個', 'm3_hd_s0〜s2', '同上', '+ 苦手な電流 v1 + DAgger 3 回', None, None, None, '【学内サーバの結果待ち】',
+     'MLP 3 個に苦手な電流と DAgger', 'results/hh_improve/'),
+    ('MLP 3 個', 'm3_hdf_s0', '同上、RNN3 の入力に m³h, n⁴ とその V 倍', '+ 苦手な電流 v1 + DAgger', None, None, None, '【学内サーバの結果待ち】',
+     'MLP 3 個にコンダクタンスの項', 'results/hh_improve/'),
+    ('MLP 3 個', 'm3_v2f05d_s0〜s2', '同上', '苦手な電流 v2（--hard-frac 0.5）+ DAgger 3 回', None, None, None,
+     '【この PC で実行中（1 本ずつ順に）】（学内サーバ用の jobs_gpu_round9.txt にもある）', 'MLP 3 個に苦手な電流 v2', 'results/hh_improve/'),
     # ---- ハイブリッド ----
     ('ハイブリッド', 'cl_p_mlp', 'MLP 64×2 は V → g∞, q（各ゲート）だけ。Δg = q(g∞−g)、ΔV は HH の電流の式',
      '摂動した状態で 1 ステップ事前学習 2 万回', 17, 23, 0.957, 'ramp 0-30, random pulse 5ms, OU 5±3',
@@ -132,7 +175,8 @@ ROWS = [
     # ---- flow function ----
     ('flow function', 'hhfs（学内サーバ 10 本）', '論文（Aguiar ら 2024）の encoder + control-RNN + decoder',
      '論文のコードのまま（論文版の HH、0〜1 µA、solve_ivp）', None, None, None,
-     '別の 7 電流で RMSE 4〜16 mV', 'flow function のやつ。対象の HH と評価が違うので直接は比べられない',
+     '別の 7 電流で RMSE 4〜16 mV。Γ での採点は' + '【学内サーバの結果待ち】（score_flow_gamma.py、まだ回していない）',
+     'flow function のやつ。対象の HH と評価が違うので直接は比べられない',
      'results/flow_learning/'),
 ]
 
@@ -204,6 +248,7 @@ def ext_of(tag):
     d = json.load(open(p, encoding='utf-8'))
     return [d[s]['summary'][k] if s in d else None for s, k in EXT_COLS]
 FILL = {'RNN 3 個': 'DCE6F1', 'RNN 3 個（直列）': 'FDE9D9', 'RNN 1 個': 'F2DCDB', 'Markov MLP': 'EBF1DE',
+        'MLP 3 個': 'E4DFEC',
         'ハイブリッド': 'EDEDED', 'flow function': 'FFF2CC'}
 
 wb = Workbook()
@@ -230,18 +275,80 @@ for j, (h, w) in enumerate(zip(HEAD, WIDTH), 1):
     ws.column_dimensions[get_column_letter(j)].width = w
 ws.row_dimensions[r0].height = 32
 
+def guess_source(tag):
+    # SOURCE に登録のないタグ（新しく足した行）のソースコード
+    if tag.startswith('ens:'):
+        return 'results/rescore_gamma.py（ens:A+B のアンサンブル）'
+    if tag.startswith('m3_'):
+        return S + 'hh_improve.py mlp3'
+    if tag.startswith('r9_') or tag.startswith('r8_') or tag.startswith('g_'):
+        return S + 'hh_improve.py single_cl --state --cell mlp（引数は results/hh_improve/jobs_*.txt）'
+    return ''
+
+
 def gamma_of(tag):
     """
     results/gamma/<タグ>.json（results/rescore_gamma.py の出力）から 26 本の平均 Γ を読む。
     「a / b」のようにまとめた行は、それぞれの値を「/」でつないだ文字列にする。採点していなければ None
     """
     vs = []
-    for t in tag.split(' / '):
-        p = os.path.join(GAMMA_DIR, t.strip() + '.json')
+    for t in ([tag] if tag.startswith('ens:') else tag.split(' / ')):
+        p = os.path.join(GAMMA_DIR, t.strip().replace(':', '_').replace('+', '_') + '.json')
         if not os.path.exists(p):
             return None
         vs.append(json.load(open(p, encoding='utf-8'))['gamma'])
     return vs[0] if len(vs) == 1 else ' / '.join('{:.3f}'.format(v) for v in vs)
+
+
+# ---------------- 良かったモデルの印と、生データ一覧の行番号 ----------------
+HERE = os.path.dirname(os.path.abspath(__file__))
+RANK = json.load(open(os.path.join(HERE, 'ranking', 'accuracy.json'), encoding='utf-8'))['accuracy']   # 全モデル（Γ の順）
+SEL = json.load(open(os.path.join(HERE, 'final', 'selection.json'), encoding='utf-8'))                  # 4 分野の最良
+BEST = {}   # キー -> 分野（A〜D）
+for area, v in SEL.items():
+    for t in v['tags']:
+        BEST[('rnn3/' + t) if v['src'] == 'hh_rnn3' else t] = area
+GOOD_G = 0.95   # ○ を付けるテスト 26 本の平均 Γ の下限
+AREA_NAME = {'A': 'A FFNN', 'B': 'B RNN', 'C': 'C FFNN 3 個', 'D': 'D RNN 3 個'}
+MARK_FILL = PatternFill('solid', fgColor='FFE699')   # ◎ の行の色
+RAW = '生データ一覧'
+link_font = Font(name='Arial', size=10, color='0563C1', underline='single')
+
+
+def key_of(tag):
+    # 一覧のタグ -> 生データ一覧のキー（ens:a+b は results/gamma のファイル名と同じ形にする）
+    return tag.replace(':', '_').replace('+', '_')
+
+
+def mark_of(key, gamma, cat=None):
+    if key in BEST:
+        return '◎'
+    if cat != 'ハイブリッド' and isinstance(gamma, (int, float)) and gamma >= GOOD_G:
+        return '○'
+    return ''
+
+
+def raw_rows_of(r):
+    # テスト 26 本の電流ごとの結果。採点し直した results/gamma を優先し、なければ学習の json の test を使う
+    p = os.path.join(GAMMA_DIR, r['key'] + '.json')
+    if os.path.exists(p):
+        return json.load(open(p, encoding='utf-8'))['rows']
+    p = os.path.join(HERE, r['src'], r['tag'] + '.json')
+    return json.load(open(p, encoding='utf-8'))['test']['rows']
+
+
+RAW_RECS, RAW_FIRST = [], {}   # 生データ一覧の行（キー, 電流の行）と、各キーの最初の行番号
+for r in RANK:
+    RAW_FIRST[r['key']] = len(RAW_RECS) + 2
+    RAW_RECS += [(r['key'], x) for x in raw_rows_of(r)]
+
+
+def link_to_raw(cell, key):
+    # cell をクリックすると、生データ一覧のそのモデルの最初の行へ飛ぶ
+    if key in RAW_FIRST:
+        # 外部リンクにならないように、ブック内の場所（location）として書く
+        cell.hyperlink = Hyperlink(ref=cell.coordinate, location=f"'{RAW}'!A{RAW_FIRST[key]}")
+        cell.font = link_font
 
 
 first, last = r0 + 1, r0 + len(ROWS)
@@ -250,7 +357,7 @@ for i, row in enumerate(ROWS):
     cat, tag, arch, train, val, test, mean, fails, note, path = row
     gam = gamma_of(tag)
     ext = ext_of(tag)
-    vals = [i + 1, cat, tag, arch, train, val, test, None, mean, gam, None, None, *ext, fails, note, SOURCE[tag],
+    vals = [i + 1, cat, tag, arch, train, val, test, None, mean, gam, None, None, *ext, fails, note, SOURCE.get(tag) or guess_source(tag),
             path]
     for j, v in enumerate(vals, 1):
         c = ws.cell(r, j, v if v is not None else None)
@@ -288,6 +395,14 @@ for i, row in enumerate(ROWS):
         ws.cell(r, 12, '—')
     if test is not None and test >= 22:
         ws.cell(r, 7).font = Font(name='Arial', size=10, bold=True)
+    # 印（タグの前に付ける）と、生データ一覧へのリンク
+    mk = mark_of(key_of(tag), gam, cat)
+    if mk:
+        ws.cell(r, 3, f'{mk} {tag}')
+        for j in range(1, len(HEAD) + 1):
+            if mk == '◎':
+                ws.cell(r, j).fill = MARK_FILL
+    link_to_raw(ws.cell(r, 3), key_of(tag))
 
 ws.cell(first + 9, 7).comment = Comment('最良の時点を 26 本の成績で選んだので参考値', 'Claude')
 ws.freeze_panes = ws.cell(r0 + 1, 4)
@@ -302,6 +417,10 @@ for k, (cat, col) in enumerate(FILL.items()):
     c.fill = PatternFill('solid', fgColor=col)
     c.border = border
 ws.cell(lr + 1, 4, 'テスト順位は 100% 一致の本数、または平均 Γ の大きい順（同じ値は同順位）。一致した割合 = 100% 一致の本数 / 26').font = font
+ws.cell(lr + 3, 4, f'印: ◎ = 4 分野の最良（検証 17 本で選んだもの、results/final/selection.json。黄色の行）、'
+                   f'○ = テスト 26 本の平均 Γ ≥ {GOOD_G}（ハイブリッドは除く）。'
+                   f'青い下線のタグをクリックすると「{RAW}」のそのモデルの行に飛ぶ。'
+                   'この一覧にない新しいモデルは「ランキング」シートにある').font = font
 ws.cell(lr + 2, 4, '追加テスト（experiments/hh_surrogate/hh_bench_ext.py、上位 8 モデルのみ）: '
                    'seed 10 本ずつ = OU 3 種・ランダムステップ・ランダムパルスを seed 10 本ずつ（50 本、各 500 ms）の平均 Γ。'
                    'f–I = 定常電流 0〜30 を 0.5 刻み（61 本、各 1 s）の平均 Γ と、後半 500 ms の発火率の誤差（RMSE）。'
@@ -361,10 +480,37 @@ def long_sheet(title, records, extra_cols=()):
     return ws_
 
 
-# テスト 26 本（全モデル）
+# ランキング（全モデル、テスト 26 本の平均 Γ の順）。印と、生データ一覧へのリンク付き
+ws_ = wb.create_sheet('ランキング', 1)
+header(ws_, ['印', '順位', '4 分野の\n最良', 'モデル（タグ）\nクリックで生データへ', '構造', 'テスト 26 本\n平均 Γ',
+             'テスト 26 本\n100% 一致', '検証 17 本\n100% 一致', '検証 17 本\n平均一致率'],
+       [5, 6, 12, 28, 34, 11, 11, 11, 11])
+ws_.freeze_panes = 'E2'
+for i, r in enumerate(RANK, 2):
+    mk = mark_of(r['key'], r['test_gamma'])
+    vals = [mk, i - 1, AREA_NAME.get(BEST.get(r['key']), ''), r['key'], r['arch'], r['test_gamma'], r['test_n100'],
+            r['val_n100'], r['val_mean']]
+    for j, v in enumerate(vals, 1):
+        c = ws_.cell(i, j, '—' if v is None else v)
+        c.font = font
+        c.border = border
+        c.alignment = Alignment(horizontal='left' if j in (4, 5) else 'center', vertical='top')
+        if mk == '◎':
+            c.fill = MARK_FILL
+        if j in (6, 9) and v is not None:
+            c.number_format = '0.000'
+    if mk:
+        ws_.cell(i, 1).font = Font(name='Arial', size=11, bold=True)
+    link_to_raw(ws_.cell(i, 4), r['key'])
+ws_.auto_filter.ref = f'A1:I{len(RANK) + 1}'
+nr = len(RANK) + 3
+ws_.cell(nr, 1, f'印: ◎ = 4 分野の最良（検証 17 本で選んだもの。黄色の行）、○ = テスト 26 本の平均 Γ ≥ {GOOD_G}。'
+                '順位はテスト 26 本の平均 Γ の順（results/ranking/accuracy.json）。'
+                '26 本は作り方を決めるのに使った開発用なので、最終の比較には最終テスト 54 本を使う').font = font
+
+# 生データ一覧（全モデル × テスト 26 本の電流ごと。ランキングと同じ並び）
+long_sheet(RAW, RAW_RECS)
 G_TAGS = tags_in(GAMMA_DIR)
-recs = [(t, r) for t in G_TAGS for r in json.load(open(os.path.join(GAMMA_DIR, t + '.json'), encoding='utf-8'))['rows']]
-long_sheet('テスト26本_電流ごと', recs)
 
 # テスト 26 本の Γ を モデル × 電流 の表に
 ws_ = wb.create_sheet('テスト26本_Γ表')
@@ -409,7 +555,9 @@ for suite, title, extra in [
 ws_ = wb.create_sheet('シートの説明')
 notes = [
     ('モデル一覧', 'モデルごとの要約（構造・学習方法・テスト 26 本の成績・追加テストの平均・備考）'),
-    ('テスト26本_電流ごと', '全モデル × テスト 26 本の電流ごとの結果（スパイク数・一致率・Γ・RMSE）。results/gamma/<タグ>.json'),
+    ('ランキング', '全モデルをテスト 26 本の平均 Γ の順に並べたもの。◎ = 4 分野の最良、○ = 平均 Γ ≥ 0.95。タグをクリックすると生データ一覧へ'),
+    (RAW, '全モデル × テスト 26 本の電流ごとの結果（スパイク数・一致率・Γ・RMSE）。ランキングと同じ並び。'
+          'results/gamma/<タグ>.json（なければ学習の json の test）'),
     ('テスト26本_Γ表', '上と同じ Γ を モデル × 電流 の表にしたもの。2 行目は正解のスパイク数'),
     ('追加_seed10本ずつ', 'OU 3 種・ランダムステップ・ランダムパルスを seed 10 本ずつ（50 本、各 500 ms）。上位 8 モデル'),
     ('追加_f-I', '定常電流 0〜30 µA/cm² を 0.5 刻み（61 本、各 1 s）。発火率は後半 500 ms のスパイク数から'),
