@@ -513,11 +513,68 @@ def save_metrics(cases, blocks, block_dir, save_dir, clip=False):
     print('saved:', os.path.normpath(path))
 
 
+# --- 図の軸と数値の書式（パネルどうし・図どうしでそろえる） ---
+# 上側に余白を取り、パネル右上の RMSE の文字が波形と重ならないようにする
+V_LIM = (-90.0, 75.0)          # 膜電位 [mV]
+GATE_LIM = (-0.05, 1.3)        # ゲート変数（開いている割合、0〜1）。目盛りは 0, 0.5, 1
+GATE_TICKS = [0.0, 0.5, 1.0]
+V_TICKS = [-80, -40, 0, 40]
+
+
+def var_unit(name):
+    # 変数の単位。α, β は速度定数 [1/ms]、ゲート変数は無次元
+    if name.startswith('V'):
+        return 'mV'
+    if name in AB_NAMES:
+        return '1/ms'
+    return ''
+
+
+def fmt_rmse(name, v):
+    # RMSE の書式を変数の種類ごとに固定する（{:.3g} だと 0.00158 と 0.000844 のように桁がそろわない）
+    if name.startswith('V'):
+        return 'RMSE {:.2f} mV'.format(v)
+    u = var_unit(name)
+    return 'RMSE {:.2e}{}'.format(v, ' ' + u if u else '')
+
+
+def var_lim(name, values):
+    """
+    縦軸の範囲。V とゲート変数は固定、α, β は渡した値（全電流ぶん）の範囲を少し広げたもの。
+    values: その変数の正解と予測をまとめた 1 次元配列のリスト
+    """
+    if name.startswith('V'):
+        return V_LIM
+    if name in GATE_NAMES:
+        return GATE_LIM
+    v = np.concatenate([np.ravel(x) for x in values])
+    v = v[np.isfinite(v)]
+    lo, hi = float(v.min()), float(v.max())
+    w = hi - lo if hi > lo else 1.0
+    return lo - 0.05 * w, hi + 0.3 * w
+
+
+def set_var_ticks(ax, name):
+    # V とゲート変数は目盛りも固定する
+    if name.startswith('V'):
+        ax.set_yticks(V_TICKS)
+    elif name in GATE_NAMES:
+        ax.set_yticks(GATE_TICKS)
+
+
+def current_lim(cases):
+    # 入力電流の縦軸 [uA/cm^2]。全電流で共通（10 刻みに丸める）
+    lo = min(float(np.min(c['I'])) for c in cases.values())
+    hi = max(float(np.max(c['I'])) for c in cases.values())
+    return 10 * np.floor(lo / 10), 10 * np.ceil(hi / 10)
+
+
 def plot_eval(cases, save_dir):
     os.makedirs(save_dir, exist_ok=True)
+    ilim = current_lim(cases)
 
     fig1, ax = plt.subplots(figsize=(12, 3.5))
-    plot_case(ax, 'train', cases['train'])
+    plot_case(ax, 'train', cases['train'], v_lim=V_LIM, i_lim=ilim)
     ax.legend(loc='upper right')
     ax.set_xlabel('Time [ms]')
     fig1.tight_layout()
@@ -527,7 +584,7 @@ def plot_eval(cases, save_dir):
     fig2, axes = plt.subplots(len(eval_names), 1, figsize=(10, 2.2 * len(eval_names)),
                               sharex=True)
     for ax, name in zip(axes, eval_names):
-        plot_case(ax, name, cases[name])
+        plot_case(ax, name, cases[name], v_lim=V_LIM, i_lim=ilim)
     axes[0].legend(loc='upper right')
     axes[-1].set_xlabel('Time [ms]')
     fig2.tight_layout()
@@ -546,6 +603,9 @@ def plot_blocks_tf(cases, save_dir):
 
     for b, spec in BLOCKS.items():
         names = spec['outputs']
+        # 縦軸は変数ごとに、学習電流と評価用電流のすべてで共通（V・m・h・n は固定の範囲、α・β は HH の範囲）
+        lims = {name: var_lim(name, [cases[cn]['teacher_forcing'][b]['Y_true'][:, i] for cn in cases])
+                for i, name in enumerate(names)}
 
         # 学習電流 900 ms 全体
         c = cases['train']
@@ -558,9 +618,12 @@ def plot_blocks_tf(cases, save_dir):
                     label='HH')
             ax.plot(t, tf['Y_pred'][:, i], color='black', linewidth=0.6,
                     label='RNN{}'.format(b))
-            ax.set_ylabel(name)
+            u = var_unit(name)
+            ax.set_ylabel('{} [{}]'.format(name, u) if u else name)
             ax.set_xlim(t[0], t[-1])
-            ax.set_title('RMSE = {:.4g}'.format(c['teacher_forcing_rmse']['RNN{}'.format(b)][name]),
+            ax.set_ylim(*lims[name])
+            set_var_ticks(ax, name)
+            ax.set_title(fmt_rmse(name, c['teacher_forcing_rmse']['RNN{}'.format(b)][name]),
                          fontsize=8)
         axes[0, 0].legend(loc='upper right')
         axes[-1, 0].set_xlabel('Time [ms]')
@@ -582,11 +645,13 @@ def plot_blocks_tf(cases, save_dir):
                 ax.plot(t, tf['Y_true'][:, i], color='gray', linestyle='--', linewidth=0.8)
                 ax.plot(t, tf['Y_pred'][:, i], color='black', linewidth=0.6)
                 ax.set_xlim(t[0], t[-1])
-                ax.text(0.98, 0.95, 'RMSE {:.3g}'.format(
-                            c['teacher_forcing_rmse']['RNN{}'.format(b)][name]),
+                ax.set_ylim(*lims[name])
+                set_var_ticks(ax, name)
+                ax.text(0.98, 0.95, fmt_rmse(name, c['teacher_forcing_rmse']['RNN{}'.format(b)][name]),
                         transform=ax.transAxes, ha='right', va='top', fontsize=7)
                 if r == 0:
-                    ax.set_title(name, fontsize=9)
+                    u = var_unit(name)
+                    ax.set_title('{} [{}]'.format(name, u) if u else name, fontsize=9)
                 if i == 0:
                     ax.set_ylabel(case_name, fontsize=8)
         for ax in axes[-1]:
@@ -625,7 +690,8 @@ def plot_blocks_parity(cases, save_dir, n_points=5000, seed=0):
                        label='RNN1 train' if case_name == 'train' else None)
         ax.scatter([], [], s=4, color='tab:orange', label='RNN1 eval')
         ax.set_xlabel('V [mV]')
-        ax.set_title(name, fontsize=9)
+        ax.set_xlim(V_grid[0], V_grid[-1])
+        ax.set_title('{} [1/ms]'.format(name), fontsize=9)
     axes[0, 0].legend(fontsize=7, markerscale=3)
     fig.suptitle('RNN1: rate constants vs V (teacher forcing)')
     fig.tight_layout()
@@ -676,17 +742,23 @@ def plot_closed_loop_states(cases, save_dir):
     cl = c['closed_loop']
     t_ab = c['t_ms'][:-1]
     t_next = c['t_ms'][1:]
-    rows = ([('V [mV]', t_next, c['V_true'], c['V_pred'])]
+    rows = ([('V', t_next, c['V_true'], c['V_pred'])]
             + [(name, t_next, cl['G_true'][:, i], cl['G_pred'][:, i])
                for i, name in enumerate(GATE_NAMES)]
             + [(name, t_ab, cl['AB_true'][:, i], cl['AB_pred'][:, i])
                for i, name in enumerate(AB_NAMES)])
+    # α, β の縦軸は HH（正解）の範囲から決める。閉ループの予測は発散すると桁違いになり、軸が使えなくなるため
+    ab_lim = {name: var_lim(name, [cs['closed_loop']['AB_true'][:, i] for cs in cases.values()])
+              for i, name in enumerate(AB_NAMES)}
     fig, axes = plt.subplots(len(rows), 1, figsize=(12, 1.5 * len(rows)), sharex=True)
     for ax, (label, t, y_true, y_pred) in zip(axes, rows):
         ax.plot(t, y_true, color='gray', linestyle='--', linewidth=0.8, label='HH')
         ax.plot(t, y_pred, color='black', linewidth=0.6, label='RNN x3 (closed loop)')
-        ax.set_ylabel(label, fontsize=8)
+        u = var_unit(label)
+        ax.set_ylabel('{} [{}]'.format(label, u) if u else label, fontsize=8)
         ax.set_xlim(t[0], t[-1])
+        ax.set_ylim(*(ab_lim[label] if label in ab_lim else var_lim(label, [])))
+        set_var_ticks(ax, label)
     axes[0].legend(loc='upper right', fontsize=8)
     axes[-1].set_xlabel('Time [ms]')
     fig.suptitle('Closed loop internal states (train current)')
@@ -711,6 +783,8 @@ def plot_closed_loop_states(cases, save_dir):
             ax.plot(t, y_true, color='gray', linestyle='--', linewidth=0.8)
             ax.plot(t, y_pred, color='black', linewidth=0.6)
             ax.set_xlim(t[0], t[-1])
+            ax.set_ylim(*(V_LIM if j == 0 else GATE_LIM))
+            set_var_ticks(ax, 'V' if j == 0 else GATE_NAMES[j - 1])
             if r == 0:
                 ax.set_title(cols[j], fontsize=9)
             if j == 0:

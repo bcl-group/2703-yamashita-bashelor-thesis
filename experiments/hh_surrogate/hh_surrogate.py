@@ -295,18 +295,23 @@ def save_metrics(r, save_dir=RESULT_DIR):
     print('saved:', os.path.normpath(path))
 
 
-def plot_case(ax, name, c):
+def plot_case(ax, name, c, v_lim=None, i_lim=None):
+    # v_lim, i_lim: 縦軸の範囲。並べるパネルどうしでそろえるときに渡す（None なら自動）
     ax.plot(c['t_target'], c['V_true'], color='gray', linestyle='--',
             linewidth=0.8, label='HH')
     ax.plot(c['t_target'], c['V_pred'], color='black', linewidth=0.8, label='RNN')
     ax.set_ylabel('V [mV]')
     ax.set_xlim(c['t_ms'][0], c['t_ms'][-1])
-    ax.set_title('{}  (RMSE = {:.1f} mV, spikes HH/RNN = {}/{})'.format(
+    if v_lim is not None:
+        ax.set_ylim(*v_lim)
+    ax.set_title('{}  (RMSE = {:.2f} mV, spikes HH/RNN = {}/{})'.format(
         name, c['rmse_mV'], c['spikes_true'], c['spikes_pred']), fontsize=9)
 
     ax_i = ax.twinx()
     ax_i.plot(c['t_ms'], c['I'], color='red', linewidth=0.6, alpha=0.4)
     ax_i.set_ylabel(r'$I_{ext}$ [$\mu$A/cm$^2$]', color='red', fontsize=8)
+    if i_lim is not None:
+        ax_i.set_ylim(*i_lim)
 
 
 def plot_results(r, save_dir=RESULT_DIR):
@@ -322,8 +327,14 @@ def plot_results(r, save_dir=RESULT_DIR):
     plt.title('Learning curve')
     fig1.savefig(os.path.join(save_dir, 'learning_curve.png'), dpi=120)
 
+    # 膜電位と電流の縦軸は全パネルで共通にする
+    v_lim = (-90.0, 75.0)          # hh_modular.V_LIM と同じ（上に題名・凡例の余白）
+    lo = min(float(np.min(c['I'])) for c in r['cases'].values())
+    hi = max(float(np.max(c['I'])) for c in r['cases'].values())
+    i_lim = (10 * np.floor(lo / 10), 10 * np.ceil(hi / 10))
+
     fig2, ax = plt.subplots(figsize=(12, 3.5))
-    plot_case(ax, 'train', r['cases']['train'])
+    plot_case(ax, 'train', r['cases']['train'], v_lim=v_lim, i_lim=i_lim)
     ax.legend(loc='upper right')
     ax.set_xlabel('Time [ms]')
     fig2.tight_layout()
@@ -333,7 +344,7 @@ def plot_results(r, save_dir=RESULT_DIR):
     fig3, axes = plt.subplots(len(eval_names), 1, figsize=(10, 2.2 * len(eval_names)),
                               sharex=True)
     for ax, name in zip(axes, eval_names):
-        plot_case(ax, name, r['cases'][name])
+        plot_case(ax, name, r['cases'][name], v_lim=v_lim, i_lim=i_lim)
     axes[0].legend(loc='upper right')
     axes[-1].set_xlabel('Time [ms]')
     fig3.tight_layout()
