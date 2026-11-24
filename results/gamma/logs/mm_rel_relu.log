@@ -1,0 +1,1 @@
+[mm_rel_relu] 100%: 20/26  平均 0.882  Γ 0.867  (212 s)  不一致: const 7 22%, const 10 81%, ramp 0-20 11%, ramp 0-30 0%, OU 5±3 85%, munechika train 94%

@@ -1,0 +1,1 @@
+[a3_h64] 100%: 9/26  平均 0.687  Γ 0.652  (206 s)  不一致: step 10 (50-150ms) 86%, step -5 (50-150ms) 0%, const 7 11%, const 10 29%, const 20 11%, ramp 0-20 0%, ramp 0-30 0%, sin 5Hz 5±5 83%, sin 10Hz 7.5±7.5 25%, random step -5~20/20ms 96%, random step 0~20/10ms 90%, random pulse 5ms 82%, OU 5±3 69%, OU 10±3 94%, OU 7±5 (tau 5ms) 65%, level+OU 81%, munechika train 64%

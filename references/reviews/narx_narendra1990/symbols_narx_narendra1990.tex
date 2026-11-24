@@ -1,0 +1,130 @@
+\documentclass[a4paper,10pt]{ltjsarticle}
+\usepackage[margin=18mm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{longtable,booktabs,array}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newcolumntype{S}{>{\centering\arraybackslash}p{30mm}}
+\newcolumntype{M}{p{60mm}}
+\newcolumntype{T}{p{40mm}}
+\newcolumntype{P}{p{24mm}}
+\newcommand{\note}[1]{\textcolor{red!70!black}{#1}}
+
+\newenvironment{symtab}{%
+  \par\noindent\begin{tabular}{SMTP}
+  \toprule
+  記号 & 意味 & 型・値域・値 & 初出 \\
+  \midrule
+}{\bottomrule\end{tabular}\par\medskip}
+
+\title{記号表：Identification and Control of Dynamical Systems Using Neural Networks}
+\author{Narendra, Parthasarathy (IEEE Trans.\ Neural Networks 1(1):4--27, 1990)}
+\date{作成：2026年11月24日}
+
+\begin{document}
+\maketitle
+
+\noindent
+「初出」は論文誌のページ・段（左／右）・式・図の番号．
+\note{赤字}は誤植の可能性や，同じ文字が別の意味で使われている箇所への注意．
+
+%======================================================
+\section{§II 系の表現と同定の定式化}
+\begin{symtab}
+$P$ & プラントを表す作用素 & $\mathcal{U}\to\mathcal{Y}$ & p.5 左 §II-A \\
+$\mathcal{P},\ \hat{\mathcal{P}}$ & プラントのクラス，同定モデルのクラス & $\hat{\mathcal{P}}\subset\mathcal{P}$ & p.5 左 §II-A \\
+$\hat P$ & 同定モデル & $\hat P\in\hat{\mathcal{P}}$ & p.5 左 §II-A \\
+$\mathcal{U},\ \mathcal{Y}$ & 入力空間，出力空間 & 関数空間 & p.5 左 §II-A \\
+$\hat y,\ y,\ e$ & モデルの出力，観測された出力，誤差 $\hat y - y$ & --- & p.5 式(1) \\
+$\epsilon$ & 同定・制御の許容誤差\note{（MRAC の式でも同じ文字）} & $\epsilon>0$（MRAC では $\ge 0$） & p.5 式(1) \\
+$x$ & 状態 & $\mathbb{R}^n$ & p.5 式(2) \\
+$u$ & 入力 & $\mathbb{R}^p$ & p.5 式(2) \\
+$y$ & 出力 & $\mathbb{R}^m$ & p.5 式(2) \\
+$n$ & 系の次数（状態の次元）\note{（式(5) 以降は過去の出力の個数）} & 自然数 & p.6 左 \\
+$p$ & 入力の本数\note{（§II-C-3 ではプラントのパラメータベクトル）} & 自然数 & p.6 左 \\
+$m$ & 出力の本数\note{（式(5) 以降は過去の入力の個数）} & 自然数 & p.6 左 \\
+$\Phi,\ \Psi$ & 状態遷移の写像，出力の写像 & $\mathbb{R}^n\times\mathbb{R}^p\to\mathbb{R}^n$，$\mathbb{R}^n\to\mathbb{R}^m$ & p.5 式(2) \\
+$k$ & 離散時刻 & 整数 & p.6 式(3) \\
+$A,\ B,\ C$ & 線形系の行列 & $n\times n$，$n\times p$，$m\times n$ & p.6 式(4) \\
+$y_p(k)$ & プラントの出力 & $\mathbb{R}$（SISO） & p.6 §II-C-1 \\
+$\hat y_p(k)$ & 同定モデルの出力 & $\mathbb{R}$ & p.6 右 \\
+$e_i(k)$ & 同定誤差 & $\mathbb{R}$ & p.6 右 \\
+$r(k)$ & 参照入力 & 有界 & p.6 右 MRAC \\
+$y_m(k)$ & 参照モデルの出力（望ましい出力） & $\mathbb{R}$ & p.6 右 MRAC \\
+$M$ & 参照モデル & 安定な系 & p.6 右 MRAC \\
+\end{symtab}
+
+%======================================================
+\section{§II-C-3 線形系の同定モデル（式(5)〜(8)）}
+\begin{symtab}
+$\alpha_i$ & 過去の出力 $y_p(k-i)$ の係数（未知の定数）\note{（§III の $\alpha$ は式(11)の減衰係数で別物）} & $i=0,\dots,n-1$ & p.7 式(5) \\
+$\beta_j$ & 過去の入力 $u(k-j)$ の係数（未知の定数） & $j=0,\dots,m-1$ & p.7 式(5) \\
+$\hat\alpha_i(k),\ \hat\beta_j(k)$ & 調整するパラメータ（推定値） & $\mathbb{R}$ & p.7 式(6)(7) \\
+式(6) & parallel model：右辺に $\hat y_p(k-i)$（自分の出力） & --- & p.7 左 式(6) \\
+式(7) & series-parallel model：右辺に $y_p(k-i)$（プラントの出力） & --- & p.7 左 式(7) \\
+$e(k+1)$ & 予測誤差 $\hat y_p(k+1)-y_p(k+1)$ & $\mathbb{R}$ & p.7 式(8) \\
+$\eta$ & ステップ幅 & $\eta>0$ & p.7 式(8) \\
+$p,\ \hat p$ & プラントのパラメータベクトル $[\alpha_0,\dots,\beta_{m-1}]^T$ とその推定値 & ベクトル & p.7 右 ¶1 \\
+$\theta(k),\ \theta^*$ & 制御パラメータ，参照モデルと一致させる理想値 & ベクトル & p.7 右 ¶2 \\
+\end{symtab}
+
+%======================================================
+\section{§III ニューラルネットワーク}
+\begin{symtab}
+$W^1,W^2,W^3$ & 重み行列 & $p\times n$，$q\times p$，$m\times q$ & p.8 左 §III-A \\
+$\gamma(x)$ & シグモイド $(1-e^{-x})/(1+e^{-x})=\tanh(x/2)$ & $(-1,1)$ & p.8 左 §III-A \\
+$\Gamma$ & $\gamma$ を並べた対角の非線形作用素 & --- & p.8 左 §III-A \\
+$N_i[u]$ & 1 層の作用素 $\Gamma[W^i u]$ & --- & p.8 式(9) \\
+$N[u]$ & 多層ネットワーク $N_3N_2N_1[u]$ & --- & p.8 式(10) \\
+$x_0$ & 再帰型ネットワークの初期値 & $\mathbb{R}^n$ & p.8 右 \\
+$\alpha$（式(11)） & 連続時間の再帰型ネットワークの減衰係数 & $>0$ & p.8 式(11) \\
+$I$（式(11)） & 一定の入力\note{（卒論の電流 $I$ とは別物）} & $\mathbb{R}^n$ & p.8 式(11) \\
+$z^{-1}$ & 1 ステップの時間遅れ & 演算子 & p.9 左 §III-D \\
+$W(z)$ & 線形系の伝達行列\note{（重み行列 $W^i$ とは別物）} & 行列値の有理関数 & p.9 左 §III-D \\
+$N^1,\ N^2$ & 1 つの構成の中の別々のネットワーク\note{（上付きは層の番号ではない）} & --- & p.9 右，図6 \\
+$\mathfrak{N}^N_{i_1,\dots,i_{N+1}}$ & $N$ 層ネットワークの関数のクラス & 入力 $i_1$，出力 $i_{N+1}$ & p.9 右 ¶2 \\
+\end{symtab}
+
+%======================================================
+\section{§IV 誤差逆伝播}
+\begin{symtab}
+$\theta,\ \theta_j$ & ネットワークのパラメータベクトル，その 1 成分 & --- & p.9 右 §IV \\
+$\theta_{\mathrm{nom}}$ & 勾配を計算する名目値 & --- & p.10 左 \\
+$J$ & 性能指標（例 $\frac1T\sum_{i=k-T+1}^k e^2(i)$） & $\ge 0$ & p.10 \\
+$T$ & 性能指標をとる区間の長さ\note{（§II の時間区間 $[0,T]$ とは別物）} & 整数 & p.10 右 ¶1 \\
+$u,v,z,y$（図2） & 入力，第1・第2隠れ層の出力，出力\note{（$z$ は遅れ演算子と同じ文字）} & --- & p.10 左 ¶4 \\
+$y_d$ & 望ましい出力 & --- & p.10 左 ¶4 \\
+$z(k)$（式(12)） & 状態の感度 $\partial x(k)/\partial\theta$ & $\mathbb{R}^n$ & p.10 式(12) \\
+$A(k)=\Phi_x(k)$ & 状態についてのヤコビ行列 & $n\times n$ & p.10 式(12) \\
+$v(k)=\Phi_\theta(k)$ & パラメータについての偏微分 & $\mathbb{R}^n$ & p.10 式(12) \\
+$w(k)$ & 出力の感度 $\partial y(k)/\partial\theta$ & $\mathbb{R}^m$ & p.10 式(12) \\
+$C(k)=\Psi_x(k)$ & 出力写像のヤコビ行列 & $m\times n$ & p.11 左 \\
+$\overline{\partial y/\partial\theta_j}$ & フィードバックを通した全微分（上線なしはネットワーク単体の偏微分） & --- & p.11 式(13) \\
+$d_i$ & $W(z)$ の対角要素 $z^{-d_i}$ の遅れのステップ数 & 自然数 & p.11 右 ¶5 \\
+\end{symtab}
+
+%======================================================
+\section{§V 同定}
+\begin{symtab}
+$f,\ g$ & 未知の非線形関数（Model II〜IV の $f$，Model I・III の $g$） & $f:\mathbb{R}^n\text{ or }\mathbb{R}^{n+m}\to\mathbb{R}$，$g:\mathbb{R}^m\to\mathbb{R}$ & p.12 式(14) \\
+$\hat f,\ \hat g$ & $f,g$ の推定値（ネットワークの出力） & --- & p.16 例3 \\
+$N_f,\ N_g$ & $f,g$ を近似するネットワーク & $\mathfrak{N}^3_{1,20,10,1}$ & p.16 例3 \\
+$T_i$ & 同定のパラメータの更新間隔 & 整数 & p.15 例1，p.20 \\
+$y_{p1},y_{p2},u_1,u_2$ & 2 入力 2 出力のプラントの出力と入力 & $\mathbb{R}$ & p.17 式(18) \\
+\end{symtab}
+
+%======================================================
+\section{§VI 制御}
+\begin{symtab}
+$e_c(k)$ & 制御誤差 $y_p(k)-y_m(k)$ & $\mathbb{R}$ & p.20 右 例7 \\
+$T_c$ & 制御のパラメータの更新間隔 & 整数 & p.20 左 \\
+$N_c$ & $g^{-1}$ を近似するネットワーク & $\mathfrak{N}^3_{1,20,10,1}$ & p.24 例11 \\
+$\widehat{g^{-1}}$ & $g^{-1}$ の推定値 & --- & p.24 式(25) \\
+$r_1,\ r_2$ & 2 出力の参照入力 & 有界 & p.22 右 例10 \\
+\end{symtab}
+
+\noindent\note{注意}：p.15 例1 では，$f(u)=0.6\sin(\pi u)+0.3\sin(3\pi u)+0.1\sin(5\pi u)$ と $f[u]=u^3+0.3u^2-0.4u$ の 2 つの式が出てきて，どちらが図12(b) のプラントなのか本文からは分からない．
+p.18 例6 の更新則は印刷がかすれていて，添字が読みにくい．
+
+\end{document}

@@ -1,0 +1,10 @@
+在庫: 通常 32 本 × 100 ms、苦手 8 本 × 300 ms  (52 s)
+[r3_smoke it 0 val] 100%: 1/17  平均 0.059  Γ 0.059  (239 s)  不一致: v step 7 (50-250ms) 0%, v const 6 0%, v const 6.5 0%, v const 8 0%, v const 15 0%, v ramp 0-25 0%, v sin 8Hz 6±6 0%, v sin 20Hz 8±8 0%, v pulse 15/1ms/15ms 0%, v random step -5~20 0%, v random step 0~20 0%, v random pulse 5ms 0%, v OU 6±3 0%, v OU 8±4 0%, v OU 7±5 (tau 5ms) 0%, v level+OU 0%
+C:\Users\c058dew\2703-yamashita-bashelor-thesis\experiments\hh_surrogate\hh_rnn3.py:306: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:821.)
+  log['loss'].append([float(l) for l in ls])
+it     50 loss RNN1 6.06e-01 RNN2 7.07e-01 RNN3 3.48e-01  (313 s)
+DAgger: 閉ループの軌道 8 本を追加 → 8 本  (369 s)
+it    100 loss RNN1 1.31e-01 RNN2 2.50e-01 RNN3 2.62e-01  (391 s)
+[r3_smoke it 100 val] 100%: 1/17  平均 0.059  Γ 0.059  (254 s)  不一致: v step 7 (50-250ms) 0%, v const 6 0%, v const 6.5 0%, v const 8 0%, v const 15 0%, v ramp 0-25 0%, v sin 8Hz 6±6 0%, v sin 20Hz 8±8 0%, v pulse 15/1ms/15ms 0%, v random step -5~20 0%, v random step 0~20 0%, v random pulse 5ms 0%, v OU 6±3 0%, v OU 8±4 0%, v OU 7±5 (tau 5ms) 0%, v level+OU 0%
+[r3_smoke (val best it 0)] 100%: 0/26  平均 0.000  Γ 0.000  (932 s)  不一致: step 10 (50-150ms) 0%, step 5 (50-250ms) 0%, step 30 1ms 0%, step -5 (50-150ms) 0%, const 2.5 0%, const 5 0%, const 7 0%, const 10 0%, const 20 0%, ramp 0-20 0%, ramp 0-30 0%, sin 5Hz 5±5 0%, sin 10Hz 7.5±7.5 0%, sin 50Hz 10±10 0%, pulse 10/1ms/10ms 0%, pulse 20/25ms/50ms 0%, pulse 40/0.5ms/20ms 0%, random step -5~20/20ms 0%, random step 0~20/10ms 0%, random pulse 5ms 0%, random pulse 1ms 0~40 0%, OU 5±3 0%, OU 10±3 0%, OU 7±5 (tau 5ms) 0%, level+OU 0%, munechika train 0%

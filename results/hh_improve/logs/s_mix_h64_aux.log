@@ -1,0 +1,12 @@
+C:\Users\c058dew\2703-yamashita-bashelor-thesis\experiments\hh_surrogate\hh_improve.py:531: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:821.)
+  log['loss'].append(float(loss))
+it   200 loss 1.052e+00  (278 s)
+it   400 loss 1.911e-01  (478 s)
+it   600 loss 7.216e-02  (672 s)
+it   800 loss 5.477e-02  (949 s)
+it  1000 loss 1.003e-01  (1143 s)
+it  1200 loss 2.586e-02  (1314 s)
+it  1400 loss 2.261e-02  (1675 s)
+it  1600 loss 2.471e-02  (2281 s)
+it  1800 loss 2.110e-02  (3410 s)

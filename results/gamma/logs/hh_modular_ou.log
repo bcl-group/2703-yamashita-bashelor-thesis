@@ -1,0 +1,1 @@
+[hh_modular_ou] 100%: 19/26  平均 0.927  Γ 0.921  (204 s)  不一致: const 7 67%, ramp 0-20 0%, ramp 0-30 74%, random pulse 5ms 93%, OU 5±3 92%, OU 10±3 97%, level+OU 88%

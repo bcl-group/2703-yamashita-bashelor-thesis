@@ -1,0 +1,23 @@
+[c3_lr1e-6 it 0] 100%: 19/26  平均 0.927  (282 s)  不一致: const 7 67%, ramp 0-20 0%, ramp 0-30 74%, random pulse 5ms 93%, OU 5±3 92%, OU 10±3 97%, level+OU 88%
+C:\Users\c058dew\2703-yamashita-bashelor-thesis\experiments\hh_surrogate\hh_improve.py:401: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:821.)
+  log['traj'].append(float(traj)); log['onpol'].append(float(onpol))
+it    50 traj 1.505e-04 onpol 2.018e-03  (333 s)
+it   100 traj 1.024e-04 onpol 1.648e-03  (381 s)
+[c3_lr1e-6 it 100] 100%: 19/26  平均 0.919  (213 s)  不一致: const 7 67%, ramp 0-20 0%, ramp 0-30 85%, sin 10Hz 7.5±7.5 50%, random pulse 5ms 93%, OU 5±3 96%, munechika train 99%
+it   150 traj 5.637e-05 onpol 9.988e-04  (640 s)
+it   200 traj 6.006e-05 onpol 1.089e-03  (679 s)
+[c3_lr1e-6 it 200] 100%: 21/26  平均 0.922  (217 s)  不一致: const 7 94%, ramp 0-20 0%, ramp 0-30 85%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%
+it   250 traj 6.811e-05 onpol 1.128e-03  (939 s)
+it   300 traj 5.964e-05 onpol 1.020e-03  (972 s)
+[c3_lr1e-6 it 300] 100%: 20/26  平均 0.887  (178 s)  不一致: const 7 72%, ramp 0-20 17%, ramp 0-30 0%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%, munechika train 99%
+it   350 traj 9.818e-05 onpol 1.216e-03  (1189 s)
+it   400 traj 7.519e-05 onpol 1.110e-03  (1226 s)
+[c3_lr1e-6 it 400] 100%: 20/26  平均 0.893  (163 s)  不一致: const 7 89%, ramp 0-20 17%, ramp 0-30 0%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%, munechika train 99%
+it   450 traj 7.963e-05 onpol 1.231e-03  (1430 s)
+it   500 traj 5.691e-05 onpol 1.370e-03  (1470 s)
+[c3_lr1e-6 it 500] 100%: 20/26  平均 0.886  (228 s)  不一致: const 7 72%, ramp 0-20 17%, ramp 0-30 0%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%, munechika train 95%
+it   550 traj 1.396e-04 onpol 1.182e-03  (1761 s)
+it   600 traj 8.282e-05 onpol 1.078e-03  (1816 s)
+[c3_lr1e-6 it 600] 100%: 20/26  平均 0.886  (285 s)  不一致: const 7 72%, ramp 0-20 17%, ramp 0-30 0%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%, munechika train 95%
+[c3_lr1e-6] best 100%: 21/26  平均 0.922

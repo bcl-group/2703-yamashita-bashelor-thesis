@@ -1,0 +1,23 @@
+[k_3_w3_K2000 it 0 val] 100%: 13/17  平均 0.912  (74 s)  不一致: v const 6.5 59%, v ramp 0-25 0%, v random step 0~20 97%, v level+OU 95%
+C:\Users\c058dew\2703-yamashita-bashelor-thesis\experiments\hh_surrogate\hh_improve.py:431: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:821.)
+  log['traj'].append(float(traj)); log['onpol'].append(float(onpol))
+it    25 K 2000 traj 7.518e-02 onpol 1.461e-03  (250 s)
+it    50 K 2000 traj 9.860e-02 onpol 1.357e-03  (50198 s)
+[k_3_w3_K2000 it 50 val] 100%: 13/17  平均 0.912  (71 s)  不一致: v const 6.5 59%, v ramp 0-25 0%, v random step 0~20 97%, v level+OU 95%
+it    75 K 2000 traj 1.816e-01 onpol 1.438e-03  (50488 s)
+it   100 K 2000 traj 1.126e-01 onpol 1.356e-03  (50665 s)
+[k_3_w3_K2000 it 100 val] 100%: 13/17  平均 0.915  (45 s)  不一致: v const 6.5 65%, v ramp 0-25 0%, v random step 0~20 97%, v level+OU 95%
+it   125 K 2000 traj 1.379e-01 onpol 1.249e-03  (50865 s)
+it   150 K 2000 traj 1.259e-01 onpol 1.305e-03  (51013 s)
+[k_3_w3_K2000 it 150 val] 100%: 13/17  平均 0.915  (51 s)  不一致: v const 6.5 65%, v ramp 0-25 0%, v random step 0~20 97%, v level+OU 95%
+it   175 K 2000 traj 1.647e-01 onpol 1.523e-03  (51390 s)
+it   200 K 2000 traj 1.504e-01 onpol 1.363e-03  (51706 s)
+[k_3_w3_K2000 it 200 val] 100%: 12/17  平均 0.933  (108 s)  不一致: v const 6 50%, v const 6.5 94%, v ramp 0-25 77%, v random step 0~20 97%, v level+OU 69%
+it   225 K 2000 traj 1.481e-01 onpol 1.424e-03  (52083 s)
+it   250 K 2000 traj 1.195e-01 onpol 1.311e-03  (52342 s)
+[k_3_w3_K2000 it 250 val] 100%: 12/17  平均 0.893  (114 s)  不一致: v const 6 50%, v const 6.5 88%, v ramp 0-25 0%, v random step 0~20 97%, v level+OU 82%
+it   275 K 2000 traj 1.005e-01 onpol 1.322e-03  (52767 s)
+it   300 K 2000 traj 1.363e-01 onpol 1.363e-03  (53088 s)
+[k_3_w3_K2000 it 300 val] 100%: 12/17  平均 0.930  (92 s)  不一致: v const 6 50%, v const 6.5 88%, v ramp 0-25 77%, v random step 0~20 97%, v level+OU 69%
+[k_3_w3_K2000 (val best it 100)] 100%: 22/26  平均 0.924  (182 s)  不一致: ramp 0-20 0%, ramp 0-30 85%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%

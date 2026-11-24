@@ -1,0 +1,1 @@
+[a3_h64_noise01] 100%: 9/26  平均 0.675  Γ 0.649  (197 s)  不一致: step 10 (50-150ms) 57%, step -5 (50-150ms) 0%, const 7 11%, const 10 33%, const 20 33%, ramp 0-20 0%, ramp 0-30 0%, sin 5Hz 5±5 83%, sin 10Hz 7.5±7.5 25%, random step -5~20/20ms 96%, random step 0~20/10ms 87%, random pulse 5ms 71%, OU 5±3 65%, OU 10±3 85%, OU 7±5 (tau 5ms) 71%, level+OU 65%, munechika train 71%

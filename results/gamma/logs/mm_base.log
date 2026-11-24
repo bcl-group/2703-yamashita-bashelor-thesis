@@ -1,0 +1,1 @@
+[mm_base] 100%: 20/26  平均 0.910  Γ 0.903  (253 s)  不一致: ramp 0-20 0%, ramp 0-30 88%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%, OU 5±3 92%, level+OU 68%

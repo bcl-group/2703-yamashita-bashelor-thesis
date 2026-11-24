@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 COL = {'A': '#2a78d6', 'B': '#eb6834', 'C': '#1baf7a', 'D': '#eda100'}
-LBL = {'A': 'A  FFNN', 'B': 'B  RNN', 'C': 'C  FFNN 3 個', 'D': 'D  RNN 3 個'}
+LBL = {'A': 'A  MLP', 'B': 'B  RNN', 'C': 'C  MLP 3 個', 'D': 'D  RNN 3 個'}
 TAG = {'A': 'r8_mlp_hd_w256', 'B': 'sp_r_init', 'C': 'm3_hdf_s0', 'D': 'rnn3/p_h64_cl1'}
 SPEED = {'A': 'Markov MLP 256×3', 'B': 'RNN 1 個（W_hh）128×2', 'C': 'MLP 3 個 128×2',
          'D': 'RNN 3 個 H64（並列・直列）'}

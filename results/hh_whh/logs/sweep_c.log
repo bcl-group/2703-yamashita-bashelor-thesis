@@ -1,0 +1,2 @@
+[W_hh = 0.03 R (seed 0)] 100%: 23/26  平均 0.956  Γ 0.957  (264 s)  不一致: ramp 0-20 0%, ramp 0-30 94%, OU 5±3 92%
+[W_hh = 0.1 R (seed 0)] 100%: 15/26  平均 0.829  Γ 0.798  (250 s)  不一致: const 7 33%, const 10 62%, const 20 38%, ramp 0-20 0%, ramp 0-30 29%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%, OU 5±3 92%, OU 10±3 88%, level+OU 99%, munechika train 95%

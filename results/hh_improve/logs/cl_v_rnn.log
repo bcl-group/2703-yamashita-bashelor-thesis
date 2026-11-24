@@ -1,0 +1,14 @@
+[cl_v_rnn it 0 val] 100%: 0/17  平均 0.021  (87 s)  不一致: v step 7 (50-250ms) 0%, v const 6 0%, v const 6.5 0%, v const 8 0%, v const 15 0%, v ramp 0-15 0%, v ramp 0-25 0%, v sin 8Hz 6±6 25%, v sin 20Hz 8±8 0%, v pulse 15/1ms/15ms 0%, v random step -5~20 4%, v random step 0~20 3%, v random pulse 5ms 0%, v OU 6±3 4%, v OU 8±4 0%, v OU 7±5 (tau 5ms) 0%, v level+OU 0%
+it    25 α 0.92 loss 1.495e-01  (853 s)
+it    50 α 0.84 loss 6.802e-02  (1761 s)
+it    75 α 0.75 loss 3.973e-02  (7320 s)
+it   100 α 0.67 loss 3.365e-02  (7662 s)
+[cl_v_rnn it 100 val] 100%: 0/17  平均 0.100  (90 s)  不一致: v step 7 (50-250ms) 0%, v const 6 50%, v const 6.5 6%, v const 8 5%, v const 15 17%, v ramp 0-15 0%, v ramp 0-25 0%, v sin 8Hz 6±6 25%, v sin 20Hz 8±8 15%, v pulse 15/1ms/15ms 5%, v random step -5~20 0%, v random step 0~20 6%, v random pulse 5ms 0%, v OU 6±3 0%, v OU 8±4 3%, v OU 7±5 (tau 5ms) 4%, v level+OU 34%
+it   125 α 0.59 loss 2.343e-02  (8256 s)
+it   150 α 0.50 loss 4.846e-02  (8660 s)
+it   175 α 0.42 loss 6.703e-02  (9150 s)
+it   200 α 0.34 loss 5.798e-02  (9518 s)
+[cl_v_rnn it 200 val] 100%: 0/17  平均 0.082  (82 s)  不一致: v step 7 (50-250ms) 0%, v const 6 50%, v const 6.5 6%, v const 8 5%, v const 15 29%, v ramp 0-15 0%, v ramp 0-25 0%, v sin 8Hz 6±6 25%, v sin 20Hz 8±8 8%, v pulse 15/1ms/15ms 5%, v random step -5~20 0%, v random step 0~20 3%, v random pulse 5ms 0%, v OU 6±3 0%, v OU 8±4 3%, v OU 7±5 (tau 5ms) 4%, v level+OU 1%
+it   225 α 0.25 loss 3.260e-02  (10087 s)
+it   250 α 0.17 loss 3.544e-02  (10523 s)
+it   275 α 0.09 loss 2.337e-02  (11110 s)

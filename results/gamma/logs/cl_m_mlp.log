@@ -1,0 +1,1 @@
+[cl_m_mlp] 100%: 10/26  平均 0.737  Γ 0.712  (221 s)  不一致: step -5 (50-150ms) 0%, const 2.5 0%, const 7 11%, const 10 38%, const 20 50%, ramp 0-20 0%, ramp 0-30 89%, sin 5Hz 5±5 83%, sin 10Hz 7.5±7.5 25%, random step 0~20/10ms 97%, random pulse 5ms 87%, OU 5±3 85%, OU 10±3 85%, OU 7±5 (tau 5ms) 93%, level+OU 83%, munechika train 91%

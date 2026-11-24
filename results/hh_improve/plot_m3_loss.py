@@ -24,17 +24,21 @@ plt.rcParams.update({'font.family': ['Yu Gothic', 'Meiryo', 'sans-serif'], 'font
 
 it, L = [], []
 dag = []          # DAgger で状態を足した時点（直前の pre の iter）
+ev_log = []       # ログの検証の行: [iter, 100% 一致の本数, 平均一致率, Γ]
 for line in open(os.path.join(HERE, 'logs', tag + '.log'), encoding='utf-8', errors='replace'):
     m = re.match(r'pre\s+(\d+) loss RNN1 (\S+) RNN2 (\S+) RNN3 (\S+)', line)
-    if m:
+    v = re.match(r'\[\S+ it (\d+) val\] 100%: (\d+)/\d+\s+平均 (\S+)\s+Γ (\S+)', line)
+    if v:
+        ev_log.append([float(x) for x in v.groups()])
+    elif m:
         it.append(int(m.group(1)))
         L.append([float(m.group(k)) for k in (2, 3, 4)])
     elif line.startswith('DAgger'):
         dag.append(it[-1] if it else 0)
 it, L = np.array(it), np.array(L)
 jp = os.path.join(HERE, tag + '.json')
-# 学習中は JSON がまだないので、検証 Γ は描かない
-ev = np.array(json.load(open(jp, encoding='utf-8'))['eval']) if os.path.exists(jp) else np.zeros((0, 4))
+# 学習中は JSON がまだないので、ログの検証の行を使う
+ev = np.array(json.load(open(jp, encoding='utf-8'))['eval']) if os.path.exists(jp) else np.array(ev_log).reshape(-1, 4)
 
 fig, (a1, a2) = plt.subplots(2, 1, figsize=(10, 7), sharex=True, gridspec_kw={'height_ratios': [2, 1], 'hspace': 0.1})
 cols = ['#2a78d6', '#e8673a', '#1baf7a']

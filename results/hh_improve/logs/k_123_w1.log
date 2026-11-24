@@ -1,0 +1,19 @@
+[k_123_w1 it 0 val] 100%: 11/17  平均 0.856  (135 s)  不一致: v const 6 50%, v const 6.5 35%, v ramp 0-25 0%, v random step -5~20 92%, v OU 7±5 (tau 5ms) 96%, v level+OU 82%
+C:\Users\c058dew\2703-yamashita-bashelor-thesis\experiments\hh_surrogate\hh_improve.py:407: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:821.)
+  log['traj'].append(float(traj)); log['onpol'].append(float(onpol))
+it    50 K 100 traj 1.450e-04 onpol 2.195e-03  (194 s)
+it   100 K 100 traj 1.119e-04 onpol 1.614e-03  (285 s)
+[k_123_w1 it 100 val] 100%: 12/17  平均 0.939  (68 s)  不一致: v const 6 50%, v ramp 0-25 77%, v random step -5~20 92%, v random step 0~20 97%, v level+OU 81%
+it   150 K 100 traj 5.547e-05 onpol 8.902e-04  (392 s)
+it   200 K 100 traj 6.442e-05 onpol 1.242e-03  (445 s)
+[k_123_w1 it 200 val] 100%: 12/17  平均 0.932  (97 s)  不一致: v const 6 50%, v ramp 0-25 77%, v random step -5~20 92%, v random step 0~20 97%, v level+OU 69%
+it   250 K 500 traj 2.283e-02 onpol 2.273e-03  (665 s)
+it   300 K 500 traj 1.093e-02 onpol 2.387e-03  (844 s)
+[k_123_w1 it 300 val] 100%: 10/17  平均 0.795  (118 s)  不一致: v step 7 (50-250ms) 67%, v const 6 12%, v const 6.5 29%, v const 8 63%, v ramp 0-25 0%, v random step 0~20 84%, v level+OU 95%
+it   350 K 500 traj 4.031e-02 onpol 2.759e-03  (1177 s)
+it   400 K 500 traj 1.647e-02 onpol 2.904e-03  (1316 s)
+[k_123_w1 it 400 val] 100%: 10/17  平均 0.783  (74 s)  不一致: v step 7 (50-250ms) 58%, v const 6 12%, v const 6.5 24%, v const 8 58%, v ramp 0-25 0%, v random step 0~20 84%, v level+OU 95%
+it   450 K 2000 traj 1.114e-01 onpol 3.274e-03  (2000 s)
+it   500 K 2000 traj 9.644e-02 onpol 3.194e-03  (3197 s)
+[k_123_w1 it 500 val] 100%: 12/17  平均 0.938  (487 s)  不一致: v const 6 50%, v ramp 0-25 77%, v random step -5~20 92%, v random step 0~20 97%, v level+OU 78%

@@ -1,0 +1,23 @@
+[c3_lr1e-5 it 0] 100%: 19/26  平均 0.927  (286 s)  不一致: const 7 67%, ramp 0-20 0%, ramp 0-30 74%, random pulse 5ms 93%, OU 5±3 92%, OU 10±3 97%, level+OU 88%
+C:\Users\c058dew\2703-yamashita-bashelor-thesis\experiments\hh_surrogate\hh_improve.py:401: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:821.)
+  log['traj'].append(float(traj)); log['onpol'].append(float(onpol))
+it    50 traj 1.732e-04 onpol 1.488e-03  (337 s)
+it   100 traj 9.339e-05 onpol 2.268e-03  (386 s)
+[c3_lr1e-5 it 100] 100%: 17/26  平均 0.854  (215 s)  不一致: const 7 33%, const 10 86%, ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 20%, random pulse 5ms 93%, OU 5±3 96%, level+OU 94%, munechika train 97%
+it   150 traj 1.812e-04 onpol 5.308e-03  (644 s)
+it   200 traj 1.988e-04 onpol 9.163e-03  (684 s)
+[c3_lr1e-5 it 200] 100%: 17/26  平均 0.906  (215 s)  不一致: const 7 22%, const 10 52%, ramp 0-20 25%, ramp 0-30 89%, random pulse 5ms 93%, OU 5±3 92%, OU 10±3 88%, level+OU 99%, munechika train 93%
+it   250 traj 1.745e-04 onpol 7.649e-03  (943 s)
+it   300 traj 2.822e-04 onpol 9.458e-03  (980 s)
+[c3_lr1e-5 it 300] 100%: 13/26  平均 0.786  (187 s)  不一致: const 2.5 0%, const 7 17%, const 10 38%, ramp 0-20 0%, ramp 0-30 5%, sin 5Hz 5±5 83%, sin 10Hz 7.5±7.5 44%, random pulse 5ms 93%, OU 5±3 92%, OU 10±3 88%, OU 7±5 (tau 5ms) 93%, level+OU 97%, munechika train 92%
+it   350 traj 2.283e-04 onpol 6.037e-03  (1203 s)
+it   400 traj 1.272e-04 onpol 4.099e-03  (1239 s)
+[c3_lr1e-5 it 400] 100%: 19/26  平均 0.863  (160 s)  不一致: const 7 39%, ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 20%, random pulse 5ms 93%, OU 5±3 96%, munechika train 97%
+it   450 traj 7.775e-05 onpol 1.398e-03  (1439 s)
+it   500 traj 6.251e-05 onpol 1.392e-03  (1483 s)
+[c3_lr1e-5 it 500] 100%: 19/26  平均 0.891  (228 s)  不一致: ramp 0-20 20%, ramp 0-30 0%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%, OU 5±3 92%, OU 10±3 88%, level+OU 99%
+it   550 traj 1.136e-04 onpol 8.143e-04  (1770 s)
+it   600 traj 7.844e-05 onpol 6.957e-04  (1827 s)
+[c3_lr1e-5 it 600] 100%: 19/26  平均 0.894  (283 s)  不一致: ramp 0-20 20%, ramp 0-30 0%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%, OU 5±3 92%, OU 10±3 94%, level+OU 99%
+[c3_lr1e-5] best 100%: 19/26  平均 0.927

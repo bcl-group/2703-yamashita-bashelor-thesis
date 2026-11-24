@@ -8,8 +8,8 @@ import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
-SRC = {'A': ('hh_improve/r8_mlp_hd_w256', 'FFNN'), 'B': ('hh_improve/sp_r_init', 'RNN'),
-       'C': ('hh_improve/m3_hdf_s0', 'FFNN 3 個'), 'D': ('hh_rnn3/p_h64_cl1', 'RNN 3 個')}
+SRC = {'A': ('hh_improve/r8_mlp_hd_w256', 'MLP'), 'B': ('hh_improve/sp_r_init', 'RNN'),
+       'C': ('hh_improve/m3_hdf_s0', 'MLP 3 個'), 'D': ('hh_rnn3/p_h64_cl1', 'RNN 3 個')}
 R = {k: json.load(open(os.path.join(ROOT, 'results', p + '.json'), encoding='utf-8'))['test'] for k, (p, _) in SRC.items()}
 rows = R['A']['rows']
 

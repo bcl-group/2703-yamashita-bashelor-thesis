@@ -1,0 +1,7 @@
+[cl_s_rnn_h128 it 0 val] 100%: 1/17  平均 0.059  (98 s)  不一致: v step 7 (50-250ms) 0%, v const 6 0%, v const 6.5 0%, v const 8 0%, v const 15 0%, v ramp 0-25 0%, v sin 8Hz 6±6 0%, v sin 20Hz 8±8 0%, v pulse 15/1ms/15ms 0%, v random step -5~20 0%, v random step 0~20 0%, v random pulse 5ms 0%, v OU 6±3 0%, v OU 8±4 0%, v OU 7±5 (tau 5ms) 0%, v level+OU 0%
+it    25 α 0.92 loss 2.918e-01  (2008 s)
+it    50 α 0.84 loss 1.910e-02  (7799 s)
+it    75 α 0.75 loss 7.365e-03  (8751 s)
+it   100 α 0.67 loss 3.997e-03  (9657 s)
+[cl_s_rnn_h128 it 100 val] 100%: 1/17  平均 0.213  (97 s)  不一致: v step 7 (50-250ms) 8%, v const 6 0%, v const 6.5 6%, v const 8 5%, v const 15 4%, v ramp 0-25 0%, v sin 8Hz 6±6 8%, v sin 20Hz 8±8 8%, v pulse 15/1ms/15ms 5%, v random step -5~20 29%, v random step 0~20 35%, v random pulse 5ms 60%, v OU 6±3 14%, v OU 8±4 28%, v OU 7±5 (tau 5ms) 32%, v level+OU 19%
+it   125 α 0.59 loss 3.219e-03  (10738 s)

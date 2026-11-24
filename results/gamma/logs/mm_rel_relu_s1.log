@@ -1,0 +1,1 @@
+[mm_rel_relu_s1] 100%: 19/26  平均 0.883  Γ 0.867  (220 s)  不一致: const 20 81%, ramp 0-20 5%, ramp 0-30 0%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%, OU 5±3 92%, level+OU 99%

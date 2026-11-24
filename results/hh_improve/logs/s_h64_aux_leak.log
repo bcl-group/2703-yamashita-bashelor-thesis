@@ -1,0 +1,12 @@
+C:\Users\c058dew\2703-yamashita-bashelor-thesis\experiments\hh_surrogate\hh_improve.py:499: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:821.)
+  log['loss'].append(float(loss))
+it   200 loss 7.000e-01  (246 s)
+it   400 loss 2.414e-01  (467 s)
+it   600 loss 1.350e-01  (756 s)
+it   800 loss 8.013e-02  (1141 s)
+it  1000 loss 5.323e-02  (1403 s)
+it  1200 loss 3.801e-02  (1616 s)
+it  1400 loss 3.383e-02  (1826 s)
+it  1500 loss 3.221e-02  (1933 s)
+[s_h64_aux_leak] 100%: 3/26  平均 0.283  (66 s)  不一致: step 10 (50-150ms) 29%, step 5 (50-250ms) 0%, step -5 (50-150ms) 0%, const 2.5 0%, const 5 0%, const 7 0%, const 10 19%, const 20 69%, ramp 0-20 0%, ramp 0-30 37%, sin 5Hz 5±5 10%, sin 10Hz 7.5±7.5 50%, sin 50Hz 10±10 7%, pulse 10/1ms/10ms 0%, random step -5~20/20ms 25%, random step 0~20/10ms 26%, random pulse 5ms 33%, random pulse 1ms 0~40 33%, OU 5±3 0%, OU 10±3 9%, OU 7±5 (tau 5ms) 15%, level+OU 24%, munechika train 52%

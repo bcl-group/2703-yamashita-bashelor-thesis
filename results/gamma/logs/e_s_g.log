@@ -1,0 +1,1 @@
+[e_s_g] 100%: 11/26  平均 0.670  Γ 0.651  (194 s)  不一致: step 10 (50-150ms) 14%, const 7 6%, const 10 5%, const 20 19%, ramp 0-20 0%, ramp 0-30 24%, sin 10Hz 7.5±7.5 19%, pulse 20/25ms/50ms 33%, random step -5~20/20ms 71%, random step 0~20/10ms 87%, random pulse 5ms 87%, OU 5±3 72%, OU 10±3 82%, level+OU 64%, munechika train 60%

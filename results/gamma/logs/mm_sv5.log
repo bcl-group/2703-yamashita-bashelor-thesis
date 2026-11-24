@@ -1,0 +1,1 @@
+[mm_sv5] 100%: 20/26  平均 0.919  Γ 0.914  (243 s)  不一致: const 7 89%, ramp 0-20 0%, ramp 0-30 82%, sin 10Hz 7.5±7.5 25%, level+OU 93%, munechika train 99%

@@ -220,6 +220,9 @@ __marimo__/
 # 大容量ファイル(GitHubの100MB上限を超えるため追跡対象外とする)
 references/詳解ディープラーニング.pdf
 
+# 学習・評価のログは損失の図（results/plot_runs.py）に使うので入れる（2026-11-24 から）
+!results/*/logs/*.log
+
 # LaTeX の中間ファイル(*.log は上の Django stuff の項で既に無視される)
 *.aux
 *.toc

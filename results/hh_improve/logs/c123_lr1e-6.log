@@ -1,0 +1,23 @@
+[c123_lr1e-6 it 0] 100%: 19/26  平均 0.927  (283 s)  不一致: const 7 67%, ramp 0-20 0%, ramp 0-30 74%, random pulse 5ms 93%, OU 5±3 92%, OU 10±3 97%, level+OU 88%
+C:\Users\c058dew\2703-yamashita-bashelor-thesis\experiments\hh_surrogate\hh_improve.py:401: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:821.)
+  log['traj'].append(float(traj)); log['onpol'].append(float(onpol))
+it    50 traj 1.450e-04 onpol 2.195e-03  (334 s)
+it   100 traj 1.119e-04 onpol 1.614e-03  (388 s)
+[c123_lr1e-6 it 100] 100%: 21/26  平均 0.939  (215 s)  不一致: ramp 0-20 20%, ramp 0-30 85%, sin 10Hz 7.5±7.5 50%, random pulse 5ms 93%, OU 5±3 92%
+it   150 traj 5.547e-05 onpol 8.902e-04  (649 s)
+it   200 traj 6.442e-05 onpol 1.242e-03  (687 s)
+[c123_lr1e-6 it 200] 100%: 20/26  平均 0.914  (214 s)  不一致: ramp 0-20 20%, ramp 0-30 50%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%, OU 5±3 92%, OU 10±3 97%
+it   250 traj 8.179e-05 onpol 1.741e-03  (946 s)
+it   300 traj 1.080e-04 onpol 2.087e-03  (988 s)
+[c123_lr1e-6 it 300] 100%: 17/26  平均 0.856  (183 s)  不一致: const 7 39%, const 10 86%, ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 20%, random pulse 5ms 93%, OU 5±3 96%, level+OU 96%, munechika train 97%
+it   350 traj 1.615e-04 onpol 2.741e-03  (1215 s)
+it   400 traj 1.563e-04 onpol 2.327e-03  (1252 s)
+[c123_lr1e-6 it 400] 100%: 17/26  平均 0.860  (164 s)  不一致: const 7 39%, const 10 95%, ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 20%, random pulse 5ms 93%, OU 5±3 96%, level+OU 96%, munechika train 97%
+it   450 traj 1.789e-04 onpol 2.213e-03  (1459 s)
+it   500 traj 1.330e-04 onpol 2.076e-03  (1508 s)
+[c123_lr1e-6 it 500] 100%: 17/26  平均 0.856  (244 s)  不一致: const 7 39%, const 10 86%, ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 20%, random pulse 5ms 93%, OU 5±3 96%, level+OU 96%, munechika train 97%
+it   550 traj 2.235e-04 onpol 1.742e-03  (1804 s)
+it   600 traj 1.658e-04 onpol 2.065e-03  (1861 s)
+[c123_lr1e-6 it 600] 100%: 18/26  平均 0.862  (295 s)  不一致: const 7 39%, const 10 95%, ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 20%, random pulse 5ms 93%, OU 5±3 96%, munechika train 97%
+[c123_lr1e-6] best 100%: 21/26  平均 0.939
