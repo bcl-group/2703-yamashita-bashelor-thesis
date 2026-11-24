@@ -1,0 +1,31 @@
+在庫: 通常 1024 本 × 300 ms、苦手 256 本 × 1000 ms  (1 s)
+[s_h64_ft0 it 0 val] 100%: 12/17  平均 0.864  Γ 0.854  (99 s)  不一致: v ramp 0-15 0%, v ramp 0-25 0%, v random step 0~20 94%, v OU 7±5 (tau 5ms) 86%, v level+OU 89%
+it    200 loss RNN1 1.76e-04 RNN2 4.79e-04 RNN3 3.91e-02  閉ループ V nan g nan  (108 s)
+[s_h64_ft0 it 250 val] 100%: 6/17  平均 0.685  Γ 0.661  (100 s)  不一致: v step 7 (50-250ms) 25%, v const 6 50%, v const 6.5 6%, v const 8 26%, v const 15 58%, v ramp 0-15 0%, v ramp 0-25 62%, v random step -5~20 92%, v OU 8±4 69%, v OU 7±5 (tau 5ms) 82%, v level+OU 93%
+it    400 loss RNN1 1.29e-04 RNN2 3.76e-04 RNN3 3.60e-02  閉ループ V nan g nan  (213 s)
+[s_h64_ft0 it 500 val] 100%: 7/17  平均 0.721  Γ 0.712  (100 s)  不一致: v step 7 (50-250ms) 25%, v const 6 50%, v const 6.5 12%, v const 8 32%, v const 15 83%, v ramp 0-15 0%, v ramp 0-25 59%, v random step -5~20 92%, v OU 7±5 (tau 5ms) 82%, v level+OU 92%
+it    600 loss RNN1 1.33e-04 RNN2 3.86e-04 RNN3 3.46e-02  閉ループ V nan g nan  (318 s)
+[s_h64_ft0 it 750 val] 100%: 5/17  平均 0.688  Γ 0.650  (99 s)  不一致: v step 7 (50-250ms) 17%, v const 6 50%, v const 6.5 6%, v const 8 21%, v const 15 50%, v ramp 0-25 6%, v random step -5~20 92%, v random step 0~20 97%, v random pulse 5ms 87%, v OU 8±4 69%, v OU 7±5 (tau 5ms) 82%, v level+OU 95%
+it    800 loss RNN1 1.44e-04 RNN2 4.23e-04 RNN3 3.72e-02  閉ループ V nan g nan  (422 s)
+it   1000 loss RNN1 1.15e-04 RNN2 3.32e-04 RNN3 3.28e-02  閉ループ V nan g nan  (428 s)
+[s_h64_ft0 it 1000 val] 100%: 9/17  平均 0.807  Γ 0.784  (100 s)  不一致: v step 7 (50-250ms) 67%, v const 6 50%, v const 6.5 24%, v const 8 74%, v ramp 0-25 0%, v random step -5~20 92%, v OU 7±5 (tau 5ms) 82%, v level+OU 84%
+it   1200 loss RNN1 1.21e-04 RNN2 3.53e-04 RNN3 3.34e-02  閉ループ V nan g nan  (533 s)
+[s_h64_ft0 it 1250 val] 100%: 8/17  平均 0.737  Γ 0.710  (100 s)  不一致: v step 7 (50-250ms) 58%, v const 6 50%, v const 6.5 18%, v const 8 74%, v ramp 0-15 0%, v ramp 0-25 0%, v random step -5~20 92%, v OU 7±5 (tau 5ms) 86%, v level+OU 76%
+it   1400 loss RNN1 1.26e-04 RNN2 3.64e-04 RNN3 3.53e-02  閉ループ V nan g nan  (638 s)
+[s_h64_ft0 it 1500 val] 100%: 8/17  平均 0.768  Γ 0.747  (98 s)  不一致: v step 7 (50-250ms) 75%, v const 6 50%, v const 6.5 29%, v const 8 84%, v ramp 0-15 0%, v ramp 0-25 0%, v random step -5~20 92%, v OU 7±5 (tau 5ms) 86%, v level+OU 89%
+DAgger: 閉ループの軌道 128 本を追加 → 128 本  (890 s)
+it   1600 loss RNN1 1.18e-04 RNN2 3.38e-04 RNN3 3.42e-02  閉ループ V nan g nan  (893 s)
+[s_h64_ft0 it 1750 val] 100%: 8/17  平均 0.751  Γ 0.735  (98 s)  不一致: v step 7 (50-250ms) 42%, v const 6 50%, v const 6.5 24%, v const 8 47%, v ramp 0-15 0%, v ramp 0-25 59%, v random step -5~20 92%, v OU 7±5 (tau 5ms) 82%, v level+OU 81%
+it   1800 loss RNN1 1.22e-04 RNN2 3.41e-04 RNN3 3.51e-02  閉ループ V nan g nan  (996 s)
+it   2000 loss RNN1 1.24e-04 RNN2 3.77e-04 RNN3 3.70e-02  閉ループ V nan g nan  (1001 s)
+[s_h64_ft0 it 2000 val] 100%: 8/17  平均 0.730  Γ 0.702  (99 s)  不一致: v step 7 (50-250ms) 58%, v const 6 50%, v const 6.5 18%, v const 8 58%, v ramp 0-15 0%, v ramp 0-25 0%, v random step -5~20 92%, v OU 7±5 (tau 5ms) 82%, v level+OU 84%
+it   2200 loss RNN1 1.19e-04 RNN2 3.55e-04 RNN3 3.66e-02  閉ループ V nan g nan  (1104 s)
+[s_h64_ft0 it 2250 val] 100%: 8/17  平均 0.740  Γ 0.740  (100 s)  不一致: v step 7 (50-250ms) 33%, v const 6 50%, v const 6.5 12%, v const 8 37%, v ramp 0-15 0%, v ramp 0-25 62%, v random step -5~20 92%, v OU 7±5 (tau 5ms) 82%, v level+OU 91%
+it   2400 loss RNN1 1.20e-04 RNN2 3.47e-04 RNN3 3.65e-02  閉ループ V nan g nan  (1209 s)
+[s_h64_ft0 it 2500 val] 100%: 8/17  平均 0.704  Γ 0.683  (99 s)  不一致: v step 7 (50-250ms) 33%, v const 6 50%, v const 6.5 12%, v const 8 37%, v ramp 0-15 0%, v ramp 0-25 0%, v random step -5~20 92%, v OU 7±5 (tau 5ms) 82%, v level+OU 91%
+it   2600 loss RNN1 1.16e-04 RNN2 3.46e-04 RNN3 3.69e-02  閉ループ V nan g nan  (1312 s)
+[s_h64_ft0 it 2750 val] 100%: 9/17  平均 0.769  Γ 0.750  (99 s)  不一致: v step 7 (50-250ms) 33%, v const 6 50%, v const 6.5 12%, v const 8 42%, v ramp 0-25 6%, v random step -5~20 92%, v OU 7±5 (tau 5ms) 82%, v level+OU 91%
+it   2800 loss RNN1 1.18e-04 RNN2 3.45e-04 RNN3 3.69e-02  閉ループ V nan g nan  (1416 s)
+it   3000 loss RNN1 1.14e-04 RNN2 3.47e-04 RNN3 3.63e-02  閉ループ V nan g nan  (1421 s)
+[s_h64_ft0 it 3000 val] 100%: 9/17  平均 0.802  Γ 0.799  (98 s)  不一致: v step 7 (50-250ms) 33%, v const 6 50%, v const 6.5 12%, v const 8 42%, v ramp 0-25 62%, v random step -5~20 92%, v OU 7±5 (tau 5ms) 82%, v level+OU 91%
+[s_h64_ft0 (val best it 0)] 100%: 22/26  平均 0.915  Γ 0.907  (194 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, OU 5±3 92%, level+OU 88%

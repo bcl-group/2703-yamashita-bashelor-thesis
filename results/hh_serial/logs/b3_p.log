@@ -1,0 +1,17 @@
+RNN3: d_in = 5, d_out = 1, {'block': 3, 'i1': False, 'conn': 'parallel', 'gout': False}
+it   200 loss 4.004e-01  valid RMSE 7.350e-02  (26 s)
+it   400 loss 2.575e-02  valid RMSE 4.323e-02  (51 s)
+it   600 loss 1.039e-02  valid RMSE 3.432e-02  (77 s)
+it   800 loss 7.370e-03  valid RMSE 3.146e-02  (104 s)
+it  1000 loss 6.489e-03  valid RMSE 2.952e-02  (130 s)
+it  1200 loss 5.757e-03  valid RMSE 2.723e-02  (156 s)
+it  1400 loss 4.710e-03  valid RMSE 2.532e-02  (182 s)
+it  1600 loss 4.126e-03  valid RMSE 2.429e-02  (208 s)
+it  1800 loss 3.694e-03  valid RMSE 2.324e-02  (234 s)
+it  2000 loss 3.269e-03  valid RMSE 2.257e-02  (261 s)
+it  2200 loss 3.300e-03  valid RMSE 2.214e-02  (287 s)
+it  2400 loss 3.080e-03  valid RMSE 2.182e-02  (313 s)
+it  2600 loss 3.025e-03  valid RMSE 2.165e-02  (339 s)
+it  2800 loss 3.019e-03  valid RMSE 2.155e-02  (365 s)
+it  3000 loss 2.951e-03  valid RMSE 2.152e-02  (389 s)
+saved: /mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/results/hh_serial/b3_p.pt
