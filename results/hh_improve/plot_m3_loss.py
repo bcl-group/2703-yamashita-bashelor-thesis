@@ -32,7 +32,9 @@ for line in open(os.path.join(HERE, 'logs', tag + '.log'), encoding='utf-8', err
     elif line.startswith('DAgger'):
         dag.append(it[-1] if it else 0)
 it, L = np.array(it), np.array(L)
-ev = np.array(json.load(open(os.path.join(HERE, tag + '.json'), encoding='utf-8'))['eval'])
+jp = os.path.join(HERE, tag + '.json')
+# 学習中は JSON がまだないので、検証 Γ は描かない
+ev = np.array(json.load(open(jp, encoding='utf-8'))['eval']) if os.path.exists(jp) else np.zeros((0, 4))
 
 fig, (a1, a2) = plt.subplots(2, 1, figsize=(10, 7), sharex=True, gridspec_kw={'height_ratios': [2, 1], 'hspace': 0.1})
 cols = ['#2a78d6', '#e8673a', '#1baf7a']
