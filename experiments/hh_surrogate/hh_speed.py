@@ -52,6 +52,9 @@ ALL_MODELS = {
     **MODELS,
     'r8_mlp_hdf_s2': 'Markov MLP 128×2 + コンダクタンスの項（r8_mlp_hdf_s2）',
     'm3_v2f05d_s1': 'MLP 3 個 128×2（m3_v2f05d_s1）',
+    'm3_hdf_s0': 'MLP 3 個 128×2・積の特徴量（C、m3_hdf_s0）',
+    'm3f:m3_hdf_s0': 'C を行列積だけで回す版（m3_fused）',
+    'm3one:m3_hdf_s0': 'C を 1 本の 6 層ネットワークにした版（m3_fused.FusedM3One）',
     'rnn3:p_h64_cl05': 'RNN 3 個・並列 H=64（p_h64_cl05）',
     'rnn3:s_h128_ft05': 'RNN 3 個・直列 H=128（s_h128_ft05）',
     'rnn3:s_gru64': 'RNN 3 個・直列 GRU 64（s_gru64）',
@@ -140,6 +143,33 @@ def make_m3(tag, dev, dtype):
     return init, step
 
 
+def make_m3_fused(tag, dev, dtype):
+    # C を行列積だけで回す版（m3_fused。式は make_m3 と同じ。1 ステップの行列積 9 回 -> 6 回）
+    # MM = fp32: FusedM3、MM = fp16: FusedM3Half（Tensor Core 版。状態と標準化は fp32、行列積の入力と重みは fp16）
+    import m3_fused as mf
+    f = mf.from_tag(tag, dev, dtype, MM)
+
+    def init(B):
+        return f.rest(B)
+
+    def step(s, I_k):
+        return f.step(s[0], s[1], I_k)
+    return init, step
+
+
+def make_m3_one(tag, dev, dtype):
+    # C を 1 本の 6 層ネットワークにした版（m3_fused.FusedM3One。1 ステップ = 行列積 6 回 + 列ごとの活性化）
+    import m3_fused as mf
+    f = mf.from_tag_one(tag, dev, dtype, MM)
+
+    def init(B):
+        return f.rest(B)
+
+    def step(s, I_k):
+        return f.step(s[0], s[1], I_k)
+    return init, step
+
+
 def make_rnn3_new(tag, dev, dtype):
     # RNN 3 個（hh_rnn3.step と同じ）。conn は保存した重みの info から読む（serial なら RNN3 に g(t+dt)）
     import hh_rnn3 as h3
@@ -209,6 +239,10 @@ def make(name, dev, dtype):
         return make_hh(dev, dtype)
     if name == 'k_3_w3':
         return make_rnn3(os.path.join(IMP, 'k_3_w3_b3.pt'), dev, dtype)
+    if name.startswith('m3one:'):
+        return make_m3_one(name[6:], dev, dtype)
+    if name.startswith('m3f:'):
+        return make_m3_fused(name[4:], dev, dtype)
     if name.startswith('m3_'):
         return make_m3(name, dev, dtype)
     if name.startswith('rnn3:'):
@@ -449,6 +483,9 @@ def check(a):
             _, out = run_eager(step, s, I[:, :-1], True)
             if name == 'hh_euler':
                 ref = hi.hh_sim(I[:, :-1])[0][:, 1:].numpy()
+            elif name.startswith(('m3f:', 'm3one:', 'm3_')):
+                tag = name.split(':')[-1]
+                ref = hi.run_m3([hi.load_net(os.path.join(IMP, f'{tag}_b{k}.pt')) for k in (1, 2, 3)], I_np)
             elif name == 'k_3_w3':
                 ref = hi.run3([hi.load_net(p) for p in (BASE[0], BASE[1], os.path.join(IMP, 'k_3_w3_b3.pt'))], I_np)
             else:

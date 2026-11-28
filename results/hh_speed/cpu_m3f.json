@@ -1,0 +1,218 @@
+{
+ "env": {
+  "python": "3.10.20",
+  "torch": "2.14.1+cpu",
+  "os": "Windows-10-10.0.26300-SP0",
+  "cpu": "Intel64 Family 6 Model 154 Stepping 4, GenuineIntel",
+  "threads": 8
+ },
+ "args": {
+  "cmd": "bench",
+  "mm": [
+   "fp32"
+  ],
+  "models": [
+   "hh_euler",
+   "m3_hdf_s0",
+   "m3f:m3_hdf_s0"
+  ],
+  "device": "cpu",
+  "dtype": "fp32",
+  "tf32": false,
+  "B": [
+   1,
+   64,
+   1024
+  ],
+  "steps": 1000,
+  "warmup": 500,
+  "repeats": 3,
+  "chunk": 100,
+  "runner": [
+   "eager"
+  ],
+  "compile": false,
+  "record": false,
+  "threads": 8,
+  "tag": "cpu_m3f"
+ },
+ "dt_ms": 0.01,
+ "flops": {
+  "hh_euler": 0.0,
+  "m3_hdf_s0": 105728.0,
+  "m3f:m3_hdf_s0": 109056.0
+ },
+ "rows": [
+  {
+   "model": "hh_euler",
+   "B": 1,
+   "runner": "eager",
+   "record": false,
+   "steps": 1000,
+   "times": [
+    1.3714472000137903,
+    1.241460699995514,
+    1.177986199996667
+   ],
+   "median_s": 1.241460699995514,
+   "per_step_s": 0.001241460699995514,
+   "neuron_s_per_s": 0.008055027436660811,
+   "mem_MB": null,
+   "mm": "fp32",
+   "ratio_vs_hh": 1.0,
+   "breakeven_dt_ms": 0.01
+  },
+  {
+   "model": "hh_euler",
+   "B": 64,
+   "runner": "eager",
+   "record": false,
+   "steps": 1000,
+   "times": [
+    1.3593929999915417,
+    1.3111554000061005,
+    1.148602100001881
+   ],
+   "median_s": 1.3111554000061005,
+   "per_step_s": 0.0013111554000061006,
+   "neuron_s_per_s": 0.48811910472017445,
+   "mem_MB": null,
+   "mm": "fp32",
+   "ratio_vs_hh": 1.0,
+   "breakeven_dt_ms": 0.01
+  },
+  {
+   "model": "hh_euler",
+   "B": 1024,
+   "runner": "eager",
+   "record": false,
+   "steps": 1000,
+   "times": [
+    2.790622300002724,
+    2.777291000005789,
+    2.927418499981286
+   ],
+   "median_s": 2.790622300002724,
+   "per_step_s": 0.002790622300002724,
+   "neuron_s_per_s": 3.66943244164214,
+   "mem_MB": null,
+   "mm": "fp32",
+   "ratio_vs_hh": 1.0,
+   "breakeven_dt_ms": 0.01
+  },
+  {
+   "model": "m3_hdf_s0",
+   "B": 1,
+   "runner": "eager",
+   "record": false,
+   "steps": 1000,
+   "times": [
+    1.7157586000103038,
+    1.6558726000075694,
+    1.7134331999986898
+   ],
+   "median_s": 1.7134331999986898,
+   "per_step_s": 0.0017134331999986898,
+   "neuron_s_per_s": 0.005836235693348096,
+   "mem_MB": null,
+   "mm": "fp32",
+   "ratio_vs_hh": 1.3801751436874976,
+   "breakeven_dt_ms": 0.013801751436874976
+  },
+  {
+   "model": "m3_hdf_s0",
+   "B": 64,
+   "runner": "eager",
+   "record": false,
+   "steps": 1000,
+   "times": [
+    2.5487370000046212,
+    2.136344700003974,
+    2.2521384000137914
+   ],
+   "median_s": 2.2521384000137914,
+   "per_step_s": 0.0022521384000137915,
+   "neuron_s_per_s": 0.2841743651260868,
+   "mem_MB": null,
+   "mm": "fp32",
+   "ratio_vs_hh": 1.717674655501028,
+   "breakeven_dt_ms": 0.01717674655501028
+  },
+  {
+   "model": "m3_hdf_s0",
+   "B": 1024,
+   "runner": "eager",
+   "record": false,
+   "steps": 1000,
+   "times": [
+    7.505757399980212,
+    5.703510999999708,
+    6.775309399992693
+   ],
+   "median_s": 6.775309399992693,
+   "per_step_s": 0.006775309399992693,
+   "neuron_s_per_s": 1.5113700932995096,
+   "mem_MB": null,
+   "mm": "fp32",
+   "ratio_vs_hh": 2.4278847768062626,
+   "breakeven_dt_ms": 0.024278847768062627
+  },
+  {
+   "model": "m3f:m3_hdf_s0",
+   "B": 1,
+   "runner": "eager",
+   "record": false,
+   "steps": 1000,
+   "times": [
+    1.0903787999995984,
+    1.1735348000074737,
+    0.9923906999756582
+   ],
+   "median_s": 1.0903787999995984,
+   "per_step_s": 0.0010903787999995984,
+   "neuron_s_per_s": 0.009171124750411219,
+   "mem_MB": null,
+   "mm": "fp32",
+   "ratio_vs_hh": 0.8783031150350055,
+   "breakeven_dt_ms": 0.008783031150350055
+  },
+  {
+   "model": "m3f:m3_hdf_s0",
+   "B": 64,
+   "runner": "eager",
+   "record": false,
+   "steps": 1000,
+   "times": [
+    1.5446387999982107,
+    1.8054071000078693,
+    1.5130915000045206
+   ],
+   "median_s": 1.5446387999982107,
+   "per_step_s": 0.0015446387999982108,
+   "neuron_s_per_s": 0.4143363484076286,
+   "mem_MB": null,
+   "mm": "fp32",
+   "ratio_vs_hh": 1.178074544017455,
+   "breakeven_dt_ms": 0.01178074544017455
+  },
+  {
+   "model": "m3f:m3_hdf_s0",
+   "B": 1024,
+   "runner": "eager",
+   "record": false,
+   "steps": 1000,
+   "times": [
+    4.137243800010765,
+    3.8776464000111446,
+    4.79133589999401
+   ],
+   "median_s": 4.137243800010765,
+   "per_step_s": 0.004137243800010765,
+   "neuron_s_per_s": 2.475077731695037,
+   "mem_MB": null,
+   "mm": "fp32",
+   "ratio_vs_hh": 1.4825524041740532,
+   "breakeven_dt_ms": 0.014825524041740533
+  }
+ ]
+}

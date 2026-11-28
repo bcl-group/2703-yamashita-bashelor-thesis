@@ -1,0 +1,17 @@
+{
+ "env": {
+  "python": "3.10.20",
+  "torch": "2.14.1+cpu",
+  "os": "Windows-10-10.0.26300-SP0",
+  "cpu": "Intel64 Family 6 Model 154 Stepping 4, GenuineIntel",
+  "threads": 10
+ },
+ "fp16": {
+  "m3f:m3_hdf_s0": {
+   "n100": 22,
+   "mean": 0.913301282051282,
+   "gamma": 0.9036760737833406,
+   "sec": 449.428031206131
+  }
+ }
+}

@@ -1,5 +1,5 @@
 """
-C（MLP 3 個、m3_hdf_s0）の学習曲線。損失（3 個の MLP それぞれ）と、検証の Γ の推移を描く。
+C（MLP 3 個、m3_hdf_*）の学習曲線。損失（3 個の MLP それぞれ）と、検証の Γ の推移を描く。
     .venv/Scripts/python.exe -X utf8 results/hh_improve/plot_m3_loss.py [タグ]
 入力:
     results/hh_improve/logs/<タグ>.log   学習の標準出力（学内サーバから持ってくる）
@@ -51,6 +51,10 @@ for k in range(3):
         sm = np.convolve(L[:, k], np.ones(w) / w, mode='valid')
         a1.plot(it[w - 1:], sm, color=cols[k], lw=1.8, label=labs[k])
 a1.set_yscale('log')
+# 6 本（SiLU・ReLU × seed 0〜2）で比べるので、軸の範囲は固定する
+a1.set_ylim(1e-9, 1)
+a1.set_xlim(0, 112000)
+a1.set_title(tag, loc='left', fontsize=12)
 a1.set_ylabel('損失（学習データ）')
 a1.legend(frameon=False, fontsize=10)
 for x in dag:
@@ -64,7 +68,7 @@ for x, n, g in zip(ev[:, 0], ev[:, 1], ev[:, 3]):
 a2.set_ylim(0.6, 1.05)
 a2.set_ylabel('検証 Γ')
 a2.set_xlabel('iteration')
-fig.subplots_adjust(left=0.1, right=0.98, top=0.97, bottom=0.09)
+fig.subplots_adjust(left=0.1, right=0.98, top=0.94, bottom=0.09)
 out = os.path.join(HERE, f'fig_{tag}_loss.png')
 fig.savefig(out, dpi=140)
 print('saved', out)
