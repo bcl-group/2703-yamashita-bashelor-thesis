@@ -52,6 +52,33 @@ VAL = [
 ]
 
 
+def _ramp_hold(t, i_end=20.0, t_ramp=300.0):
+    # 0 から i_end まで t_ramp [ms] かけて直線で上げ、その後は i_end のまま保つ。t: (N,) [ms] -> (N,)
+    return np.where(t < t_ramp, i_end * t / t_ramp, i_end)
+
+
+# 2026-11-28 に追加した検証用の電流（15 本）。C が外したのはゆっくり閾値をまたぐ場面（ランプ・低い周波数の正弦波）だったので、
+# その場面を増やす。開発用 26 本（ramp 0-20・0-30、sin 5・10・50 Hz、const 2.5・5・7・10・20）と
+# 最終テスト 54 本（hh_bench_ext.py、乱数で作る）とは振幅・長さ・周波数をずらしてある
+VAL += [
+    ('v ramp 0-12 (800ms)',   _c.ramp_current, {'i_start': 0.0, 'i_end': 12.0}, 800.0),
+    ('v ramp 0-18 (500ms)',   _c.ramp_current, {'i_start': 0.0, 'i_end': 18.0}, 500.0),
+    ('v ramp 0-22 (1000ms)',  _c.ramp_current, {'i_start': 0.0, 'i_end': 22.0}, 1000.0),
+    ('v ramp 0-28 (300ms)',   _c.ramp_current, {'i_start': 0.0, 'i_end': 28.0}, 300.0),
+    ('v ramp 25-0 (500ms)',   _c.ramp_current, {'i_start': 25.0, 'i_end': 0.0}, 500.0),
+    ('v ramp-hold 16 (400ms)', _ramp_hold, {'i_end': 16.0, 't_ramp': 400.0}, 700.0),
+    ('v ramp-hold 24 (250ms)', _ramp_hold, {'i_end': 24.0, 't_ramp': 250.0}, 600.0),
+    ('v sin 3Hz 8±8',         _c.sin_current, {'amplitude': 8.0, 'freq': 3.0, 'offset': 8.0}, 700.0),
+    ('v sin 6Hz 7±5',         _c.sin_current, {'amplitude': 5.0, 'freq': 6.0, 'offset': 7.0}, 600.0),
+    ('v sin 12Hz 6±6',        _c.sin_current, {'amplitude': 6.0, 'freq': 12.0, 'offset': 6.0}, 500.0),
+    ('v sin 15Hz 8±6',        _c.sin_current, {'amplitude': 6.0, 'freq': 15.0, 'offset': 8.0}, 400.0),
+    ('v const 5.5',           _c.constant_current, {'amplitude': 5.5}, 300.0),
+    ('v const 7.5',           _c.constant_current, {'amplitude': 7.5}, 300.0),
+    ('v const 9',             _c.constant_current, {'amplitude': 9.0}, 300.0),
+    ('v step 6.5 (100-400ms)', _c.step_current, {'amplitude': 6.5, 't_start': 100.0, 't_end': 400.0}, 500.0),
+]
+
+
 def load_teacher(paths=DATA_OU, dtype=np.float32):
     """
     Returns:
