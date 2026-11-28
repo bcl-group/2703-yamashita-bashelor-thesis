@@ -4,7 +4,7 @@
 #   m3f:m3_hdf_s0   行列積だけで回す版（m3_fused）。fp32 = FusedM3、fp16 = FusedM3Half（Tensor Core 版）
 #   m3one:m3_hdf_s0 1 本の 6 層ネットワークにした版（m3_fused.FusedM3One。各層が行列積 1 回、重みはブロック対角）
 # 使い方（リポジトリのルートで）:
-#   git pull origin hh-serial
+#   git pull origin main
 #   nohup bash results/hh_speed/run_server_m3f.sh > results/hh_speed/logs/run_server_m3f.out 2>&1 &
 set -u
 cd "$(dirname "$0")/../.."
@@ -32,5 +32,5 @@ $PY/hh_speed.py gamma --device cuda --models m3_hdf_s0 m3f:m3_hdf_s0 m3one:m3_hd
 git add results/hh_speed/gpu_env_m3f.txt results/hh_speed/gpu_m3f*.json results/hh_speed/gpu_m3f*.png \
     results/hh_speed/gamma_gpu_m3f.json results/hh_speed/gamma_gpu_m3f $L/m3f_*.log $L/gpu_m3f*.log
 git commit -m "C を Tensor Core に載せた版（m3_fused）の V100 での速度・精度・カーネル（学内サーバ、自動で commit）"
-git pull --rebase origin hh-serial && git push origin hh-serial
+git pull --rebase origin main && git push origin main
 echo "all done $(date '+%F %T')"

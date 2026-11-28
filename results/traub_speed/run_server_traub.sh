@@ -19,4 +19,4 @@ $T --tag t_mlp256x3_dag --W 256 --L 3 --iters 20000 --dagger 3 --dagger-iters 10
 # 4. commit・push（教師データは大きいので入れない）
 git add results/traub_speed results/traub_mlp/*.json results/traub_mlp/*.pt
 git commit -m "Traub の土台: GPU での速度（ODE と代理モデルの形）と、区画ごとの Markov MLP の学習 3 本（学内サーバ、自動で commit）"
-git pull --rebase origin hh-serial && git push origin hh-serial
+git pull --rebase origin main && git push origin main

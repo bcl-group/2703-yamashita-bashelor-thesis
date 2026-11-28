@@ -255,9 +255,10 @@ flow function（Learning flow functions [8] の論文コード）は、論文の
 │   ├── rnn/                NumPy で自作した RNN（BPTT・Adam）と、PyTorch で学習する torch_backend.py
 │   └── evaluation/         波形・スパイクの指標（waveform.py）と演算回数（opcost.py）
 ├── experiments/            src/ を使って実際に動かすスクリプト
+│   ├── mlp3/               ★ MLP 3 個（C、最良のモデル）の学習・評価。これだけで完結する（README.md を参照）
 │   ├── hh/                 HH の動作確認と教師データ作成（make_dataset.py, make_dataset_multi.py）
 │   ├── sin_wave/           RNN の動作確認（sin 波）
-│   ├── hh_surrogate/       HH の代理モデル（実験設定は 学習タスク.md）
+│   ├── hh_surrogate/       HH の代理モデルの旧コード（A, B, D と旧版の C。実験設定は 学習タスク.md）
 │   │   ├── hh_surrogate.py     モデル1：RNN 1 個（NumPy）
 │   │   ├── hh_modular.py       モデル2：RNN 3 個（NumPy、ブロックごとの教師強制）
 │   │   ├── hh_bench.py         26 本のテスト・17 本の検証電流での一括評価
@@ -271,6 +272,7 @@ flow function（Learning flow functions [8] の論文コード）は、論文の
 ├── external/               論文の公式実装（flow-learning）
 ├── data/                   教師データ（.npz。大きいものは git で追跡しない）
 ├── results/                実験の出力（学習済みモデル・評価 .json・図・学内サーバ用の jobs_*.txt）
+│   ├── mlp3/<tag>/         MLP 3 個の 1 回の学習の結果一式（重み・損失・全電流の応答の数値と図）
 │   ├── gamma/              全モデルを Γ で採点し直した結果（rescore_gamma.py で作る）
 │   ├── ext/                上位モデルの追加テストの結果と傾向の図（eval_ext.py、plot_trends.py で作る）
 │   ├── hh_serial/, hh_serial_pc/   直列型の結果（学内サーバ / 手元の PC）

@@ -26,5 +26,5 @@ done
 
 git add results/hh_rnn3/*.json results/hh_rnn3/*.pt
 git commit -q -m "RNN 3 個（hh_rnn3.py）第1・第2ラウンドの結果（学内サーバ GPU、自動で commit）"
-git pull -q --rebase && git push -q origin hh-serial
+git pull -q --rebase && git push -q origin main
 echo "all done $(date '+%F %T')"

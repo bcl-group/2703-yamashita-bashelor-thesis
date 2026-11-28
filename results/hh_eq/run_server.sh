@@ -26,5 +26,5 @@ echo "commit するファイル: $(echo $files | wc -w) 個"
 git add $files || { echo "FAILED git add"; exit 1; }
 git commit -q -m "条件を揃えた B・D の学習（学内サーバ、自動で commit）" || { echo "FAILED git commit"; exit 1; }
 git pull -q --rebase --autostash || { echo "FAILED git pull（手で直して push）"; exit 1; }
-git push -q origin hh-serial || { echo "FAILED git push"; exit 1; }
+git push -q origin main || { echo "FAILED git push"; exit 1; }
 echo "all done $(date '+%F %T')"

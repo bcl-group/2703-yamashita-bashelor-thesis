@@ -1,0 +1,31 @@
+# C（MLP 3 個）でバッチと苦手な電流を大幅に増やす（2026-11-28）。1 行 = experiments/mlp3/train.py の引数 1 本分。
+# 基準（m3_hdf_s0〜s2、train.py の既定値）からの変更点:
+#   バッチ: 1,024 → 16,384（16 倍）。学習率 1e-3・110,000 回はそのまま
+#   m3_hdf_h1k_b16k:   苦手 v1 を 256 → 1,024 本（× 3,000 ms、10 ステップごと → 3,072 万状態）、--hard-frac 0.5（毎回バッチの半分を苦手な電流の状態から）
+#                       基準は 256 本、hard-frac 0（在庫の比率どおり、約 21〜27%）
+#   m3_v2f05d_h4k_b16k: 苦手 v2 を 1,024 → 4,096 本（× 3,000 ms）。メモリを抑えるため 5 → 10 ステップごと（6,144 万 → 1.23 億状態）、状態は float32（--x32）。
+#                       hard-frac 0.5 と、ブロック 3 に積の特徴を入れない（--no-sfeat）のは基準 m3_v2f05d と同じ
+# バッチと苦手な電流を同時に変えるので、どちらが効いたかはこの 20 本だけでは分けられない
+# seed は 0〜9 の 10 本ずつ（計 20 本）。seed による Γ のばらつき（v2f05d で 0.08）が設定の差より大きいため
+# 旧 results/hh_improve/jobs_gpu_m3_b16k.txt（hh_improve.py mlp3）と同じ条件。同じ seed なら同じ重みになる
+# 使い方: bash experiments/mlp3/run_server.sh experiments/mlp3/jobs/m3_b16k.txt 4
+--tag m3_hdf_h1k_b16k_s0 --seed 0 --hard 1024 --hard-frac 0.5 --pre-batch 16384
+--tag m3_hdf_h1k_b16k_s1 --seed 1 --hard 1024 --hard-frac 0.5 --pre-batch 16384
+--tag m3_hdf_h1k_b16k_s2 --seed 2 --hard 1024 --hard-frac 0.5 --pre-batch 16384
+--tag m3_hdf_h1k_b16k_s3 --seed 3 --hard 1024 --hard-frac 0.5 --pre-batch 16384
+--tag m3_hdf_h1k_b16k_s4 --seed 4 --hard 1024 --hard-frac 0.5 --pre-batch 16384
+--tag m3_hdf_h1k_b16k_s5 --seed 5 --hard 1024 --hard-frac 0.5 --pre-batch 16384
+--tag m3_hdf_h1k_b16k_s6 --seed 6 --hard 1024 --hard-frac 0.5 --pre-batch 16384
+--tag m3_hdf_h1k_b16k_s7 --seed 7 --hard 1024 --hard-frac 0.5 --pre-batch 16384
+--tag m3_hdf_h1k_b16k_s8 --seed 8 --hard 1024 --hard-frac 0.5 --pre-batch 16384
+--tag m3_hdf_h1k_b16k_s9 --seed 9 --hard 1024 --hard-frac 0.5 --pre-batch 16384
+--tag m3_v2f05d_h4k_b16k_s0 --seed 0 --hard-set v2 --hard 4096 --hard-frac 0.5 --no-sfeat --x32 --pre-batch 16384
+--tag m3_v2f05d_h4k_b16k_s1 --seed 1 --hard-set v2 --hard 4096 --hard-frac 0.5 --no-sfeat --x32 --pre-batch 16384
+--tag m3_v2f05d_h4k_b16k_s2 --seed 2 --hard-set v2 --hard 4096 --hard-frac 0.5 --no-sfeat --x32 --pre-batch 16384
+--tag m3_v2f05d_h4k_b16k_s3 --seed 3 --hard-set v2 --hard 4096 --hard-frac 0.5 --no-sfeat --x32 --pre-batch 16384
+--tag m3_v2f05d_h4k_b16k_s4 --seed 4 --hard-set v2 --hard 4096 --hard-frac 0.5 --no-sfeat --x32 --pre-batch 16384
+--tag m3_v2f05d_h4k_b16k_s5 --seed 5 --hard-set v2 --hard 4096 --hard-frac 0.5 --no-sfeat --x32 --pre-batch 16384
+--tag m3_v2f05d_h4k_b16k_s6 --seed 6 --hard-set v2 --hard 4096 --hard-frac 0.5 --no-sfeat --x32 --pre-batch 16384
+--tag m3_v2f05d_h4k_b16k_s7 --seed 7 --hard-set v2 --hard 4096 --hard-frac 0.5 --no-sfeat --x32 --pre-batch 16384
+--tag m3_v2f05d_h4k_b16k_s8 --seed 8 --hard-set v2 --hard 4096 --hard-frac 0.5 --no-sfeat --x32 --pre-batch 16384
+--tag m3_v2f05d_h4k_b16k_s9 --seed 9 --hard-set v2 --hard 4096 --hard-frac 0.5 --no-sfeat --x32 --pre-batch 16384

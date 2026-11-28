@@ -19,4 +19,4 @@ $PY gamma --device cuda --models $M --mm fp64 fp32 fp16 fp16x3 --tag gpu
 nvidia-smi > results/hh_speed/gpu_env.txt
 git add experiments/hh_surrogate/hh_speed.py experiments/hh_surrogate/tc_matmul.py results/hh_speed
 git commit -m "GPU（V100）での速度と精度: 行列積を fp32 / fp16 / fp16x3（Tensor Core）で比べた結果（学内サーバ、自動で commit）"
-git pull --rebase origin hh-serial && git push origin hh-serial
+git pull --rebase origin main && git push origin main

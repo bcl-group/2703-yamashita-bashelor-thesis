@@ -21,4 +21,4 @@ for t in r3_256x3_d8_nz1 r3_512x3_d8_nz r3_256x3_d12_nz; do
 done
 git add results/traub_mlp/*.json results/traub_mlp/*.pt
 git commit -m "Traub の学習 3 回目: ノイズあり（2 倍・幅 512・DAgger 12 回）（学内サーバ、自動で commit）"
-git pull --rebase origin hh-serial && git push origin hh-serial
+git pull --rebase origin main && git push origin main

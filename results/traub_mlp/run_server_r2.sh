@@ -19,4 +19,4 @@ for t in t_mlp256x3_dag r2_256x3_d8 r2_256x3_d8_nz r2_512x3_d8; do
 done
 git add results/traub_mlp/*.json results/traub_mlp/*.pt
 git commit -m "Traub の学習 2 回目: DAgger 8 回・ノイズ・幅 512（学内サーバ、自動で commit）"
-git pull --rebase origin hh-serial && git push origin hh-serial
+git pull --rebase origin main && git push origin main

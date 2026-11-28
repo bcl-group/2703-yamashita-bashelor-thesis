@@ -261,3 +261,9 @@ results/hh_bench_ext/
 
 # RNN 3 個（hh_rnn3.py）の在庫（HH の軌道のキャッシュ。大きいので入れない）
 results/hh_rnn3/pools/
+
+# MLP 3 個（experiments/mlp3）の評価セットの正解の HH（114 MB。eval_sets.reference が作り直す）
+results/mlp3/_reference/
+!results/mlp3/*/train.log
+# MLP 3 個の応答の数値（1 本 約 75 MB）。サーバに残し、git には入れない（evaluate.py で重みから作り直せる）
+results/mlp3/*/responses_*.npz
