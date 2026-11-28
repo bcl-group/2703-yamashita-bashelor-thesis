@@ -1,0 +1,314 @@
+hh_euler  eager            fp32   rec=0 B=     1  1 ステップ    954.27 µs           0.0 neuron-s/s
+hh_euler  eager            fp32   rec=0 B=    32  1 ステップ    964.41 µs           0.3 neuron-s/s
+hh_euler  eager            fp32   rec=0 B=  1024  1 ステップ    992.49 µs          10.3 neuron-s/s
+hh_euler  eager            fp32   rec=0 B=  8192  1 ステップ    980.88 µs          83.5 neuron-s/s
+hh_euler  eager            fp32   rec=0 B= 65536  1 ステップ    912.16 µs         718.5 neuron-s/s
+hh_euler  cudagraph        fp32   rec=0 B=     1  1 ステップ    158.65 µs           0.1 neuron-s/s
+hh_euler  cudagraph        fp32   rec=0 B=    32  1 ステップ    161.43 µs           2.0 neuron-s/s
+hh_euler  cudagraph        fp32   rec=0 B=  1024  1 ステップ    171.11 µs          59.8 neuron-s/s
+hh_euler  cudagraph        fp32   rec=0 B=  8192  1 ステップ    180.17 µs         454.7 neuron-s/s
+hh_euler  cudagraph        fp32   rec=0 B= 65536  1 ステップ    220.74 µs        2969.0 neuron-s/s
+m3_hdf_s0 eager            fp32   rec=0 B=     1  1 ステップ    819.54 µs           0.0 neuron-s/s
+m3_hdf_s0 eager            fp32   rec=0 B=    32  1 ステップ    836.46 µs           0.4 neuron-s/s
+m3_hdf_s0 eager            fp32   rec=0 B=  1024  1 ステップ    781.15 µs          13.1 neuron-s/s
+m3_hdf_s0 eager            fp32   rec=0 B=  8192  1 ステップ    834.88 µs          98.1 neuron-s/s
+m3_hdf_s0 eager            fp32   rec=0 B= 65536  1 ステップ   3273.98 µs         200.2 neuron-s/s
+m3_hdf_s0 cudagraph        fp32   rec=0 B=     1  1 ステップ     89.68 µs           0.1 neuron-s/s
+m3_hdf_s0 cudagraph        fp32   rec=0 B=    32  1 ステップ    128.64 µs           2.5 neuron-s/s
+m3_hdf_s0 cudagraph        fp32   rec=0 B=  1024  1 ステップ    184.29 µs          55.6 neuron-s/s
+m3_hdf_s0 cudagraph        fp32   rec=0 B=  8192  1 ステップ    532.97 µs         153.7 neuron-s/s
+m3_hdf_s0 cudagraph        fp32   rec=0 B= 65536  1 ステップ   3271.57 µs         200.3 neuron-s/s
+m3_hdf_s0 eager            fp16   rec=0 B=     1  1 ステップ   1195.47 µs           0.0 neuron-s/s
+m3_hdf_s0 eager            fp16   rec=0 B=    32  1 ステップ   1271.70 µs           0.3 neuron-s/s
+m3_hdf_s0 eager            fp16   rec=0 B=  1024  1 ステップ   1190.18 µs           8.6 neuron-s/s
+m3_hdf_s0 eager            fp16   rec=0 B=  8192  1 ステップ   1171.64 µs          69.9 neuron-s/s
+m3_hdf_s0 eager            fp16   rec=0 B= 65536  1 ステップ   2118.29 µs         309.4 neuron-s/s
+m3_hdf_s0 cudagraph        fp16   rec=0 B=     1  1 ステップ    112.58 µs           0.1 neuron-s/s
+m3_hdf_s0 cudagraph        fp16   rec=0 B=    32  1 ステップ    164.46 µs           1.9 neuron-s/s
+m3_hdf_s0 cudagraph        fp16   rec=0 B=  1024  1 ステップ    194.22 µs          52.7 neuron-s/s
+m3_hdf_s0 cudagraph        fp16   rec=0 B=  8192  1 ステップ    347.65 µs         235.6 neuron-s/s
+m3_hdf_s0 cudagraph        fp16   rec=0 B= 65536  1 ステップ   2116.10 µs         309.7 neuron-s/s
+m3f:m3_hdf_s0 eager            fp32   rec=0 B=     1  1 ステップ    409.87 µs           0.0 neuron-s/s
+m3f:m3_hdf_s0 eager            fp32   rec=0 B=    32  1 ステップ    456.06 µs           0.7 neuron-s/s
+m3f:m3_hdf_s0 eager            fp32   rec=0 B=  1024  1 ステップ    429.19 µs          23.9 neuron-s/s
+m3f:m3_hdf_s0 eager            fp32   rec=0 B=  8192  1 ステップ    456.28 µs         179.5 neuron-s/s
+m3f:m3_hdf_s0 eager            fp32   rec=0 B= 65536  1 ステップ   2511.92 µs         260.9 neuron-s/s
+m3f:m3_hdf_s0 cudagraph        fp32   rec=0 B=     1  1 ステップ     51.36 µs           0.2 neuron-s/s
+m3f:m3_hdf_s0 cudagraph        fp32   rec=0 B=    32  1 ステップ     84.34 µs           3.8 neuron-s/s
+m3f:m3_hdf_s0 cudagraph        fp32   rec=0 B=  1024  1 ステップ    118.96 µs          86.1 neuron-s/s
+m3f:m3_hdf_s0 cudagraph        fp32   rec=0 B=  8192  1 ステップ    420.50 µs         194.8 neuron-s/s
+m3f:m3_hdf_s0 cudagraph        fp32   rec=0 B= 65536  1 ステップ   2496.60 µs         262.5 neuron-s/s
+m3f:m3_hdf_s0 eager            fp16   rec=0 B=     1  1 ステップ    849.94 µs           0.0 neuron-s/s
+m3f:m3_hdf_s0 eager            fp16   rec=0 B=    32  1 ステップ    891.52 µs           0.4 neuron-s/s
+m3f:m3_hdf_s0 eager            fp16   rec=0 B=  1024  1 ステップ    906.14 µs          11.3 neuron-s/s
+m3f:m3_hdf_s0 eager            fp16   rec=0 B=  8192  1 ステップ    898.22 µs          91.2 neuron-s/s
+m3f:m3_hdf_s0 eager            fp16   rec=0 B= 65536  1 ステップ   2192.23 µs         298.9 neuron-s/s
+m3f:m3_hdf_s0 cudagraph        fp16   rec=0 B=     1  1 ステップ    111.91 µs           0.1 neuron-s/s
+m3f:m3_hdf_s0 cudagraph        fp16   rec=0 B=    32  1 ステップ    161.92 µs           2.0 neuron-s/s
+m3f:m3_hdf_s0 cudagraph        fp16   rec=0 B=  1024  1 ステップ    189.69 µs          54.0 neuron-s/s
+m3f:m3_hdf_s0 cudagraph        fp16   rec=0 B=  8192  1 ステップ    405.51 µs         202.0 neuron-s/s
+m3f:m3_hdf_s0 cudagraph        fp16   rec=0 B= 65536  1 ステップ   2196.64 µs         298.3 neuron-s/s
+m3one:m3_hdf_s0 eager            fp32   rec=0 B=     1  1 ステップ    485.52 µs           0.0 neuron-s/s
+m3one:m3_hdf_s0 eager            fp32   rec=0 B=    32  1 ステップ    442.19 µs           0.7 neuron-s/s
+m3one:m3_hdf_s0 eager            fp32   rec=0 B=  1024  1 ステップ    450.69 µs          22.7 neuron-s/s
+m3one:m3_hdf_s0 eager            fp32   rec=0 B=  8192  1 ステップ    733.39 µs         111.7 neuron-s/s
+m3one:m3_hdf_s0 eager            fp32   rec=0 B= 65536  1 ステップ   4785.12 µs         137.0 neuron-s/s
+m3one:m3_hdf_s0 cudagraph        fp32   rec=0 B=     1  1 ステップ     63.32 µs           0.2 neuron-s/s
+m3one:m3_hdf_s0 cudagraph        fp32   rec=0 B=    32  1 ステップ    102.22 µs           3.1 neuron-s/s
+m3one:m3_hdf_s0 cudagraph        fp32   rec=0 B=  1024  1 ステップ    181.71 µs          56.4 neuron-s/s
+m3one:m3_hdf_s0 cudagraph        fp32   rec=0 B=  8192  1 ステップ    733.81 µs         111.6 neuron-s/s
+m3one:m3_hdf_s0 cudagraph        fp32   rec=0 B= 65536  1 ステップ   4772.06 µs         137.3 neuron-s/s
+m3one:m3_hdf_s0 eager            fp16   rec=0 B=     1  1 ステップ    702.64 µs           0.0 neuron-s/s
+m3one:m3_hdf_s0 eager            fp16   rec=0 B=    32  1 ステップ    660.03 µs           0.5 neuron-s/s
+m3one:m3_hdf_s0 eager            fp16   rec=0 B=  1024  1 ステップ    709.51 µs          14.4 neuron-s/s
+m3one:m3_hdf_s0 eager            fp16   rec=0 B=  8192  1 ステップ    656.35 µs         124.8 neuron-s/s
+m3one:m3_hdf_s0 eager            fp16   rec=0 B= 65536  1 ステップ   2781.05 µs         235.7 neuron-s/s
+m3one:m3_hdf_s0 cudagraph        fp16   rec=0 B=     1  1 ステップ     87.01 µs           0.1 neuron-s/s
+m3one:m3_hdf_s0 cudagraph        fp16   rec=0 B=    32  1 ステップ    126.83 µs           2.5 neuron-s/s
+m3one:m3_hdf_s0 cudagraph        fp16   rec=0 B=  1024  1 ステップ    168.98 µs          60.6 neuron-s/s
+m3one:m3_hdf_s0 cudagraph        fp16   rec=0 B=  8192  1 ステップ    461.14 µs         177.6 neuron-s/s
+m3one:m3_hdf_s0 cudagraph        fp16   rec=0 B= 65536  1 ステップ   2777.21 µs         236.0 neuron-s/s
+保存: /mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/results/hh_speed/gpu_m3f.json
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12496 (\N{KATAKANA LETTER BA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12483 (\N{KATAKANA LETTER SMALL TU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12481 (\N{KATAKANA LETTER TI}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 25968 (\N{CJK UNIFIED IDEOGRAPH-6570}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 65288 (\N{FULLWIDTH LEFT PARENTHESIS}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 21516 (\N{CJK UNIFIED IDEOGRAPH-540C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 26178 (\N{CJK UNIFIED IDEOGRAPH-6642}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12395 (\N{HIRAGANA LETTER NI}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 22238 (\N{CJK UNIFIED IDEOGRAPH-56DE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12377 (\N{HIRAGANA LETTER SU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12491 (\N{KATAKANA LETTER NI}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12517 (\N{KATAKANA LETTER SMALL YU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12540 (\N{KATAKANA-HIRAGANA PROLONGED SOUND MARK}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12525 (\N{KATAKANA LETTER RO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12531 (\N{KATAKANA LETTER N}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 65289 (\N{FULLWIDTH RIGHT PARENTHESIS}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 23455 (\N{CJK UNIFIED IDEOGRAPH-5B9F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 34892 (\N{CJK UNIFIED IDEOGRAPH-884C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 38291 (\N{CJK UNIFIED IDEOGRAPH-9593}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12473 (\N{KATAKANA LETTER SU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12486 (\N{KATAKANA LETTER TE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12503 (\N{KATAKANA LETTER PU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12289 (\N{IDEOGRAPHIC COMMA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 22830 (\N{CJK UNIFIED IDEOGRAPH-592E}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 20516 (\N{CJK UNIFIED IDEOGRAPH-5024}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12392 (\N{HIRAGANA LETTER TO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 38525 (\N{CJK UNIFIED IDEOGRAPH-967D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 30340 (\N{CJK UNIFIED IDEOGRAPH-7684}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 22522 (\N{CJK UNIFIED IDEOGRAPH-57FA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 28310 (\N{CJK UNIFIED IDEOGRAPH-6E96}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 22823 (\N{CJK UNIFIED IDEOGRAPH-5927}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12365 (\N{HIRAGANA LETTER KI}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12356 (\N{HIRAGANA LETTER I}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12411 (\N{HIRAGANA LETTER HO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12393 (\N{HIRAGANA LETTER DO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 36895 (\N{CJK UNIFIED IDEOGRAPH-901F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12523 (\N{KATAKANA LETTER RU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12488 (\N{KATAKANA LETTER TO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 25613 (\N{CJK UNIFIED IDEOGRAPH-640D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 30410 (\N{CJK UNIFIED IDEOGRAPH-76CA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 23696 (\N{CJK UNIFIED IDEOGRAPH-5C90}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12398 (\N{HIRAGANA LETTER NO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 21051 (\N{CJK UNIFIED IDEOGRAPH-523B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12415 (\N{HIRAGANA LETTER MI}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 24133 (\N{CJK UNIFIED IDEOGRAPH-5E45}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 36861 (\N{CJK UNIFIED IDEOGRAPH-8FFD}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12388 (\N{HIRAGANA LETTER TU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12367 (\N{HIRAGANA LETTER KU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 24517 (\N{CJK UNIFIED IDEOGRAPH-5FC5}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 35201 (\N{CJK UNIFIED IDEOGRAPH-8981}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12394 (\N{HIRAGANA LETTER NA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 20195 (\N{CJK UNIFIED IDEOGRAPH-4EE3}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 29702 (\N{CJK UNIFIED IDEOGRAPH-7406}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12514 (\N{KATAKANA LETTER MO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12487 (\N{KATAKANA LETTER DE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 24230 (\N{CJK UNIFIED IDEOGRAPH-5EA6}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 23455 (\N{CJK UNIFIED IDEOGRAPH-5B9F}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 34892 (\N{CJK UNIFIED IDEOGRAPH-884C}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 26178 (\N{CJK UNIFIED IDEOGRAPH-6642}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 38291 (\N{CJK UNIFIED IDEOGRAPH-9593}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 65288 (\N{FULLWIDTH LEFT PARENTHESIS}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12473 (\N{KATAKANA LETTER SU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12486 (\N{KATAKANA LETTER TE}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12483 (\N{KATAKANA LETTER SMALL TU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12503 (\N{KATAKANA LETTER PU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12289 (\N{IDEOGRAPHIC COMMA}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 22830 (\N{CJK UNIFIED IDEOGRAPH-592E}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 20516 (\N{CJK UNIFIED IDEOGRAPH-5024}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 65289 (\N{FULLWIDTH RIGHT PARENTHESIS}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12392 (\N{HIRAGANA LETTER TO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12496 (\N{KATAKANA LETTER BA}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12481 (\N{KATAKANA LETTER TI}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 25968 (\N{CJK UNIFIED IDEOGRAPH-6570}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 21516 (\N{CJK UNIFIED IDEOGRAPH-540C}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12395 (\N{HIRAGANA LETTER NI}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 22238 (\N{CJK UNIFIED IDEOGRAPH-56DE}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12377 (\N{HIRAGANA LETTER SU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12491 (\N{KATAKANA LETTER NI}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12517 (\N{KATAKANA LETTER SMALL YU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12540 (\N{KATAKANA-HIRAGANA PROLONGED SOUND MARK}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12525 (\N{KATAKANA LETTER RO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12531 (\N{KATAKANA LETTER N}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 38525 (\N{CJK UNIFIED IDEOGRAPH-967D}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 30340 (\N{CJK UNIFIED IDEOGRAPH-7684}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 22522 (\N{CJK UNIFIED IDEOGRAPH-57FA}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 28310 (\N{CJK UNIFIED IDEOGRAPH-6E96}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 22823 (\N{CJK UNIFIED IDEOGRAPH-5927}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12365 (\N{HIRAGANA LETTER KI}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12356 (\N{HIRAGANA LETTER I}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12411 (\N{HIRAGANA LETTER HO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12393 (\N{HIRAGANA LETTER DO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 36895 (\N{CJK UNIFIED IDEOGRAPH-901F}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12523 (\N{KATAKANA LETTER RU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12488 (\N{KATAKANA LETTER TO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 25613 (\N{CJK UNIFIED IDEOGRAPH-640D}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 30410 (\N{CJK UNIFIED IDEOGRAPH-76CA}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 23696 (\N{CJK UNIFIED IDEOGRAPH-5C90}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12398 (\N{HIRAGANA LETTER NO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 21051 (\N{CJK UNIFIED IDEOGRAPH-523B}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12415 (\N{HIRAGANA LETTER MI}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 24133 (\N{CJK UNIFIED IDEOGRAPH-5E45}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 36861 (\N{CJK UNIFIED IDEOGRAPH-8FFD}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12388 (\N{HIRAGANA LETTER TU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12367 (\N{HIRAGANA LETTER KU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 24517 (\N{CJK UNIFIED IDEOGRAPH-5FC5}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 35201 (\N{CJK UNIFIED IDEOGRAPH-8981}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12394 (\N{HIRAGANA LETTER NA}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 20195 (\N{CJK UNIFIED IDEOGRAPH-4EE3}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 29702 (\N{CJK UNIFIED IDEOGRAPH-7406}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12514 (\N{KATAKANA LETTER MO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12487 (\N{KATAKANA LETTER DE}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 24230 (\N{CJK UNIFIED IDEOGRAPH-5EA6}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+図: /mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/results/hh_speed/gpu_m3f.png
+[m3_hdf_s0 [fp64]] 100%: 23/26  平均 0.930  Γ 0.927  (161 s)  不一致: ramp 0-20 0%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%
+[m3f:m3_hdf_s0 [fp64]] 100%: 23/26  平均 0.930  Γ 0.927  (95 s)  不一致: ramp 0-20 0%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%
+[m3one:m3_hdf_s0 [fp64]] 100%: 23/26  平均 0.930  Γ 0.927  (94 s)  不一致: ramp 0-20 0%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%
+[m3_hdf_s0 [fp32]] 100%: 22/26  平均 0.923  Γ 0.923  (164 s)  不一致: ramp 0-20 0%, ramp 0-30 81%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%
+[m3f:m3_hdf_s0 [fp32]] 100%: 22/26  平均 0.923  Γ 0.923  (92 s)  不一致: ramp 0-20 0%, ramp 0-30 81%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%
+[m3one:m3_hdf_s0 [fp32]] 100%: 22/26  平均 0.892  Γ 0.882  (95 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 25%, random pulse 5ms 93%
+[m3_hdf_s0 [fp16]] 100%: 21/26  平均 0.915  Γ 0.909  (254 s)  不一致: ramp 0-20 8%, ramp 0-30 0%, sin 10Hz 7.5±7.5 81%, random pulse 5ms 93%, OU 5±3 96%
+[m3f:m3_hdf_s0 [fp16]] 100%: 22/26  平均 0.913  Γ 0.904  (177 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 81%, random pulse 5ms 93%
+[m3one:m3_hdf_s0 [fp16]] 100%: 22/26  平均 0.899  Γ 0.888  (132 s)  不一致: ramp 0-20 0%, ramp 0-30 0%, sin 10Hz 7.5±7.5 44%, random pulse 5ms 93%
+保存: /mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/results/hh_speed/gamma_gpu_m3f.json

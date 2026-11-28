@@ -1,0 +1,5 @@
+m3_hdf_s0 既存の閉ループとの最大差 0.00e+00 mV（50 ms、const 10 / const 7）
+m3f:m3_hdf_s0 既存の閉ループとの最大差 3.01e-11 mV（50 ms、const 10 / const 7）
+m3f:m3_hdf_relu_s0 既存の閉ループとの最大差 5.84e-12 mV（50 ms、const 10 / const 7）
+m3one:m3_hdf_s0 既存の閉ループとの最大差 8.49e-12 mV（50 ms、const 10 / const 7）
+m3one:m3_hdf_relu_s0 既存の閉ループとの最大差 9.95e-12 mV（50 ms、const 10 / const 7）

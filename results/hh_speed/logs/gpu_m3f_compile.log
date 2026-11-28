@@ -1,0 +1,232 @@
+m3f:m3_hdf_s0 cudagraph+compile fp32   rec=0 B=  1024  1 ステップ     76.66 µs         133.6 neuron-s/s
+m3f:m3_hdf_s0 cudagraph+compile fp32   rec=0 B=  8192  1 ステップ    261.13 µs         313.7 neuron-s/s
+m3f:m3_hdf_s0 cudagraph+compile fp32   rec=0 B= 65536  1 ステップ   1528.39 µs         428.8 neuron-s/s
+m3f:m3_hdf_s0 cudagraph+compile fp16   rec=0 B=  1024  1 ステップ     67.10 µs         152.6 neuron-s/s
+m3f:m3_hdf_s0 cudagraph+compile fp16   rec=0 B=  8192  1 ステップ    161.84 µs         506.2 neuron-s/s
+m3f:m3_hdf_s0 cudagraph+compile fp16   rec=0 B= 65536  1 ステップ   1000.31 µs         655.2 neuron-s/s
+m3one:m3_hdf_s0 cudagraph+compile fp32   rec=0 B=  1024  1 ステップ     92.19 µs         111.1 neuron-s/s
+m3one:m3_hdf_s0 cudagraph+compile fp32   rec=0 B=  8192  1 ステップ    332.82 µs         246.1 neuron-s/s
+m3one:m3_hdf_s0 cudagraph+compile fp32   rec=0 B= 65536  1 ステップ   2188.45 µs         299.5 neuron-s/s
+m3one:m3_hdf_s0 cudagraph+compile fp16   rec=0 B=  1024  1 ステップ     62.45 µs         164.0 neuron-s/s
+m3one:m3_hdf_s0 cudagraph+compile fp16   rec=0 B=  8192  1 ステップ    160.97 µs         508.9 neuron-s/s
+m3one:m3_hdf_s0 cudagraph+compile fp16   rec=0 B= 65536  1 ステップ    953.92 µs         687.0 neuron-s/s
+保存: /mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/results/hh_speed/gpu_m3f_compile.json
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:462: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  axes[0].legend(fontsize=7)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12496 (\N{KATAKANA LETTER BA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12483 (\N{KATAKANA LETTER SMALL TU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12481 (\N{KATAKANA LETTER TI}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 25968 (\N{CJK UNIFIED IDEOGRAPH-6570}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 65288 (\N{FULLWIDTH LEFT PARENTHESIS}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 21516 (\N{CJK UNIFIED IDEOGRAPH-540C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 26178 (\N{CJK UNIFIED IDEOGRAPH-6642}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12395 (\N{HIRAGANA LETTER NI}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 22238 (\N{CJK UNIFIED IDEOGRAPH-56DE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12377 (\N{HIRAGANA LETTER SU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12491 (\N{KATAKANA LETTER NI}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12517 (\N{KATAKANA LETTER SMALL YU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12540 (\N{KATAKANA-HIRAGANA PROLONGED SOUND MARK}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12525 (\N{KATAKANA LETTER RO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12531 (\N{KATAKANA LETTER N}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 65289 (\N{FULLWIDTH RIGHT PARENTHESIS}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 23455 (\N{CJK UNIFIED IDEOGRAPH-5B9F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 34892 (\N{CJK UNIFIED IDEOGRAPH-884C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 38291 (\N{CJK UNIFIED IDEOGRAPH-9593}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12473 (\N{KATAKANA LETTER SU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12486 (\N{KATAKANA LETTER TE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12503 (\N{KATAKANA LETTER PU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12289 (\N{IDEOGRAPHIC COMMA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 22830 (\N{CJK UNIFIED IDEOGRAPH-592E}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 20516 (\N{CJK UNIFIED IDEOGRAPH-5024}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12392 (\N{HIRAGANA LETTER TO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 22823 (\N{CJK UNIFIED IDEOGRAPH-5927}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12365 (\N{HIRAGANA LETTER KI}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12356 (\N{HIRAGANA LETTER I}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12411 (\N{HIRAGANA LETTER HO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12393 (\N{HIRAGANA LETTER DO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 36895 (\N{CJK UNIFIED IDEOGRAPH-901F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12523 (\N{KATAKANA LETTER RU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12488 (\N{KATAKANA LETTER TO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 25613 (\N{CJK UNIFIED IDEOGRAPH-640D}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 30410 (\N{CJK UNIFIED IDEOGRAPH-76CA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 23696 (\N{CJK UNIFIED IDEOGRAPH-5C90}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12398 (\N{HIRAGANA LETTER NO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 21051 (\N{CJK UNIFIED IDEOGRAPH-523B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12415 (\N{HIRAGANA LETTER MI}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 24133 (\N{CJK UNIFIED IDEOGRAPH-5E45}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 36861 (\N{CJK UNIFIED IDEOGRAPH-8FFD}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12388 (\N{HIRAGANA LETTER TU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12367 (\N{HIRAGANA LETTER KU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 24517 (\N{CJK UNIFIED IDEOGRAPH-5FC5}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 35201 (\N{CJK UNIFIED IDEOGRAPH-8981}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12394 (\N{HIRAGANA LETTER NA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 20195 (\N{CJK UNIFIED IDEOGRAPH-4EE3}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 29702 (\N{CJK UNIFIED IDEOGRAPH-7406}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12514 (\N{KATAKANA LETTER MO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 12487 (\N{KATAKANA LETTER DE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:465: UserWarning: Glyph 24230 (\N{CJK UNIFIED IDEOGRAPH-5EA6}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 23455 (\N{CJK UNIFIED IDEOGRAPH-5B9F}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 34892 (\N{CJK UNIFIED IDEOGRAPH-884C}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 26178 (\N{CJK UNIFIED IDEOGRAPH-6642}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 38291 (\N{CJK UNIFIED IDEOGRAPH-9593}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 65288 (\N{FULLWIDTH LEFT PARENTHESIS}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12473 (\N{KATAKANA LETTER SU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12486 (\N{KATAKANA LETTER TE}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12483 (\N{KATAKANA LETTER SMALL TU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12503 (\N{KATAKANA LETTER PU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12289 (\N{IDEOGRAPHIC COMMA}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 20013 (\N{CJK UNIFIED IDEOGRAPH-4E2D}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 22830 (\N{CJK UNIFIED IDEOGRAPH-592E}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 20516 (\N{CJK UNIFIED IDEOGRAPH-5024}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 65289 (\N{FULLWIDTH RIGHT PARENTHESIS}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12392 (\N{HIRAGANA LETTER TO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12496 (\N{KATAKANA LETTER BA}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12481 (\N{KATAKANA LETTER TI}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 25968 (\N{CJK UNIFIED IDEOGRAPH-6570}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 21516 (\N{CJK UNIFIED IDEOGRAPH-540C}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12395 (\N{HIRAGANA LETTER NI}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 22238 (\N{CJK UNIFIED IDEOGRAPH-56DE}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12377 (\N{HIRAGANA LETTER SU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12491 (\N{KATAKANA LETTER NI}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12517 (\N{KATAKANA LETTER SMALL YU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12540 (\N{KATAKANA-HIRAGANA PROLONGED SOUND MARK}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12525 (\N{KATAKANA LETTER RO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12531 (\N{KATAKANA LETTER N}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 22823 (\N{CJK UNIFIED IDEOGRAPH-5927}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12365 (\N{HIRAGANA LETTER KI}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12356 (\N{HIRAGANA LETTER I}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12411 (\N{HIRAGANA LETTER HO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12393 (\N{HIRAGANA LETTER DO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 36895 (\N{CJK UNIFIED IDEOGRAPH-901F}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12523 (\N{KATAKANA LETTER RU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12488 (\N{KATAKANA LETTER TO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 25613 (\N{CJK UNIFIED IDEOGRAPH-640D}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 30410 (\N{CJK UNIFIED IDEOGRAPH-76CA}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 23696 (\N{CJK UNIFIED IDEOGRAPH-5C90}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12398 (\N{HIRAGANA LETTER NO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 21051 (\N{CJK UNIFIED IDEOGRAPH-523B}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12415 (\N{HIRAGANA LETTER MI}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 24133 (\N{CJK UNIFIED IDEOGRAPH-5E45}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 36861 (\N{CJK UNIFIED IDEOGRAPH-8FFD}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12388 (\N{HIRAGANA LETTER TU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12367 (\N{HIRAGANA LETTER KU}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 24517 (\N{CJK UNIFIED IDEOGRAPH-5FC5}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 35201 (\N{CJK UNIFIED IDEOGRAPH-8981}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12394 (\N{HIRAGANA LETTER NA}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 20195 (\N{CJK UNIFIED IDEOGRAPH-4EE3}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 29702 (\N{CJK UNIFIED IDEOGRAPH-7406}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12514 (\N{KATAKANA LETTER MO}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 12487 (\N{KATAKANA LETTER DE}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+/mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/experiments/hh_surrogate/hh_speed.py:466: UserWarning: Glyph 24230 (\N{CJK UNIFIED IDEOGRAPH-5EA6}) missing from font(s) DejaVu Sans.
+  fig.savefig(png, dpi=130)
+図: /mnt/export2/st4/c058dew/2703-yamashita-bashelor-thesis/results/hh_speed/gpu_m3f_compile.png

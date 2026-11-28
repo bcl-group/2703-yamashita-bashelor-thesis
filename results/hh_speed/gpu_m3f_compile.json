@@ -1,0 +1,302 @@
+{
+ "env": {
+  "python": "3.10.21",
+  "torch": "2.14.1+cu126",
+  "os": "Linux-6.8.0-149-generic-x86_64-with-glibc2.39",
+  "cpu": "x86_64",
+  "threads": 7,
+  "gpu": "Tesla V100-PCIE-32GB",
+  "gpu_mem_GB": 31.7,
+  "cuda": "12.6",
+  "cudnn": 91002
+ },
+ "args": {
+  "cmd": "bench",
+  "mm": [
+   "fp32",
+   "fp16"
+  ],
+  "models": [
+   "m3f:m3_hdf_s0",
+   "m3one:m3_hdf_s0"
+  ],
+  "device": "cuda",
+  "dtype": "fp32",
+  "tf32": false,
+  "B": [
+   1024,
+   8192,
+   65536
+  ],
+  "steps": 2000,
+  "warmup": 500,
+  "repeats": 5,
+  "chunk": 100,
+  "runner": [
+   "cudagraph"
+  ],
+  "compile": true,
+  "record": false,
+  "threads": 0,
+  "tag": "gpu_m3f_compile"
+ },
+ "dt_ms": 0.01,
+ "flops": {
+  "m3f:m3_hdf_s0": 109056.0,
+  "m3one:m3_hdf_s0": 213760.0
+ },
+ "rows": [
+  {
+   "model": "m3f:m3_hdf_s0",
+   "B": 1024,
+   "runner": "cudagraph+compile",
+   "record": false,
+   "steps": 2000,
+   "times": [
+    0.1579103081021458,
+    0.1543407728895545,
+    0.1533155320212245,
+    0.15317412884905934,
+    0.15302660805173218
+   ],
+   "median_s": 0.1533155320212245,
+   "per_step_s": 7.665776601061225e-05,
+   "neuron_s_per_s": 133.58072551426045,
+   "mem_MB": 36.7900390625,
+   "mm": "fp32",
+   "ratio_vs_hh": null,
+   "breakeven_dt_ms": null
+  },
+  {
+   "model": "m3f:m3_hdf_s0",
+   "B": 8192,
+   "runner": "cudagraph+compile",
+   "record": false,
+   "steps": 2000,
+   "times": [
+    0.5218184441328049,
+    0.5230140299536288,
+    0.5225740082096308,
+    0.5222626819740981,
+    0.5217331449966878
+   ],
+   "median_s": 0.5222626819740981,
+   "per_step_s": 0.00026113134098704904,
+   "neuron_s_per_s": 313.71186503447274,
+   "mem_MB": 188.6806640625,
+   "mm": "fp32",
+   "ratio_vs_hh": null,
+   "breakeven_dt_ms": null
+  },
+  {
+   "model": "m3f:m3_hdf_s0",
+   "B": 65536,
+   "runner": "cudagraph+compile",
+   "record": false,
+   "steps": 2000,
+   "times": [
+    3.0558377699926496,
+    3.056051457999274,
+    3.056828353088349,
+    3.0571040459908545,
+    3.0567845080513507
+   ],
+   "median_s": 3.0567845080513507,
+   "per_step_s": 0.0015283922540256754,
+   "neuron_s_per_s": 428.790448442688,
+   "mem_MB": 1401.3369140625,
+   "mm": "fp32",
+   "ratio_vs_hh": null,
+   "breakeven_dt_ms": null
+  },
+  {
+   "model": "m3f:m3_hdf_s0",
+   "B": 1024,
+   "runner": "cudagraph+compile",
+   "record": false,
+   "steps": 2000,
+   "times": [
+    0.1451855911873281,
+    0.13636970706284046,
+    0.13419936085119843,
+    0.13377744099125266,
+    0.13367648096755147
+   ],
+   "median_s": 0.13419936085119843,
+   "per_step_s": 6.709968042559922e-05,
+   "neuron_s_per_s": 152.60877451352712,
+   "mem_MB": 60.14599609375,
+   "mm": "fp16",
+   "ratio_vs_hh": null,
+   "breakeven_dt_ms": null
+  },
+  {
+   "model": "m3f:m3_hdf_s0",
+   "B": 8192,
+   "runner": "cudagraph+compile",
+   "record": false,
+   "steps": 2000,
+   "times": [
+    0.32389734708704054,
+    0.32379577099345624,
+    0.3236707770265639,
+    0.32363639888353646,
+    0.3236596651840955
+   ],
+   "median_s": 0.3236707770265639,
+   "per_step_s": 0.00016183538851328194,
+   "neuron_s_per_s": 506.193365694406,
+   "mem_MB": 213.03662109375,
+   "mm": "fp16",
+   "ratio_vs_hh": null,
+   "breakeven_dt_ms": null
+  },
+  {
+   "model": "m3f:m3_hdf_s0",
+   "B": 65536,
+   "runner": "cudagraph+compile",
+   "record": false,
+   "steps": 2000,
+   "times": [
+    1.999921756098047,
+    1.9997018021531403,
+    2.000867429189384,
+    2.0006202179938555,
+    2.000632497947663
+   ],
+   "median_s": 2.0006202179938555,
+   "per_step_s": 0.0010003101089969277,
+   "neuron_s_per_s": 655.1568299726268,
+   "mem_MB": 1425.69287109375,
+   "mm": "fp16",
+   "ratio_vs_hh": null,
+   "breakeven_dt_ms": null
+  },
+  {
+   "model": "m3one:m3_hdf_s0",
+   "B": 1024,
+   "runner": "cudagraph+compile",
+   "record": false,
+   "steps": 2000,
+   "times": [
+    0.18517010612413287,
+    0.1847118369769305,
+    0.18438003887422383,
+    0.18437518901191652,
+    0.18436523783020675
+   ],
+   "median_s": 0.18438003887422383,
+   "per_step_s": 9.219001943711191e-05,
+   "neuron_s_per_s": 111.07493048079125,
+   "mem_MB": 85.8701171875,
+   "mm": "fp32",
+   "ratio_vs_hh": null,
+   "breakeven_dt_ms": null
+  },
+  {
+   "model": "m3one:m3_hdf_s0",
+   "B": 8192,
+   "runner": "cudagraph+compile",
+   "record": false,
+   "steps": 2000,
+   "times": [
+    0.6655444279313087,
+    0.6663236988242716,
+    0.666439140914008,
+    0.6656399969942868,
+    0.6655584699474275
+   ],
+   "median_s": 0.6656399969942868,
+   "per_step_s": 0.0003328199984971434,
+   "neuron_s_per_s": 246.13905525482755,
+   "mem_MB": 237.6357421875,
+   "mm": "fp32",
+   "ratio_vs_hh": null,
+   "breakeven_dt_ms": null
+  },
+  {
+   "model": "m3one:m3_hdf_s0",
+   "B": 65536,
+   "runner": "cudagraph+compile",
+   "record": false,
+   "steps": 2000,
+   "times": [
+    4.367219934007153,
+    4.376899018883705,
+    4.376717201899737,
+    4.377444877056405,
+    4.378043761011213
+   ],
+   "median_s": 4.376899018883705,
+   "per_step_s": 0.0021884495094418527,
+   "neuron_s_per_s": 299.4631574420671,
+   "mem_MB": 1450.2919921875,
+   "mm": "fp32",
+   "ratio_vs_hh": null,
+   "breakeven_dt_ms": null
+  },
+  {
+   "model": "m3one:m3_hdf_s0",
+   "B": 1024,
+   "runner": "cudagraph+compile",
+   "record": false,
+   "steps": 2000,
+   "times": [
+    0.12577296583913267,
+    0.12504528416320682,
+    0.12490303814411163,
+    0.12483185878954828,
+    0.12480004201643169
+   ],
+   "median_s": 0.12490303814411163,
+   "per_step_s": 6.245151907205582e-05,
+   "neuron_s_per_s": 163.96718850321656,
+   "mem_MB": 108.97705078125,
+   "mm": "fp16",
+   "ratio_vs_hh": null,
+   "breakeven_dt_ms": null
+  },
+  {
+   "model": "m3one:m3_hdf_s0",
+   "B": 8192,
+   "runner": "cudagraph+compile",
+   "record": false,
+   "steps": 2000,
+   "times": [
+    0.32189083797857165,
+    0.3218835899606347,
+    0.3219468800816685,
+    0.3219667060766369,
+    0.32196252001449466
+   ],
+   "median_s": 0.3219468800816685,
+   "per_step_s": 0.00016097344004083425,
+   "neuron_s_per_s": 508.9038289746389,
+   "mem_MB": 261.80517578125,
+   "mm": "fp16",
+   "ratio_vs_hh": null,
+   "breakeven_dt_ms": null
+  },
+  {
+   "model": "m3one:m3_hdf_s0",
+   "B": 65536,
+   "runner": "cudagraph+compile",
+   "record": false,
+   "steps": 2000,
+   "times": [
+    1.9077272748108953,
+    1.9079562991391867,
+    1.9079278821591288,
+    1.9078350060153753,
+    1.9077273500151932
+   ],
+   "median_s": 1.9078350060153753,
+   "per_step_s": 0.0009539175030076877,
+   "neuron_s_per_s": 687.0195776193012,
+   "mem_MB": 1474.46142578125,
+   "mm": "fp16",
+   "ratio_vs_hh": null,
+   "breakeven_dt_ms": null
+  }
+ ]
+}
